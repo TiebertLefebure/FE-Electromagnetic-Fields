@@ -1,0 +1,9 @@
+{
+  "full_C_uF_km": 0.22407447529773955,
+  "ideal_C_uF_km": 0.22407447529896143,
+  "full_inner_E_peak_kV_mm": 4.667766717241481,
+  "relative_XLPE_voltage_drop": 0.9999999999953237,
+  "model": "Exact concentric multilayer series impedances per metre; peak phasors",
+  "ideal_minus_full_C_relative": 5.452971407748919e-12,
+  "ideal_minus_full_E_relative": 4.676037335116234e-12
+}

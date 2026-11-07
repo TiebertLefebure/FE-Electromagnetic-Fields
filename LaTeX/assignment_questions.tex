@@ -1,0 +1,63 @@
+% Original question wording: NMES Assignment 2026, Sections 1 and 2.
+% Line-wrap hyphenation is removed; mathematical notation is typeset in LaTeX.
+\usepackage{tcolorbox}
+\newcommand{\assignmentquestion}[1]{%
+  \begin{tcolorbox}[colback=accent!4,colframe=accent!65,
+    boxrule=0pt,leftrule=2pt,arc=0pt,boxsep=0pt,
+    left=7pt,right=7pt,top=5pt,bottom=5pt,
+    before skip=0pt,after skip=8pt,fontupper=\small]
+  \textbf{Assignment question.} #1
+  \end{tcolorbox}%
+}
+\newcommand{\questionfiles}[1]{%
+  \par\smallskip{\footnotesize\color{accent}
+  \textbf{Files / results (relative to Source-code).} #1\par}\medskip
+}
+\newcommand{\QuestionOneOne}{%
+Describe your cable: construction, dimensions, materials, rated voltage, rated
+current (ampacity) and the laying conditions for which that rating is given
+(burial depth, soil thermal resistivity, ambient temperature, arrangement).
+Give a table of electromagnetic and thermal properties with a source for each value.}
+\newcommand{\QuestionOneTwo}{%
+Choose the environment consistently with the datasheet rating conditions,
+and justify its properties.}
+\newcommand{\QuestionOneThree}{%
+State the sheath bonding you assume: single-point bonded (no net sheath current)
+or solidly bonded (circulating sheath currents allowed), and how the armour
+and pipe are connected. This choice strongly affects the losses in Section 3.}
+\newcommand{\QuestionOneFour}{%
+State the excitation you impose: phase-to-ground voltage and phase current,
+as peak phasors, with the phase sequence (see the conventions in Appendix A).}
+\newcommand{\QuestionTwoOne}{%
+Define your computational domain, the equations solved and the boundary
+conditions. Where do you truncate the domain, and why? Discuss the role of
+the grounded screens: which regions actually influence the field in the insulation?}
+\newcommand{\QuestionTwoTwo}{%
+Can you simplify the geometry of your cable without degrading the precision
+(e.g. disregard details in the geometrical description)? Quantify the effect
+of each simplification.}
+\newcommand{\QuestionTwoThree}{%
+How do the results vary with the mesh refinement? Plot the maximum field in
+the insulation and the capacitance versus the number of degrees of freedom,
+and identify where local refinement is needed.}
+\newcommand{\QuestionTwoFour}{%
+Define the admissible field strength at the conductor screen and at the core
+screen from the datasheet (or, if absent, from a cited reference).
+Is the healthy cable within these limits?}
+\newcommand{\QuestionTwoFive}{%
+Add a defect to the insulation of your cable. State its nature (e.g. gas void,
+water tree, protrusion of the semiconducting screen), its properties, size and
+position, and discuss what a defect in a 2D cross-section represents in 3D.
+Compare the field with and without defect along a radial cut.
+Does the cable withstand the defect?}
+\newcommand{\QuestionTwoSix}{%
+Compute the resistive and displacement current densities in the cable.
+Is current conservation satisfied? Which current dominates in each material, and why?}
+\newcommand{\QuestionTwoSeven}{%
+Compute the per-unit-length capacitance (\(\mu\mathrm{F/km}\)) and compare with
+the analytical value (13) and with the datasheet. State the assumptions of the
+analytical formula (in particular, how the semiconducting layers are treated).
+Does the capacitance vary with frequency? Why (not)?}
+\newcommand{\QuestionTwoEight}{%
+Propose an improvement of the cable design with respect to the electric stress,
+and support it quantitatively.}

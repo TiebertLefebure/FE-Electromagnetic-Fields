@@ -1,0 +1,429 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newtxtext,newtxmath,microtype}
+\usepackage[margin=22mm,headheight=14pt]{geometry}
+\usepackage{booktabs,tabularx,array,caption,float,amsmath,tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage{xcolor,fancyhdr,lastpage}
+\usepackage[hidelinks]{hyperref}
+\definecolor{accent}{HTML}{254C58}
+\hypersetup{pdftitle={Section 1 -- Directly buried NKT cables},pdfauthor={Tiebert Lefebure}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Finite Elements for Electromagnetic Fields}
+\fancyhead[R]{\small 33 kV directly buried trefoil}
+\fancyfoot[L]{\small Section 1: Cable selection and model set-up}
+\fancyfoot[R]{\small \thepage\,/\,\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{1em}
+\setlength{\tabcolsep}{6pt}\renewcommand{\arraystretch}{1.17}
+\captionsetup{font=small,labelfont=bf,skip=6pt}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\subhead}[1]{\par\medskip{\large\bfseries #1}\par\smallskip}
+\newcommand{\source}[2]{\href{#1}{\textit{#2}}}
+\newcommand{\pagetitle}[2]{{\LARGE\bfseries #1}\par{\large #2}\par\medskip}
+\input{geometry_values.tex}
+\input{../assignment_questions.tex}
+\begin{document}
+
+\pagetitle{Selected cable and completed geometry}{Q1.1 --- Individual single-core cables}
+\assignmentquestion{\QuestionOneOne}
+\questionfiles{\path{section_1/cable_inputs.json}; \path{section_1/calculate_geometry.py} produces \path{section_1/derived_geometry.json}. Electrical constants: \path{shared/materials.json}. The full property/source table is in \path{LaTeX/section_1/main.tex} at repository level.}
+The model contains \textbf{three NKT 33 kV XLPE-AL \(1\times240+50~\mathrm{mm^2}\)
+single-core cables, directly buried in touching trefoil}. Each cable retains
+its own PE outer sheath. \textbf{No steel armour, pipe or common outer jacket
+is added}: the selected NKT construction has none, and its ground rating is
+explicitly for direct burial [1]. The armoured cable in Appendix C is an
+example, not a required construction for every cable choice [A].
+
+Each cable has a circular solid aluminium conductor, inner semiconducting
+screen, \(8.0~\mathrm{mm}\) XLPE insulation, outer semiconducting screen,
+\(50~\mathrm{mm^2}\) copper wire/tape screen and PE jacket [1].
+The rated line-to-line voltage is \(33~\mathrm{kV}\); the reference ampacity is
+\(415~\mathrm{A}\) RMS under the conditions in Table~\ref{tab:rating}.
+
+\begin{table}[H]\centering
+\caption{Complete radial model of each single-core cable; radii measured from its own axis.}
+\label{tab:phase}\small
+\begin{tabularx}{\linewidth}{@{}Y r r l@{}}
+\toprule
+Layer / equivalent region & Thickness [mm] & Outer radius [mm] & Basis\\
+\midrule
+Aluminium conductor & --- & 8.500 & NKT [1]\\
+Inner semiconductor & 0.800 & 9.300 & OES 2 [2]\\
+XLPE insulation & 8.000 & 17.300 & NKT [1]\\
+Outer semiconductor & 0.800 & 18.100 & OES 2 [2]\\
+Equivalent semiconducting contact bedding & \ContactThickness & \CopperInnerRadius & Derived\\
+Equal-area copper screen & \CopperThickness & 20.150 & Area + envelope [1]\\
+Equivalent PE cover & 2.600 & 22.750 & Nominal envelope [1]\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subhead{Why these assumptions are used}
+\textbf{Semiconducting screens: \(0.8~\mathrm{mm}\) on both sides of XLPE.}
+Oman's utility specification OES 2, Fourth Edition, explicitly gives this
+nominal thickness for 33 kV screens [2, printed p.~20].
+It is an industry design reference, not an assertion that NKT uses the same
+compound or thickness. The inner value also closes the published NKT dimensions:
+\[
+ 17.0+2(0.8)+2(8.0)=34.6~\mathrm{mm}
+\]
+over the insulation. The semiconductors smooth the conductor/insulation
+interfaces; they are not additional high-voltage insulation.
+
+\textbf{Copper: preserve \(50~\mathrm{mm^2}\), not the entire screen-envelope area.}
+With the NKT screen-envelope radius \(r_o=40.3/2=20.15~\mathrm{mm}\),
+\[
+ r_i=\sqrt{r_o^2-\frac{50}{\pi}}=\CopperInnerRadius~\mathrm{mm},
+ \qquad t_{\mathrm{Cu,eq}}=\CopperThickness~\mathrm{mm}.
+\]
+The intervening \(\ContactThickness~\mathrm{mm}\) is an equivalent semiconducting
+contact region for the unpublished tape/interstitial construction. It keeps
+the outer insulation screen electrically connected to copper. It is a
+homogenisation choice, not a claim of an extra NKT extruded layer.
+
+\textbf{PE: reconcile independently tabulated nominal dimensions.}
+NKT lists a \(40.3~\mathrm{mm}\) screen envelope, \(2.3~\mathrm{mm}\) jacket and
+\(45.5~\mathrm{mm}\) overall nominal diameter. These do not close exactly.
+Use \(2.6~\mathrm{mm}\) of equivalent PE from \(r=20.15\) to \(22.75~\mathrm{mm}\):
+the published \(2.3~\mathrm{mm}\) jacket plus a derived \(0.3~\mathrm{mm}\)
+nonmetallic packing allowance. This preserves the outside diameter used for
+trefoil spacing.
+
+\newpage
+\pagetitle{Direct burial and trefoil arrangement}{Q1.1 --- Three-phase geometry and installation choices}
+Three complete single-core cables form one three-phase circuit. Their PE
+sheaths touch: two cables lie below and the third above. There is no shared
+cable enclosure; the surrounding soil/backfill occupies the spaces between
+and around the cables.
+
+\begin{table}[H]\centering
+\caption{Trefoil geometry; local coordinates are relative to the bundle centroid.}
+\label{tab:assembly}\small
+\begin{tabularx}{\linewidth}{@{}Y l l@{}}
+\toprule
+Quantity & Value & Basis\\
+\midrule
+Single-cable nominal diameter \(D\) & \(45.5~\mathrm{mm}\) & NKT [1]\\
+Centre-to-centre spacing \(S\) & \(45.5~\mathrm{mm}\) & Touching, \(S=D\) [1]\\
+Phase A centre \((x,y)\) & \((0,\,26.269)~\mathrm{mm}\) & Derived\\
+Phase B centre \((x,y)\) & \((-22.750,\,-13.135)~\mathrm{mm}\) & Derived\\
+Phase C centre \((x,y)\) & \((22.750,\,-13.135)~\mathrm{mm}\) & Derived\\
+Trefoil enclosing-circle diameter & \(\BundleDiameter~\mathrm{mm}\) & Geometric envelope only\\
+Common armour / pipe / filler & Absent & Selected construction [1]\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{center}
+\begin{tikzpicture}[x=0.042cm,y=0.042cm,font=\small]
+\fill[accent!8] (-57,-48) rectangle (57,58);
+\foreach \x/\y/\name in {0/26.26944/A,-22.75/-13.13472/B,22.75/-13.13472/C}{
+ \filldraw[fill=yellow!20,draw=accent] (\x,\y) circle (22.75);
+ \fill[orange!65] (\x,\y) circle (20.15);
+ \fill[black!70] (\x,\y) circle (19.75113);
+ \fill[green!25] (\x,\y) circle (17.3);
+ \fill[black!70] (\x,\y) circle (9.3);
+ \fill[gray!35] (\x,\y) circle (8.5);
+ \node at (\x,\y) {\name};
+}
+\node[anchor=west] at (70,40) {Three separate PE-sheathed cables};
+\node[anchor=west] at (70,22) {A above B and C; outer sheaths touch};
+\node[anchor=west] at (70,4) {Soil/backfill surrounds the cables};
+\node[anchor=west] at (70,-14) {No common steel or plastic enclosure};
+\node[anchor=west,font=\footnotesize] at (70,-37) {Local cross-section; ground surface not shown.};
+\end{tikzpicture}
+\end{center}
+The centres are at distance \(D/\sqrt3\) from the centroid. The enclosing
+circle has diameter
+\[
+ D_{\mathrm{env}}=D\!\left(1+\frac{2}{\sqrt3}\right)=\BundleDiameter~\mathrm{mm}.
+\]
+This circle is only a geometric measurement, \textbf{not a physical boundary
+or an added layer}. Nominal dimensions define the baseline FE geometry.
+
+\subhead{How the arrangement is maintained}
+In practice the cables are laid on prepared bedding, held in trefoil with
+suitable discrete restraints, and surrounded by selected backfill. Nexans
+describes touching trefoil and the need to consider restraint under fault
+forces [3]. As a utility example, SP Energy Networks specifies selected sand
+around 33 kV cables [4]. These references explain installation practice;
+they do not establish a particular restraint spacing or trench design for NKT.
+
+\textbf{2D modelling choice.} Represent bedding and backfill by the same
+homogeneous soil properties used for the datasheet rating. Assume good contact
+with the PE jackets and no trapped air pockets. Discrete ties/cleats, warning
+markers and any local protective covers are outside this uniform cross-section.
+They do not become a continuous armour ring. Their detailed mechanical design
+is outside the electromagnetic/thermal baseline.
+
+\newpage
+\pagetitle{Electromagnetic and thermal inputs}{Q1.1 --- Material properties and provenance}
+No universal material table is prescribed by a cable construction standard.
+Use the sourced reference values below, with the explicit effective-property
+choices stated underneath. Only materials present in the selected direct-buried
+construction are included; there is no steel, common PP filler or air annulus.
+
+\begin{table}[H]\centering
+\caption{Initial material model; \(\sigma\) is at \(20^\circ\mathrm{C}\) for metals.}
+\label{tab:materials}\small
+\begin{tabularx}{\linewidth}{@{}Y c c c c l@{}}
+\toprule
+Material & \(\varepsilon_r\) & \(\mu_r\) &
+\(\sigma~[\mathrm{S/m}]\) & \(\kappa~[\mathrm{W/(m\,K)}]\) & Basis\\
+\midrule
+Aluminium, effective & 1 & 1 & \(3.52454\times10^7\) & 237 & [1,5], derived\\
+Copper & 1 & 1 & \(5.95\times10^7\) & 402 & [5]\\
+Semiconducting PE & 2.25 & 1 & \(2\times10^{-3}\) & 0.286 & [2,5]\\
+XLPE & 2.5 & 1 & \(10^{-18}\) & 0.286 & [6,7]\\
+PE outer sheath & 2.25 & 1 & \(10^{-18}\) & 0.46 & [8]\\
+Soil & 10 & 1 & \(10^{-2}\) & 0.83333 & [1,A], derived\\
+\bottomrule
+\end{tabularx}
+\end{table}
+{\small
+Metal \(\varepsilon_r=1\) is a quasistatic placeholder: conduction dominates.
+All listed materials use the nonmagnetic approximation.
+For XLPE, \(\varepsilon_r,\kappa\) follow [6] and \(\sigma\) follows [7].
+Soil electrical values follow [A]; \(\kappa=1/1.2\) follows [1].}
+
+\subhead{Conductivity and temperature assumptions}
+\textbf{Aluminium effective conductivity.} The nominal \(240~\mathrm{mm^2}\)
+designation and the approximate \(17.0~\mathrm{mm}\) conductor diameter are not
+identical area data. Keep the stated diameter and calibrate the effective
+conductivity to the datasheet's maximum \(R_{\mathrm{DC},20}=0.125~\Omega/\mathrm{km}\):
+\[
+ \sigma_{\mathrm{Al},20}^{\mathrm{eff}}
+ =\frac{1000}{0.125\,\pi(0.0085)^2}
+ =3.52454\times10^7~\mathrm{S/m}.
+\]
+This preserves the conservative DC-resistance reference, not a claimed
+measurement of bulk aluminium. Thermal conductivity remains the literature value.
+
+\textbf{Semiconducting regions.} Constant \(\sigma=0.002~\mathrm{S/m}\) means
+\(\rho=500~\Omega\,\mathrm m\), matching the stricter OES 2 insulation-screen
+resistivity limit at \(90^\circ\mathrm C\) [2]. It is a reference compound model,
+not a test certificate. At 50 Hz, \(\sigma/(\omega\varepsilon)\simeq3.2\times10^5\);
+the screens behave almost equipotential relative to XLPE.
+
+\textbf{Temperature dependence.} For the metal regions use
+\[
+ \sigma(T)=\frac{\sigma_{20}}{1+\alpha(T-20^\circ\mathrm C)},\qquad
+ \alpha_{\mathrm{Cu}}=0.00386~\mathrm{K^{-1}},\quad
+ \alpha_{\mathrm{Al}}=0.00390~\mathrm{K^{-1}},
+\]
+as prescribed in Appendix A [A]. Start with constant properties for the linear
+model, then update metal conductivity in the coupled nonlinear calculation.
+The quoted nonmetallic properties are constant reference values; moisture,
+compound variation and temperature dependence are not resolved initially.
+
+\textbf{Equivalent regions.} Apply the semiconducting-PE properties to both
+screens and the equivalent contact region. Apply the PE properties to the
+entire effective \(2.6~\mathrm{mm}\) outer cover. These homogenisations close
+the geometry but must be assessed against field, capacitance and loss results.
+
+\newpage
+\pagetitle{Environment and screen connections}{Q1.2 --- Directly buried installation}
+\assignmentquestion{\QuestionOneTwo}
+\questionfiles{\path{section_1/cable_inputs.json} stores installation, depth and soil conditions. The environment/source justification is in the answer below; no FE solve is needed.}
+Choose the ground installation for which NKT publishes the \(415~\mathrm A\)
+ampacity: three touching single-core cables in trefoil, with both ends of the
+copper screens bonded [1]. No pipe-related thermal resistance or steel loss
+is introduced.
+
+\begin{table}[H]\centering
+\caption{Manufacturer rating conditions and their implementation in the model.}
+\label{tab:rating}\small
+\begin{tabularx}{\linewidth}{@{}l Y Y@{}}
+\toprule
+Quantity & NKT reference [1] & Model choice\\
+\midrule
+Voltage & 33 kV line-to-line RMS & Same\\
+Rated current & 415 A RMS & Imposed validation load\\
+Installation & Direct in ground & Direct burial; no armour or pipe\\
+Arrangement & Touching trefoil, \(S=D\) & Same; nominal \(D=45.5~\mathrm{mm}\)\\
+Copper screens & Both ends bonded & Ideal solid bonding\\
+Burial depth & 1.0 m; reference unspecified & 1.0 m to trefoil centroid\\
+Soil temperature & \(15^\circ\mathrm C\) & Undisturbed-soil reference\\
+Soil thermal resistivity & \(1.2~\mathrm{K\,m/W}\) & Uniform soil and backfill\\
+Conductor temperature limit & \(90^\circ\mathrm C\) & Validation limit\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Soil and depth assumptions.} Use
+\(\kappa=1/1.2=0.83333~\mathrm{W/(m\,K)}\) [1]. The electrical values
+\(\varepsilon_r=10\), \(\sigma=0.01~\mathrm{S/m}\) and \(\mu_r=1\) come from
+Appendix C [A] as indicative soil inputs, not site measurements. Homogeneous
+soil/backfill, constant moisture and perfect jacket/soil contact are explicit
+simplifications. The depth reference is not defined by NKT, so adopt the
+trefoil centroid at \(1.0~\mathrm m\); local positive \(y\) points upwards.
+
+\textbf{Thermal validation.} The manufacturer rating now applies to the chosen
+installation type. It is a reference for validating the FE model, not a result
+already reproduced by it. At 415 A, compute losses and conductor temperatures
+and compare the hottest conductor with \(90^\circ\mathrm C\). Differences may
+arise from geometry, bonding and homogenised soil/material assumptions.
+Ground-surface convection and domain truncation must be specified and checked
+in Sections 2--4, including the convective condition required by Q4.2 [A].
+There is no added-pipe derating correction for this baseline.
+
+\newpage
+\pagetitle{Screen bonding and model checks}{Q1.3 --- Solid bonding of the copper screens}
+\assignmentquestion{\QuestionOneThree}
+\questionfiles{\path{section_1/cable_inputs.json} declares screen bonding; \path{section_2/cable.pro} implements zero electric screen voltage. The magnetic bonding model is not yet implemented.}
+Bond each of the three copper screens to a common earth \textbf{at both ends},
+matching the selected NKT rating row. Assume zero bonding-lead/end-earth
+impedance and no cross-bonding. Each PE sheath separates its copper screen
+from the soil and neighbouring screens along the cable length.
+\textbf{Armour and pipe connections are not applicable because both are absent.}
+
+In electrodynamics, impose \(\widehat V=0\) on the copper screens.
+The inner semiconductor follows its phase conductor; the outer semiconductor
+is connected to its grounded copper screen through the equivalent contact region.
+In magnetoquasistatics, each copper screen is a separate massive region \(m\):
+\[
+ \frac{\widehat{\mathcal U}_m}{\ell}=0,\qquad
+ \widehat I_m=\int_{\Omega_m}\widehat J_z\,\mathrm dS
+ \quad\text{is solved, not forced to zero}.
+\]
+This allows circulating and eddy currents, consistent with Appendix A [A].
+Single-point bonding would instead impose zero net screen current and is not
+the selected baseline. Grounding does not suppress induced screen currents.
+
+\subhead{Checks attached to the assumptions}
+\begin{table}[H]\centering
+\caption{What the model establishes now and what must be checked later.}\small
+\begin{tabularx}{\linewidth}{@{}l Y@{}}
+\toprule
+Choice & Check / interpretation\\
+\midrule
+Completed radial geometry & All interfaces close; copper metal area is exactly \(50~\mathrm{mm^2}\).\\
+Touching trefoil and direct burial & Match the datasheet arrangement; soil/backfill is a homogeneous equivalent.\\
+Copper/contact homogenisation & Compare screen losses and fields with a more detailed screen model in Q2.2 / Section 3.\\
+Solid screen bonding & Solve induced screen currents and include their losses; no armour or pipe regions exist.\\
+Soil and burial depth & Check sensitivity to depth convention, soil properties, surface cooling and domain size.\\
+415 A reference excitation & Compare the computed maximum conductor temperature with the manufacturer's \(90^\circ\mathrm C\) limit.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+The baseline uses the published 415 A rating without an added armour/pipe
+correction. A different FE-derived permissible current must be supported by
+the coupled magnetic--thermal solution and its validation checks.
+
+
+\newpage
+\pagetitle{Excitation and phase convention}{Q1.4 --- Balanced three-phase peak phasors}
+\assignmentquestion{\QuestionOneFour}
+\questionfiles{\path{section_1/calculate_geometry.py} gives peak amplitudes in \path{section_1/derived_geometry.json}; \path{section_2/cable.pro} applies the ABC voltage phasors. Phase-current excitation is for the later magnetic model.}
+Use positive-sequence \textbf{ABC} at \(f=50~\mathrm{Hz}\), with phase A at the top,
+B lower left and C lower right. All phase currents use the same positive
+longitudinal direction. Follow Appendix A [A]:
+\[
+ x(t)=\Re\{\widehat x e^{\mathrm j\omega t}\},\qquad
+ \omega=2\pi f=100\pi~\mathrm{rad/s}.
+\]
+At the manufacturer's reference rating,
+\[
+ U_{\mathrm{LL,rms}}=33~\mathrm{kV},\qquad I_{\mathrm{rms}}=415~\mathrm A.
+\]
+The phase-to-ground RMS voltage is \(33/\sqrt3=19.053~\mathrm{kV}\).
+The imposed \textbf{peak} amplitudes are
+\[
+ V_{\mathrm{pk}}=\sqrt{\frac23}\,33=26.944~\mathrm{kV},\qquad
+ I_{\mathrm{pk}}=\sqrt2\,415=586.899~\mathrm A.
+\]
+
+\begin{table}[H]\centering
+\caption{Peak phasors at the reference load; voltages are phase-to-ground.}
+\label{tab:phasors}
+\begin{tabularx}{\linewidth}{@{}c Y Y@{}}
+\toprule
+Phase & Voltage [kV] & Current [A]\\
+\midrule
+A & \(26.944\angle0^\circ\) & \(586.899\angle0^\circ\)\\
+B & \(26.944\angle(-120^\circ)\) & \(586.899\angle(-120^\circ)\)\\
+C & \(26.944\angle(+120^\circ)\) & \(586.899\angle(+120^\circ)\)\\
+\bottomrule
+\end{tabularx}
+\end{table}
+For direct complex-number input, use
+\[
+\begin{aligned}
+ \widehat V_A&=26.9444~\mathrm{kV},&
+ \widehat I_A&=586.8986~\mathrm A,\\
+ \widehat V_B&=-13.4722-\mathrm j23.3345~\mathrm{kV},&
+ \widehat I_B&=-293.4493-\mathrm j508.2691~\mathrm A,\\
+ \widehat V_C&=-13.4722+\mathrm j23.3345~\mathrm{kV},&
+ \widehat I_C&=-293.4493+\mathrm j508.2691~\mathrm A.
+\end{aligned}
+\]
+In GetDP SI inputs, multiply the displayed voltage values in kV by \(10^3\).
+Voltages drive the electrodynamic problem; net core currents drive the
+magnetoquasistatic problem. Induced currents in the copper screens are solved.
+Currents are in phase with their phase voltages: \textbf{unity power factor}
+is an explicit baseline assumption, matching Appendix A.
+
+\newpage
+\pagetitle{Sources and use of standards}{References for Section 1}
+The numerical choices are traceable to the sources below. Utility specifications
+supply \textbf{engineering references} for missing data and installation
+practice; they do not certify the model or establish NKT-specific dimensions. Material constants and 2D equivalent
+regions are identified separately from manufacturer dimensions.
+
+\begingroup\small\setlength{\parskip}{9pt}
+[1] NKT, \textit{33 kV single core cable XLPE-AL Halogen free}, printed pp.~19--20,
+\(240~\mathrm{mm^2}\) column. Original cable construction, \(40.3/45.5~\mathrm{mm}\)
+envelopes, \(0.125~\Omega/\mathrm{km}\) maximum DC resistance, and direct-buried
+415 A rating.
+\source{https://nkt.widen.net/content/d8gut55fhb/pdf/33kV_1-core_XLPE-AL-RMP-FB-ST_CU_screen_DSENAPP_MV_DS_EN.pdf?u=gj0n1y}{Manufacturer datasheet}.
+
+[2] Authority for Public Services Regulation, Oman, \textit{OES 2 --- Cables and
+Accessories}, Fourth Edition, implementation circular 28 May 2024.
+33 kV specification printed pp.~20--23 (PDF pp.~44--47): \(0.8~\mathrm{mm}\)
+semiconducting screens and their resistivity limits. Only these screen data
+are borrowed; the armour construction in that specification is not adopted.
+\source{https://www.dcrp-oman.com/documents/DCRP\%20Updates/OES2\%204th\%20Edition-Circular.pdf}{Official utility/regulator document}.
+
+[3] Nexans, \textit{Cable Installation Information}, 27 October 2021,
+``Single Core Cables'' and ``Cable Support''. Touching trefoil, suitable
+restraints and short-circuit forces. General installation guidance, not a
+restraint design for the selected NKT cable.
+\source{https://www.nexans.com.au/en/Newsroom/news/details/2021/10/Cable-Installation-Information.html}{Manufacturer technical guide}.
+
+[4] SP Energy Networks, \textit{Handling and Installation of Cables up to and
+including 33kV}, CAB-15-003, Issue 11, Section 22.2.
+Selected sand bedding/backfill for 33 kV cables is an example of utility
+practice. Its trench dimensions are not imposed on the homogeneous-soil model.
+\source{https://www.spenergynetworks.co.uk/userfiles/file/CAB-15-003-issue-11.pdf}{Official utility specification}.
+
+[5] Lee et al., \textit{Comparative Analysis of XLPE and Thermoplastic
+Insulation-Based HVDC Power Cables}, Energies 16(1), 167 (2023), Table 3.
+Copper electrical/thermal data, aluminium thermal data and semiconducting PE.
+\source{https://doi.org/10.3390/en16010167}{doi:10.3390/en16010167}.
+
+[6] R.~Chippendale, University of Southampton, \textit{Parameters for extra large
+cables}, report 15242-RE2-v7, 14 October 2016, Tables 3--4.
+XLPE \(\kappa=0.286\) and \(\varepsilon_r=2.5\).
+\source{https://www.transmissionexcel.com/wp-content/uploads/2016/11/Parameters-for-extra-large-cables-FINAL.pdf}{Report}.
+
+[7] COMSOL, \textit{Submarine Cable 8 --- Inductive Effects 3D}.
+Section on conductors/insulators: the adopted XLPE conductivity.
+The armour geometry and magnetic properties of that example are not used.
+\source{https://doc.comsol.com/6.4/doc/com.comsol.help.models.acdc.submarine_cable_08_inductive_effects_3d/submarine_cable_08_inductive_effects_3d.html}{Official technical documentation}.
+
+[8] W.~Li et al., \textit{Numerical Study on Electromagnetic Thermal Performance
+of Non-Metallic Armoured Optoelectronic Cable Winch System}, JMSE 12(6), 895
+(2024), Table 2, PE column.
+\source{https://doi.org/10.3390/jmse12060895}{doi:10.3390/jmse12060895}.
+
+[A] KU Leuven, \textit{NMES Assignment 2026}, Section 1 and Appendices A--C.
+Peak-phasor and solid-bonding conventions, metal temperature coefficients,
+indicative soil electrical properties, and validation requirements.
+Appendix C supplies an illustrative construction; it does not require adding
+armour or a pipe to the selected single-core cables.
+\endgroup
+\end{document}
+

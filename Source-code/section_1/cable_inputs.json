@@ -1,0 +1,27 @@
+{
+  "conductor_diameter_mm": 17.0,
+  "nominal_conductor_area_mm2": 240,
+  "max_dc_resistance_ohm_per_km": 0.125,
+  "inner_semiconductor_mm": 0.8,
+  "xlpe_mm": 8.0,
+  "outer_semiconductor_mm": 0.8,
+  "copper_area_mm2": 50.0,
+  "diameter_over_copper_mm": 40.3,
+  "single_cable_diameter_mm": 45.5,
+  "single_cable_maximum_diameter_mm": 49.5,
+  "burial_axis_depth_m": 1.0,
+  "soil_temperature_C": 15,
+  "soil_thermal_resistivity_K_m_W": 1.2,
+  "line_voltage_rms_V": 33000,
+  "frequency_Hz": 50,
+  "provenance": {
+    "NKT_MV": "Original NKT 33 kV XLPE-AL datasheet pp.19-20: conductor, XLPE, copper screen area/envelope, cable OD, resistance and direct-buried rating.",
+    "OES2": "APSR Oman OES2 Fourth Edition 2024, 33 kV specification pp.20-21: nominal 0.8 mm semiconducting screens and resistivity limits. Design reference for missing data, not certified compliance.",
+    "MODEL": "Equal-area Cu annulus at the given screen envelope. Residual SC contact bedding and effective PE cover are derived to close nominal dimensions; not claimed OEM layer dimensions.",
+    "INSTALLATION": "No armour, pipe or common jacket: follows the selected NKT cable construction and direct-buried rating. Bedding/backfill homogenised with soil; discrete restraints omitted from the 2D section."
+  },
+  "installation": "direct_buried_touching_trefoil",
+  "burial_depth_reference": "trefoil_centroid; explicit assumption because NKT does not define the reference",
+  "screen_bonding": "both_ends_ideal_common_earth",
+  "reference_current_rms_A": 415
+}
