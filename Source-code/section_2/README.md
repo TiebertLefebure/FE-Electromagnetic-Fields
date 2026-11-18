@@ -1,244 +1,259 @@
-# Section 2 — electrodynamic cable model
+# Section 2: electric-field analysis
 
-Three NKT 33 kV XLPE-AL 1×240+50 mm² cables in touching trefoil, with no armour or pipe.
-This directory contains a working **frequency-domain GetDP solve**, Gmsh geometry and
-views, and independent post-processing of the computed nodal voltages. It uses the
-geometry and electrical properties established in Section 1.
+Start with `cable.geo`, `cable.pro` and `settings.inc`. They define the mesh,
+the GetDP problem and the case settings. The Python scripts run comparisons and
+extract quantities from the solution; they do not replace GetDP.
 
-## Run and view
+The baseline is the Section 1 cable: three NKT 33 kV XLPE-AL single cores in
+touching trefoil, directly buried, with copper screens at zero potential.
 
-On this Mac, double-click **`Run Section 2.command`**. It computes the healthy model,
-checks the result and opens Gmsh with the electric-field magnitude visible.
+## Run one question
 
-From a terminal in this directory:
+Open a terminal in `Source-code/section_2`. From the repository root:
 
 ```sh
-python3 run.py --open
-python3 run.py --study
-python3 run.py --defect --case void --open
+cd Source-code/section_2
 ```
 
-The first command needs Python 3, Gmsh and GetDP; **no Python packages are required**.
-The launcher finds tools on PATH, in `/Applications/Gmsh.app`, or in the neighbouring
-`ONELAB*` folder. For another installation, specify `--gmsh /path/to/gmsh` and
-`--getdp /path/to/getdp`, or set `GMSH_BIN` and `GETDP_BIN`. Paths with spaces are supported.
-The tested GetDP real-arithmetic PETSc build handles complex phasors through a real block
-system; a second GetDP download is not required to run this model.
+Each command below meshes with Gmsh, solves with GetDP and extracts the results.
+You can run any question independently; the command selects its cases without
+manual changes to `settings.inc`. `--open` also opens the relevant Gmsh view.
+Omit it to calculate without opening a window.
 
-Each run writes under `results/<case>/`. Open **`results/healthy/view.geo`** in Gmsh to
-reload the healthy results without solving. Under **Post-processing**, toggle the views:
+All paths below are relative to this folder. Open `view.geo` and `.pos` plots
+in Gmsh, `.json` files in a text editor, and `.csv` files in a text editor or spreadsheet.
 
-- `|E phasor| [kV/mm]`: nonnegative phasor norm; the default view.
-- `Re(V) [kV]`: instantaneous potential at phase-A voltage maximum.
-- `Re(E) [kV/mm]`: field vector at that same instant.
-- Conduction and displacement current-density magnitudes, in A/m².
+### Q2.1: model and boundary conditions
 
-The holes are the omitted aluminium conductors; gaps between the coloured annuli
-include the omitted copper/PE layers. The actual PE jackets still touch in trefoil.
+Run `python3 run.py --question 2.1 --open`.
 
-The maps have **no smoothing** in the analysis. P1 fields are constant per triangle;
-view interpolation is only a display setting. All scalar magnitude views use their
-first time step (the second exported complex component is zero).
+- **Computes:** the `healthy` case at 50 Hz.
+- **Read:** `cable.geo` builds the layers and phase positions. In `cable.pro`,
+  `Constraint` prescribes the electrode voltages and `Formulation` defines the weak form.
+- **Inspect:** `results/healthy/view.geo` opens with `|E phasor|` visible.
+  Toggle `Re(V)` to see the phase voltages and grounded screens.
 
-For the investigation results open `validation/RESULTS.md`, and open these plots in Gmsh:
-`validation/field_convergence.pos`, `capacitance_convergence.pos`, and
-`radial_comparison.pos`. The latter compares healthy, void and thicker-insulation cuts on their common
-valid radius interval. Full cuts are retained in each case CSV.
+### Q2.2: simplifying the geometry
 
-Typical further runs:
+Run `python3 run.py --question 2.2`.
+
+- **Computes:** `healthy` with finite semiconductors and `ideal` with
+  `IdealScreens=1`, which solves XLPE alone.
+- **Read:** follow `IdealScreens` from `settings.inc` into `cable.geo`.
+  `analytical_reference()` in `study.py` supplies the exact layered comparison.
+- **Inspect:** compare `results/healthy/metrics.json` with `results/ideal/metrics.json`.
+  Read `complex_dofs`; under `phases` → `A`, compare `max_xlpe_peak_kV_mm`,
+  `capacitance_uF_km` and `loss_W_m`. The analytical check is
+  `validation/analytical_reference.json`.
+
+### Q2.3: mesh convergence
+
+Run `python3 run.py --question 2.3 --open`.
+
+- **Computes:** `coarse`, `medium` and `healthy`, with nominal bulk sizes
+  of 1, 0.5 and 0.25 mm. Geometry, voltage and materials stay fixed.
+- **Read:** `CASES` in `study.py` lists the mesh settings. `triangle_field()`
+  in `analyse.py` calculates the field from the nodal voltages.
+- **Inspect:** Gmsh opens `validation/field_convergence.pos`; also open
+  `validation/capacitance_convergence.pos`. `validation/convergence.csv`
+  contains DOFs, maximum XLPE field and phase-A capacitance for the three meshes.
+
+### Q2.4: field-strength comparison
+
+Run `python3 run.py --question 2.4`.
+
+- **Computes:** the `healthy` case and its fields next to the XLPE interfaces.
+- **Read:** `integrate_elements()` in `analyse.py` finds triangles touching
+  each interface and records the largest field there.
+- **Inspect:** in `results/healthy/metrics.json`, under `phases` → `A`, read
+  `inner_screen_peak_kV_mm` and `outer_screen_peak_kV_mm`. Divide both by √2
+  before comparing with the PDF's RMS values. These are fields in XLPE beside
+  the screens, not fields inside the semiconductors.
+
+### Q2.5: a gas channel in the insulation
+
+Run `python3 run.py --question 2.5 --open`.
+
+- **Computes:** `healthy`, `void_coarse` and `void`; the two defect meshes check
+  the sensitivity of the local maximum to refinement.
+- **Read:** `VoidRadius` and `VoidOffset` in `settings.inc` set the defect.
+  The `Defect` branch in `cable.geo` inserts it; `write_radial_cut()` in
+  `analyse.py` samples the field through its centre.
+- **Inspect:** Gmsh opens `validation/defect_comparison.pos`, comparing healthy
+  and fine-void cuts. Open `results/void/view.geo` for the field map. In each
+  case's `metrics.json`, under `phases` → `A`, compare `max_void_peak_kV_mm`
+  and `max_xlpe_peak_kV_mm`. The radial cut need not contain the global maximum.
+
+### Q2.6: current densities and conservation
+
+Run `python3 run.py --question 2.6 --open`.
+
+- **Computes:** `healthy` and `void` at 50 Hz, so the gas sample is also available.
+- **Read:** `PostProcessing` in `cable.pro` defines conduction/displacement
+  current densities. `check_terminals()` in `analyse.py` checks current balance.
+- **Inspect:** in `results/healthy/view.geo`, toggle `|J conduction|` and
+  `|J displacement|`. Both case folders contain `radial_cut.csv`, with columns
+  `J_cond_peak_A_m2` and `J_disp_peak_A_m2`. In `metrics.json`, inspect
+  `phases` → `A` → `terminal_balance_relative`, `max_free_residual_relative`
+  at the top level, and `contour_flux_checks` for the independent circle integrals.
+
+### Q2.7: capacitance and frequency
+
+Run `python3 run.py --question 2.7`.
+
+- **Computes:** `freq_5`, `healthy`, `freq_500` and `freq_5000`, corresponding
+  to 5, 50, 500 and 5 000 Hz, with fixed geometry and material properties.
+- **Read:** `check_terminals()` in `analyse.py` calculates terminal and energy
+  capacitance. `analytical_reference()` in `study.py` gives the layered reference.
+- **Inspect:** open `results/question_2_7.json`. Under `cases`, select a case,
+  then `phases` → `A`. Compare `capacitance_uF_km` with
+  `energy_capacitance_uF_km`; repeat for all four frequencies. The unit is µF/km
+  per phase. NKT's 0.24 µF/km is a maximum, not a nominal target.
+
+### Q2.8: reducing electric stress
+
+Run `python3 run.py --question 2.8 --open`.
+
+- **Computes:** `healthy` with 8 mm XLPE and `thicker_xlpe` with 9 mm XLPE.
+- **Read:** the `thicker_xlpe` entry in `study.py` adds 1 mm via `ExtraXLPE`.
+  `settings.inc` shifts the outer radii and cable spacing accordingly.
+- **Inspect:** Gmsh opens `validation/design_comparison.pos`. Open
+  `results/thicker_xlpe/view.geo` for the variant's map. In
+  `results/question_2_8.json`, compare the two cases under `cases` → case name
+  → `phases` → `A`: `max_xlpe_peak_kV_mm` and `capacitance_uF_km`.
+
+## Run the full study
+
+Each question run saves its cases under `results/<case>/` and a small combined
+record under `results/question_2_n.json`. It does not overwrite the full-study
+summary. Reusing a case name replaces that case's generated output.
+
+To reproduce the whole report:
+
+```sh
+python3 run.py --study
+```
+
+This runs ten cases: three healthy meshes, ideal screens, two void meshes,
+9 mm XLPE, and three extra frequencies. Read `validation/RESULTS.md` for a
+compact table. From the repository root, rebuild the PDF with
+`./LaTeX/build_section_2.sh`. Keep the generated PDF in the repository root.
+
+## What each file does
+
+| File | Read it for |
+|---|---|
+| `cable.geo` | Concentric layers, trefoil positions, physical groups, mesh size and the phase-A void. |
+| `cable.pro` | Materials, ABC voltages, grounded screens, weak form, resolution and exported fields. |
+| `settings.inc` | `MeshScale`, `IdealScreens`, `Defect`, `ExtraXLPE` and `Freq`. |
+| `prepare.py` | Converts Section 1 dimensions and material inputs into `parameters.inc` in SI units. |
+| `analyse.py` | Triangle gradients, energy/loss integrals, capacitance, conservation checks and radial cuts. |
+| `study.py` | The explicit case list for each question, analytical comparison and study checks. |
+| `run.py` | Tool paths, mesh/solve commands, saved inputs and command-line options. |
+| `plots.py` | Gmsh viewer/curve formatting; it contains no FE calculations. |
+| `export_report.py` | Reads a completed study and exports LaTeX values/tables and code-line references. |
+| `electrodynamic_formulation.pro` | The unchanged TA reference. Its weak form is adapted in `cable.pro`. |
+
+The shared inputs are `../section_1/cable_inputs.json` and
+`../shared/materials.json`. `cable.pro` directly includes the unchanged
+`../shared/Jacobian_Integration.pro`. The original TA electric formulation is
+kept for comparison rather than included: its region names, example cuts and
+GUI helper do not match this cable.
+
+Physical surface tags are 101/201/301 for inner semiconductor, 102/202/302 for
+XLPE, 103/203/303 for outer semiconductor and 104/204/304 for contact bedding.
+The void is 106. Electrode curves are 1001/1101/1201 (phase A/B/C) and
+1002/1102/1202 (grounded copper screens).
+
+## Model choices
+
+- Solve `−div[(σ+jωε) grad(v)] = 0`, with `E = −grad(v)` and peak phasors
+  `Re(v_hat exp(jωt))`. At 50 Hz, apply 26.9444 kV peak at 0°, −120°, +120°.
+  The axial 415 A load is used in the magnetic/thermal analysis.
+- Mesh the finite-conductivity semiconductors/contact bedding and XLPE between
+  r=8.5 and 19.7511 mm. Treat aluminium and copper as equipotential electrodes.
+  The centre holes in Gmsh are omitted aluminium, not physical air spaces.
+- Replace the real wire/tape screen with a continuous grounded screen. Under
+  this assumption, the jackets and soil have zero electric field and can be
+  omitted from Section 2. This reduction does not apply to magnetic or thermal
+  analysis, joints or terminations. Error from actual wire/tape gaps is unknown.
+- `IdealScreens=1` solves XLPE alone, between r=9.3 and 17.3 mm. The study checks
+  field/C changes against the finite-screen case and an exact layered solution.
+  It removes semiconductor losses even though field/C changes are negligible.
+- Materials are linear, isotropic and constant. XLPE uses εr=2.5, σ=1e−18 S/m;
+  semiconductors/contact bedding use εr=2.25, σ=0.002 S/m. There is no
+  dielectric-loss tangent, space charge or discharge model.
+- The defect is a 0.5 mm diameter gas channel, centred 10.3 mm from the phase-A
+  axis. εr=1 and σ=0 approximate gas before discharge. In 2D it extends along
+  the cable; it is not a spherical bubble. Size and location are study choices.
+- The design variant adds 1 mm of XLPE radially and shifts the outer layers.
+  Keeping copper thickness would increase its area; a manufactured redesign
+  would need a consistent screen specification and a new thermal assessment.
+
+## How the numerical checks work
+
+`analyse.py` reads GetDP's nodal voltages. `triangle_field()` evaluates the
+constant P1 gradient. `integrate_elements()` accumulates energy and conductive
+loss, records unsmoothed maxima and assembles element reactions. In
+`check_terminals()`, electrode reaction sums give current, and free-node sums
+should vanish. `write_radial_cut()` and `contour_currents()` sample the same
+computed field. The small search grid only finds triangles for these samples.
+
+Per phase, `Y'=I_hat'/V_hat`, `C'=Im(Y')/ω`. Independently,
+`C'=∫ε|E_hat|² dA/|V_hat|²`. Peak phasors give average electric energy
+`(1/4)∫ε|E_hat|²dA` and average conductive loss `(1/2)∫σ|E_hat|²dA`.
+Conduction/displacement currents are `σE_hat` and `jωεE_hat`.
+
+The coaxial reference uses XLPE interface radii: `C'=2πε/ln(17.3/9.3)` and
+`E(r)=V_hat/[r ln(17.3/9.3)]`. It predicts 0.2240745 µF/km and 4.66777 kV/mm
+peak at the inner interface. The fine P1 model gives about 0.224075 µF/km and
+4.65135 kV/mm. Field maxima converge more slowly than integrated C.
+
+Checks stop a run if electrode voltages, current conservation or capacitance
+identities fail. The study requires healthy C error <0.1%, maximum-field error
+<2%, phase C spread <0.1%, contour flux discrepancy <1%, and last-step void
+maximum-field change <3%. These are numerical tolerances. A conservative weak
+current balance does not imply exact pointwise flux continuity for P1 gradients.
+
+NKT's 0.24 µF/km is a maximum, not a measured nominal value to fit. The PDF
+uses external 8/4 kV/mm RMS screen-stress comparisons from Eskom's 44–132 kV
+specification and states that limitation. They are not NKT-specific limits.
+The linear gas model cannot establish discharge inception or withstand.
+
+## Custom cases and tool setup
 
 ```sh
 python3 run.py --case refined --mesh-scale 0.125
-python3 run.py --case ideal --ideal-screens
-python3 run.py --case freq100 --frequency 100
-python3 run.py --case thicker_xlpe --extra-xlpe-mm 1 --open
+python3 run.py --case void_custom --defect --open
+python3 run.py --case thicker_custom --extra-xlpe-mm 1 --open
 ```
 
-Use a new case name to retain a previous result. Reusing a name overwrites only that
-case's generated outputs. `--study` reruns the named study cases and validation summary.
+Custom settings belong to a single `--case` run. `--question` and `--study`
+choose their own settings so comparisons use consistent baselines.
 
-## Files and responsibility
+Requires Python 3, Gmsh and GetDP; no Python packages. Tool paths can be set with
+`--gmsh /path/to/gmsh`, `--getdp /path/to/getdp`, or `GMSH_BIN`/`GETDP_BIN`.
+Meshing/solving use a local temporary folder; completed files are copied back
+with replacement so cloud sync does not have to download old files to overwrite
+them. The runner also searches `/Applications/Gmsh.app` and the neighbouring ONELAB
+folder. Double-clicking `Run Section 2.command` solves/opens the healthy case.
+The tested real-arithmetic GetDP build supports complex phasors as a real block
+system. Logs are saved per case; large results are ignored by Git.
 
-| File | Purpose |
-|---|---|
-| `cable.geo` | Three annular cable domains and optional phase-A gas channel; physical region IDs |
-| `cable.pro` | Complex nodal potential formulation, ABC voltage constraints and Gmsh exports |
-| `settings.inc` | Shared case switches, mesh size and investigation parameters |
-| `parameters.inc` | Generated SI constants; never edit by hand |
-| `prepare.py` | Reads the shared Section 1 geometry and material JSON inputs |
-| `run.py` | Locates tools, runs mesher/solver, rejects logged errors, verifies and opens results |
-| `analyse.py` | Reads the actual GetDP solution, reconstructs P1 gradients and computes checks |
-| `study.py` | Mesh, simplification, defect, frequency and design comparisons; writes plots/report |
-| `../section_1/cable_inputs.json` | Established cable dimensions, voltage and installation |
-| `../shared/materials.json` | Explicit electrical properties and source provenance |
-| `../shared/Jacobian_Integration.pro` | The TA's original integration/Jacobian definitions, included unchanged |
+Open `results/<case>/view.geo` to reload maps without solving. Scalar magnitude
+views use the first exported time step. Potentials/vectors show their real part
+at phase-A voltage maximum. Norms are `sqrt(|Ex_hat|²+|Ey_hat|²)`; for the healthy
+radial field this is its instantaneous peak. RMS vector norms are divided by √2.
 
-The supplied `electrodynamic_formulation.pro` is preserved unchanged as a reference.
-`cable.pro` adapts its scalar-potential weak form. It replaces its example-specific cuts,
-undefined GUI helper and three-phase energy normalisation with cable-specific exports
-and per-phase verification. It corrects displacement units: D is C/m²; jωD is A/m².
+## Sources and AI assistance
 
-## Q2.1 — equation, excitations and domain
+The Section 2 PDF gives source references and applicability. Material inputs
+are inherited from Section 1: NKT datasheet, OES 2 screen data, Lee et al.
+[10.3390/en16010167](https://doi.org/10.3390/en16010167), Southampton cable
+parameters and COMSOL's XLPE conductivity example. Solver syntax follows the
+[GetDP manual](https://getdp.info/doc/texinfo/getdp.html) and geometry/views the
+[Gmsh manual](https://gmsh.info/doc/texinfo/gmsh.html).
 
-Use peak phasors with `x(t) = Re(x_hat exp(jωt))`, `ω=2πf`, initially f=50 Hz:
-
-`−div[(σ + jωε) grad(v)] = 0`, `E = −grad(v)`.
-
-For every test function w that vanishes on the electrode boundaries, the Galerkin
-weak form is `∫(σ+jωε) grad(v)·grad(w) dA = 0`. It is the supplied resistive term plus
-its `DtDof` displacement term. First-order nodal triangles are used, with the TA's
-quadrature. Gmsh's circular CAD boundaries become straight chords in the P1 mesh;
-geometry and solution approximation are refined together.
-
-The imposed phase-to-earth peak voltages are 26.944387 kV at angles 0°, −120°, +120°.
-Phase A is above B (lower left) and C (lower right). All copper screens are at zero
-potential. **The longitudinal 415 A load is not an input to this transverse electric
-problem**; it will be used in magnetoquasistatics and thermal analysis.
-
-For each phase the solved radial interval is 8.5–19.7511267 mm:
-
-| Region | Radius interval (mm) | εr | σ (S/m) |
-|---|---:|---:|---:|
-| Inner semiconductor | 8.5–9.3 | 2.25 | 0.002 |
-| XLPE | 9.3–17.3 | 2.5 | 1e−18 |
-| Outer semiconductor | 17.3–18.1 | 2.25 | 0.002 |
-| Equivalent contact bedding | 18.1–19.7511267 | 2.25 | 0.002 |
-
-The physical model includes the conductor, copper screen and PE jacket from Section 1,
-but their interiors are not meshed in this calculation. Ideal conductor voltage is
-imposed at r=8.5 mm and ideal grounded copper at its inner radius r=19.7511267 mm.
-These are **physical electrode boundaries**, not arbitrary distant truncations.
-
-## Assumptions and their limits (Q2.1–Q2.2)
-
-1. **Continuous equipotential copper screen.** The equal-area annulus of Section 1
-   replaces actual helical wires/tape. Inside the uniform cable section, it perfectly
-   shields the insulation from the neighbouring phases and environment. This does not
-   describe screen gaps, joints, terminations, induced longitudinal voltage or end effects.
-2. **Grounded exterior.** With all surrounding screen surfaces and remote earth at zero,
-   the exterior homogeneous problem has v=0 as its unique solution. Thus PE jackets,
-   bedding, soil and the ground surface contribute exactly zero field and energy under
-   this ideal-screen assumption. Omitting them introduces zero exterior truncation error
-   *within that model*. It is not evidence that the real wire screen is a perfect shield.
-   Soil geometry and boundary conditions must return in Sections 3 and 4.
-3. **Uniform 2D cross-section.** No helical lay, axial variation or end effects. The
-   three interior domains are electrically independent, although all are solved and
-   displayed in their actual trefoil positions. Finite conductor resistance is not used
-   to impose longitudinal voltage drop in this transverse calculation.
-4. **Finite semiconducting layers retained.** Conductivity 0.002 S/m and εr=2.25 are
-   constant reference values from Section 1, also applied to the equivalent contact
-   bedding. The optional `IdealScreens=1` solves only the 9.3–17.3 mm XLPE annuli,
-   imposing voltages directly on their interfaces. The study quantifies its effect,
-   including an exact multilayer comparison to separate physical and mesh differences.
-5. **Linear isotropic, temperature-independent materials.** XLPE εr=2.5 and σ=1e−18 S/m
-   come from the Section 1 references. No dielectric-loss tangent, dispersion, space charge,
-   ageing or ionisation. The very small predicted conductive loss is not a complete
-   estimate of real dielectric losses. No magnetically induced E is included in Section 2.
-6. **Nominal geometry.** The Section 1 effective copper/contact/PE construction is
-   retained. The continuous screen's metal area and jacket thickness do not affect
-   this ideal-electrode interior problem, but they matter to later magnetic/thermal work.
-   The unknown detailed tape/contact geometry remains an approximation.
-
-The controlled study variants are not silent changes to the NKT baseline:
-
-- **Void (Q2.5):** a circular gas channel of radius 0.25 mm, centred 10.3 mm from
-  the phase-A axis along +x. It lies fully inside XLPE, with 0.75 mm clearance to
-  the inner XLPE boundary. These are deliberately selected investigation parameters,
-  not an alleged NKT manufacturing defect. In 2D it extends infinitely along the
-  cable; it is not a spherical bubble. εr=1, σ=0 approximates dry gas before discharge.
-- **Thicker XLPE (Q2.8):** increase XLPE from 8 to 9 mm, keep the conductor and
-  semiconducting thicknesses, and shift the outer screen/contact/copper/PE interfaces
-  outwards by 1 mm. The copper thickness is retained in this hypothetical variant,
-  so its area would increase; it is not a new 50 mm² screen specification. Outside
-  diameter and touching-trefoil spacing increase by 2 mm. Manufacturing, ampacity
-  and cost are not evaluated, and the baseline 415 A rating is not transferred.
-
-## Verification and interpretation (Q2.3, Q2.6, Q2.7)
-
-`analyse.py` post-processes GetDP's nodal voltages; it does **not** solve a second model.
-It integrates the constant P1 field over every triangle, computes the element matrix
-reaction `K_e v_e`, and checks prescribed voltages and free-node residuals. Terminal
-current is the sum of reactions at the inner electrode; the grounded-electrode sum
-must be its negative. This is a discretely conservative current, unlike raw gradient
-fluxes across arbitrary element edges. Circular flux integrals provide an additional,
-independent check and expose gradient discretisation error.
-
-For each phase:
-
-- `Y = I_hat / V_hat`, `C = Im(Y)/ω` (F/m); multiply by 10⁹ for µF/km.
-- Independently, `C_energy = ∫ε|E_hat|² dA / |V_hat|²`, with no three-phase factor error.
-- Time-average stored electric energy is `W_avg = (1/4) ∫ε|E_hat|² dA`.
-- Time-average conductive loss is `(1/2) ∫σ|E_hat|² dA`.
-- Current densities are `J_c = σE_hat`, `J_d = jωεE_hat`, and `J_total = J_c+J_d`.
-
-Magnitudes mean `sqrt(|Ex_hat|²+|Ey_hat|²)`, equal to √2 times the time-RMS vector
-norm. For a linearly polarised sinusoidal field this is the instantaneous peak;
-for a general elliptically polarised complex vector it need not equal that peak.
-The healthy coaxial field is linearly polarised. All comparisons use the same norm.
-
-The coaxial check uses the **XLPE interfaces**, not the metal radii:
-`C = 2πε / ln(17.3/9.3)` and `E(r)=V_hat/[r ln(17.3/9.3)]`.
-For the full finite-screen model, add cylindrical layer impedances
-`Z_layer = ln(r_outer/r_inner)/(2π(σ+jωε))`, then `Y=1/ΣZ_layer`.
-
-The study rejects: logged tool errors, missing/wrong electrode potentials, current
-imbalance >1e−5, free-node residual >1e−6 of terminal current, mismatch between
-energy and terminal C >1e−6 relative, healthy C error >0.1%, healthy Emax error >2%,
-phase C spread >0.1%, fine-mesh contour error >1%, and last-step void E change >3%.
-These are numerical acceptance tolerances, **not industry insulation limits**.
-
-Mesh scale 1, 0.5 and 0.25 corresponds to a nominal bulk element size of 1, 0.5 and
-0.25 mm. The void boundary is refined to one twelfth of that size, grading back to
-the bulk mesh over 2 mm. Refine near the inner XLPE boundary (highest healthy field),
-material interfaces and void boundary. P1 boundary stresses are one-sided adjacent
-triangle values, not exact interface extrapolations. Prefer the converged analytical
-healthy boundary value when discussing the residual discretisation error.
-
-NKT lists a **maximum** capacitance of 0.24 µF/km. It is a consistency bound, not an
-exact measured target for parameter fitting. Constant material properties imply
-nearly frequency-independent capacitance in the studied range; the finite screen
-resistance gives a small frequency effect. This does not establish broadband accuracy.
-
-## Field limits and withstand (Q2.4–Q2.5)
-
-The selected NKT sheet provides no admissible local electric-field strengths.
-For an explicitly external design-screening comparison, use Eskom 240-56030625
-Rev. 3, §3.3(i), Annex B rows 3.29–3.30: **8 kV/mm at the conductor screen and
-4 kV/mm at the insulation/core screen at U0**. Compare to RMS stresses, or multiply
-both limits by √2 for peak stresses. This source applies to **44–132 kV XLPE cables**;
-using it for this 33 kV example is an engineering comparison assumption, not a
-manufacturer-specific acceptance rule or a universal breakdown strength.
-
-The healthy cable meets those adopted comparison limits. This is a field-stress
-screening result only. Neither the healthy nor defective FE calculation certifies
-withstand. In particular, the linear gas-void model cannot predict partial-discharge
-inception or breakdown. Do not compare gas stress to the XLPE limit or claim the
-void is safe merely because XLPE remains below a comparison limit.
-
-## Sources
-
-- NKT, *33 kV single core cable XLPE-AL*, printed pp. 19–20: local datasheet in the
-  repository root; geometry, rated voltage, construction and maximum capacitance.
-- KU Leuven, *NMES Assignment 2026*, Section 2 and Appendices A–B: local assignment;
-  equations, phasor conventions, analytical formula and requested investigations.
-- [GetDP reference manual](https://getdp.info/doc/texinfo/getdp.html): complex systems,
-  nodal formulation, post-processing and NodeTable. The TA's weak form is the starting point.
-- [Gmsh reference manual](https://gmsh.info/doc/texinfo/gmsh.html): geometry, physical
-  groups, meshing, MSH 2.2 and post-processing views.
-- [Lee et al., Energies 16, 167 (2023), Table 3](https://doi.org/10.3390/en16010167):
-  semiconducting PE εr and conductivity, as adopted in Section 1.
-- [Chippendale, *Parameters for extra large cables*, Tables 3–4](https://www.transmissionexcel.com/wp-content/uploads/2016/11/Parameters-for-extra-large-cables-FINAL.pdf):
-  XLPE εr, as adopted in Section 1.
-- [COMSOL, *Submarine Cable 8 — Inductive Effects 3D*](https://doc.comsol.com/6.4/doc/com.comsol.help.models.acdc.submarine_cable_08_inductive_effects_3d/submarine_cable_08_inductive_effects_3d.html):
-  the adopted ideal-insulator XLPE conductivity; its submarine geometry is not used.
-- [OES 2 Fourth Edition (2024), 33 kV screen specification](https://www.dcrp-oman.com/documents/DCRP%20Updates/OES2%204th%20Edition-Circular.pdf):
-  the 0.8 mm screen thickness design reference and resistivity limits from Section 1.
-- [Eskom 240-56030625 Rev. 3 (2022), XLPE cables for 44–132 kV](https://www.etenders.gov.za/home/Download/?blobName=b55b97a6-fb2e-492f-8eb0-01bc9574c555.pdf&downloadedFileName=240-56030625_Specificatin+for+HV+XLPE+cables+and+accessories.pdf):
-  explicitly adopted external screen-stress benchmarks; applicability limitation above.
-
-## AI assistance
-
-Codex assisted with the Gmsh/GetDP implementation, documentation, source lookup,
-verification routines, and the executed Section 2 study. All numerical results here
-come from the saved GetDP solutions. The student must review and be able to explain
-the equations, code and assumptions; automated numerical checks are not physical certification.
+Codex assisted with implementation, source lookup, the executed checks and the
+LaTeX report. The TA files are unchanged. Review the equations and code before
+submission; the assignment requires being able to explain the submitted work.

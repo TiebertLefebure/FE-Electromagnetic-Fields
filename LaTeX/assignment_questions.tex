@@ -1,4 +1,4 @@
-% Original question wording: NMES Assignment 2026, Sections 1 and 2.
+% Original question wording: NMES Assignment 2026, Sections 1--3.
 % Line-wrap hyphenation is removed; mathematical notation is typeset in LaTeX.
 \usepackage{tcolorbox}
 \newcommand{\assignmentquestion}[1]{%
@@ -61,3 +61,39 @@ Does the capacitance vary with frequency? Why (not)?}
 \newcommand{\QuestionTwoEight}{%
 Propose an improvement of the cable design with respect to the electric stress,
 and support it quantitatively.}
+\newcommand{\QuestionThreeOne}{%
+Define your computational domain, the equations solved and the boundary conditions.
+Where do you truncate the domain, and why? How do you impose the currents in the phase conductors?}
+\newcommand{\QuestionThreeTwo}{%
+\textbf{Conductor model.} Compare the skin depth in the conductor with its radius.
+Model the phase conductors (a) as stranded conductors (imposed uniform current density)
+and (b) as massive conductors (imposed net current, eddy currents allowed).
+Which assumption is more realistic for your cable, and how does it affect the results?}
+\newcommand{\QuestionThreeThree}{%
+\textbf{Bonding.} Implement the bonding assumed in Q1.3 with global quantities
+(net current and voltage per unit length in the sheaths, armour and pipe).
+Explain why using only \(\mathbf j=-\mathrm i\omega\sigma\mathbf a\)
+in these regions does not correspond to a well-defined bonding condition.}
+\newcommand{\QuestionThreeFour}{%
+Can you simplify the geometry without degrading the precision?
+Are the simplifications of Section 2 still valid here?}
+\newcommand{\QuestionThreeFive}{%
+Check the mesh quality and refine where needed (element size compared with the
+skin depth in each conducting region). How do losses, resistance and inductance
+vary with the mesh refinement?}
+\newcommand{\QuestionThreeSix}{%
+Get the magnetic flux density (or induction) in and around your cable.}
+\newcommand{\QuestionThreeSeven}{%
+Get the current density in the conducting parts of your cable.}
+\newcommand{\QuestionThreeEight}{%
+Get the time-averaged Joule losses (kW/km) in each conducting part
+(conductors, sheaths, armour, pipe, environment).}
+\newcommand{\QuestionThreeNine}{%
+Get the per-unit-length AC resistance (\(\Omega/\mathrm{km}\)), defined from
+the total losses. Compare it with the DC resistance and with the datasheet.
+Separate the contributions of skin/proximity effect and of sheath/armour losses.}
+\newcommand{\QuestionThreeTen}{%
+Get the per-unit-length inductance (mH/km). How do you define it for a
+three-phase system? Does it vary with frequency? Compare with the datasheet.}
+\newcommand{\QuestionThreeEleven}{%
+Propose a design change that reduces the losses, and support it quantitatively.}

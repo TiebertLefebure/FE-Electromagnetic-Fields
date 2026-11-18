@@ -1,7 +1,7 @@
 // Shared by Gmsh and GetDP. Parameters can be overridden with -setnumber.
 Include "parameters.inc";
 DefineConstant[
-  MeshScale = {1, Min 0.125, Max 4, Name "Model/Mesh size multiplier"},
+  MeshScale = {0.25, Min 0.125, Max 4, Name "Model/Mesh size multiplier"},
   IdealScreens = {0, Choices{0,1}, Name "Model/Ideal semiconductor screens"},
   Defect = {0, Choices{0,1}, Name "Model/Gas void in phase A"},
   ExtraXLPE = {0, Min 0, Max 0.004, Name "Model/Additional XLPE thickness [m]"},

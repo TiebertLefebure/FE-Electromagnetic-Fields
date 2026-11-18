@@ -1,85 +1,145 @@
-"""Export the verified Section 2 study to LaTeX tables; does not run FE solves."""
-from pathlib import Path
+"""Export a completed study to LaTeX. This script typesets results; it does not solve."""
 import csv
-import hashlib
 import json
 import math
+from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
-ROOT = HERE.parents[1]
-DEST = ROOT/'LaTeX/section_2'
+from prepare import HERE
+from run import input_hashes
+
+DEST = HERE.parents[1]/'LaTeX/section_2'
+
+
+def write_csv(name, header, rows):
+    with (DEST/name).open('w', newline='') as stream:
+        writer = csv.writer(stream, lineterminator='\n')
+        writer.writerow(header)
+        writer.writerows(rows)
+
+
+def source_line(filename, text):
+    """Keep the PDF's code references correct when comments or functions move."""
+    for number, line in enumerate((HERE/filename).read_text().splitlines(), 1):
+        if line.startswith(text):
+            return number
+    raise ValueError(f'Cannot find {text!r} in {filename}')
+
+
+def load_study():
+    summary = json.loads((HERE/'validation/summary.json').read_text())
+    hashes = input_hashes()
+    for name, case in summary['cases'].items():
+        saved = json.loads((HERE/'results'/name/'metrics.json').read_text())
+        if case['input_sha256'] != hashes or saved['input_sha256'] != hashes:
+            raise ValueError('Code/model inputs changed. Run python3 run.py --study first.')
+        if saved['options'] != case['options']:
+            raise ValueError(f'Case {name} was overwritten. Rerun --study.')
+    return summary
 
 
 def main():
-    summary = json.loads((HERE/'validation/summary.json').read_text())
+    summary = load_study()
     cases = summary['cases']
-    for key,case in cases.items():
-        saved = json.loads((HERE/'results'/key/'metrics.json').read_text())
-        if saved['options'] != case['options'] or saved['input_sha256'] != case['input_sha256']:
-            raise ValueError(f'Case {key} was overwritten; rerun run.py --study.')
-        for name, expected in case['input_sha256'].items():
-            actual = hashlib.sha256((HERE.parent/name).read_bytes()).hexdigest()
-            if actual != expected:
-                raise ValueError(f'FE inputs changed: {name}. Rerun run.py --study before building the report.')
-    h = cases['healthy']; a = h['phases']['A']
-    v = cases['void']['phases']['A']; t = cases['thicker_xlpe']['phases']['A']
-    i = cases['ideal']['phases']['A']
-    exact = json.loads((HERE/'validation/analytical_reference.json').read_text())
-    macros = {
-        'HealthyE': f'{a["max_xlpe_peak_kV_mm"]:.4f}',
-        'AnalyticalE': f'{h["analytical_inner_peak_kV_mm"]:.5f}',
-        'AnalyticalOuterE': f'{h["analytical_outer_peak_kV_mm"]:.5f}',
-        'HealthyC': f'{a["capacitance_uF_km"]:.8f}',
-        'AnalyticalC': f'{h["analytical_capacitance_uF_km"]:.8f}',
+    healthy = cases['healthy']
+    phase = healthy['phases']['A']
+    void = cases['void']['phases']['A']
+    thicker = cases['thicker_xlpe']['phases']['A']
+    DEST.mkdir(parents=True, exist_ok=True)
+
+    # Display only useful precision; calculations and JSON keep full precision.
+    values = {
+        'HealthyE': f'{phase["max_xlpe_peak_kV_mm"]:.4f}',
+        'AnalyticalE': f'{healthy["analytical_inner_peak_kV_mm"]:.5f}',
+        'AnalyticalOuterE': f'{healthy["analytical_outer_peak_kV_mm"]:.5f}',
+        'HealthyC': f'{phase["capacitance_uF_km"]:.8f}',
+        'AnalyticalC': f'{healthy["analytical_capacitance_uF_km"]:.8f}',
         'FieldError': f'{summary["checks"]["healthy_peak_field_relative_error"]*100:.3f}',
         'CapError': f'{summary["checks"]["capacitance_relative_error"]*100:.5f}',
-        'VoidE': f'{v["max_void_peak_kV_mm"]:.4f}',
-        'VoidXLPE': f'{v["max_xlpe_peak_kV_mm"]:.4f}',
+        'VoidE': f'{void["max_void_peak_kV_mm"]:.4f}',
+        'VoidXLPE': f'{void["max_xlpe_peak_kV_mm"]:.4f}',
         'VoidChange': f'{summary["checks"]["defect_peak_change_last_refinement"]*100:.3f}',
-        'VoidIncrease': f'{(v["max_xlpe_peak_kV_mm"]/a["max_xlpe_peak_kV_mm"]-1)*100:.2f}',
-        'VoidCapChange': f'{(v["capacitance_uF_km"]/a["capacitance_uF_km"]-1)*100:.4f}',
-        'ThickerE': f'{t["max_xlpe_peak_kV_mm"]:.4f}',
-        'ThickerC': f'{t["capacitance_uF_km"]:.8f}',
-        'FieldReduction': f'{(1-t["max_xlpe_peak_kV_mm"]/a["max_xlpe_peak_kV_mm"])*100:.2f}',
-        'CapReduction': f'{(1-t["capacitance_uF_km"]/a["capacitance_uF_km"])*100:.2f}',
-        'BelowMax': f'{(1-a["capacitance_uF_km"]/.24)*100:.2f}',
-        'DofReduction': f'{(1-cases["ideal"]["complex_dofs"]/h["complex_dofs"])*100:.2f}',
-        'ChargingPeak': f'{abs(complex(*a["terminal_current_peak_A_m"]))*1000:.5f}',
-        'ChargingRMS': f'{abs(complex(*a["terminal_current_peak_A_m"]))*1000/math.sqrt(2):.5f}',
-        'ContourError': f'{max(c["relative_difference"] for c in h["contour_flux_checks"])*100:.4f}',
-        'InnerRMS': f'{h["analytical_inner_peak_kV_mm"]/math.sqrt(2):.4f}',
-        'OuterRMS': f'{h["analytical_outer_peak_kV_mm"]/math.sqrt(2):.4f}',
-        'SCFullLoss': f'{a["loss_W_m"]:.5g}',
-        'IdealLoss': f'{i["loss_W_m"]:.5g}',
+        'VoidIncrease': f'{(void["max_xlpe_peak_kV_mm"]/phase["max_xlpe_peak_kV_mm"] - 1)*100:.2f}',
+        'VoidCapChange': f'{(1 - void["capacitance_uF_km"]/phase["capacitance_uF_km"])*100:.4f}',
+        'ThickerE': f'{thicker["max_xlpe_peak_kV_mm"]:.4f}',
+        'ThickerC': f'{thicker["capacitance_uF_km"]:.8f}',
+        'FieldReduction': f'{(1 - thicker["max_xlpe_peak_kV_mm"]/phase["max_xlpe_peak_kV_mm"])*100:.2f}',
+        'CapReduction': f'{(1 - thicker["capacitance_uF_km"]/phase["capacitance_uF_km"])*100:.2f}',
+        'BelowMax': f'{(1 - phase["capacitance_uF_km"]/0.24)*100:.2f}',
+        'DofReduction': f'{(1 - cases["ideal"]["complex_dofs"]/healthy["complex_dofs"])*100:.2f}',
+        'ChargingPeak': f'{abs(complex(*phase["terminal_current_peak_A_m"]))*1000:.5f}',
+        'ChargingRMS': f'{abs(complex(*phase["terminal_current_peak_A_m"]))*1000/math.sqrt(2):.5f}',
+        'ContourError': f'{max(c["relative_difference"] for c in healthy["contour_flux_checks"])*100:.4f}',
+        'InnerRMS': f'{healthy["analytical_inner_peak_kV_mm"]/math.sqrt(2):.4f}',
+        'OuterRMS': f'{healthy["analytical_outer_peak_kV_mm"]/math.sqrt(2):.4f}',
+        'InnerFERMS': f'{phase["inner_screen_peak_kV_mm"]/math.sqrt(2):.4f}',
+        'OuterFERMS': f'{phase["outer_screen_peak_kV_mm"]/math.sqrt(2):.4f}',
+        'ConservationResidual': f'{healthy["max_free_residual_relative"]:.2e}',
+        'TerminalImbalance': f'{phase["terminal_balance_relative"]:.2e}',
     }
-    DEST.mkdir(parents=True, exist_ok=True)
-    (DEST/'result_values.tex').write_text('% Generated from validation/summary.json.\n'+
-        '\n'.join('\\newcommand{\\%s}{%s}'%(key,value) for key,value in macros.items())+'\n')
-    def table(name, header, rows):
-        with (DEST/name).open('w') as f:
-            w=csv.writer(f);w.writerow(header);w.writerows(rows)
-    table('convergence.csv',['dof','triangles','h','cap','field','caperror'],[
-        [cases[k]['complex_dofs'],cases[k]['triangles'],cases[k]['options']['MeshScale'],
-         cases[k]['phases']['A']['capacitance_uF_km'],cases[k]['phases']['A']['max_xlpe_peak_kV_mm'],
-         (cases[k]['phases']['A']['capacitance_uF_km']/h['analytical_capacitance_uF_km']-1)*1e6]
-        for k in ['coarse','medium','healthy']])
-    for case in ['healthy','void','thicker_xlpe']:
-        rows=list(csv.DictReader((HERE/'results'/case/'radial_cut.csv').open()))
-        table(case+'_cut.csv',['radius','field'],[(r['radius_mm'],r['E_peak_kV_mm']) for r in rows])
-    table('frequency.csv',['frequency','cap'],[(cases[k]['options']['Freq'],cases[k]['phases']['A']['capacitance_uF_km'])
-          for k in ['freq_5','healthy','freq_500','freq_5000']])
-    rows=[]
-    with (HERE/'results/healthy/radial_cut.csv').open() as f: samples=list(csv.DictReader(f))
-    with (HERE/'results/void/radial_cut.csv').open() as f: voidsamples=list(csv.DictReader(f))
-    for data,target,label in [(samples,8.9,'Inner semiconductor'),(samples,13.3,'XLPE'),
-                               (samples,17.7,'Outer semiconductor'),(voidsamples,10.3,'Gas void (defect)')]:
-        r=min(data,key=lambda x:abs(float(x['radius_mm'])-target))
-        rows.append(label+' & '+f'{float(r["radius_mm"]):.3f}'+
-                    ' & '+r'\num{'+f'{float(r["J_cond_peak_A_m2"]):.3g}'+'} & '+r'\num{'+f'{float(r["J_disp_peak_A_m2"]):.3g}'+'}'+r' \\')
-    (DEST/'current_rows.tex').write_text('\\newcommand{\\CurrentRows}{%\n'+'\n'.join(rows)+'%\n}\n')
-    # Formula comparison is exported separately to avoid reporting rounded zeros.
-    (DEST/'analytical_checks.json').write_text(json.dumps(exact,indent=2)+'\n')
-    print('Exported Section 2 report data; all 10 FE input hashes match.')
+    anchors = {
+        'CodeRegions': ('cable.geo', 'For phase In'),
+        'CodeVoid': ('cable.geo', '  If (Defect &&'),
+        'CodeBC': ('cable.pro', 'Constraint {'),
+        'CodeWeak': ('cable.pro', 'Formulation {'),
+        'CodeCurrentMaps': ('cable.pro', 'PostProcessing {'),
+        'CodeTriangle': ('analyse.py', 'def triangle_field'),
+        'CodeIntegrals': ('analyse.py', 'def integrate_elements'),
+        'CodeTerminals': ('analyse.py', 'def check_terminals'),
+        'CodeCuts': ('analyse.py', 'def write_radial_cut'),
+        'CodeCases': ('study.py', 'CASES ='),
+        'CodeExact': ('study.py', 'def analytical_reference'),
+        'CodeSettings': ('settings.inc', 'R2 ='),
+    }
+    for name, (filename, text) in anchors.items():
+        values[name] = str(source_line(filename, text))
+    macros = '% Generated by export_report.py.\n'
+    for name, value in values.items():
+        macros += '\\newcommand{\\' + name + '}{' + value + '}\n'
+    (DEST/'result_values.tex').write_text(macros)
 
-if __name__=='__main__':
+    # Rows used by the PDF tables are generated from the same saved study.
+    tables = []
+    mesh_rows = []
+    for name in ['coarse', 'medium', 'healthy']:
+        case = cases[name]
+        a = case['phases']['A']
+        mesh_rows.append(f'{case["options"]["MeshScale"]:.2f} & {case["complex_dofs"]:,} & '
+                         f'{case["triangles"]:,} & {a["capacitance_uF_km"]:.8f} & '
+                         f'{a["max_xlpe_peak_kV_mm"]:.5f}' + r' \\')
+    tables.append('\\newcommand{\\MeshRows}{%\n' + '\n'.join(mesh_rows) + '%\n}\n')
+    frequency_rows = []
+    for name in ['freq_5', 'healthy', 'freq_500', 'freq_5000']:
+        case = cases[name]
+        frequency_rows.append(f'{case["options"]["Freq"]:g} & '
+                              f'{case["phases"]["A"]["capacitance_uF_km"]:.9f}' + r' \\')
+    tables.append('\\newcommand{\\FrequencyRows}{%\n' + '\n'.join(frequency_rows) + '%\n}\n')
+    (DEST/'result_tables.tex').write_text(''.join(tables))
+    rows = []
+    for name in ['coarse', 'medium', 'healthy']:
+        case = cases[name]
+        a = case['phases']['A']
+        rows.append([case['complex_dofs'], a['capacitance_uF_km'], a['max_xlpe_peak_kV_mm']])
+    write_csv('convergence.csv', ['dof', 'cap', 'field'], rows)
+    for name in ['healthy', 'void', 'thicker_xlpe']:
+        with (HERE/'results'/name/'radial_cut.csv').open() as stream:
+            rows = [(r['radius_mm'], r['E_peak_kV_mm']) for r in csv.DictReader(stream)]
+        write_csv(name + '_cut.csv', ['radius', 'field'], rows)
+    with (HERE/'results/healthy/radial_cut.csv').open() as stream:
+        healthy_samples = list(csv.DictReader(stream))
+    with (HERE/'results/void/radial_cut.csv').open() as stream:
+        void_samples = list(csv.DictReader(stream))
+    rows = []
+    for samples, radius, label in [(healthy_samples, 8.9, 'Inner semiconductor'),
+                                   (healthy_samples, 13.3, 'XLPE'),
+                                   (healthy_samples, 17.7, 'Outer semiconductor'),
+                                   (void_samples, 10.3, 'Gas channel')]:
+        closest = min(samples, key=lambda row: abs(float(row['radius_mm']) - radius))
+        rows.append(label + f' & {float(closest["radius_mm"]):.3f} & '+r'\num{'
+                    + f'{float(closest["J_cond_peak_A_m2"]):.3g}' + '} & '+r'\num{'
+                    + f'{float(closest["J_disp_peak_A_m2"]):.3g}' + '}' + r' \\')
+    (DEST/'current_rows.tex').write_text('\\newcommand{\\CurrentRows}{%\n' + '\n'.join(rows) + '%\n}\n')
+    print('Exported checked study results and current code-line references.')
+
+
+if __name__ == '__main__':
     main()

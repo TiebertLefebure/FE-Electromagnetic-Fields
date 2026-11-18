@@ -89,19 +89,22 @@
           "relative_difference": 0.006759568949043475
         }
       ],
-      "analytical_capacitance_uF_km": 0.22407447529896143,
+      "analytical_capacitance_uF_km": 0.22407447529896138,
       "analytical_inner_peak_kV_mm": 4.667766717263308,
       "analytical_outer_peak_kV_mm": 2.5092618769103328,
       "datasheet_max_capacitance_uF_km": 0.24,
       "getdp_reported_dofs": 7290,
       "input_sha256": {
-        "section_2/cable.geo": "80e119cbd85525fc9f37625a177291cdfb66e81a2a310ca664dc508be7dc53c7",
-        "section_2/cable.pro": "00d66823560a6441c09cf8ecb609f857e5e90dd46738a43632bb08c138d0e6a1",
-        "section_2/settings.inc": "50f132f67db8d1925dde68d710532f52b2a9ac58153d1ec0a4018208940e43b7",
+        "section_2/cable.geo": "f7cfd592456bacbe63bc11a6ad9e585b49bfb06647e661f5e92759d3014b853f",
+        "section_2/cable.pro": "58a4127af66f6ab6027bbd9585c502c88b9aabc4eff1c70f261664b480a5bae6",
+        "section_2/settings.inc": "a99e82c081fe98902c07523de5f2f33bcc46e267196ddfbc1e3fa05a7e6875da",
         "section_2/parameters.inc": "1d5dffefd4542dd7f80fc82c20bdacbdb70c9b9e1a204288ba882e624952445b",
-        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+        "section_2/prepare.py": "bf295d8112564333cf5d8c2e6731c16c58aabb66ca820c9ba8444e7c24017d87",
+        "section_2/analyse.py": "5ae5bc9295746b2527e3dd92b3a7bcae2a270a16ddcf527d2f6ce3844bc90112",
+        "section_2/run.py": "6f1602698ce46cc5409ada4e7b53d3e01aff91ce5ffd6d3af18c19b0aefef383",
         "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c",
-        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6"
+        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd"
       }
     },
     "medium": {
@@ -193,19 +196,22 @@
           "relative_difference": 0.007179493767479912
         }
       ],
-      "analytical_capacitance_uF_km": 0.22407447529896143,
+      "analytical_capacitance_uF_km": 0.22407447529896138,
       "analytical_inner_peak_kV_mm": 4.667766717263308,
       "analytical_outer_peak_kV_mm": 2.5092618769103328,
       "datasheet_max_capacitance_uF_km": 0.24,
       "getdp_reported_dofs": 28314,
       "input_sha256": {
-        "section_2/cable.geo": "80e119cbd85525fc9f37625a177291cdfb66e81a2a310ca664dc508be7dc53c7",
-        "section_2/cable.pro": "00d66823560a6441c09cf8ecb609f857e5e90dd46738a43632bb08c138d0e6a1",
-        "section_2/settings.inc": "50f132f67db8d1925dde68d710532f52b2a9ac58153d1ec0a4018208940e43b7",
+        "section_2/cable.geo": "f7cfd592456bacbe63bc11a6ad9e585b49bfb06647e661f5e92759d3014b853f",
+        "section_2/cable.pro": "58a4127af66f6ab6027bbd9585c502c88b9aabc4eff1c70f261664b480a5bae6",
+        "section_2/settings.inc": "a99e82c081fe98902c07523de5f2f33bcc46e267196ddfbc1e3fa05a7e6875da",
         "section_2/parameters.inc": "1d5dffefd4542dd7f80fc82c20bdacbdb70c9b9e1a204288ba882e624952445b",
-        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+        "section_2/prepare.py": "bf295d8112564333cf5d8c2e6731c16c58aabb66ca820c9ba8444e7c24017d87",
+        "section_2/analyse.py": "5ae5bc9295746b2527e3dd92b3a7bcae2a270a16ddcf527d2f6ce3844bc90112",
+        "section_2/run.py": "6f1602698ce46cc5409ada4e7b53d3e01aff91ce5ffd6d3af18c19b0aefef383",
         "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c",
-        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6"
+        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd"
       }
     },
     "healthy": {
@@ -297,19 +303,22 @@
           "relative_difference": 0.0009958224225920483
         }
       ],
-      "analytical_capacitance_uF_km": 0.22407447529896143,
+      "analytical_capacitance_uF_km": 0.22407447529896138,
       "analytical_inner_peak_kV_mm": 4.667766717263308,
       "analytical_outer_peak_kV_mm": 2.5092618769103328,
       "datasheet_max_capacitance_uF_km": 0.24,
       "getdp_reported_dofs": 112610,
       "input_sha256": {
-        "section_2/cable.geo": "80e119cbd85525fc9f37625a177291cdfb66e81a2a310ca664dc508be7dc53c7",
-        "section_2/cable.pro": "00d66823560a6441c09cf8ecb609f857e5e90dd46738a43632bb08c138d0e6a1",
-        "section_2/settings.inc": "50f132f67db8d1925dde68d710532f52b2a9ac58153d1ec0a4018208940e43b7",
+        "section_2/cable.geo": "f7cfd592456bacbe63bc11a6ad9e585b49bfb06647e661f5e92759d3014b853f",
+        "section_2/cable.pro": "58a4127af66f6ab6027bbd9585c502c88b9aabc4eff1c70f261664b480a5bae6",
+        "section_2/settings.inc": "a99e82c081fe98902c07523de5f2f33bcc46e267196ddfbc1e3fa05a7e6875da",
         "section_2/parameters.inc": "1d5dffefd4542dd7f80fc82c20bdacbdb70c9b9e1a204288ba882e624952445b",
-        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+        "section_2/prepare.py": "bf295d8112564333cf5d8c2e6731c16c58aabb66ca820c9ba8444e7c24017d87",
+        "section_2/analyse.py": "5ae5bc9295746b2527e3dd92b3a7bcae2a270a16ddcf527d2f6ce3844bc90112",
+        "section_2/run.py": "6f1602698ce46cc5409ada4e7b53d3e01aff91ce5ffd6d3af18c19b0aefef383",
         "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c",
-        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6"
+        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd"
       }
     },
     "ideal": {
@@ -401,19 +410,22 @@
           "relative_difference": 0.0009958224225520102
         }
       ],
-      "analytical_capacitance_uF_km": 0.22407447529896143,
+      "analytical_capacitance_uF_km": 0.22407447529896138,
       "analytical_inner_peak_kV_mm": 4.667766717263308,
       "analytical_outer_peak_kV_mm": 2.5092618769103328,
       "datasheet_max_capacitance_uF_km": 0.24,
       "getdp_reported_dofs": 73522,
       "input_sha256": {
-        "section_2/cable.geo": "80e119cbd85525fc9f37625a177291cdfb66e81a2a310ca664dc508be7dc53c7",
-        "section_2/cable.pro": "00d66823560a6441c09cf8ecb609f857e5e90dd46738a43632bb08c138d0e6a1",
-        "section_2/settings.inc": "50f132f67db8d1925dde68d710532f52b2a9ac58153d1ec0a4018208940e43b7",
+        "section_2/cable.geo": "f7cfd592456bacbe63bc11a6ad9e585b49bfb06647e661f5e92759d3014b853f",
+        "section_2/cable.pro": "58a4127af66f6ab6027bbd9585c502c88b9aabc4eff1c70f261664b480a5bae6",
+        "section_2/settings.inc": "a99e82c081fe98902c07523de5f2f33bcc46e267196ddfbc1e3fa05a7e6875da",
         "section_2/parameters.inc": "1d5dffefd4542dd7f80fc82c20bdacbdb70c9b9e1a204288ba882e624952445b",
-        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+        "section_2/prepare.py": "bf295d8112564333cf5d8c2e6731c16c58aabb66ca820c9ba8444e7c24017d87",
+        "section_2/analyse.py": "5ae5bc9295746b2527e3dd92b3a7bcae2a270a16ddcf527d2f6ce3844bc90112",
+        "section_2/run.py": "6f1602698ce46cc5409ada4e7b53d3e01aff91ce5ffd6d3af18c19b0aefef383",
         "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c",
-        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6"
+        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd"
       }
     },
     "void_coarse": {
@@ -505,19 +517,22 @@
           "relative_difference": 0.007507267312095173
         }
       ],
-      "analytical_capacitance_uF_km": 0.22407447529896143,
+      "analytical_capacitance_uF_km": 0.22407447529896138,
       "analytical_inner_peak_kV_mm": 4.667766717263308,
       "analytical_outer_peak_kV_mm": 2.5092618769103328,
       "datasheet_max_capacitance_uF_km": 0.24,
       "getdp_reported_dofs": 30672,
       "input_sha256": {
-        "section_2/cable.geo": "80e119cbd85525fc9f37625a177291cdfb66e81a2a310ca664dc508be7dc53c7",
-        "section_2/cable.pro": "00d66823560a6441c09cf8ecb609f857e5e90dd46738a43632bb08c138d0e6a1",
-        "section_2/settings.inc": "50f132f67db8d1925dde68d710532f52b2a9ac58153d1ec0a4018208940e43b7",
+        "section_2/cable.geo": "f7cfd592456bacbe63bc11a6ad9e585b49bfb06647e661f5e92759d3014b853f",
+        "section_2/cable.pro": "58a4127af66f6ab6027bbd9585c502c88b9aabc4eff1c70f261664b480a5bae6",
+        "section_2/settings.inc": "a99e82c081fe98902c07523de5f2f33bcc46e267196ddfbc1e3fa05a7e6875da",
         "section_2/parameters.inc": "1d5dffefd4542dd7f80fc82c20bdacbdb70c9b9e1a204288ba882e624952445b",
-        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+        "section_2/prepare.py": "bf295d8112564333cf5d8c2e6731c16c58aabb66ca820c9ba8444e7c24017d87",
+        "section_2/analyse.py": "5ae5bc9295746b2527e3dd92b3a7bcae2a270a16ddcf527d2f6ce3844bc90112",
+        "section_2/run.py": "6f1602698ce46cc5409ada4e7b53d3e01aff91ce5ffd6d3af18c19b0aefef383",
         "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c",
-        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6"
+        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd"
       }
     },
     "void": {
@@ -609,19 +624,22 @@
           "relative_difference": 0.0009141450335731882
         }
       ],
-      "analytical_capacitance_uF_km": 0.22407447529896143,
+      "analytical_capacitance_uF_km": 0.22407447529896138,
       "analytical_inner_peak_kV_mm": 4.667766717263308,
       "analytical_outer_peak_kV_mm": 2.5092618769103328,
       "datasheet_max_capacitance_uF_km": 0.24,
       "getdp_reported_dofs": 122212,
       "input_sha256": {
-        "section_2/cable.geo": "80e119cbd85525fc9f37625a177291cdfb66e81a2a310ca664dc508be7dc53c7",
-        "section_2/cable.pro": "00d66823560a6441c09cf8ecb609f857e5e90dd46738a43632bb08c138d0e6a1",
-        "section_2/settings.inc": "50f132f67db8d1925dde68d710532f52b2a9ac58153d1ec0a4018208940e43b7",
+        "section_2/cable.geo": "f7cfd592456bacbe63bc11a6ad9e585b49bfb06647e661f5e92759d3014b853f",
+        "section_2/cable.pro": "58a4127af66f6ab6027bbd9585c502c88b9aabc4eff1c70f261664b480a5bae6",
+        "section_2/settings.inc": "a99e82c081fe98902c07523de5f2f33bcc46e267196ddfbc1e3fa05a7e6875da",
         "section_2/parameters.inc": "1d5dffefd4542dd7f80fc82c20bdacbdb70c9b9e1a204288ba882e624952445b",
-        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+        "section_2/prepare.py": "bf295d8112564333cf5d8c2e6731c16c58aabb66ca820c9ba8444e7c24017d87",
+        "section_2/analyse.py": "5ae5bc9295746b2527e3dd92b3a7bcae2a270a16ddcf527d2f6ce3844bc90112",
+        "section_2/run.py": "6f1602698ce46cc5409ada4e7b53d3e01aff91ce5ffd6d3af18c19b0aefef383",
         "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c",
-        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6"
+        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd"
       }
     },
     "thicker_xlpe": {
@@ -713,19 +731,22 @@
           "relative_difference": 0.0009489224782807105
         }
       ],
-      "analytical_capacitance_uF_km": 0.20547200176032004,
+      "analytical_capacitance_uF_km": 0.20547200176032002,
       "analytical_inner_peak_kV_mm": 4.280252669861925,
       "analytical_outer_peak_kV_mm": 2.175210373208519,
       "datasheet_max_capacitance_uF_km": 0.24,
       "getdp_reported_dofs": 126902,
       "input_sha256": {
-        "section_2/cable.geo": "80e119cbd85525fc9f37625a177291cdfb66e81a2a310ca664dc508be7dc53c7",
-        "section_2/cable.pro": "00d66823560a6441c09cf8ecb609f857e5e90dd46738a43632bb08c138d0e6a1",
-        "section_2/settings.inc": "50f132f67db8d1925dde68d710532f52b2a9ac58153d1ec0a4018208940e43b7",
+        "section_2/cable.geo": "f7cfd592456bacbe63bc11a6ad9e585b49bfb06647e661f5e92759d3014b853f",
+        "section_2/cable.pro": "58a4127af66f6ab6027bbd9585c502c88b9aabc4eff1c70f261664b480a5bae6",
+        "section_2/settings.inc": "a99e82c081fe98902c07523de5f2f33bcc46e267196ddfbc1e3fa05a7e6875da",
         "section_2/parameters.inc": "1d5dffefd4542dd7f80fc82c20bdacbdb70c9b9e1a204288ba882e624952445b",
-        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+        "section_2/prepare.py": "bf295d8112564333cf5d8c2e6731c16c58aabb66ca820c9ba8444e7c24017d87",
+        "section_2/analyse.py": "5ae5bc9295746b2527e3dd92b3a7bcae2a270a16ddcf527d2f6ce3844bc90112",
+        "section_2/run.py": "6f1602698ce46cc5409ada4e7b53d3e01aff91ce5ffd6d3af18c19b0aefef383",
         "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c",
-        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6"
+        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd"
       }
     },
     "freq_5": {
@@ -817,19 +838,22 @@
           "relative_difference": 0.000995822422588662
         }
       ],
-      "analytical_capacitance_uF_km": 0.22407447529896143,
+      "analytical_capacitance_uF_km": 0.22407447529896138,
       "analytical_inner_peak_kV_mm": 4.667766717263308,
       "analytical_outer_peak_kV_mm": 2.5092618769103328,
       "datasheet_max_capacitance_uF_km": 0.24,
       "getdp_reported_dofs": 112610,
       "input_sha256": {
-        "section_2/cable.geo": "80e119cbd85525fc9f37625a177291cdfb66e81a2a310ca664dc508be7dc53c7",
-        "section_2/cable.pro": "00d66823560a6441c09cf8ecb609f857e5e90dd46738a43632bb08c138d0e6a1",
-        "section_2/settings.inc": "50f132f67db8d1925dde68d710532f52b2a9ac58153d1ec0a4018208940e43b7",
+        "section_2/cable.geo": "f7cfd592456bacbe63bc11a6ad9e585b49bfb06647e661f5e92759d3014b853f",
+        "section_2/cable.pro": "58a4127af66f6ab6027bbd9585c502c88b9aabc4eff1c70f261664b480a5bae6",
+        "section_2/settings.inc": "a99e82c081fe98902c07523de5f2f33bcc46e267196ddfbc1e3fa05a7e6875da",
         "section_2/parameters.inc": "1d5dffefd4542dd7f80fc82c20bdacbdb70c9b9e1a204288ba882e624952445b",
-        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+        "section_2/prepare.py": "bf295d8112564333cf5d8c2e6731c16c58aabb66ca820c9ba8444e7c24017d87",
+        "section_2/analyse.py": "5ae5bc9295746b2527e3dd92b3a7bcae2a270a16ddcf527d2f6ce3844bc90112",
+        "section_2/run.py": "6f1602698ce46cc5409ada4e7b53d3e01aff91ce5ffd6d3af18c19b0aefef383",
         "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c",
-        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6"
+        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd"
       }
     },
     "freq_500": {
@@ -921,19 +945,22 @@
           "relative_difference": 0.0009958224225808366
         }
       ],
-      "analytical_capacitance_uF_km": 0.22407447529896143,
+      "analytical_capacitance_uF_km": 0.22407447529896138,
       "analytical_inner_peak_kV_mm": 4.667766717263308,
       "analytical_outer_peak_kV_mm": 2.5092618769103328,
       "datasheet_max_capacitance_uF_km": 0.24,
       "getdp_reported_dofs": 112610,
       "input_sha256": {
-        "section_2/cable.geo": "80e119cbd85525fc9f37625a177291cdfb66e81a2a310ca664dc508be7dc53c7",
-        "section_2/cable.pro": "00d66823560a6441c09cf8ecb609f857e5e90dd46738a43632bb08c138d0e6a1",
-        "section_2/settings.inc": "50f132f67db8d1925dde68d710532f52b2a9ac58153d1ec0a4018208940e43b7",
+        "section_2/cable.geo": "f7cfd592456bacbe63bc11a6ad9e585b49bfb06647e661f5e92759d3014b853f",
+        "section_2/cable.pro": "58a4127af66f6ab6027bbd9585c502c88b9aabc4eff1c70f261664b480a5bae6",
+        "section_2/settings.inc": "a99e82c081fe98902c07523de5f2f33bcc46e267196ddfbc1e3fa05a7e6875da",
         "section_2/parameters.inc": "1d5dffefd4542dd7f80fc82c20bdacbdb70c9b9e1a204288ba882e624952445b",
-        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+        "section_2/prepare.py": "bf295d8112564333cf5d8c2e6731c16c58aabb66ca820c9ba8444e7c24017d87",
+        "section_2/analyse.py": "5ae5bc9295746b2527e3dd92b3a7bcae2a270a16ddcf527d2f6ce3844bc90112",
+        "section_2/run.py": "6f1602698ce46cc5409ada4e7b53d3e01aff91ce5ffd6d3af18c19b0aefef383",
         "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c",
-        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6"
+        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd"
       }
     },
     "freq_5000": {
@@ -1025,24 +1052,27 @@
           "relative_difference": 0.0009958224222213932
         }
       ],
-      "analytical_capacitance_uF_km": 0.22407447529896143,
+      "analytical_capacitance_uF_km": 0.22407447529896138,
       "analytical_inner_peak_kV_mm": 4.667766717263308,
       "analytical_outer_peak_kV_mm": 2.5092618769103328,
       "datasheet_max_capacitance_uF_km": 0.24,
       "getdp_reported_dofs": 112610,
       "input_sha256": {
-        "section_2/cable.geo": "80e119cbd85525fc9f37625a177291cdfb66e81a2a310ca664dc508be7dc53c7",
-        "section_2/cable.pro": "00d66823560a6441c09cf8ecb609f857e5e90dd46738a43632bb08c138d0e6a1",
-        "section_2/settings.inc": "50f132f67db8d1925dde68d710532f52b2a9ac58153d1ec0a4018208940e43b7",
+        "section_2/cable.geo": "f7cfd592456bacbe63bc11a6ad9e585b49bfb06647e661f5e92759d3014b853f",
+        "section_2/cable.pro": "58a4127af66f6ab6027bbd9585c502c88b9aabc4eff1c70f261664b480a5bae6",
+        "section_2/settings.inc": "a99e82c081fe98902c07523de5f2f33bcc46e267196ddfbc1e3fa05a7e6875da",
         "section_2/parameters.inc": "1d5dffefd4542dd7f80fc82c20bdacbdb70c9b9e1a204288ba882e624952445b",
-        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+        "section_2/prepare.py": "bf295d8112564333cf5d8c2e6731c16c58aabb66ca820c9ba8444e7c24017d87",
+        "section_2/analyse.py": "5ae5bc9295746b2527e3dd92b3a7bcae2a270a16ddcf527d2f6ce3844bc90112",
+        "section_2/run.py": "6f1602698ce46cc5409ada4e7b53d3e01aff91ce5ffd6d3af18c19b0aefef383",
         "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c",
-        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6"
+        "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+        "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd"
       }
     }
   },
   "checks": {
-    "capacitance_relative_error": 8.077347477541963e-07,
+    "capacitance_relative_error": 8.077347479762409e-07,
     "healthy_peak_field_relative_error": 0.003517303874501998,
     "phase_capacitance_relative_spread": 1.8613906505038358e-07,
     "defect_peak_change_last_refinement": 0.0021231625124693565

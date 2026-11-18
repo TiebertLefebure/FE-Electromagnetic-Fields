@@ -1,0 +1,4348 @@
+{
+  "coarse": {
+    "options": {
+      "MeshScale": 2,
+      "OuterRadius": 0.5,
+      "Stranded": 0,
+      "SinglePoint": 0,
+      "Detailed": 1,
+      "Screens": 1,
+      "Freq": 50
+    },
+    "complex_dofs": 3138,
+    "triangles": 6286,
+    "regions": {
+      "100": {
+        "area_m2": 0.00022439611210388555,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          586.8986283871818,
+          1.4210854715202004e-13
+        ],
+        "voltage_drop_peak_V_m": [
+          0.08018754846763616,
+          0.06947539237384925
+        ],
+        "loss_W_m": 21.951070074937952,
+        "max_J_peak_A_mm2": 2.868984692227987
+      },
+      "101": {
+        "area_m2": 4.4226998427118745e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          2.8353554199815695e-25,
+          4.03250548619601e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005598529114468486,
+          0.05870276063451456
+        ],
+        "loss_W_m": 1.6123009451591796e-12,
+        "max_J_peak_A_mm2": 1.7285332682592414e-11
+      },
+      "103": {
+        "area_m2": 8.871604232812454e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.0985992510469899e-25,
+          -2.0614891828469987e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005600805596285402,
+          0.0333286031664326
+        ],
+        "loss_W_m": 1.3460339241282174e-11,
+        "max_J_peak_A_mm2": 3.454703247658202e-11
+      },
+      "104": {
+        "area_m2": 0.00019858561554712356,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -9.53196408996653e-25,
+          -9.137760829296728e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005599540049610457,
+          0.03084508375940997
+        ],
+        "loss_W_m": 3.507114820964054e-11,
+        "max_J_peak_A_mm2": 4.0077517092525057e-11
+      },
+      "105": {
+        "area_m2": 4.997179945620851e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -16.570652158467418,
+          -85.8719282577286
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5791527556447456,
+        "max_J_peak_A_mm2": 2.4714684078803444
+      },
+      "200": {
+        "area_m2": 0.00022439611210388544,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.44931419359096,
+          -508.2691216295426
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02007004969423506,
+          -0.1041702926661851
+        ],
+        "loss_W_m": 21.95106110278684,
+        "max_J_peak_A_mm2": 2.868909610863238
+      },
+      "201": {
+        "area_m2": 4.4226998427118854e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          5.210268506803739e-25,
+          -8.958430657434645e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          0.04803412550143429,
+          -0.03418783148174713
+        ],
+        "loss_W_m": 1.6128805445622443e-12,
+        "max_J_peak_A_mm2": 1.7272792562815455e-11
+      },
+      "203": {
+        "area_m2": 8.871604232812451e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -2.455692443516801e-25,
+          1.0565939855657814e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02605943030928594,
+          -0.0215023933427942
+        ],
+        "loss_W_m": 1.3448916137191172e-11,
+        "max_J_peak_A_mm2": 3.454493809380438e-11
+      },
+      "204": {
+        "area_m2": 0.00019858561554712335,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          3.993731394982587e-24,
+          -1.3409373211308847e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.0239087618349512,
+          -0.02025978629492469
+        ],
+        "loss_W_m": 3.5051926589700404e-11,
+        "max_J_peak_A_mm2": 4.007382937933712e-11
+      },
+      "205": {
+        "area_m2": 4.9971799456208576e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -66.0695652494745,
+          57.25098472590452
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5780339248309447,
+        "max_J_peak_A_mm2": 2.4703165224710752
+      },
+      "300": {
+        "area_m2": 0.0002243961121038855,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.4493141935909,
+          508.2691216295425
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.1002592628322232,
+          0.03470339935799507
+        ],
+        "loss_W_m": 21.951136968152415,
+        "max_J_peak_A_mm2": 2.868896861995248
+      },
+      "301": {
+        "area_m2": 4.422699842711877e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          2.338562376309585e-24,
+          8.328351675216519e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.05363714238657378,
+          -0.02450462980145922
+        ],
+        "loss_W_m": 1.6138278694936022e-12,
+        "max_J_peak_A_mm2": 1.7261978036292932e-11
+      },
+      "303": {
+        "area_m2": 8.87160423281247e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          8.174870897496719e-25,
+          1.093752489645312e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.03165972933284637,
+          -0.01181537565267899
+        ],
+        "loss_W_m": 1.3459946577031121e-11,
+        "max_J_peak_A_mm2": 3.455783241719375e-11
+      },
+      "304": {
+        "area_m2": 0.00019858561554712318,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -1.6155871338926322e-26,
+          -1.822382287030889e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0295079206480496,
+          -0.01057507061314201
+        ],
+        "loss_W_m": 3.5076113043642264e-11,
+        "max_J_peak_A_mm2": 4.008885408998859e-11
+      },
+      "305": {
+        "area_m2": 4.997179945620881e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          82.63868972719168,
+          28.592189812288687
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5788656996803367,
+        "max_J_peak_A_mm2": 2.4709142602899368
+      },
+      "900": {
+        "area_m2": 0.7765528062112025,
+        "conductivity_S_m": 0.01,
+        "current_peak_A": [
+          -7.3207795314481205e-09,
+          2.642462118562391e-09
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.103334706071802e-07,
+        "max_J_peak_A_mm2": 3.7993460613505966e-10
+      }
+    },
+    "mesh": {
+      "aluminium": {
+        "skin_depth_mm": 11.989028650389823,
+        "max_edge_mm": 2.6216281078697836,
+        "max_edge_over_skin": 0.2186689334322795
+      },
+      "copper": {
+        "skin_depth_mm": 9.227342618559465,
+        "max_edge_mm": 1.2270924492161057,
+        "max_edge_over_skin": 0.13298438130475254
+      },
+      "soil": {
+        "skin_depth_mm": 711762.543417177,
+        "max_edge_mm": 103.27995880332098,
+        "max_edge_over_skin": 0.00014510451520456972
+      }
+    },
+    "min_quality": 0.2131243943686641,
+    "conducting_min_quality": 0.5259938520298775,
+    "loss_conductors_W_m": 65.85326814587721,
+    "loss_screens_W_m": 4.736052380156027,
+    "loss_soil_W_m": 1.103334706071802e-07,
+    "loss_semiconductors_W_m": 1.504073991577027e-10,
+    "loss_total_W_m": 70.58932063651712,
+    "resistance_ohm_km": 0.13662228796925943,
+    "inductance_mH_km": 0.3767897552950295,
+    "energy_time_average_J_m": 0.09733892340852969,
+    "complex_input_power_VA_m": [
+      70.58932063623483,
+      61.159849337470746
+    ],
+    "power_balance_relative": 3.998967769024566e-12,
+    "reactive_balance_relative": 3.998381137090146e-12,
+    "phase_current_relative_error": 3.999994688038614e-12,
+    "max_B_phasor_mT": 16.053722213101153,
+    "phase_R_ohm_km": [
+      0.1366292994896156,
+      0.13661489573099578,
+      0.1366226686855278
+    ],
+    "phase_L_mH_km": [
+      0.37680620075658705,
+      0.3767569916886125,
+      0.3768060734353691
+    ],
+    "zero_net_current_relative_error": 1.5654052910630677e-26,
+    "getdp_real_dofs": 6276,
+    "input_sha256": {
+      "section_3/model.geo": "a3e07d28520a3b897e7bf4e6c6cb2e7d4f43ea9871fc73477ee1e6167016ea08",
+      "section_3/model.pro": "82e1d09711f77d516023ea6d2abae5b5a5fa5f1639b012c359b17d6d4e7e3426",
+      "section_3/settings.inc": "188adf8fc76eb90206932a30cbbcde474e0a6550d9add5cf41fac4e8dda69a86",
+      "section_3/parameters.inc": "cf185016cbaf1f95cca5cb1c6706dcd5d430ed81a5e6404a1ed1cf9a62d752ee",
+      "section_3/analyse.py": "2c65d2a7eeb4b80fc1ad9ddd550ec86defed867092f2098385c4eaafdb52d5ad",
+      "section_3/run.py": "af0fae623c79444134c05c1726ad5497ceb9d012dff4e44bb5c259587209d0e5",
+      "section_3/prepare.py": "a08cbb43806d45245c460ac53a02a4ae068e05ee9934cc46684eaad24b52708b",
+      "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+      "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+      "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c"
+    }
+  },
+  "medium": {
+    "options": {
+      "MeshScale": 1,
+      "OuterRadius": 0.5,
+      "Stranded": 0,
+      "SinglePoint": 0,
+      "Detailed": 1,
+      "Screens": 1,
+      "Freq": 50
+    },
+    "complex_dofs": 9624,
+    "triangles": 19282,
+    "regions": {
+      "100": {
+        "area_m2": 0.00022582945505584303,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          586.8986283871818,
+          3.0819791163594346e-13
+        ],
+        "voltage_drop_peak_V_m": [
+          0.0797616097798651,
+          0.06962796911868543
+        ],
+        "loss_W_m": 21.814731214910466,
+        "max_J_peak_A_mm2": 2.8552730750215125
+      },
+      "101": {
+        "area_m2": 4.5111593706851316e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          4.3943970041879595e-25,
+          -3.774011544773189e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005643052536709338,
+          0.05878611031642705
+        ],
+        "loss_W_m": 1.6705446379815275e-12,
+        "max_J_peak_A_mm2": 1.7461051481441728e-11
+      },
+      "103": {
+        "area_m2": 8.888696251543643e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          6.018062073750055e-25,
+          -5.111717691636288e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005643055930498676,
+          0.03340639042318903
+        ],
+        "loss_W_m": 1.3614601150746447e-11,
+        "max_J_peak_A_mm2": 3.468782981870021e-11
+      },
+      "104": {
+        "area_m2": 0.00019712678403169953,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          5.089099471761791e-25,
+          7.884065213396045e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005643058551090519,
+          0.03092424738541109
+        ],
+        "loss_W_m": 3.510794277200351e-11,
+        "max_J_peak_A_mm2": 4.0203459316082444e-11
+      },
+      "105": {
+        "area_m2": 4.999294896916048e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -16.71701156786008,
+          -86.20917019462718
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5916040832890728,
+        "max_J_peak_A_mm2": 2.4821457865995784
+      },
+      "200": {
+        "area_m2": 0.00022582945505584298,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.44931419359096,
+          -508.2691216295423
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02041973278651057,
+          -0.1038930428021838
+        ],
+        "loss_W_m": 21.81462922495117,
+        "max_J_peak_A_mm2": 2.855256966343789
+      },
+      "201": {
+        "area_m2": 4.511159370685142e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          8.271806125530277e-25,
+          -1.075981031172493e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.0480895606948686,
+          -0.03428366973962992
+        ],
+        "loss_W_m": 1.670600364446642e-12,
+        "max_J_peak_A_mm2": 1.7454329019408536e-11
+      },
+      "203": {
+        "area_m2": 8.888696251543627e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          5.16180089278696e-24,
+          -3.1374702140194917e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02611022421636825,
+          -0.02159385036626052
+        ],
+        "loss_W_m": 1.3615911583819642e-11,
+        "max_J_peak_A_mm2": 3.469002037195241e-11
+      },
+      "204": {
+        "area_m2": 0.00019712678403169923,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -3.618915179919496e-24,
+          2.0679515313825692e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02396075545761083,
+          -0.02035282082233045
+        ],
+        "loss_W_m": 3.5111280019192714e-11,
+        "max_J_peak_A_mm2": 4.0204544062159915e-11
+      },
+      "205": {
+        "area_m2": 4.9992948969160683e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -66.30375012153573,
+          57.59274089070512
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5919073560325114,
+        "max_J_peak_A_mm2": 2.482520308985545
+      },
+      "300": {
+        "area_m2": 0.00022582945505584303,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.4493141935906,
+          508.2691216295426
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.1001831594678695,
+          0.03426235580716373
+        ],
+        "loss_W_m": 21.814644497223583,
+        "max_J_peak_A_mm2": 2.8552245274162615
+      },
+      "301": {
+        "area_m2": 4.5111593706851364e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -5.089099471761791e-25,
+          4.265150033476549e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.05373448508441202,
+          -0.02450518591676712
+        ],
+        "loss_W_m": 1.6701009032362565e-12,
+        "max_J_peak_A_mm2": 1.743513638588516e-11
+      },
+      "303": {
+        "area_m2": 8.888696251543635e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -6.602904616219188e-24,
+          -2.2521284646463293e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.03175513051928175,
+          -0.01181536576136886
+        ],
+        "loss_W_m": 1.3613517437223071e-11,
+        "max_J_peak_A_mm2": 3.468608542257849e-11
+      },
+      "304": {
+        "area_m2": 0.0001971267840316993,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.9387045606711586e-24,
+          7.237830359838992e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.02960563804034535,
+          -0.01057435236249761
+        ],
+        "loss_W_m": 3.510516844538016e-11,
+        "max_J_peak_A_mm2": 4.0200896176476335e-11
+      },
+      "305": {
+        "area_m2": 4.999294896916067e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          83.02625738245193,
+          28.62487431178532
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5917961797224418,
+        "max_J_peak_A_mm2": 2.482240006874862
+      },
+      "900": {
+        "area_m2": 0.7790890446890077,
+        "conductivity_S_m": 0.01,
+        "current_peak_A": [
+          2.0753246757413996e-09,
+          -8.923111048395001e-10
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.1106169139017115e-07,
+        "max_J_peak_A_mm2": 3.815888873975071e-10
+      }
+    },
+    "mesh": {
+      "aluminium": {
+        "skin_depth_mm": 11.989028650389823,
+        "max_edge_mm": 1.9924435245044352,
+        "max_edge_over_skin": 0.1661889034221009
+      },
+      "copper": {
+        "skin_depth_mm": 9.227342618559465,
+        "max_edge_mm": 0.5861190840632143,
+        "max_edge_over_skin": 0.06351981369850954
+      },
+      "soil": {
+        "skin_depth_mm": 711762.543417177,
+        "max_edge_mm": 58.896152350685746,
+        "max_edge_over_skin": 8.274691172694322e-05
+      }
+    },
+    "min_quality": 0.11160272810536762,
+    "conducting_min_quality": 0.570970402469507,
+    "loss_conductors_W_m": 65.44400493708523,
+    "loss_screens_W_m": 4.7753076190440265,
+    "loss_soil_W_m": 1.1106169139017115e-07,
+    "loss_semiconductors_W_m": 1.5117966731402998e-10,
+    "loss_total_W_m": 70.21931266734211,
+    "resistance_ohm_km": 0.1359061550633224,
+    "inductance_mH_km": 0.37764198347967876,
+    "energy_time_average_J_m": 0.09755908590718151,
+    "complex_input_power_VA_m": [
+      70.21931266706136,
+      61.29818151514225
+    ],
+    "power_balance_relative": 3.998182766093964e-12,
+    "reactive_balance_relative": 3.99932671135457e-12,
+    "phase_current_relative_error": 3.999616949697503e-12,
+    "max_B_phasor_mT": 16.43535137155848,
+    "phase_R_ohm_km": [
+      0.13590355458722372,
+      0.13590787930347298,
+      0.13590703129764029
+    ],
+    "phase_L_mH_km": [
+      0.377633714809853,
+      0.37764759711262663,
+      0.37764463851202545
+    ],
+    "zero_net_current_relative_error": 1.346139285028251e-26,
+    "getdp_real_dofs": 19248,
+    "input_sha256": {
+      "section_3/model.geo": "a3e07d28520a3b897e7bf4e6c6cb2e7d4f43ea9871fc73477ee1e6167016ea08",
+      "section_3/model.pro": "82e1d09711f77d516023ea6d2abae5b5a5fa5f1639b012c359b17d6d4e7e3426",
+      "section_3/settings.inc": "188adf8fc76eb90206932a30cbbcde474e0a6550d9add5cf41fac4e8dda69a86",
+      "section_3/parameters.inc": "cf185016cbaf1f95cca5cb1c6706dcd5d430ed81a5e6404a1ed1cf9a62d752ee",
+      "section_3/analyse.py": "2c65d2a7eeb4b80fc1ad9ddd550ec86defed867092f2098385c4eaafdb52d5ad",
+      "section_3/run.py": "af0fae623c79444134c05c1726ad5497ceb9d012dff4e44bb5c259587209d0e5",
+      "section_3/prepare.py": "a08cbb43806d45245c460ac53a02a4ae068e05ee9934cc46684eaad24b52708b",
+      "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+      "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+      "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c"
+    }
+  },
+  "baseline": {
+    "options": {
+      "MeshScale": 0.5,
+      "OuterRadius": 0.5,
+      "Stranded": 0,
+      "SinglePoint": 0,
+      "Detailed": 1,
+      "Screens": 1,
+      "Freq": 50
+    },
+    "complex_dofs": 29984,
+    "triangles": 60050,
+    "regions": {
+      "100": {
+        "area_m2": 0.00022669208688665896,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          586.8986283871816,
+          -5.24913446042774e-13
+        ],
+        "voltage_drop_peak_V_m": [
+          0.07949935164573851,
+          0.06966183092159633
+        ],
+        "loss_W_m": 21.73344207281052,
+        "max_J_peak_A_mm2": 2.8458517287044875
+      },
+      "101": {
+        "area_m2": 4.477095647351406e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -3.4008109168439907e-25,
+          -3.6350710512584224e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005659719825116713,
+          0.05879465387416206
+        ],
+        "loss_W_m": 1.6649762048070425e-12,
+        "max_J_peak_A_mm2": 1.743176434146404e-11
+      },
+      "103": {
+        "area_m2": 8.894585106409357e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -1.5267298415285374e-25,
+          -3.079309077199357e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005659721880671711,
+          0.03342771495871075
+        ],
+        "loss_W_m": 1.3664586578984245e-11,
+        "max_J_peak_A_mm2": 3.471340672357873e-11
+      },
+      "104": {
+        "area_m2": 0.0001965726684421156,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -5.699791408373206e-24,
+          -2.8925472045213687e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005659720380680193,
+          0.03094806425890162
+        ],
+        "loss_W_m": 3.510072283871137e-11,
+        "max_J_peak_A_mm2": 4.023180313924577e-11
+      },
+      "105": {
+        "area_m2": 5.0000741492515306e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -16.77701394601511,
+          -86.31908112771733
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.595689571309454,
+        "max_J_peak_A_mm2": 2.485831283931876
+      },
+      "200": {
+        "area_m2": 0.000226692086886659,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.44931419359085,
+          -508.2691216295431
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02057981132082322,
+          -0.1036813003595027
+        ],
+        "loss_W_m": 21.73344478262529,
+        "max_J_peak_A_mm2": 2.8458544620946666
+      },
+      "201": {
+        "area_m2": 4.4770956473514154e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -1.640628734467968e-24,
+          3.7093880594174835e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.04808832104259362,
+          -0.03430073649644032
+        ],
+        "loss_W_m": 1.6652117744769528e-12,
+        "max_J_peak_A_mm2": 1.7433018648941155e-11
+      },
+      "203": {
+        "area_m2": 8.894585106409348e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -2.4524612692490156e-24,
+          2.7642695860902937e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02611992287613522,
+          -0.02161727229586792
+        ],
+        "loss_W_m": 1.3666107998946217e-11,
+        "max_J_peak_A_mm2": 3.471409341803333e-11
+      },
+      "204": {
+        "area_m2": 0.0001965726684421154,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -1.358385662176925e-23,
+          2.6495628995839168e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02397248904289921,
+          -0.02037744659804777
+        ],
+        "loss_W_m": 3.5104542048146505e-11,
+        "max_J_peak_A_mm2": 4.023265463998988e-11
+      },
+      "205": {
+        "area_m2": 5.0000741492515414e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -66.36760446269267,
+          57.69466655742517
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5958696615430716,
+        "max_J_peak_A_mm2": 2.4860544671139992
+      },
+      "300": {
+        "area_m2": 0.00022669208688665902,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.4493141935923,
+          508.26912162954284
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.1000800834014926,
+          0.03401763794569687
+        ],
+        "loss_W_m": 21.733448883009018,
+        "max_J_peak_A_mm2": 2.8458557264617683
+      },
+      "301": {
+        "area_m2": 4.4770956473514106e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -4.184370676781917e-25,
+          -7.140895131805434e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.05374899296544491,
+          -0.02449574108689594
+        ],
+        "loss_W_m": 1.66517564198901e-12,
+        "max_J_peak_A_mm2": 1.7437135373390473e-11
+      },
+      "303": {
+        "area_m2": 8.894585106409356e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          2.982373849165799e-24,
+          1.3199346883902805e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.03178070758587636,
+          -0.01181235641595803
+        ],
+        "loss_W_m": 1.3665702380291333e-11,
+        "max_J_peak_A_mm2": 3.471286396029403e-11
+      },
+      "304": {
+        "area_m2": 0.00019657266844211535,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          2.042102137240287e-23,
+          4.058354880338292e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.02963327068403861,
+          -0.01057253573636305
+        ],
+        "loss_W_m": 3.510354289889291e-11,
+        "max_J_peak_A_mm2": 4.023149397009287e-11
+      },
+      "305": {
+        "area_m2": 5.000074149251548e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          83.14777517203737,
+          28.630110612334892
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5958445074723064,
+        "max_J_peak_A_mm2": 2.4860039761314385
+      },
+      "900": {
+        "area_m2": 0.7800781492441755,
+        "conductivity_S_m": 0.01,
+        "current_peak_A": [
+          1.4961963762503794e-09,
+          -6.53341450318547e-10
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.1134642012968814e-07,
+        "max_J_peak_A_mm2": 3.8216531759627386e-10
+      }
+    },
+    "mesh": {
+      "aluminium": {
+        "skin_depth_mm": 11.989028650389823,
+        "max_edge_mm": 0.9410475398587079,
+        "max_edge_over_skin": 0.07849239227801076
+      },
+      "copper": {
+        "skin_depth_mm": 9.227342618559465,
+        "max_edge_mm": 0.3694123999486177,
+        "max_edge_over_skin": 0.04003453813512875
+      },
+      "soil": {
+        "skin_depth_mm": 711762.543417177,
+        "max_edge_mm": 34.69625374749548,
+        "max_edge_over_skin": 4.874695088746666e-05
+      }
+    },
+    "min_quality": 0.05645931672161658,
+    "conducting_min_quality": 0.7298284498414592,
+    "loss_conductors_W_m": 65.20033573844483,
+    "loss_screens_W_m": 4.787403740324832,
+    "loss_soil_W_m": 1.1134642012968814e-07,
+    "loss_semiconductors_W_m": 1.5130056836524558e-10,
+    "loss_total_W_m": 69.9877395902674,
+    "resistance_ohm_km": 0.13545795633670568,
+    "inductance_mH_km": 0.37782225482375426,
+    "energy_time_average_J_m": 0.09760565675553162,
+    "complex_input_power_VA_m": [
+      69.98773958998751,
+      61.32744284215187
+    ],
+    "power_balance_relative": 3.9990259044574774e-12,
+    "reactive_balance_relative": 3.997534362378856e-12,
+    "phase_current_relative_error": 4.001356800782554e-12,
+    "max_B_phasor_mT": 16.433937465463956,
+    "phase_R_ohm_km": [
+      0.1354567003581581,
+      0.13545905630604588,
+      0.13545811234428776
+    ],
+    "phase_L_mH_km": [
+      0.37781736742223365,
+      0.3778252786377192,
+      0.3778241184067787
+    ],
+    "zero_net_current_relative_error": 5.023303381804904e-26,
+    "getdp_real_dofs": 59968,
+    "input_sha256": {
+      "section_3/model.geo": "a3e07d28520a3b897e7bf4e6c6cb2e7d4f43ea9871fc73477ee1e6167016ea08",
+      "section_3/model.pro": "82e1d09711f77d516023ea6d2abae5b5a5fa5f1639b012c359b17d6d4e7e3426",
+      "section_3/settings.inc": "188adf8fc76eb90206932a30cbbcde474e0a6550d9add5cf41fac4e8dda69a86",
+      "section_3/parameters.inc": "cf185016cbaf1f95cca5cb1c6706dcd5d430ed81a5e6404a1ed1cf9a62d752ee",
+      "section_3/analyse.py": "2c65d2a7eeb4b80fc1ad9ddd550ec86defed867092f2098385c4eaafdb52d5ad",
+      "section_3/run.py": "af0fae623c79444134c05c1726ad5497ceb9d012dff4e44bb5c259587209d0e5",
+      "section_3/prepare.py": "a08cbb43806d45245c460ac53a02a4ae068e05ee9934cc46684eaad24b52708b",
+      "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+      "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+      "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c"
+    }
+  },
+  "fine": {
+    "options": {
+      "MeshScale": 0.25,
+      "OuterRadius": 0.5,
+      "Stranded": 0,
+      "SinglePoint": 0,
+      "Detailed": 1,
+      "Screens": 1,
+      "Freq": 50
+    },
+    "complex_dofs": 106528,
+    "triangles": 213234,
+    "regions": {
+      "100": {
+        "area_m2": 0.00022690805307447798,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          586.8986283871822,
+          5.830891325331322e-13
+        ],
+        "voltage_drop_peak_V_m": [
+          0.07943547140928364,
+          0.06967829253232205
+        ],
+        "loss_W_m": 21.713207114132302,
+        "max_J_peak_A_mm2": 2.8435926610180067
+      },
+      "101": {
+        "area_m2": 4.47348374104607e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          6.894518093886808e-25,
+          -9.370405376577267e-26
+        ],
+        "voltage_drop_peak_V_m": [
+          0.00566543320650326,
+          0.05878248370815423
+        ],
+        "loss_W_m": 1.666391180947061e-12,
+        "max_J_peak_A_mm2": 1.739369214993672e-11
+      },
+      "103": {
+        "area_m2": 8.896907613189581e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -1.433833581329711e-25,
+          -1.4008756037983014e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005665438233910134,
+          0.03343562412481251
+        ],
+        "loss_W_m": 1.3684293038415991e-11,
+        "max_J_peak_A_mm2": 3.4722640455184996e-11
+      },
+      "104": {
+        "area_m2": 0.00019639793805360307,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          2.8434333556510326e-24,
+          1.8382958202997315e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005665438478504064,
+          0.03095736982022634
+        ],
+        "loss_W_m": 3.51064291938505e-11,
+        "max_J_peak_A_mm2": 4.0243287153851095e-11
+      },
+      "105": {
+        "area_m2": 5.0000200102976014e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -16.797648812579357,
+          -86.35361700274919
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5971136617282813,
+        "max_J_peak_A_mm2": 2.4873201578283877
+      },
+      "200": {
+        "area_m2": 0.00022690805307447798,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.44931419359114,
+          -508.2691216295436
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02062547022804863,
+          -0.10363271340053
+        ],
+        "loss_W_m": 21.713208071498915,
+        "max_J_peak_A_mm2": 2.843594759692404
+      },
+      "201": {
+        "area_m2": 4.473483741046077e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -5.667479665695354e-24,
+          6.250706621030594e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.04807447588301693,
+          -0.03429810333337931
+        ],
+        "loss_W_m": 1.6663873385920905e-12,
+        "max_J_peak_A_mm2": 1.7395180501275447e-11
+      },
+      "203": {
+        "area_m2": 8.896907613189561e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -8.43336483891954e-25,
+          2.6439083446152926e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02612340907357313,
+          -0.02162465394991751
+        ],
+        "loss_W_m": 1.3684483781526755e-11,
+        "max_J_peak_A_mm2": 3.472265730488483e-11
+      },
+      "204": {
+        "area_m2": 0.00019639793805360285,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -2.1842738050228387e-24,
+          5.564082089126225e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02397717842814173,
+          -0.02038552774387849
+        ],
+        "loss_W_m": 3.510692216741403e-11,
+        "max_J_peak_A_mm2": 4.024307397549896e-11
+      },
+      "205": {
+        "area_m2": 5.000020010297616e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -66.38568755965296,
+          57.725273229927204
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5971444449556618,
+        "max_J_peak_A_mm2": 2.487353788601298
+      },
+      "300": {
+        "area_m2": 0.00022690805307447798,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.4493141935924,
+          508.2691216295432
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.1000608385161533,
+          0.03395413232037191
+        ],
+        "loss_W_m": 21.713206779851838,
+        "max_J_peak_A_mm2": 2.8435946663049694
+      },
+      "301": {
+        "area_m2": 4.473483741046077e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.2730826615073942e-24,
+          3.9905002207148015e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.05373985430073195,
+          -0.02448472624353922
+        ],
+        "loss_W_m": 1.666377200896267e-12,
+        "max_J_peak_A_mm2": 1.7394875468866063e-11
+      },
+      "303": {
+        "area_m2": 8.896907613189581e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.643052115168807e-24,
+          4.685202688288633e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.03178874695107618,
+          -0.01181125082049512
+        ],
+        "loss_W_m": 1.3684321985871875e-11,
+        "max_J_peak_A_mm2": 3.4722443036838546e-11
+      },
+      "304": {
+        "area_m2": 0.0001963979380536028,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          5.0794059489584356e-23,
+          2.0020355763197498e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.02964252000695421,
+          -0.01057212552059088
+        ],
+        "loss_W_m": 3.5106514538384873e-11,
+        "max_J_peak_A_mm2": 4.024291225122471e-11
+      },
+      "305": {
+        "area_m2": 5.000020010297622e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          83.18303787163919,
+          28.62917969942945
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5971042085310607,
+        "max_J_peak_A_mm2": 2.4873182635817908
+      },
+      "900": {
+        "area_m2": 0.7803962991967823,
+        "conductivity_S_m": 0.01,
+        "current_peak_A": [
+          2.1679109087266327e-10,
+          5.7758981576542576e-11
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.1145054790102511e-07,
+        "max_J_peak_A_mm2": 3.823792382610036e-10
+      }
+    },
+    "mesh": {
+      "aluminium": {
+        "skin_depth_mm": 11.989028650389823,
+        "max_edge_mm": 0.4768336829346029,
+        "max_edge_over_skin": 0.03977250341453631
+      },
+      "copper": {
+        "skin_depth_mm": 9.227342618559465,
+        "max_edge_mm": 0.18994709296108125,
+        "max_edge_over_skin": 0.020585243315776543
+      },
+      "soil": {
+        "skin_depth_mm": 711762.543417177,
+        "max_edge_mm": 20.035609735730112,
+        "max_edge_over_skin": 2.8149289283387976e-05
+      }
+    },
+    "min_quality": 0.02831281425515287,
+    "conducting_min_quality": 0.7359288719083408,
+    "loss_conductors_W_m": 65.13962196548306,
+    "loss_screens_W_m": 4.791362315215004,
+    "loss_soil_W_m": 1.1145054790102511e-07,
+    "loss_semiconductors_W_m": 1.5137212042589945e-10,
+    "loss_total_W_m": 69.93098439229996,
+    "resistance_ohm_km": 0.1353481093381719,
+    "inductance_mH_km": 0.3779068559170678,
+    "energy_time_average_J_m": 0.0976275123904755,
+    "complex_input_power_VA_m": [
+      69.93098439202011,
+      61.34117514258605
+    ],
+    "power_balance_relative": 4.001865043634186e-12,
+    "reactive_balance_relative": 4.023628893951281e-12,
+    "phase_current_relative_error": 4.001956892108026e-12,
+    "max_B_phasor_mT": 16.50807325791149,
+    "phase_R_ohm_km": [
+      0.13534785662711943,
+      0.13534846311117965,
+      0.13534800827459156
+    ],
+    "phase_L_mH_km": [
+      0.3779066484868516,
+      0.37790797916756075,
+      0.377905940092229
+    ],
+    "zero_net_current_relative_error": 9.302657861900817e-26,
+    "getdp_real_dofs": 213056,
+    "input_sha256": {
+      "section_3/model.geo": "a3e07d28520a3b897e7bf4e6c6cb2e7d4f43ea9871fc73477ee1e6167016ea08",
+      "section_3/model.pro": "82e1d09711f77d516023ea6d2abae5b5a5fa5f1639b012c359b17d6d4e7e3426",
+      "section_3/settings.inc": "188adf8fc76eb90206932a30cbbcde474e0a6550d9add5cf41fac4e8dda69a86",
+      "section_3/parameters.inc": "cf185016cbaf1f95cca5cb1c6706dcd5d430ed81a5e6404a1ed1cf9a62d752ee",
+      "section_3/analyse.py": "2c65d2a7eeb4b80fc1ad9ddd550ec86defed867092f2098385c4eaafdb52d5ad",
+      "section_3/run.py": "af0fae623c79444134c05c1726ad5497ceb9d012dff4e44bb5c259587209d0e5",
+      "section_3/prepare.py": "a08cbb43806d45245c460ac53a02a4ae068e05ee9934cc46684eaad24b52708b",
+      "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+      "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+      "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c"
+    }
+  },
+  "small_domain": {
+    "options": {
+      "MeshScale": 0.5,
+      "OuterRadius": 0.25,
+      "Stranded": 0,
+      "SinglePoint": 0,
+      "Detailed": 1,
+      "Screens": 1,
+      "Freq": 50
+    },
+    "complex_dofs": 29135,
+    "triangles": 58352,
+    "regions": {
+      "100": {
+        "area_m2": 0.00022669208688665896,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          586.8986283871816,
+          -6.625811010962934e-13
+        ],
+        "voltage_drop_peak_V_m": [
+          0.07931910309672686,
+          0.06926474938000286
+        ],
+        "loss_W_m": 21.73036870870632,
+        "max_J_peak_A_mm2": 2.8411380100743897
+      },
+      "101": {
+        "area_m2": 4.477095647351406e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          9.216924598857467e-25,
+          -2.1406529524077376e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005479471252590551,
+          0.05839757209581291
+        ],
+        "loss_W_m": 1.5890172366076547e-12,
+        "max_J_peak_A_mm2": 1.7123752858673543e-11
+      },
+      "103": {
+        "area_m2": 8.894585106409357e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          4.281305904815475e-26,
+          -4.484869883685947e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005479473214886761,
+          0.03303063321634019
+        ],
+        "loss_W_m": 1.3059017645014862e-11,
+        "max_J_peak_A_mm2": 3.413653941494716e-11
+      },
+      "104": {
+        "area_m2": 0.0001965726684421156,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -1.4281790263610868e-24,
+          -1.3881124654405496e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005479471712912105,
+          0.03055098250743207
+        ],
+        "loss_W_m": 3.356706589769608e-11,
+        "max_J_peak_A_mm2": 3.960179797946535e-11
+      },
+      "105": {
+        "area_m2": 5.0000741492515306e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -16.241595300614335,
+          -85.13736937496941
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5457845394626957,
+        "max_J_peak_A_mm2": 2.4409666457134884
+      },
+      "200": {
+        "area_m2": 0.000226692086886659,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.4493141935907,
+          -508.2691216295429
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02032562543699391,
+          -0.1033249554395144
+        ],
+        "loss_W_m": 21.73036545107261,
+        "max_J_peak_A_mm2": 2.841132157687154
+      },
+      "201": {
+        "area_m2": 4.4770956473514154e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -4.372586577880409e-24,
+          -9.758146288711498e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          0.04783413526305325,
+          -0.03394439148792283
+        ],
+        "loss_W_m": 1.5891049043935882e-12,
+        "max_J_peak_A_mm2": 1.7124528488528312e-11
+      },
+      "203": {
+        "area_m2": 8.894585106409348e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -2.972680326362443e-25,
+          -3.4589720536641255e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02586573709469683,
+          -0.0212609273058205
+        ],
+        "loss_W_m": 1.3059399051653696e-11,
+        "max_J_peak_A_mm2": 3.413676527894186e-11
+      },
+      "204": {
+        "area_m2": 0.00019657266844211535,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -3.1600884338939885e-23,
+          4.553047660736216e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02371830325264376,
+          -0.02002110160417869
+        ],
+        "loss_W_m": 3.356801625286884e-11,
+        "max_J_peak_A_mm2": 3.9602166448843207e-11
+      },
+      "205": {
+        "area_m2": 5.0000741492515414e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -65.61064677898548,
+          56.635055373437176
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5458135823759047,
+        "max_J_peak_A_mm2": 2.4410157231069936
+      },
+      "300": {
+        "area_m2": 0.00022669208688665902,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.44931419359244,
+          508.26912162954306
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.09964491921371074,
+          0.03406012120011915
+        ],
+        "loss_W_m": 21.730371267273348,
+        "max_J_peak_A_mm2": 2.8411333071648013
+      },
+      "301": {
+        "area_m2": 4.4770956473514106e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.0129731329506804e-24,
+          -1.1745318463399436e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0533138286684745,
+          -0.02445325770943404
+        ],
+        "loss_W_m": 1.5891135416730061e-12,
+        "max_J_peak_A_mm2": 1.7128909769377303e-11
+      },
+      "303": {
+        "area_m2": 8.894585106409356e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          5.589931483268507e-24,
+          4.030889899062117e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.03134554321115819,
+          -0.01176987300310684
+        ],
+        "loss_W_m": 1.3059350968130135e-11,
+        "max_J_peak_A_mm2": 3.413595446059578e-11
+      },
+      "304": {
+        "area_m2": 0.00019657266844211535,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.3726028289551803e-23,
+          2.7658851732241863e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.02919810631029486,
+          -0.01053005232336214
+        ],
+        "loss_W_m": 3.356792039930294e-11,
+        "max_J_peak_A_mm2": 3.9601517666426004e-11
+      },
+      "305": {
+        "area_m2": 5.0000741492515496e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          81.85323093604086,
+          28.502812129679594
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5458250830703042,
+        "max_J_peak_A_mm2": 2.441039237293013
+      },
+      "900": {
+        "area_m2": 0.1913617565256076,
+        "conductivity_S_m": 0.01,
+        "current_peak_A": [
+          3.7106235376560706e-11,
+          -9.537192227144057e-11
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 6.894524729659466e-08,
+        "max_J_peak_A_mm2": 3.7405821741705583e-10
+      }
+    },
+    "mesh": {
+      "aluminium": {
+        "skin_depth_mm": 11.989028650389823,
+        "max_edge_mm": 0.9410475398587079,
+        "max_edge_over_skin": 0.07849239227801076
+      },
+      "copper": {
+        "skin_depth_mm": 9.227342618559465,
+        "max_edge_mm": 0.3694123999486177,
+        "max_edge_over_skin": 0.04003453813512875
+      },
+      "soil": {
+        "skin_depth_mm": 711762.543417177,
+        "max_edge_mm": 17.279825389768128,
+        "max_edge_over_skin": 2.4277514389570938e-05
+      }
+    },
+    "min_quality": 0.05645931672161658,
+    "conducting_min_quality": 0.7298284498413898,
+    "loss_conductors_W_m": 65.19110542705228,
+    "loss_screens_W_m": 4.637423204908904,
+    "loss_soil_W_m": 6.894524729659466e-08,
+    "loss_semiconductors_W_m": 1.446480058973408e-10,
+    "loss_total_W_m": 69.82852870105107,
+    "resistance_ohm_km": 0.1351498111986279,
+    "inductance_mH_km": 0.37566458656493174,
+    "energy_time_average_J_m": 0.09704825013171806,
+    "complex_input_power_VA_m": [
+      69.82852870077167,
+      60.97721393126626
+    ],
+    "power_balance_relative": 4.0012244243573904e-12,
+    "reactive_balance_relative": 3.997655528030797e-12,
+    "phase_current_relative_error": 4.0018376088825805e-12,
+    "max_B_phasor_mT": 16.372497344077065,
+    "phase_R_ohm_km": [
+      0.13514957994537455,
+      0.135149785160185,
+      0.13515006848870179
+    ],
+    "phase_L_mH_km": [
+      0.37566375904427324,
+      0.37566504072589363,
+      0.3756649599201228
+    ],
+    "zero_net_current_relative_error": 9.443262804739629e-26,
+    "getdp_real_dofs": 58270,
+    "input_sha256": {
+      "section_3/model.geo": "a3e07d28520a3b897e7bf4e6c6cb2e7d4f43ea9871fc73477ee1e6167016ea08",
+      "section_3/model.pro": "82e1d09711f77d516023ea6d2abae5b5a5fa5f1639b012c359b17d6d4e7e3426",
+      "section_3/settings.inc": "188adf8fc76eb90206932a30cbbcde474e0a6550d9add5cf41fac4e8dda69a86",
+      "section_3/parameters.inc": "cf185016cbaf1f95cca5cb1c6706dcd5d430ed81a5e6404a1ed1cf9a62d752ee",
+      "section_3/analyse.py": "2c65d2a7eeb4b80fc1ad9ddd550ec86defed867092f2098385c4eaafdb52d5ad",
+      "section_3/run.py": "af0fae623c79444134c05c1726ad5497ceb9d012dff4e44bb5c259587209d0e5",
+      "section_3/prepare.py": "a08cbb43806d45245c460ac53a02a4ae068e05ee9934cc46684eaad24b52708b",
+      "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+      "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+      "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c"
+    }
+  },
+  "large_domain": {
+    "options": {
+      "MeshScale": 0.5,
+      "OuterRadius": 1,
+      "Stranded": 0,
+      "SinglePoint": 0,
+      "Detailed": 1,
+      "Screens": 1,
+      "Freq": 50
+    },
+    "complex_dofs": 30380,
+    "triangles": 60842,
+    "regions": {
+      "100": {
+        "area_m2": 0.00022669208688665896,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          586.8986283871815,
+          -2.362554596402333e-13
+        ],
+        "voltage_drop_peak_V_m": [
+          0.07954330932249273,
+          0.06975882917480535
+        ],
+        "loss_W_m": 21.734202644499515,
+        "max_J_peak_A_mm2": 2.847007741155376
+      },
+      "101": {
+        "area_m2": 4.477095647351406e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          3.0292258760486853e-25,
+          3.145548149688955e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005703677508889344,
+          0.05889165218498282
+        ],
+        "loss_W_m": 1.6837735191185098e-12,
+        "max_J_peak_A_mm2": 1.7506571478914427e-11
+      },
+      "103": {
+        "area_m2": 8.894585106409357e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          6.0988414304446865e-25,
+          -2.0938009255248513e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005703679586746661,
+          0.03352471326090432
+        ],
+        "loss_W_m": 1.381442014954799e-11,
+        "max_J_peak_A_mm2": 3.48537482949799e-11
+      },
+      "104": {
+        "area_m2": 0.0001965726684421156,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -3.0195323532453295e-24,
+          -1.5858603306290077e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005703678087018432,
+          0.03104506256038828
+        ],
+        "loss_W_m": 3.5480176982075134e-11,
+        "max_J_peak_A_mm2": 4.0384959813594876e-11
+      },
+      "105": {
+        "area_m2": 5.0000741492515306e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -16.907587529299732,
+          -86.60774704801968
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.6080053670004772,
+        "max_J_peak_A_mm2": 2.496657094885384
+      },
+      "200": {
+        "area_m2": 0.000226692086886659,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.4493141935909,
+          -508.2691216295432
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02064004354896457,
+          -0.1037669531986379
+        ],
+        "loss_W_m": 21.734208260186374,
+        "max_J_peak_A_mm2": 2.847013858792731
+      },
+      "201": {
+        "area_m2": 4.4770956473514154e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          5.436450705548707e-25,
+          5.375058394460787e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.04814855324638786,
+          -0.03438638935615552
+        ],
+        "loss_W_m": 1.6840794545459002e-12,
+        "max_J_peak_A_mm2": 1.750794764521427e-11
+      },
+      "203": {
+        "area_m2": 8.894585106409348e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.1632227364026952e-25,
+          -3.084155838601035e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02618015507933442,
+          -0.02170292515037825
+        ],
+        "loss_W_m": 1.3816409410003947e-11,
+        "max_J_peak_A_mm2": 3.48543636355606e-11
+      },
+      "204": {
+        "area_m2": 0.0001965726684421154,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          7.806517030969199e-24,
+          2.5445497358808957e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02403272124715679,
+          -0.02046309945329017
+        ],
+        "loss_W_m": 3.548513862901868e-11,
+        "max_J_peak_A_mm2": 4.03856922506764e-11
+      },
+      "205": {
+        "area_m2": 5.0000741492515414e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -66.54697670259452,
+          57.94936177842028
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.6080231306485824,
+        "max_J_peak_A_mm2": 2.496868197300792
+      },
+      "300": {
+        "area_m2": 0.00022669208688665902,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.4493141935917,
+          508.26912162954284
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.1001867747644844,
+          0.03400841606063739
+        ],
+        "loss_W_m": 21.734219006930005,
+        "max_J_peak_A_mm2": 2.847019707115135
+      },
+      "301": {
+        "area_m2": 4.4770956473514106e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -2.7004538943015347e-24,
+          2.8757450983288853e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.05385568435674426,
+          -0.0245049630011416
+        ],
+        "loss_W_m": 1.6842061726577553e-12,
+        "max_J_peak_A_mm2": 1.7512857833106238e-11
+      },
+      "303": {
+        "area_m2": 8.894585106409356e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -1.339321733996992e-24,
+          -8.724170523020214e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.03188739899841869,
+          -0.01182157833763301
+        ],
+        "loss_W_m": 1.3817248725339703e-11,
+        "max_J_peak_A_mm2": 3.4854691916255235e-11
+      },
+      "304": {
+        "area_m2": 0.00019657266844211535,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          3.7481621506309067e-25,
+          1.0404381142268551e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.02973996209515541,
+          -0.01058175765638142
+        ],
+        "loss_W_m": 3.548726436148898e-11,
+        "max_J_peak_A_mm2": 4.0386246699419976e-11
+      },
+      "305": {
+        "area_m2": 5.000074149251548e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          83.4651675080025,
+          28.657768965231835
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.6082208238895257,
+        "max_J_peak_A_mm2": 2.4969973089758595
+      },
+      "900": {
+        "area_m2": 3.1349437201184465,
+        "conductivity_S_m": 0.01,
+        "current_peak_A": [
+          -8.099456163235966e-10,
+          -1.009225154665576e-08
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5463361853813416e-07,
+        "max_J_peak_A_mm2": 3.8413764876268546e-10
+      }
+    },
+    "mesh": {
+      "aluminium": {
+        "skin_depth_mm": 11.989028650389823,
+        "max_edge_mm": 0.9410475398587079,
+        "max_edge_over_skin": 0.07849239227801076
+      },
+      "copper": {
+        "skin_depth_mm": 9.227342618559465,
+        "max_edge_mm": 0.3694123999486177,
+        "max_edge_over_skin": 0.04003453813512875
+      },
+      "soil": {
+        "skin_depth_mm": 711762.543417177,
+        "max_edge_mm": 77.61275771118306,
+        "max_edge_over_skin": 0.0001090430487372427
+      }
+    },
+    "min_quality": 0.05645931672161658,
+    "conducting_min_quality": 0.7298284498414592,
+    "loss_conductors_W_m": 65.2026299116159,
+    "loss_screens_W_m": 4.824249321538585,
+    "loss_soil_W_m": 1.5463361853813416e-07,
+    "loss_semiconductors_W_m": 1.529527174037966e-10,
+    "loss_total_W_m": 70.02687938794104,
+    "resistance_ohm_km": 0.13553370956198973,
+    "inductance_mH_km": 0.3783447197457493,
+    "energy_time_average_J_m": 0.0977406290373175,
+    "complex_input_power_VA_m": [
+      70.02687938766105,
+      61.41224842793056
+    ],
+    "power_balance_relative": 3.998211287523462e-12,
+    "reactive_balance_relative": 4.002889921518244e-12,
+    "phase_current_relative_error": 4.000872400330797e-12,
+    "max_B_phasor_mT": 16.448783668562758,
+    "phase_R_ohm_km": [
+      0.13553159860229813,
+      0.1355341313162703,
+      0.13553539876577497
+    ],
+    "phase_L_mH_km": [
+      0.3783434463981542,
+      0.37834046056490167,
+      0.37835025226964825
+    ],
+    "zero_net_current_relative_error": 2.750646868105734e-26,
+    "getdp_real_dofs": 60760,
+    "input_sha256": {
+      "section_3/model.geo": "a3e07d28520a3b897e7bf4e6c6cb2e7d4f43ea9871fc73477ee1e6167016ea08",
+      "section_3/model.pro": "82e1d09711f77d516023ea6d2abae5b5a5fa5f1639b012c359b17d6d4e7e3426",
+      "section_3/settings.inc": "188adf8fc76eb90206932a30cbbcde474e0a6550d9add5cf41fac4e8dda69a86",
+      "section_3/parameters.inc": "cf185016cbaf1f95cca5cb1c6706dcd5d430ed81a5e6404a1ed1cf9a62d752ee",
+      "section_3/analyse.py": "2c65d2a7eeb4b80fc1ad9ddd550ec86defed867092f2098385c4eaafdb52d5ad",
+      "section_3/run.py": "af0fae623c79444134c05c1726ad5497ceb9d012dff4e44bb5c259587209d0e5",
+      "section_3/prepare.py": "a08cbb43806d45245c460ac53a02a4ae068e05ee9934cc46684eaad24b52708b",
+      "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+      "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+      "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c"
+    }
+  },
+  "stranded": {
+    "options": {
+      "MeshScale": 0.5,
+      "OuterRadius": 0.5,
+      "Stranded": 1,
+      "SinglePoint": 0,
+      "Detailed": 1,
+      "Screens": 1,
+      "Freq": 50
+    },
+    "complex_dofs": 29981,
+    "triangles": 60050,
+    "regions": {
+      "100": {
+        "area_m2": 0.00022669208688665896,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          586.8986283848345,
+          0.0
+        ],
+        "voltage_drop_peak_V_m": [
+          0.07893525162098276,
+          0.06982210501554788
+        ],
+        "loss_W_m": 21.55547363750739,
+        "max_J_peak_A_mm2": 2.5889683069452305
+      },
+      "101": {
+        "area_m2": 4.477095647351406e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -7.270142102516845e-26,
+          -1.2690436936726626e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005479712150471546,
+          0.05893100705802683
+        ],
+        "loss_W_m": 1.7150079161671792e-12,
+        "max_J_peak_A_mm2": 1.7583220069141326e-11
+      },
+      "103": {
+        "area_m2": 8.894585106409357e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          6.54312789226516e-26,
+          -1.11830941408048e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          0.00547970956909397,
+          0.03356406895994227
+        ],
+        "loss_W_m": 1.3856209554245091e-11,
+        "max_J_peak_A_mm2": 3.4926792365751846e-11
+      },
+      "104": {
+        "area_m2": 0.0001965726684421156,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -5.093946233163469e-24,
+          -2.3535873366547866e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005479708098896069,
+          0.03108441815767033
+        ],
+        "loss_W_m": 3.5553918386241346e-11,
+        "max_J_peak_A_mm2": 4.042492596608706e-11
+      },
+      "105": {
+        "area_m2": 5.0000741492515306e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -16.24118483444584,
+          -86.72436443550289
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.6081232927565765,
+        "max_J_peak_A_mm2": 2.4941286113059866
+      },
+      "200": {
+        "area_m2": 0.000226692086886659,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.44931419241715,
+          -508.26912162750955
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02100067302815161,
+          -0.10327290686886435
+        ],
+        "loss_W_m": 21.55547363750739,
+        "max_J_peak_A_mm2": 2.5889683069452305
+      },
+      "201": {
+        "area_m2": 4.4770956473514154e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.6987898712881027e-24,
+          2.68833699079734e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.04829643409086599,
+          -0.03421300124191369
+        ],
+        "loss_W_m": 1.7152642068926227e-12,
+        "max_J_peak_A_mm2": 1.7584677925523128e-11
+      },
+      "203": {
+        "area_m2": 8.894585106409348e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          3.202093699375197e-24,
+          4.9259251712386355e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02632803681848553,
+          -0.02152953688902757
+        ],
+        "loss_W_m": 1.3857792016309513e-11,
+        "max_J_peak_A_mm2": 3.4927524683931556e-11
+      },
+      "204": {
+        "area_m2": 0.0001965726684421154,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.0003715533063178e-23,
+          3.1633196081617738e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.0241806029019338,
+          -0.02028971123409373
+        ],
+        "loss_W_m": 3.5557877951189294e-11,
+        "max_J_peak_A_mm2": 4.0425820283421824e-11
+      },
+      "205": {
+        "area_m2": 5.0000741492515414e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -66.98656932752746,
+          57.43321544508257
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.6083047779316146,
+        "max_J_peak_A_mm2": 2.494343908926208
+      },
+      "300": {
+        "area_m2": 0.00022669208688665902,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.44931419241755,
+          508.2691216275094
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.09993682969865453,
+          0.0334489621303944
+        ],
+        "loss_W_m": 21.555473637507383,
+        "max_J_peak_A_mm2": 2.5889683069452296
+      },
+      "301": {
+        "area_m2": 4.4770956473514106e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -3.603567102147516e-24,
+          -1.6495144637043775e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.05377706686874563,
+          -0.02471983219023343
+        ],
+        "loss_W_m": 1.7152203136304403e-12,
+        "max_J_peak_A_mm2": 1.758854012263436e-11
+      },
+      "303": {
+        "area_m2": 8.894585106409356e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -1.4572595947711542e-24,
+          2.8353554199815695e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.03180877849011189,
+          -0.01203644671757755
+        ],
+        "loss_W_m": 1.385737004969819e-11,
+        "max_J_peak_A_mm2": 3.4926364412055295e-11
+      },
+      "304": {
+        "area_m2": 0.00019657266844211535,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          3.399195329710098e-24,
+          2.1067256225959924e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.02966134174553385,
+          -0.01079662605349809
+        ],
+        "loss_W_m": 3.555684723838903e-11,
+        "max_J_peak_A_mm2": 4.042471763889084e-11
+      },
+      "305": {
+        "area_m2": 5.000074149251548e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          83.23081952311989,
+          29.296847685602927
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.6082790097835613,
+        "max_J_peak_A_mm2": 2.4942882035848255
+      },
+      "900": {
+        "area_m2": 0.7800781492441755,
+        "conductivity_S_m": 0.01,
+        "current_peak_A": [
+          1.4963821039115386e-09,
+          -6.296143118116238e-10
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.123705548608135e-07,
+        "max_J_peak_A_mm2": 3.834900568304253e-10
+      }
+    },
+    "mesh": {
+      "aluminium": {
+        "skin_depth_mm": 11.989028650389823,
+        "max_edge_mm": 0.9410475398587079,
+        "max_edge_over_skin": 0.07849239227801076
+      },
+      "copper": {
+        "skin_depth_mm": 9.227342618559465,
+        "max_edge_mm": 0.3694123999486177,
+        "max_edge_over_skin": 0.04003453813512875
+      },
+      "soil": {
+        "skin_depth_mm": 711762.543417177,
+        "max_edge_mm": 34.69625374749548,
+        "max_edge_over_skin": 4.874695088746666e-05
+      }
+    },
+    "min_quality": 0.05645931672161658,
+    "conducting_min_quality": 0.7298284498414592,
+    "loss_conductors_W_m": 64.66642091252217,
+    "loss_screens_W_m": 4.824707080471752,
+    "loss_soil_W_m": 1.123705548608135e-07,
+    "loss_semiconductors_W_m": 1.5338550763276272e-10,
+    "loss_total_W_m": 69.49112810551784,
+    "resistance_ohm_km": 0.13449678832054549,
+    "inductance_mH_km": 0.3786915316314497,
+    "energy_time_average_J_m": 0.09783022355283963,
+    "complex_input_power_VA_m": [
+      69.49112810551779,
+      61.46854232252921
+    ],
+    "power_balance_relative": 8.179953385487556e-16,
+    "reactive_balance_relative": 6.820077364105726e-15,
+    "phase_current_relative_error": 0.0,
+    "max_B_phasor_mT": 16.3669687941963,
+    "phase_R_ohm_km": [
+      0.13449554625509233,
+      0.13449788522127157,
+      0.1344969334852721
+    ],
+    "phase_L_mH_km": [
+      0.3786866287586304,
+      0.3786945730078919,
+      0.3786933931278188
+    ],
+    "zero_net_current_relative_error": 4.1030619701535027e-26,
+    "getdp_real_dofs": 59962,
+    "input_sha256": {
+      "section_3/model.geo": "a3e07d28520a3b897e7bf4e6c6cb2e7d4f43ea9871fc73477ee1e6167016ea08",
+      "section_3/model.pro": "82e1d09711f77d516023ea6d2abae5b5a5fa5f1639b012c359b17d6d4e7e3426",
+      "section_3/settings.inc": "188adf8fc76eb90206932a30cbbcde474e0a6550d9add5cf41fac4e8dda69a86",
+      "section_3/parameters.inc": "cf185016cbaf1f95cca5cb1c6706dcd5d430ed81a5e6404a1ed1cf9a62d752ee",
+      "section_3/analyse.py": "2c65d2a7eeb4b80fc1ad9ddd550ec86defed867092f2098385c4eaafdb52d5ad",
+      "section_3/run.py": "af0fae623c79444134c05c1726ad5497ceb9d012dff4e44bb5c259587209d0e5",
+      "section_3/prepare.py": "a08cbb43806d45245c460ac53a02a4ae068e05ee9934cc46684eaad24b52708b",
+      "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+      "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+      "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c"
+    }
+  },
+  "single_point": {
+    "options": {
+      "MeshScale": 0.5,
+      "OuterRadius": 0.5,
+      "Stranded": 0,
+      "SinglePoint": 1,
+      "Detailed": 1,
+      "Screens": 1,
+      "Freq": 50
+    },
+    "complex_dofs": 29987,
+    "triangles": 60050,
+    "regions": {
+      "100": {
+        "area_m2": 0.00022669208688665896,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          586.8986283871818,
+          -6.661338147750939e-14
+        ],
+        "voltage_drop_peak_V_m": [
+          0.07511602812511324,
+          0.0707082692789012
+        ],
+        "loss_W_m": 21.735790687046467,
+        "max_J_peak_A_mm2": 2.845957242424714
+      },
+      "101": {
+        "area_m2": 4.477095647351406e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.0331679721243383e-24,
+          -2.35067927981378e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          0.001276395094502003,
+          0.05984109006673884
+        ],
+        "loss_W_m": 1.723409513957833e-12,
+        "max_J_peak_A_mm2": 1.7475308296563342e-11
+      },
+      "103": {
+        "area_m2": 8.894585106409357e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -3.069615554396001e-25,
+          -5.00832011506716e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          0.001276396998237641,
+          0.03447415134384239
+        ],
+        "loss_W_m": 1.4155526179746969e-11,
+        "max_J_peak_A_mm2": 3.5145789726891595e-11
+      },
+      "104": {
+        "area_m2": 0.0001965726684421156,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          3.715850407953054e-25,
+          -1.9736012427632395e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          0.00127639531236565,
+          0.03199450042293053
+        ],
+        "loss_W_m": 3.63575863898903e-11,
+        "max_J_peak_A_mm2": 4.0599151907077873e-11
+      },
+      "105": {
+        "area_m2": 5.0000741492515306e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -1.3176959523519827e-14,
+          -1.2947976024690888e-13
+        ],
+        "voltage_drop_peak_V_m": [
+          0.001276282623628361,
+          0.03005685812631372
+        ],
+        "loss_W_m": 0.30679185078062626,
+        "max_J_peak_A_mm2": 1.19143818515834
+      },
+      "200": {
+        "area_m2": 0.000226692086886659,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.4493141935909,
+          -508.2691216295432
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02368000870890609,
+          -0.1004079842741558
+        ],
+        "loss_W_m": 21.735792473995446,
+        "max_J_peak_A_mm2": 2.8459607817119066
+      },
+      "201": {
+        "area_m2": 4.4770956473514154e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          6.058451752097371e-26,
+          8.223338511513498e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          0.05118852062170092,
+          -0.03102742241441959
+        ],
+        "loss_W_m": 1.7236328597575227e-12,
+        "max_J_peak_A_mm2": 1.7475354310281478e-11
+      },
+      "203": {
+        "area_m2": 8.894585106409348e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          3.8321726815933235e-24,
+          -8.061779798124235e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02922012176004284,
+          -0.01834395809856527
+        ],
+        "loss_W_m": 1.4156954219082325e-11,
+        "max_J_peak_A_mm2": 3.5146373567495586e-11
+      },
+      "204": {
+        "area_m2": 0.0001965726684421154,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.9128551665288765e-24,
+          -5.331437541845686e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02707268744776367,
+          -0.01710413212150654
+        ],
+        "loss_W_m": 3.6361164975604884e-11,
+        "max_J_peak_A_mm2": 4.059987375731259e-11
+      },
+      "205": {
+        "area_m2": 5.0000741492515414e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          6.339373470609644e-14,
+          -9.031664305325648e-14
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02539469180105976,
+          -0.01613521234519074
+        ],
+        "loss_W_m": 0.3068217808971842,
+        "max_J_peak_A_mm2": 1.1914532635555113
+      },
+      "300": {
+        "area_m2": 0.00022669208688665902,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.4493141935923,
+          508.26912162954306
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.09879356558686707,
+          0.02969652776550019
+        ],
+        "loss_W_m": 21.735797818304356,
+        "max_J_peak_A_mm2": 2.845961096652095
+      },
+      "301": {
+        "area_m2": 4.4770956473514106e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          7.189362745822213e-25,
+          6.785465962349055e-26
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0524624732796944,
+          -0.02881685073272732
+        ],
+        "loss_W_m": 1.7236221544553211e-12,
+        "max_J_peak_A_mm2": 1.7478548679958173e-11
+      },
+      "303": {
+        "area_m2": 8.894585106409356e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          4.822527594669507e-24,
+          5.619012051678575e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.03049418605400489,
+          -0.01613346613857392
+        ],
+        "loss_W_m": 1.4156693651143657e-11,
+        "max_J_peak_A_mm2": 3.514504939649424e-11
+      },
+      "304": {
+        "area_m2": 0.00019657266844211535,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.0934293722185335e-23,
+          5.9712100468671685e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.02834674879186107,
+          -0.01489364540899287
+        ],
+        "loss_W_m": 3.6360538563168534e-11,
+        "max_J_peak_A_mm2": 4.0598671336413666e-11
+      },
+      "305": {
+        "area_m2": 5.000074149251548e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -1.7846835120849391e-13,
+          -3.354955202539145e-14
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0266686414122577,
+          -0.01392491874695084
+        ],
+        "loss_W_m": 0.30681611518549456,
+        "max_J_peak_A_mm2": 1.1914220097074244
+      },
+      "900": {
+        "area_m2": 0.7800781492441755,
+        "conductivity_S_m": 0.01,
+        "current_peak_A": [
+          1.3057731406180793e-10,
+          1.186612541267359e-10
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.1535250610194896e-07,
+        "max_J_peak_A_mm2": 3.889889592599489e-10
+      }
+    },
+    "mesh": {
+      "aluminium": {
+        "skin_depth_mm": 11.989028650389823,
+        "max_edge_mm": 0.9410475398587079,
+        "max_edge_over_skin": 0.07849239227801076
+      },
+      "copper": {
+        "skin_depth_mm": 9.227342618559465,
+        "max_edge_mm": 0.3694123999486177,
+        "max_edge_over_skin": 0.04003453813512875
+      },
+      "soil": {
+        "skin_depth_mm": 711762.543417177,
+        "max_edge_mm": 34.69625374749548,
+        "max_edge_over_skin": 4.874695088746666e-05
+      }
+    },
+    "min_quality": 0.05645931672161658,
+    "conducting_min_quality": 0.7298284498414592,
+    "loss_conductors_W_m": 65.20738097934627,
+    "loss_screens_W_m": 0.920429746863305,
+    "loss_soil_W_m": 1.1535250610194896e-07,
+    "loss_semiconductors_W_m": 1.5671912850680735e-10,
+    "loss_total_W_m": 66.12781084171881,
+    "resistance_ohm_km": 0.1279872469961171,
+    "inductance_mH_km": 0.3835008065278029,
+    "energy_time_average_J_m": 0.09907263960637627,
+    "complex_input_power_VA_m": [
+      66.12781084145405,
+      62.249175351579346
+    ],
+    "power_balance_relative": 4.00379856566936e-12,
+    "reactive_balance_relative": 3.9973552204797075e-12,
+    "phase_current_relative_error": 4.0016922666527744e-12,
+    "max_B_phasor_mT": 16.496747323473706,
+    "phase_R_ohm_km": [
+      0.12798807918811322,
+      0.12798779403604296,
+      0.1279858677626578
+    ],
+    "phase_L_mH_km": [
+      0.38349282240376503,
+      0.3835102427756262,
+      0.38349935439941824
+    ],
+    "zero_net_current_relative_error": 3.0941356423962795e-16,
+    "getdp_real_dofs": 59974,
+    "input_sha256": {
+      "section_3/model.geo": "a3e07d28520a3b897e7bf4e6c6cb2e7d4f43ea9871fc73477ee1e6167016ea08",
+      "section_3/model.pro": "82e1d09711f77d516023ea6d2abae5b5a5fa5f1639b012c359b17d6d4e7e3426",
+      "section_3/settings.inc": "188adf8fc76eb90206932a30cbbcde474e0a6550d9add5cf41fac4e8dda69a86",
+      "section_3/parameters.inc": "cf185016cbaf1f95cca5cb1c6706dcd5d430ed81a5e6404a1ed1cf9a62d752ee",
+      "section_3/analyse.py": "2c65d2a7eeb4b80fc1ad9ddd550ec86defed867092f2098385c4eaafdb52d5ad",
+      "section_3/run.py": "af0fae623c79444134c05c1726ad5497ceb9d012dff4e44bb5c259587209d0e5",
+      "section_3/prepare.py": "a08cbb43806d45245c460ac53a02a4ae068e05ee9934cc46684eaad24b52708b",
+      "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+      "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+      "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c"
+    }
+  },
+  "no_screens": {
+    "options": {
+      "MeshScale": 0.5,
+      "OuterRadius": 0.5,
+      "Stranded": 0,
+      "SinglePoint": 0,
+      "Detailed": 1,
+      "Screens": 0,
+      "Freq": 50
+    },
+    "complex_dofs": 29984,
+    "triangles": 60050,
+    "regions": {
+      "100": {
+        "area_m2": 0.00022669208688665896,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          586.8986283871816,
+          -2.113864638886298e-13
+        ],
+        "voltage_drop_peak_V_m": [
+          0.07407354416426098,
+          0.07084216083817292
+        ],
+        "loss_W_m": 21.736664644408663,
+        "max_J_peak_A_mm2": 2.847627630662938
+      },
+      "101": {
+        "area_m2": 4.477095647351406e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -7.964844570090677e-25,
+          1.449181659101691e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.0002339101251666916,
+          0.05997498098952023
+        ],
+        "loss_W_m": 1.745057521947303e-12,
+        "max_J_peak_A_mm2": 1.7243031510013566e-11
+      },
+      "103": {
+        "area_m2": 8.894585106409357e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -8.077935669463161e-28,
+          2.639869376780561e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.0002339118744043609,
+          0.0346080425660851
+        ],
+        "loss_W_m": 1.4331183485618065e-11,
+        "max_J_peak_A_mm2": 3.4912290445870735e-11
+      },
+      "104": {
+        "area_m2": 0.0001965726684421156,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.9177019279305544e-24,
+          -5.544695043519514e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.0002339102274924019,
+          0.03212839146887771
+        ],
+        "loss_W_m": 3.680367507046147e-11,
+        "max_J_peak_A_mm2": 4.025919367815168e-11
+      },
+      "105": {
+        "area_m2": 5.0000741492515306e-05,
+        "conductivity_S_m": 1e-12,
+        "current_peak_A": [
+          -1.1695758862364554e-20,
+          -1.509559853729209e-18
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 2.800800490007451e-20,
+        "max_J_peak_A_mm2": 4.261781150268599e-20
+      },
+      "200": {
+        "area_m2": 0.000226692086886659,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.44931419359114,
+          -508.26912162954125
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02431723585920751,
+          -0.09957194349042098
+        ],
+        "loss_W_m": 21.736666225560718,
+        "max_J_peak_A_mm2": 2.8476270920684175
+      },
+      "201": {
+        "area_m2": 4.4770956473514154e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -4.022811963392654e-25,
+          1.4709920854092416e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.05182574857786882,
+          -0.03019138221212798
+        ],
+        "loss_W_m": 1.7452864187329663e-12,
+        "max_J_peak_A_mm2": 1.724311892956e-11
+      },
+      "203": {
+        "area_m2": 8.894585106409348e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -2.604326459834923e-24,
+          -6.575439634943013e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02985734959938849,
+          -0.01750791802163477
+        ],
+        "loss_W_m": 1.4332658220362896e-11,
+        "max_J_peak_A_mm2": 3.4913819131538086e-11
+      },
+      "204": {
+        "area_m2": 0.0001965726684421154,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          3.2311742677852644e-25,
+          -5.7951110492728716e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02770991516366922,
+          -0.01626809207010237
+        ],
+        "loss_W_m": 3.680737021681655e-11,
+        "max_J_peak_A_mm2": 4.026011374643551e-11
+      },
+      "205": {
+        "area_m2": 5.0000741492515414e-05,
+        "conductivity_S_m": 1e-12,
+        "current_peak_A": [
+          -1.3016124292374813e-18,
+          7.649749013234324e-19
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 2.801326188987636e-20,
+        "max_J_peak_A_mm2": 4.262274213056708e-20
+      },
+      "300": {
+        "area_m2": 0.00022669208688665902,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.44931419359193,
+          508.2691216295426
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0983882029820533,
+          0.02872676145319381
+        ],
+        "loss_W_m": 21.73667203414184,
+        "max_J_peak_A_mm2": 2.847635287991485
+      },
+      "301": {
+        "area_m2": 4.4770956473514106e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -2.0962243062256903e-24,
+          -7.02780403243295e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.05205710980714629,
+          -0.02978661694518795
+        ],
+        "loss_W_m": 1.74528222397553e-12,
+        "max_J_peak_A_mm2": 1.7242588823181318e-11
+      },
+      "303": {
+        "area_m2": 8.894585106409356e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.5719662812775311e-24,
+          4.426708746865812e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.03008882188592926,
+          -0.01710323234720281
+        ],
+        "loss_W_m": 1.433241864932848e-11,
+        "max_J_peak_A_mm2": 3.4913726696593614e-11
+      },
+      "304": {
+        "area_m2": 0.00019657266844211535,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.1748549637667221e-23,
+          2.7529604761530452e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.02794138464162547,
+          -0.01586341164105468
+        ],
+        "loss_W_m": 3.6806801619897334e-11,
+        "max_J_peak_A_mm2": 4.025906965279979e-11
+      },
+      "305": {
+        "area_m2": 5.000074149251548e-05,
+        "conductivity_S_m": 1e-12,
+        "current_peak_A": [
+          1.3131861879648141e-18,
+          7.447403459532264e-19
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 2.80103214882329e-20,
+        "max_J_peak_A_mm2": 4.262026266288506e-20
+      },
+      "900": {
+        "area_m2": 0.7800781492441755,
+        "conductivity_S_m": 0.01,
+        "current_peak_A": [
+          1.2486265495047697e-10,
+          1.2579927542774078e-10
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.1649824409467805e-07,
+        "max_J_peak_A_mm2": 3.8997026694644536e-10
+      }
+    },
+    "mesh": {
+      "aluminium": {
+        "skin_depth_mm": 11.989028650389823,
+        "max_edge_mm": 0.9410475398587079,
+        "max_edge_over_skin": 0.07849239227801076
+      },
+      "copper": {
+        "skin_depth_mm": 9.227342618559465,
+        "max_edge_mm": 0.3694123999486177,
+        "max_edge_over_skin": 0.04003453813512875
+      },
+      "soil": {
+        "skin_depth_mm": 711762.543417177,
+        "max_edge_mm": 34.69625374749548,
+        "max_edge_over_skin": 4.874695088746666e-05
+      }
+    },
+    "min_quality": 0.05645931672161658,
+    "conducting_min_quality": 0.7298284498414592,
+    "loss_conductors_W_m": 65.21000290411122,
+    "loss_screens_W_m": 8.403158827818377e-20,
+    "loss_soil_W_m": 1.1649824409467805e-07,
+    "loss_semiconductors_W_m": 1.586497334271406e-10,
+    "loss_total_W_m": 65.21000302076811,
+    "resistance_ohm_km": 0.1262108734132058,
+    "inductance_mH_km": 0.38422676322956345,
+    "energy_time_average_J_m": 0.09926018144581734,
+    "complex_input_power_VA_m": [
+      65.21000302050727,
+      62.36701136458424
+    ],
+    "power_balance_relative": 4.000003469014719e-12,
+    "reactive_balance_relative": 4.003588071790261e-12,
+    "phase_current_relative_error": 4.000730658558551e-12,
+    "max_B_phasor_mT": 16.501127789428796,
+    "phase_R_ohm_km": [
+      0.1262118202049883,
+      0.12621125873328662,
+      0.12620954129982787
+    ],
+    "phase_L_mH_km": [
+      0.3842189956291147,
+      0.3842361065796301,
+      0.38422518747533035
+    ],
+    "zero_net_current_relative_error": 2.0560247845549797e-26,
+    "getdp_real_dofs": 59968,
+    "input_sha256": {
+      "section_3/model.geo": "a3e07d28520a3b897e7bf4e6c6cb2e7d4f43ea9871fc73477ee1e6167016ea08",
+      "section_3/model.pro": "82e1d09711f77d516023ea6d2abae5b5a5fa5f1639b012c359b17d6d4e7e3426",
+      "section_3/settings.inc": "188adf8fc76eb90206932a30cbbcde474e0a6550d9add5cf41fac4e8dda69a86",
+      "section_3/parameters.inc": "cf185016cbaf1f95cca5cb1c6706dcd5d430ed81a5e6404a1ed1cf9a62d752ee",
+      "section_3/analyse.py": "2c65d2a7eeb4b80fc1ad9ddd550ec86defed867092f2098385c4eaafdb52d5ad",
+      "section_3/run.py": "af0fae623c79444134c05c1726ad5497ceb9d012dff4e44bb5c259587209d0e5",
+      "section_3/prepare.py": "a08cbb43806d45245c460ac53a02a4ae068e05ee9934cc46684eaad24b52708b",
+      "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+      "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+      "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c"
+    }
+  },
+  "simplified": {
+    "options": {
+      "MeshScale": 0.5,
+      "OuterRadius": 0.5,
+      "Stranded": 0,
+      "SinglePoint": 0,
+      "Detailed": 0,
+      "Screens": 1,
+      "Freq": 50
+    },
+    "complex_dofs": 39222,
+    "triangles": 78544,
+    "regions": {
+      "100": {
+        "area_m2": 0.000226692086886659,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          586.8986283871823,
+          4.218847493575595e-13
+        ],
+        "voltage_drop_peak_V_m": [
+          0.07949934898704777,
+          0.06966654100751657
+        ],
+        "loss_W_m": 21.733426712931887,
+        "max_J_peak_A_mm2": 2.845842383944285
+      },
+      "105": {
+        "area_m2": 5.0000741492515306e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -16.777201434510943,
+          -86.31959549507532
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5957070181607795,
+        "max_J_peak_A_mm2": 2.4858315104236435
+      },
+      "200": {
+        "area_m2": 0.000226692086886659,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.449314193591,
+          -508.2691216295426
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02058362609583929,
+          -0.1036835836695463
+        ],
+        "loss_W_m": 21.733443166801663,
+        "max_J_peak_A_mm2": 2.8458489769309487
+      },
+      "205": {
+        "area_m2": 5.0000741492515414e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -66.36792032130624,
+          57.69511760895533
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5958874811170927,
+        "max_J_peak_A_mm2": 2.4860454648013346
+      },
+      "300": {
+        "area_m2": 0.00022669208688665902,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.4493141935917,
+          508.2691216295426
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.1000840572135626,
+          0.03401539920774913
+        ],
+        "loss_W_m": 21.73344727051527,
+        "max_J_peak_A_mm2": 2.845846680137173
+      },
+      "305": {
+        "area_m2": 5.000074149251549e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          83.14828075021782,
+          28.630184107891694
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5958617111707418,
+        "max_J_peak_A_mm2": 2.485998417909498
+      },
+      "900": {
+        "area_m2": 0.7800781492441755,
+        "conductivity_S_m": 0.01,
+        "current_peak_A": [
+          1.4985525759892418e-09,
+          -6.540551550522014e-10
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.113462806937562e-07,
+        "max_J_peak_A_mm2": 3.8216482330524547e-10
+      }
+    },
+    "mesh": {
+      "aluminium": {
+        "skin_depth_mm": 11.989028650389823,
+        "max_edge_mm": 0.9410475398587079,
+        "max_edge_over_skin": 0.07849239227801076
+      },
+      "copper": {
+        "skin_depth_mm": 9.227342618559465,
+        "max_edge_mm": 0.3694123999486177,
+        "max_edge_over_skin": 0.04003453813512875
+      },
+      "soil": {
+        "skin_depth_mm": 711762.543417177,
+        "max_edge_mm": 34.69625374801025,
+        "max_edge_over_skin": 4.874695088818988e-05
+      }
+    },
+    "min_quality": 0.05645931672161658,
+    "conducting_min_quality": 0.8414898075532581,
+    "loss_conductors_W_m": 65.20031715024882,
+    "loss_screens_W_m": 4.787456210448614,
+    "loss_soil_W_m": 1.113462806937562e-07,
+    "loss_semiconductors_W_m": 0,
+    "loss_total_W_m": 69.98777347204371,
+    "resistance_ohm_km": 0.13545802191327955,
+    "inductance_mH_km": 0.37784705189290363,
+    "energy_time_average_J_m": 0.097612062768383,
+    "complex_input_power_VA_m": [
+      69.98777347176375,
+      61.33146785873433
+    ],
+    "power_balance_relative": 4.000242254542168e-12,
+    "reactive_balance_relative": 3.998430543954106e-12,
+    "phase_current_relative_error": 4.000536903228185e-12,
+    "max_B_phasor_mT": 16.38849428122817,
+    "phase_R_ohm_km": [
+      0.13545669582809003,
+      0.13545917560602555,
+      0.1354581943040974
+    ],
+    "phase_L_mH_km": [
+      0.37784291300780287,
+      0.3778493883878458,
+      0.3778488542785296
+    ],
+    "zero_net_current_relative_error": 0.0,
+    "getdp_real_dofs": 78444,
+    "input_sha256": {
+      "section_3/model.geo": "a3e07d28520a3b897e7bf4e6c6cb2e7d4f43ea9871fc73477ee1e6167016ea08",
+      "section_3/model.pro": "82e1d09711f77d516023ea6d2abae5b5a5fa5f1639b012c359b17d6d4e7e3426",
+      "section_3/settings.inc": "188adf8fc76eb90206932a30cbbcde474e0a6550d9add5cf41fac4e8dda69a86",
+      "section_3/parameters.inc": "cf185016cbaf1f95cca5cb1c6706dcd5d430ed81a5e6404a1ed1cf9a62d752ee",
+      "section_3/analyse.py": "2c65d2a7eeb4b80fc1ad9ddd550ec86defed867092f2098385c4eaafdb52d5ad",
+      "section_3/run.py": "af0fae623c79444134c05c1726ad5497ceb9d012dff4e44bb5c259587209d0e5",
+      "section_3/prepare.py": "a08cbb43806d45245c460ac53a02a4ae068e05ee9934cc46684eaad24b52708b",
+      "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+      "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+      "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c"
+    }
+  },
+  "no_soil": {
+    "options": {
+      "MeshScale": 0.5,
+      "OuterRadius": 0.5,
+      "Stranded": 0,
+      "SinglePoint": 0,
+      "Detailed": 1,
+      "Screens": 1,
+      "Freq": 50,
+      "SigmaSoil": 0
+    },
+    "complex_dofs": 29984,
+    "triangles": 60050,
+    "regions": {
+      "100": {
+        "area_m2": 0.00022669208688665896,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          586.8986283871814,
+          -3.4638958368304884e-13
+        ],
+        "voltage_drop_peak_V_m": [
+          0.07949935153071848,
+          0.06966183097421079
+        ],
+        "loss_W_m": 21.733442072953338,
+        "max_J_peak_A_mm2": 2.845851728658963
+      },
+      "101": {
+        "area_m2": 4.477095647351406e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          7.674038885990003e-26,
+          7.560947786617519e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005659719710096636,
+          0.05879465392677648
+        ],
+        "loss_W_m": 1.6649762083504829e-12,
+        "max_J_peak_A_mm2": 1.743176436201351e-11
+      },
+      "103": {
+        "area_m2": 8.894585106409357e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -6.123075237453076e-25,
+          -7.858215819253763e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005659721765651646,
+          0.03342771501132517
+        ],
+        "loss_W_m": 1.3664586608095897e-11,
+        "max_J_peak_A_mm2": 3.471340679559744e-11
+      },
+      "104": {
+        "area_m2": 0.0001965726684421156,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -3.638302225526208e-24,
+          -2.0084979248553203e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005659720265660137,
+          0.03094806431151608
+        ],
+        "loss_W_m": 3.510072291288498e-11,
+        "max_J_peak_A_mm2": 4.023180321970537e-11
+      },
+      "105": {
+        "area_m2": 5.0000741492515306e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -16.777013603715602,
+          -86.31908128400744
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5956895745400024,
+        "max_J_peak_A_mm2": 2.48583128615021
+      },
+      "200": {
+        "area_m2": 0.000226692086886659,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.4493141935909,
+          -508.26912162954386
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02057981142385339,
+          -0.1036813002862537
+        ],
+        "loss_W_m": 21.733444782768196,
+        "max_J_peak_A_mm2": 2.845854462049161
+      },
+      "201": {
+        "area_m2": 4.4770956473514154e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -5.134335911510785e-24,
+          -4.8467614016778965e-27
+        ],
+        "voltage_drop_peak_V_m": [
+          0.04808832114562372,
+          -0.03430073642319127
+        ],
+        "loss_W_m": 1.6652117780221003e-12,
+        "max_J_peak_A_mm2": 1.7433018669493833e-11
+      },
+      "203": {
+        "area_m2": 8.894585106409348e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -4.782137916322191e-24,
+          3.618915179919496e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02611992297916517,
+          -0.02161727222261878
+        ],
+        "loss_W_m": 1.3666108028070088e-11,
+        "max_J_peak_A_mm2": 3.4714093490062876e-11
+      },
+      "204": {
+        "area_m2": 0.0001965726684421154,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          3.5155176033503676e-24,
+          -9.871237388083983e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.02397248914592919,
+          -0.02037744652479864
+        ],
+        "loss_W_m": 3.510454212235057e-11,
+        "max_J_peak_A_mm2": 4.0232654720461635e-11
+      },
+      "205": {
+        "area_m2": 5.0000741492515414e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -66.3676047690582,
+          57.69466633929059
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5958696647737036,
+        "max_J_peak_A_mm2": 2.4860544693328754
+      },
+      "300": {
+        "area_m2": 0.00022669208688665902,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.4493141935921,
+          508.26912162954284
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.1000800833896315,
+          0.03401763781980022
+        ],
+        "loss_W_m": 21.7334488831519,
+        "max_J_peak_A_mm2": 2.8458557264162527
+      },
+      "301": {
+        "area_m2": 4.4770956473514106e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -2.4718483148557272e-24,
+          -1.0533628112979962e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0537489929535838,
+          -0.02449574121279265
+        ],
+        "loss_W_m": 1.6651756455340901e-12,
+        "max_J_peak_A_mm2": 1.7437135393933826e-11
+      },
+      "303": {
+        "area_m2": 8.894585106409356e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          5.8532721860930064e-24,
+          4.349160564438966e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.03178070757401528,
+          -0.01181235654185476
+        ],
+        "loss_W_m": 1.3665702409413196e-11,
+        "max_J_peak_A_mm2": 3.4712864032323964e-11
+      },
+      "304": {
+        "area_m2": 0.00019657266844211535,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.0727498569047078e-24,
+          -1.111523948118131e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.02963327067217761,
+          -0.01057253586225981
+        ],
+        "loss_W_m": 3.5103542973092245e-11,
+        "max_J_peak_A_mm2": 4.0231494050569004e-11
+      },
+      "305": {
+        "area_m2": 5.000074149251548e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          83.14777513648743,
+          28.63011098685843
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.5958445107093535,
+        "max_J_peak_A_mm2": 2.4860039783547228
+      },
+      "900": {
+        "area_m2": 0.7800781492441755,
+        "conductivity_S_m": 0,
+        "current_peak_A": [
+          0.0,
+          0.0
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 0.0,
+        "max_J_peak_A_mm2": 0.0
+      }
+    },
+    "mesh": {
+      "aluminium": {
+        "skin_depth_mm": 11.989028650389823,
+        "max_edge_mm": 0.9410475398587079,
+        "max_edge_over_skin": 0.07849239227801076
+      },
+      "copper": {
+        "skin_depth_mm": 9.227342618559465,
+        "max_edge_mm": 0.3694123999486177,
+        "max_edge_over_skin": 0.04003453813512875
+      },
+      "soil": {
+        "skin_depth_mm": 711762.543417177,
+        "max_edge_mm": 34.69625374749548,
+        "max_edge_over_skin": 4.874695088746666e-05
+      }
+    },
+    "min_quality": 0.05645931672161658,
+    "conducting_min_quality": 0.7298284498414592,
+    "loss_conductors_W_m": 65.20033573887343,
+    "loss_screens_W_m": 4.78740375002306,
+    "loss_soil_W_m": 0.0,
+    "loss_semiconductors_W_m": 1.5130056868581364e-10,
+    "loss_total_W_m": 69.9877394890478,
+    "resistance_ohm_km": 0.13545795614079992,
+    "inductance_mH_km": 0.37782225510920353,
+    "energy_time_average_J_m": 0.09760565682927386,
+    "complex_input_power_VA_m": [
+      69.98773948876779,
+      61.327442888485464
+    ],
+    "power_balance_relative": 4.000853340207658e-12,
+    "reactive_balance_relative": 3.997766080331304e-12,
+    "phase_current_relative_error": 4.0017917288706255e-12,
+    "max_B_phasor_mT": 16.433937470002352,
+    "phase_R_ohm_km": [
+      0.1354567001621787,
+      0.13545905611018483,
+      0.13545811214841025
+    ],
+    "phase_L_mH_km": [
+      0.37781736770759294,
+      0.3778252789230123,
+      0.37782411869247345
+    ],
+    "zero_net_current_relative_error": 3.477917541056125e-26,
+    "getdp_real_dofs": 59968,
+    "input_sha256": {
+      "section_3/model.geo": "a3e07d28520a3b897e7bf4e6c6cb2e7d4f43ea9871fc73477ee1e6167016ea08",
+      "section_3/model.pro": "82e1d09711f77d516023ea6d2abae5b5a5fa5f1639b012c359b17d6d4e7e3426",
+      "section_3/settings.inc": "188adf8fc76eb90206932a30cbbcde474e0a6550d9add5cf41fac4e8dda69a86",
+      "section_3/parameters.inc": "cf185016cbaf1f95cca5cb1c6706dcd5d430ed81a5e6404a1ed1cf9a62d752ee",
+      "section_3/analyse.py": "2c65d2a7eeb4b80fc1ad9ddd550ec86defed867092f2098385c4eaafdb52d5ad",
+      "section_3/run.py": "af0fae623c79444134c05c1726ad5497ceb9d012dff4e44bb5c259587209d0e5",
+      "section_3/prepare.py": "a08cbb43806d45245c460ac53a02a4ae068e05ee9934cc46684eaad24b52708b",
+      "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+      "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+      "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c"
+    }
+  },
+  "analytical_trefoil": {
+    "options": {
+      "MeshScale": 0.5,
+      "OuterRadius": 1,
+      "Stranded": 1,
+      "SinglePoint": 0,
+      "Detailed": 1,
+      "Screens": 0,
+      "Freq": 50,
+      "SigmaSoil": 0
+    },
+    "complex_dofs": 30377,
+    "triangles": 60842,
+    "regions": {
+      "100": {
+        "area_m2": 0.00022669208688665896,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          586.8986283848345,
+          0.0
+        ],
+        "voltage_drop_peak_V_m": [
+          0.07345464971993174,
+          0.07101494534170325
+        ],
+        "loss_W_m": 21.55547363750739,
+        "max_J_peak_A_mm2": 2.5889683069452305
+      },
+      "101": {
+        "area_m2": 4.477095647351406e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -8.643391166325582e-26,
+          7.94868869875175e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          -8.901796497294643e-07,
+          0.06012384473720746
+        ],
+        "loss_W_m": 1.8078262545407525e-12,
+        "max_J_peak_A_mm2": 1.7392053684133025e-11
+      },
+      "103": {
+        "area_m2": 8.894585106409357e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          3.554291694563791e-26,
+          -6.72084247699335e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          -8.932111743925242e-07,
+          0.03475690626594268
+        ],
+        "loss_W_m": 1.4611067614803248e-11,
+        "max_J_peak_A_mm2": 3.514543706686713e-11
+      },
+      "104": {
+        "area_m2": 0.0001965726684421156,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          8.56261180963095e-26,
+          -1.9580916062778702e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          -8.947975974447638e-07,
+          0.03227725506940961
+        ],
+        "loss_W_m": 3.747779963535488e-11,
+        "max_J_peak_A_mm2": 4.050187826500456e-11
+      },
+      "105": {
+        "area_m2": 5.0000741492515306e-05,
+        "conductivity_S_m": 1e-12,
+        "current_peak_A": [
+          4.466964204484101e-23,
+          -1.5170031494871164e-18
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 2.832368092799002e-20,
+        "max_J_peak_A_mm2": 4.288252253471525e-20
+      },
+      "200": {
+        "area_m2": 0.000226692086886659,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.44931419241715,
+          -508.26912162750955
+        ],
+        "voltage_drop_peak_V_m": [
+          0.024774658804048624,
+          -0.09912532837316682
+        ],
+        "loss_W_m": 21.55547363750739,
+        "max_J_peak_A_mm2": 2.5889683069452305
+      },
+      "201": {
+        "area_m2": 4.4770956473514154e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          4.227183735830072e-24,
+          -2.4678093470209957e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.05207042146476522,
+          -0.03006542477174678
+        ],
+        "loss_W_m": 1.808135927624346e-12,
+        "max_J_peak_A_mm2": 1.7392555395605105e-11
+      },
+      "203": {
+        "area_m2": 8.894585106409348e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          2.1487308880772008e-24,
+          -1.5364233643318932e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.0301020235865665,
+          -0.01738196034124339
+        ],
+        "loss_W_m": 1.4612983137918772e-11,
+        "max_J_peak_A_mm2": 3.51468560044191e-11
+      },
+      "204": {
+        "area_m2": 0.0001965726684421154,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          9.615974620928947e-24,
+          -3.2311742677852644e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.0279545890758018,
+          -0.0161421344559817
+        ],
+        "loss_W_m": 3.7482549610375037e-11,
+        "max_J_peak_A_mm2": 4.050312963984444e-11
+      },
+      "205": {
+        "area_m2": 5.0000741492515414e-05,
+        "conductivity_S_m": 1e-12,
+        "current_peak_A": [
+          -1.3138463101492116e-18,
+          7.586769240636058e-19
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 2.8329184897524874e-20,
+        "max_J_peak_A_mm2": 4.288910577578973e-20
+      },
+      "300": {
+        "area_m2": 0.00022669208688665902,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.44931419241755,
+          508.2691216275094
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.09823210169517163,
+          0.02810327880733015
+        ],
+        "loss_W_m": 21.555473637507383,
+        "max_J_peak_A_mm2": 2.5889683069452296
+      },
+      "301": {
+        "area_m2": 4.4770956473514106e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -3.9602079619543146e-24,
+          -6.882401190382613e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.05207233715311552,
+          -0.03006551451913337
+        ],
+        "loss_W_m": 1.808277723676874e-12,
+        "max_J_peak_A_mm2": 1.739632496413969e-11
+      },
+      "303": {
+        "area_m2": 8.894585106409356e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          2.53485621307754e-24,
+          4.1359030627651384e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.03010404666406518,
+          -0.01738212846209881
+        ],
+        "loss_W_m": 1.461386650139487e-11,
+        "max_J_peak_A_mm2": 3.5147581817461533e-11
+      },
+      "304": {
+        "area_m2": 0.00019657266844211535,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -1.4863401631812216e-24,
+          3.7223127564886245e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.02795660956923866,
+          -0.01614230781007928
+        ],
+        "loss_W_m": 3.7484804331191256e-11,
+        "max_J_peak_A_mm2": 4.050364115836189e-11
+      },
+      "305": {
+        "area_m2": 5.000074149251548e-05,
+        "conductivity_S_m": 1e-12,
+        "current_peak_A": [
+          1.3139474381558578e-18,
+          7.586853599058395e-19
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 2.833227941875229e-20,
+        "max_J_peak_A_mm2": 4.289170997235665e-20
+      },
+      "900": {
+        "area_m2": 3.1349437201184465,
+        "conductivity_S_m": 0,
+        "current_peak_A": [
+          0.0,
+          0.0
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 0.0,
+        "max_J_peak_A_mm2": 0.0
+      }
+    },
+    "mesh": {
+      "aluminium": {
+        "skin_depth_mm": 11.989028650389823,
+        "max_edge_mm": 0.9410475398587079,
+        "max_edge_over_skin": 0.07849239227801076
+      },
+      "copper": {
+        "skin_depth_mm": 9.227342618559465,
+        "max_edge_mm": 0.3694123999486177,
+        "max_edge_over_skin": 0.04003453813512875
+      },
+      "soil": {
+        "skin_depth_mm": 711762.543417177,
+        "max_edge_mm": 77.61275771118306,
+        "max_edge_over_skin": 0.0001090430487372427
+      }
+    },
+    "min_quality": 0.05645931672161658,
+    "conducting_min_quality": 0.7298284498414592,
+    "loss_conductors_W_m": 64.66642091252217,
+    "loss_screens_W_m": 8.498514524426719e-20,
+    "loss_soil_W_m": 0.0,
+    "loss_semiconductors_W_m": 1.6170731073688003e-10,
+    "loss_total_W_m": 64.66642091268386,
+    "resistance_ohm_km": 0.12515879597945298,
+    "inductance_mH_km": 0.38517077648397574,
+    "energy_time_average_J_m": 0.09950405546992908,
+    "complex_input_power_VA_m": [
+      64.66642091268389,
+      62.52024193334417
+    ],
+    "power_balance_relative": 4.395126408616391e-16,
+    "reactive_balance_relative": 1.1365002978037812e-15,
+    "phase_current_relative_error": 0.0,
+    "max_B_phasor_mT": 16.476445940883952,
+    "phase_R_ohm_km": [
+      0.12515730343770182,
+      0.12516254013026198,
+      0.1251565443703952
+    ],
+    "phase_L_mH_km": [
+      0.38515610832614755,
+      0.3851734786781261,
+      0.3851827424476547
+    ],
+    "zero_net_current_relative_error": 3.33636889467507e-26,
+    "getdp_real_dofs": 60754,
+    "input_sha256": {
+      "section_3/model.geo": "a3e07d28520a3b897e7bf4e6c6cb2e7d4f43ea9871fc73477ee1e6167016ea08",
+      "section_3/model.pro": "82e1d09711f77d516023ea6d2abae5b5a5fa5f1639b012c359b17d6d4e7e3426",
+      "section_3/settings.inc": "188adf8fc76eb90206932a30cbbcde474e0a6550d9add5cf41fac4e8dda69a86",
+      "section_3/parameters.inc": "cf185016cbaf1f95cca5cb1c6706dcd5d430ed81a5e6404a1ed1cf9a62d752ee",
+      "section_3/analyse.py": "2c65d2a7eeb4b80fc1ad9ddd550ec86defed867092f2098385c4eaafdb52d5ad",
+      "section_3/run.py": "af0fae623c79444134c05c1726ad5497ceb9d012dff4e44bb5c259587209d0e5",
+      "section_3/prepare.py": "a08cbb43806d45245c460ac53a02a4ae068e05ee9934cc46684eaad24b52708b",
+      "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+      "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+      "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c"
+    }
+  },
+  "frequency_5": {
+    "options": {
+      "MeshScale": 0.5,
+      "OuterRadius": 0.5,
+      "Stranded": 0,
+      "SinglePoint": 0,
+      "Detailed": 1,
+      "Screens": 1,
+      "Freq": 5
+    },
+    "complex_dofs": 29984,
+    "triangles": 60050,
+    "regions": {
+      "100": {
+        "area_m2": 0.00022669208688665896,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          586.8986283871815,
+          -2.3869795029440866e-14
+        ],
+        "voltage_drop_peak_V_m": [
+          0.07351876566757032,
+          0.007089154237874501
+        ],
+        "loss_W_m": 21.557309075779553,
+        "max_J_peak_A_mm2": 2.6110486559937085
+      },
+      "101": {
+        "area_m2": 4.477095647351406e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          7.270142102516845e-27,
+          1.0097419586828951e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          5.938187483050866e-05,
+          0.006000068281248744
+        ],
+        "loss_W_m": 1.785563669952739e-14,
+        "max_J_peak_A_mm2": 1.7380359214719618e-12
+      },
+      "103": {
+        "area_m2": 8.894585106409357e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          4.745787205809607e-27,
+          -4.325734550997523e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          5.938162385306521e-05,
+          0.003463374444329848
+        ],
+        "loss_W_m": 1.443809217470696e-13,
+        "max_J_peak_A_mm2": 3.5047581918800545e-12
+      },
+      "104": {
+        "area_m2": 0.0001965726684421156,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -5.836308521187134e-26,
+          -2.0388709629725018e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          5.938146488952722e-05,
+          0.003215409329918861
+        ],
+        "loss_W_m": 3.704025421814717e-13,
+        "max_J_peak_A_mm2": 4.042117627441399e-12
+      },
+      "105": {
+        "area_m2": 5.0000741492515306e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -0.17602868099083172,
+          -8.9895399315731
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 0.016710168753211116,
+        "max_J_peak_A_mm2": 0.2539475194468243
+      },
+      "200": {
+        "area_m2": 0.000226692086886659,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.4493141935916,
+          -508.2691216295416
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.03061972719463245,
+          -0.06721385765903076
+        ],
+        "loss_W_m": 21.55730909633729,
+        "max_J_peak_A_mm2": 2.6110494108650486
+      },
+      "201": {
+        "area_m2": 4.4770956473514154e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -7.1287782283012395e-25,
+          3.5280384036380355e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          0.005166784670797,
+          -0.003051623332252316
+        ],
+        "loss_W_m": 1.7858095271754155e-14,
+        "max_J_peak_A_mm2": 1.7380667074765081e-12
+      },
+      "203": {
+        "area_m2": 8.894585106409348e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -3.7320062792919803e-25,
+          5.551561288838557e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          0.002969944877750921,
+          -0.001783276892303476
+        ],
+        "loss_W_m": 1.4439612739359337e-13,
+        "max_J_peak_A_mm2": 3.50485327582276e-12
+      },
+      "204": {
+        "area_m2": 0.0001965726684421154,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -4.0955133844178226e-25,
+          7.084349582119192e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          0.002755201433690209,
+          -0.001659294304307444
+        ],
+        "loss_W_m": 3.7044053020347793e-13,
+        "max_J_peak_A_mm2": 4.0422143132109776e-12
+      },
+      "205": {
+        "area_m2": 5.0000741492515414e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -7.697945628492262,
+          4.6477021247407215
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 0.01671329038493898,
+        "max_J_peak_A_mm2": 0.25397616943226436
+      },
+      "300": {
+        "area_m2": 0.00022669208688665902,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.4493141935915,
+          508.2691216295432
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.04289883652636329,
+          0.06012437233274751
+        ],
+        "loss_W_m": 21.557309152093545,
+        "max_J_peak_A_mm2": 2.61105055903874
+      },
+      "301": {
+        "area_m2": 4.4770956473514106e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -7.325677910244404e-26,
+          -2.320387021053293e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.005225966056884806,
+          -0.002948775092332053
+        ],
+        "loss_W_m": 1.7857963585843017e-14,
+        "max_J_peak_A_mm2": 1.7380141952749442e-12
+      },
+      "303": {
+        "area_m2": 8.894585106409356e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.3712295798913716e-25,
+          1.819555009546577e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.003029137051279109,
+          -0.001680436513425537
+        ],
+        "loss_W_m": 1.4439335859455709e-13,
+        "max_J_peak_A_mm2": 3.5048704500067996e-12
+      },
+      "304": {
+        "area_m2": 0.00019657266844211535,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          4.572111588916149e-24,
+          1.676171651413606e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.002814393344007229,
+          -0.001556454448028624
+        ],
+        "loss_W_m": 3.7043395959362396e-13,
+        "max_J_peak_A_mm2": 4.0421110326282566e-12
+      },
+      "305": {
+        "area_m2": 5.000074149251548e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          7.873410502121992,
+          4.342846206826677
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 0.016711787091583233,
+        "max_J_peak_A_mm2": 0.25396485318452167
+      },
+      "900": {
+        "area_m2": 0.7800781492441755,
+        "conductivity_S_m": 0.01,
+        "current_peak_A": [
+          3.6560586206734656e-11,
+          2.585923578997543e-11
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.1690273999971895e-09,
+        "max_J_peak_A_mm2": 3.905425450574965e-11
+      }
+    },
+    "mesh": {
+      "aluminium": {
+        "skin_depth_mm": 37.912637468246395,
+        "max_edge_mm": 0.9410475398587079,
+        "max_edge_over_skin": 0.024821473859392644
+      },
+      "copper": {
+        "skin_depth_mm": 29.179419425390194,
+        "max_edge_mm": 0.3694123999486177,
+        "max_edge_over_skin": 0.012660032557987668
+      },
+      "soil": {
+        "skin_depth_mm": 2250790.7903927653,
+        "max_edge_mm": 34.69625374749548,
+        "max_edge_over_skin": 1.5415139379276096e-05
+      }
+    },
+    "min_quality": 0.05645931672161658,
+    "conducting_min_quality": 0.7298284498414592,
+    "loss_conductors_W_m": 64.67192732421039,
+    "loss_screens_W_m": 0.050135246229733324,
+    "loss_soil_W_m": 1.1690273999971895e-09,
+    "loss_semiconductors_W_m": 1.5980191352709183e-12,
+    "loss_total_W_m": 64.72206257161073,
+    "resistance_ohm_km": 0.12526648777589536,
+    "inductance_mH_km": 0.3844950432197429,
+    "energy_time_average_J_m": 0.09932948822778034,
+    "complex_input_power_VA_m": [
+      64.72206257135187,
+      6.241055809999532
+    ],
+    "power_balance_relative": 3.99963967782551e-12,
+    "reactive_balance_relative": 4.012065709774088e-12,
+    "phase_current_relative_error": 4.00118197698736e-12,
+    "max_B_phasor_mT": 16.460397147155025,
+    "phase_R_ohm_km": [
+      0.12526654879037036,
+      0.1252665592671674,
+      0.12526635526864516
+    ],
+    "phase_L_mH_km": [
+      0.38448682097064496,
+      0.38450379595425277,
+      0.3844945127297029
+    ],
+    "zero_net_current_relative_error": 8.297305427641568e-27,
+    "getdp_real_dofs": 59968,
+    "input_sha256": {
+      "section_3/model.geo": "a3e07d28520a3b897e7bf4e6c6cb2e7d4f43ea9871fc73477ee1e6167016ea08",
+      "section_3/model.pro": "82e1d09711f77d516023ea6d2abae5b5a5fa5f1639b012c359b17d6d4e7e3426",
+      "section_3/settings.inc": "188adf8fc76eb90206932a30cbbcde474e0a6550d9add5cf41fac4e8dda69a86",
+      "section_3/parameters.inc": "cf185016cbaf1f95cca5cb1c6706dcd5d430ed81a5e6404a1ed1cf9a62d752ee",
+      "section_3/analyse.py": "2c65d2a7eeb4b80fc1ad9ddd550ec86defed867092f2098385c4eaafdb52d5ad",
+      "section_3/run.py": "af0fae623c79444134c05c1726ad5497ceb9d012dff4e44bb5c259587209d0e5",
+      "section_3/prepare.py": "a08cbb43806d45245c460ac53a02a4ae068e05ee9934cc46684eaad24b52708b",
+      "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+      "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+      "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c"
+    }
+  },
+  "frequency_200": {
+    "options": {
+      "MeshScale": 0.5,
+      "OuterRadius": 0.5,
+      "Stranded": 0,
+      "SinglePoint": 0,
+      "Detailed": 1,
+      "Screens": 1,
+      "Freq": 200
+    },
+    "complex_dofs": 29984,
+    "triangles": 60050,
+    "regions": {
+      "100": {
+        "area_m2": 0.00022669208688665896,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          586.8986283871807,
+          -2.9061197892588098e-12
+        ],
+        "voltage_drop_peak_V_m": [
+          0.1342060394799983,
+          0.2368855440004386
+        ],
+        "loss_W_m": 23.700247471600424,
+        "max_J_peak_A_mm2": 3.643057882349216
+      },
+      "101": {
+        "area_m2": 4.477095647351406e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.137373342260413e-24,
+          -7.224905662767851e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.05496064350221824,
+          0.194755777961379
+        ],
+        "loss_W_m": 1.2366989191566666e-11,
+        "max_J_peak_A_mm2": 5.2924092241011615e-11
+      },
+      "103": {
+        "area_m2": 8.894585106409357e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -3.5736787401705024e-24,
+          -3.761086847702048e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.05496066814605349,
+          0.09328798631913368
+        ],
+        "loss_W_m": 1.21348892598471e-10,
+        "max_J_peak_A_mm2": 1.0951354286812607e-10
+      },
+      "104": {
+        "area_m2": 0.0001965726684421156,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -2.0802299936001532e-23,
+          -2.5280707471151908e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          0.05496066627989722,
+          0.08336938605394309
+        ],
+        "loss_W_m": 3.164587579017623e-10,
+        "max_J_peak_A_mm2": 1.2994244488442157e-10
+      },
+      "105": {
+        "area_m2": 5.0000741492515306e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -162.87292889344724,
+          -225.42746650445955
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 15.682554733617708,
+        "max_J_peak_A_mm2": 7.875952858914296
+      },
+      "200": {
+        "area_m2": 0.000226692086886659,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.44931419358966,
+          -508.2691216295468
+        ],
+        "voltage_drop_peak_V_m": [
+          0.1380445642693756,
+          -0.2346714415223682
+        ],
+        "loss_W_m": 23.700227921963275,
+        "max_J_peak_A_mm2": 3.643216614309598
+      },
+      "201": {
+        "area_m2": 4.4770956473514154e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          7.252370644044026e-24,
+          2.1823351004621675e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          0.1411814609538411,
+          -0.1449782023177857
+        ],
+        "loss_W_m": 1.2368259264657366e-11,
+        "max_J_peak_A_mm2": 5.28901528132862e-11
+      },
+      "203": {
+        "area_m2": 8.894585106409348e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -3.631839876990637e-24,
+          1.0242822428879288e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          0.05330787071094212,
+          -0.09424435530647388
+        ],
+        "loss_W_m": 1.2136007403558106e-10,
+        "max_J_peak_A_mm2": 1.0951354320197158e-10
+      },
+      "204": {
+        "area_m2": 0.0001965726684421154,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -8.116709760676584e-24,
+          7.987462789965173e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.04471813919279955,
+          -0.08928505830411192
+        ],
+        "loss_W_m": 3.164875689905759e-10,
+        "max_J_peak_A_mm2": 1.2994240120134254e-10
+      },
+      "205": {
+        "area_m2": 5.0000741492515414e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -113.78484172904564,
+          253.77484920915592
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 15.683392124105438,
+        "max_J_peak_A_mm2": 7.876601339705277
+      },
+      "300": {
+        "area_m2": 0.00022669208688665902,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.4493141935946,
+          508.26912162954216
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.2722519739591955,
+          -0.002214052334764181
+        ],
+        "loss_W_m": 23.700261795294413,
+        "max_J_peak_A_mm2": 3.643208670783681
+      },
+      "301": {
+        "area_m2": 4.4770956473514106e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -1.1412507513817554e-23,
+          -2.2941337301275377e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.1961438330434531,
+          -0.04977750284729093
+        ],
+        "loss_W_m": 1.2368165383927006e-11,
+        "max_J_peak_A_mm2": 5.2913244633874416e-11
+      },
+      "303": {
+        "area_m2": 8.894585106409356e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.6763332101269951e-23,
+          -3.90972086402017e-25
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.1082707337287363,
+          0.0009560729502332819
+        ],
+        "loss_W_m": 1.213568835854695e-10,
+        "max_J_peak_A_mm2": 1.0951081602991992e-10
+      },
+      "304": {
+        "area_m2": 0.00019657266844211535,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          2.1196503196671334e-23,
+          -2.3781442610899546e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0996809884250212,
+          0.005915356015695344
+        ],
+        "loss_W_m": 3.1647901976007327e-10,
+        "max_J_peak_A_mm2": 1.2994109038617792e-10
+      },
+      "305": {
+        "area_m2": 5.000074149251548e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          276.66429306657767,
+          -28.346480867232078
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 15.68297781217791,
+        "max_J_peak_A_mm2": 7.87624628572446
+      },
+      "900": {
+        "area_m2": 0.7800781492441755,
+        "conductivity_S_m": 0.01,
+        "current_peak_A": [
+          1.3880169924959178e-09,
+          -6.137892712595005e-09
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 1.0618619121331433e-06,
+        "max_J_peak_A_mm2": 1.207588922682442e-09
+      }
+    },
+    "mesh": {
+      "aluminium": {
+        "skin_depth_mm": 5.994514325194912,
+        "max_edge_mm": 0.9410475398587079,
+        "max_edge_over_skin": 0.15698478455602152
+      },
+      "copper": {
+        "skin_depth_mm": 4.613671309279733,
+        "max_edge_mm": 0.3694123999486177,
+        "max_edge_over_skin": 0.0800690762702575
+      },
+      "soil": {
+        "skin_depth_mm": 355881.2717085885,
+        "max_edge_mm": 34.69625374749548,
+        "max_edge_over_skin": 9.749390177493331e-05
+      }
+    },
+    "min_quality": 0.05645931672161658,
+    "conducting_min_quality": 0.7298284498414592,
+    "loss_conductors_W_m": 71.10073718885812,
+    "loss_screens_W_m": 47.048924669901055,
+    "loss_soil_W_m": 1.0618619121331433e-06,
+    "loss_semiconductors_W_m": 1.350594610712084e-09,
+    "loss_total_W_m": 118.14966292197167,
+    "resistance_ohm_km": 0.2286730786702892,
+    "inductance_mH_km": 0.3211921467531271,
+    "energy_time_average_J_m": 0.08297597621183596,
+    "complex_input_power_VA_m": [
+      118.14966292149904,
+      208.54137383240203
+    ],
+    "power_balance_relative": 4.000219674179847e-12,
+    "reactive_balance_relative": 4.000192279153561e-12,
+    "phase_current_relative_error": 4.005091572813174e-12,
+    "max_B_phasor_mT": 16.54676636925421,
+    "phase_R_ohm_km": [
+      0.2286698809457742,
+      0.22867517706719764,
+      0.22867417799515138
+    ],
+    "phase_L_mH_km": [
+      0.3211926510923899,
+      0.3211930256895736,
+      0.3211907634735628
+    ],
+    "zero_net_current_relative_error": 5.57832588114141e-26,
+    "getdp_real_dofs": 59968,
+    "input_sha256": {
+      "section_3/model.geo": "a3e07d28520a3b897e7bf4e6c6cb2e7d4f43ea9871fc73477ee1e6167016ea08",
+      "section_3/model.pro": "82e1d09711f77d516023ea6d2abae5b5a5fa5f1639b012c359b17d6d4e7e3426",
+      "section_3/settings.inc": "188adf8fc76eb90206932a30cbbcde474e0a6550d9add5cf41fac4e8dda69a86",
+      "section_3/parameters.inc": "cf185016cbaf1f95cca5cb1c6706dcd5d430ed81a5e6404a1ed1cf9a62d752ee",
+      "section_3/analyse.py": "2c65d2a7eeb4b80fc1ad9ddd550ec86defed867092f2098385c4eaafdb52d5ad",
+      "section_3/run.py": "af0fae623c79444134c05c1726ad5497ceb9d012dff4e44bb5c259587209d0e5",
+      "section_3/prepare.py": "a08cbb43806d45245c460ac53a02a4ae068e05ee9934cc46684eaad24b52708b",
+      "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+      "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+      "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c"
+    }
+  },
+  "frequency_1000": {
+    "options": {
+      "MeshScale": 0.25,
+      "OuterRadius": 0.5,
+      "Stranded": 0,
+      "SinglePoint": 0,
+      "Detailed": 1,
+      "Screens": 1,
+      "Freq": 1000
+    },
+    "complex_dofs": 106528,
+    "triangles": 213234,
+    "regions": {
+      "100": {
+        "area_m2": 0.00022690805307447798,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          586.8986283871831,
+          3.623767952376511e-13
+        ],
+        "voltage_drop_peak_V_m": [
+          0.2914352022605973,
+          0.8016767406712973
+        ],
+        "loss_W_m": 40.14904201948458,
+        "max_J_peak_A_mm2": 6.597353388206603
+      },
+      "101": {
+        "area_m2": 4.47348374104607e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -5.829846172651563e-24,
+          5.79543416669965e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          0.1550603095949169,
+          0.6537522084209303
+        ],
+        "loss_W_m": 2.2582329475530148e-11,
+        "max_J_peak_A_mm2": 9.503206473013575e-11
+      },
+      "103": {
+        "area_m2": 8.896907613189581e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -1.453382185649812e-23,
+          -7.987462789965173e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          0.1550603651427533,
+          0.1468149810397557
+        ],
+        "loss_W_m": 1.970666926451985e-10,
+        "max_J_peak_A_mm2": 1.6535062603719657e-10
+      },
+      "104": {
+        "area_m2": 0.00019639793805360307,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          2.6226795296759434e-22,
+          1.2231933308127897e-22
+        ],
+        "voltage_drop_peak_V_m": [
+          0.155060362159587,
+          0.0972498962821445
+        ],
+        "loss_W_m": 5.789628428320672e-10,
+        "max_J_peak_A_mm2": 2.156350964300111e-10
+      },
+      "105": {
+        "area_m2": 5.0000200102976014e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          -458.8496208325657,
+          -180.25193868600496
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 45.37250809385367,
+        "max_J_peak_A_mm2": 12.64826583771165
+      },
+      "200": {
+        "area_m2": 0.00022690805307447798,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.4493141935854,
+          -508.2691216295493
+        ],
+        "voltage_drop_peak_V_m": [
+          0.548554890978367,
+          -0.6532276559972281
+        ],
+        "loss_W_m": 40.148851890676184,
+        "max_J_peak_A_mm2": 6.597204422349533
+      },
+      "201": {
+        "area_m2": 4.473483741046077e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -1.130135511900574e-22,
+          7.274019511638187e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          0.4886359940667012,
+          -0.4611621956246968
+        ],
+        "loss_W_m": 2.258366550826733e-11,
+        "max_J_peak_A_mm2": 9.493108957186929e-11
+      },
+      "203": {
+        "area_m2": 8.896907613189561e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -2.4634472617594855e-23,
+          4.006656092053728e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          0.04961475141954632,
+          -0.2076930865362398
+        ],
+        "loss_W_m": 1.9706877322265376e-10,
+        "max_J_peak_A_mm2": 1.6534671888346287e-10
+      },
+      "204": {
+        "area_m2": 0.00019639793805360285,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          9.098986738083304e-24,
+          -7.34122793640812e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          0.006690149505808553,
+          -0.1829105562280712
+        ],
+        "loss_W_m": 5.789662135703967e-10,
+        "max_J_peak_A_mm2": 2.1563345922670815e-10
+      },
+      "205": {
+        "area_m2": 5.000020010297616e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          73.32376432330436,
+          487.499582395625
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 45.372289350216974,
+        "max_J_peak_A_mm2": 12.648393219302104
+      },
+      "300": {
+        "area_m2": 0.00022690805307447798,
+        "conductivity_S_m": 35245385.32138858,
+        "current_peak_A": [
+          -293.44931419360495,
+          508.26912162954096
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.8399890957683689,
+          -0.1484509447312325
+        ],
+        "loss_W_m": 40.14840481038084,
+        "max_J_peak_A_mm2": 6.5971909052135205
+      },
+      "301": {
+        "area_m2": 4.473483741046077e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          -1.819797347616661e-23,
+          2.5849394142282115e-24
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.6436973276385001,
+          -0.1925914144550897
+        ],
+        "loss_W_m": 2.2582545414679254e-11,
+        "max_J_peak_A_mm2": 9.501627997385914e-11
+      },
+      "303": {
+        "area_m2": 8.896907613189581e-05,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          1.9955732277841793e-23,
+          -1.673748270712767e-23
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.2046751834804116,
+          0.0608781260363629
+        ],
+        "loss_W_m": 1.970682813425415e-10,
+        "max_J_peak_A_mm2": 1.6534527330787976e-10
+      },
+      "304": {
+        "area_m2": 0.0001963979380536028,
+        "conductivity_S_m": 0.002,
+        "current_peak_A": [
+          2.721424215299461e-22,
+          -1.3446854832815156e-22
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.1617506327118166,
+          0.08566062936131537
+        ],
+        "loss_W_m": 5.789653953122325e-10,
+        "max_J_peak_A_mm2": 2.1563354337403305e-10
+      },
+      "305": {
+        "area_m2": 5.000020010297622e-05,
+        "conductivity_S_m": 59500000.0,
+        "current_peak_A": [
+          385.52607841543636,
+          -307.2476869360621
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 45.37215314698875,
+        "max_J_peak_A_mm2": 12.648332610992098
+      },
+      "900": {
+        "area_m2": 0.7803962991967823,
+        "conductivity_S_m": 0.01,
+        "current_peak_A": [
+          -2.3461477294340333e-10,
+          -1.1469823658296566e-09
+        ],
+        "voltage_drop_peak_V_m": [
+          -0.0,
+          -0.0
+        ],
+        "loss_W_m": 2.5124537794226527e-06,
+        "max_J_peak_A_mm2": 1.907256784546963e-09
+      }
+    },
+    "mesh": {
+      "aluminium": {
+        "skin_depth_mm": 2.6808283046464205,
+        "max_edge_mm": 0.4768336829346029,
+        "max_edge_over_skin": 0.17786804254049135
+      },
+      "copper": {
+        "skin_depth_mm": 2.063296534677988,
+        "max_edge_mm": 0.18994709296108125,
+        "max_edge_over_skin": 0.09206000677489903
+      },
+      "soil": {
+        "skin_depth_mm": 159154.94309189534,
+        "max_edge_mm": 20.035609735730112,
+        "max_edge_over_skin": 0.0001258874487119237
+      }
+    },
+    "min_quality": 0.02831281425515287,
+    "conducting_min_quality": 0.7359288719083408,
+    "loss_conductors_W_m": 120.4462987205416,
+    "loss_screens_W_m": 136.11695059105938,
+    "loss_soil_W_m": 2.5124537794226527e-06,
+    "loss_semiconductors_W_m": 2.395846739323567e-09,
+    "loss_total_W_m": 256.5632518264506,
+    "resistance_ohm_km": 0.49656602666366784,
+    "inductance_mH_km": 0.21739840532452728,
+    "energy_time_average_J_m": 0.05616216053552507,
+    "complex_input_power_VA_m": [
+      256.5632518254155,
+      705.7545237897181
+    ],
+    "power_balance_relative": 4.034555416983523e-12,
+    "reactive_balance_relative": 4.005069398752324e-12,
+    "phase_current_relative_error": 4.0094447304188346e-12,
+    "max_B_phasor_mT": 14.47046908148957,
+    "phase_R_ohm_km": [
+      0.49656821155407566,
+      0.49656667261434206,
+      0.4965631958165751
+    ],
+    "phase_L_mH_km": [
+      0.21739838852711388,
+      0.21739826874295287,
+      0.21739855870090297
+    ],
+    "zero_net_current_relative_error": 5.172121974674104e-25,
+    "getdp_real_dofs": 213056,
+    "input_sha256": {
+      "section_3/model.geo": "a3e07d28520a3b897e7bf4e6c6cb2e7d4f43ea9871fc73477ee1e6167016ea08",
+      "section_3/model.pro": "82e1d09711f77d516023ea6d2abae5b5a5fa5f1639b012c359b17d6d4e7e3426",
+      "section_3/settings.inc": "188adf8fc76eb90206932a30cbbcde474e0a6550d9add5cf41fac4e8dda69a86",
+      "section_3/parameters.inc": "cf185016cbaf1f95cca5cb1c6706dcd5d430ed81a5e6404a1ed1cf9a62d752ee",
+      "section_3/analyse.py": "2c65d2a7eeb4b80fc1ad9ddd550ec86defed867092f2098385c4eaafdb52d5ad",
+      "section_3/run.py": "af0fae623c79444134c05c1726ad5497ceb9d012dff4e44bb5c259587209d0e5",
+      "section_3/prepare.py": "a08cbb43806d45245c460ac53a02a4ae068e05ee9934cc46684eaad24b52708b",
+      "shared/Jacobian_Integration.pro": "cb852c31ab0de3a872305ee39c91efb7fcc74c74d8faf772f38cafe421b765cd",
+      "shared/materials.json": "8424ce855d5586c2b5a3ffa59a11cdfd5fa892dcee1bd76dd98c3387e6ed3fd6",
+      "section_1/cable_inputs.json": "fe0cef57e5a267bc0c42c521500965f54b5285601d2d323aec9516112bfb1b8c"
+    }
+  }
+}

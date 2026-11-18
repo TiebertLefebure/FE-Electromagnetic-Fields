@@ -3,16 +3,15 @@
 \usepackage[utf8]{inputenc}
 \usepackage{newtxtext,newtxmath,microtype}
 \usepackage[margin=22mm,headheight=14pt]{geometry}
-\usepackage{amsmath,booktabs,tabularx,array,caption,float,tikz,pgfplots,siunitx}
+\usepackage{amsmath,booktabs,tabularx,array,caption,float,tikz,pgfplots,siunitx,listings}
 \pgfplotsset{compat=1.18}
-\usetikzlibrary{arrows.meta,positioning}
 \usepackage{xcolor,fancyhdr,lastpage}
 \usepackage[hidelinks]{hyperref}
 \definecolor{accent}{HTML}{254C58}
 \definecolor{blueplot}{HTML}{2166AC}
 \definecolor{redplot}{HTML}{B2182B}
 \definecolor{greenplot}{HTML}{28734F}
-\hypersetup{pdftitle={Section 2 -- Electrodynamic analysis of directly buried NKT cables},pdfauthor={Tiebert Lefebure}}
+\hypersetup{pdftitle={Section 2 -- Electrodynamic analysis},pdfauthor={Tiebert Lefebure}}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small Finite Elements for Electromagnetic Fields}
 \fancyhead[R]{\small NKT 33 kV XLPE-AL}
@@ -24,288 +23,312 @@
 \setlength{\tabcolsep}{5pt}\renewcommand{\arraystretch}{1.15}
 \captionsetup{font=small,labelfont=bf,skip=5pt}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
-\newcommand{\pagetitle}[2]{{\LARGE\bfseries #1}\par{\large #2}\par\medskip}
+\newcommand{\pagetitle}[1]{{\LARGE\bfseries #1}\par\medskip}
 \newcommand{\subhead}[1]{\par\medskip{\large\bfseries #1}\par\smallskip}
 \newcommand{\unitfield}{\ensuremath{\mathrm{kV/mm}}}
 \newcommand{\source}[2]{\href{#1}{\textit{#2}}}
-\pgfplotsset{report/.style={width=0.95\linewidth,height=5.2cm,grid=major,
+\lstdefinestyle{command}{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,
+ backgroundcolor=\color{accent!5},aboveskip=4pt,belowskip=5pt,
+ xleftmargin=5pt,xrightmargin=5pt,breaklines=true}
+\newcommand{\guidetitle}{\par\smallskip{\small\bfseries\color{accent}Code guide}\par}
+\newcommand{\codeguide}[3]{%
+ \begingroup\small\setlength{\tabcolsep}{0pt}\renewcommand{\arraystretch}{1.1}%
+ \begin{tabularx}{\linewidth}{@{}p{20mm}Y@{}}
+ \textbf{Computes} & #1\\[2pt]
+ \textbf{Read} & #2\\[2pt]
+ \textbf{Inspect} & #3
+ \end{tabularx}\par\endgroup\smallskip}
+\pgfplotsset{report/.style={width=0.94\linewidth,height=4.3cm,grid=major,
  grid style={gray!20},axis line style={gray!70},tick label style={font=\small},
  label style={font=\small},legend style={font=\small,draw=none,fill=white},
  scaled ticks=false,/pgf/number format/1000 sep={\,},
- every axis plot/.append style={line width=1pt},unbounded coords=jump}}
+ every axis plot/.append style={line width=1pt}}}
 \input{result_values.tex}
+\input{result_tables.tex}
 \input{current_rows.tex}
 \input{../assignment_questions.tex}
 \begin{document}
 
-\pagetitle{Domain, equations and boundary conditions}{Q2.1 --- A screened interior electric-field problem}
+\pagetitle{Q2.1 --- Model and boundary conditions}
 \assignmentquestion{\QuestionTwoOne}
-\questionfiles{\path{section_2/cable.geo} defines the domain; \path{section_2/cable.pro} defines equations/BCs; \path{section_2/settings.inc} controls cases. All Section 2 solves also use \path{section_1/cable_inputs.json}, \path{shared/materials.json}, \path{section_2/prepare.py} and \path{shared/Jacobian_Integration.pro}.}
-The baseline is three NKT \(33~\mathrm{kV}\), \(1\times240+50~\mathrm{mm^2}\)
-single-core cables, touching in trefoil and directly buried, without armour or
-pipe [1,2]. All three phase interiors are solved in their physical positions.
-The copper screens are ideal grounded electrodes. This is a uniform 2D
-cross-section; joints, terminations, axial voltage drop and helical lay are excluded.
+Run all commands in this report from \path{Source-code/section_2}.
+\texttt{run.py} meshes with Gmsh, solves with GetDP and saves the results.
+\texttt{--open} also opens the relevant Gmsh view. All paths below are relative to this folder.
+\guidetitle
+\begin{lstlisting}[style=command]
+python3 run.py --question 2.1 --open
+\end{lstlisting}
+\codeguide
+ {The healthy cable at 50 Hz; saves case \texttt{healthy} and opens its field map.}
+ {\path{cable.geo}, line \CodeRegions{}, builds the layers and phase positions.
+  In \path{cable.pro}, line \CodeBC{} sets electrode voltages; line \CodeWeak{} defines the weak form.}
+ {\path{results/healthy/view.geo}. Gmsh first shows \texttt{|E phasor|}.
+  Toggle \texttt{Re(V)} to see the phase voltages and grounded screens.}
 
-For peak phasors, \(x(t)=\Re\{\widehat x e^{\mathrm j\omega t}\}\), solve [1]
+\subhead{Equation and excitation}
+For \(x(t)=\Re\{\widehat x e^{\mathrm j\omega t}\}\), solve [1]
 \[
- -\nabla\!\cdot\!\big[(\sigma+\mathrm j\omega\varepsilon)\nabla\widehat v\big]=0,
+ -\nabla\!\cdot\![(\sigma+\mathrm j\omega\varepsilon)\nabla\widehat v]=0,
  \qquad \widehat{\mathbf E}=-\nabla\widehat v,\qquad \omega=2\pi(50)~\mathrm{rad/s}.
 \]
-The weak form is \(\int_\Omega(\sigma+\mathrm j\omega\varepsilon)
-\nabla\widehat v\cdot\nabla w\,\mathrm dA=0\), for test functions vanishing on
-the electrode boundaries. It uses the TA's resistive term and displacement-current
-term, with first-order nodal triangles and the supplied quadrature [1,8].
+The weak form is
+\(\int_\Omega(\sigma+\mathrm j\omega\varepsilon)\nabla\widehat v\cdot\nabla w\,\mathrm dA=0\),
+with \(w=0\) on the electrodes. The two Galerkin terms in \path{cable.pro}
+represent conduction and displacement current. \texttt{DtDof} becomes
+\(\mathrm j\omega\) in the frequency-domain solve. The model uses P1 nodal
+triangles and the TA's unchanged integration file.
+
+Apply phase-to-ground peak voltages
+\[
+ \widehat V_k=\sqrt{\frac23}(33~\mathrm{kV})e^{-\mathrm j2\pi k/3},
+ \quad k=0,1,2\quad\text{for A, B, C}.
+\]
+Their magnitude is \(26.9444~\mathrm{kV}\). Phase A is above B and C in trefoil.
+The axial 415 A load belongs to the magnetic/thermal analysis; it does not
+excite this transverse electric problem.
 
 \begin{table}[H]\centering\small
-\caption{Solved regions in each phase; \(\varepsilon=\varepsilon_0\varepsilon_r\).}
+\caption{Solved layers in each phase, using the Section 1 dimensions and properties [2--6].}
 \begin{tabularx}{\linewidth}{@{}Y l c c@{}}
 \toprule
 Region & Radius interval [mm] & \(\varepsilon_r\) & \(\sigma\) [S/m]\\
 \midrule
-Inner semiconductor & 8.500--9.300 & 2.25 & \(0.002\)\\
+Inner semiconductor & 8.500--9.300 & 2.25 & 0.002\\
 XLPE & 9.300--17.300 & 2.5 & \(10^{-18}\)\\
-Outer semiconductor & 17.300--18.100 & 2.25 & \(0.002\)\\
-Equivalent contact bedding & 18.100--19.751 & 2.25 & \(0.002\)\\
+Outer semiconductor & 17.300--18.100 & 2.25 & 0.002\\
+Equivalent contact bedding & 18.100--19.751 & 2.25 & 0.002\\
 \bottomrule
 \end{tabularx}
 \end{table}
-The semiconductor and contact-bedding properties are the Section 1 reference
-compound [3,4]; XLPE properties follow [5,6]. The contact region is a geometric
-homogenisation, not a claimed extra NKT extrusion.
+The contact bedding closes the unpublished screen geometry with an equivalent
+semiconducting region. It is a modelling assumption, not an additional layer
+specified by NKT.
 
-\subhead{Physical electrodes define the truncation}
-At the aluminium surface \(r=8.5~\mathrm{mm}\), impose the phase voltage:
-\[
- \widehat V_k=\sqrt{\frac23}(33~\mathrm{kV})e^{-\mathrm j2\pi k/3},
- \quad k=0,1,2\;\text{for A, B, C}.
-\]
-The amplitude is \(26.9444~\mathrm{kV}\); A is above B and C. At the inner
-copper-screen boundary, \(r=19.7511~\mathrm{mm}\), impose \(\widehat v=0\).
-Material interfaces share nodes: potential is continuous and normal total
-current is continuous in the weak formulation. There is no artificial far-field
-boundary inside the solved dielectric domain.
+\subhead{Why the mesh stops at the electrodes}
+At \(r=8.5~\mathrm{mm}\), prescribe the aluminium voltage. At the copper screen's
+inner face, \(r=19.7511~\mathrm{mm}\), prescribe zero voltage. The unmeshed centre
+in Gmsh represents aluminium, not an air gap.
 
-\textbf{Conductor interior.} An ideal equipotential conductor has
-\(\nabla\widehat v=0\). Its voltage is represented by its boundary, so the
-unmeshed central disk is aluminium, not a physical gas void.
-
-\textbf{Jacket and soil.} A continuous grounded screen isolates the interior.
-With all outer screen surfaces and remote earth at zero, the passive exterior
-problem has \(\widehat v=0\) and \(\widehat{\mathbf E}=0\). Thus jacket, soil
-and neighbouring phases do not affect the insulation field \emph{within this
-ideal-screen model}. The wire-screen approximation is assessed in Q2.2.
-
-\textbf{Scope of excitation.} The \(415~\mathrm A\) longitudinal load is reserved
-for Sections 3--4. Here the currents are transverse charging/leakage currents.
-Quoted field norms are phasor norms; for the healthy radial sinusoidal field,
-they equal instantaneous peak values. RMS field values are smaller by \(\sqrt2\).
+A continuous grounded screen isolates each cable interior. With the screens
+and remote earth at zero, the exterior problem has \(v=0\), so PE jackets and
+soil have zero electric field in this model. They need not be meshed in Section 2.
+This depends on replacing the real wires/tape by a continuous equipotential
+screen. Soil and metal regions are needed again for magnetic/thermal analysis.
 
 \newpage
-\pagetitle{Simplifications and their consequences}{Q2.2 --- Which details can be removed?}
+\pagetitle{Q2.2 --- Simplifying the geometry}
 \assignmentquestion{\QuestionTwoTwo}
-\questionfiles{Common electric model (Q2.1), plus \path{section_2/study.py} and \path{section_2/analyse.py}. Compare \path{section_2/results/healthy/metrics.json}, \path{section_2/results/ideal/metrics.json} and \path{section_2/validation/analytical_reference.json}.}
-Simplifications are judged against a stated quantity. A choice that is adequate
-for insulation field and capacitance need not preserve losses, magnetic fields
-or temperature. The reference FE model retains the finite-conductivity
-semiconductors and equivalent contact bedding.
+\guidetitle
+\begin{lstlisting}[style=command]
+python3 run.py --question 2.2
+\end{lstlisting}
+\codeguide
+ {Two 50 Hz cases: \texttt{healthy} retains finite semiconductors;
+  \texttt{ideal} sets \texttt{IdealScreens=1} and solves XLPE alone.}
+ {Follow \texttt{IdealScreens} from \path{settings.inc} into \path{cable.geo}.
+  \path{study.py}, line \CodeExact{}, gives the exact layered comparison.}
+ {Compare \path{results/healthy/metrics.json} with \path{results/ideal/metrics.json}:
+  \texttt{complex\_dofs}, then field, capacitance and loss under \texttt{phases/A}.
+  The layered check is \path{validation/analytical_reference.json}.}
 
 \begin{table}[H]\centering\small
-\caption{Model reductions and the evidence supporting them.}
-\begin{tabularx}{\linewidth}{@{}p{36mm} Y Y@{}}
+\caption{What each simplification changes, and what has actually been checked.}
+\begin{tabularx}{\linewidth}{@{}p{34mm} Y Y@{}}
 \toprule
-Choice & Effect on this electric problem & Limit of the claim\\
+Simplification & Reason / effect & Limitation\\
 \midrule
-Omit aluminium interior & Zero change under an ideal prescribed-voltage electrode; interior field and energy vanish. & Axial resistance, skin effect and conductor loss require a conductor mesh in Section 3.\\
-Omit copper interior, PE and soil & Zero exterior field/energy under a continuous screen at zero potential. No distant-boundary truncation error is introduced. & No conclusion about real screen gaps, ground-potential rise or exterior magnetic/thermal fields.\\
-Continuous copper annulus & Replaces discrete wires/tape with a closed equipotential boundary at the established inner radius. & Real wire/tape shielding error is not quantified: detailed lay and tape geometry are unavailable.\\
-Uniform 2D cross-section & Represents a long, straight section without axial variation. & End effects and helical details are not validated by the coaxial check.\\
-Omit semiconductors from the mesh & Impose phase/earth voltages directly on the XLPE interfaces at 9.3/17.3 mm. Quantified below. & Preserves field/C here, but removes semiconductor conduction losses.\\
+Omit aluminium interior & An ideal prescribed-voltage conductor has \(E=0\); replacing it by its boundary gives the same interior dielectric solution. & Does not describe axial conductor resistance or losses.\\
+Omit copper interior, PE and soil & With a continuous screen at zero potential, exterior field and energy are zero. & Depends on the screen idealisation; it is not a magnetic/thermal simplification.\\
+Replace wire/tape by a continuous screen & Makes the interior a closed two-terminal domain; phases are electrically independent. & Error from real gaps/helical lay is unknown because detailed geometry is unavailable.\\
+Use a uniform 2D section & Represents a long straight cable away from ends. & End effects, joints and terminations are excluded.\\
+Replace finite semiconductors by electrode boundaries & Solve XLPE only, from 9.3 to 17.3 mm. Compare below. & Removes semiconductor conduction losses.\\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-\subhead{Quantified comparison: finite versus ideal semiconductors}
-The ideal-screen model uses \(36\,761\) complex unknowns instead of
-\(56\,305\): \textbf{\DofReduction\% fewer}. At the fine mesh, changes in
-phase-A capacitance and maximum XLPE field are below \(10^{-8}\) relative.
-This does not establish eight-digit accuracy of the FE field: its discretisation
-error is much larger (Q2.3).
+\subhead{Finite semiconductors versus ideal boundaries}
+The reference retains finite semiconductor conductivity. The simplified case
+applies phase/ground voltage directly to the two XLPE interfaces. It uses
+\DofReduction\% fewer complex unknowns. At 50 Hz, changes in field amplitude and
+capacitance are below \(10^{-8}\) relative for the selected properties.
 
-An independent cylindrical multilayer solution separates the physical reduction
-from mesh effects. For each layer,
+The exact concentric-layer calculation confirms why:
 \[
  Z'_\ell=\frac{\ln(r_{o,\ell}/r_{i,\ell})}
  {2\pi(\sigma_\ell+\mathrm j\omega\varepsilon_\ell)},\qquad
  Y'=\frac{1}{\sum_\ell Z'_\ell},\qquad C'=\frac{\Im Y'}{\omega}.
 \]
-At 50 Hz the ideal-screen approximation changes the analytical capacitance by
-about \(5.5\times10^{-12}\) relative and the inner XLPE field amplitude by
-\(4.7\times10^{-12}\). These tiny values are consequences of the assumed
-constant semiconductor conductivity, not measurements of the real cable.
+The voltage drop across the conductive screens is negligible compared with
+that across XLPE. The analytical amplitude corrections are of order \(10^{-12}\)
+relative. They are far smaller than the mesh error, not evidence of comparable
+accuracy for a real cable with uncertain compound and screen details.
 
-\textbf{Losses are not preserved.} The phase-A time-average transverse conductive
-loss is approximately \(3.18\times10^{-5}~\mathrm{W/m}\) with finite screens,
-versus \(3.67\times10^{-9}~\mathrm{W/m}\) for XLPE alone. Idealisation removes
-almost all of this small contribution. It also omits dielectric polarisation loss
-because no loss tangent is included. These are not the total operating cable losses.
+\textbf{Losses need separate treatment.} The reference's transverse conductive
+loss is about \(3.18\times10^{-5}~\mathrm{W/m}\) per phase, compared with
+\(3.67\times10^{-9}~\mathrm{W/m}\) for XLPE alone. The idealisation removes nearly
+all of that small contribution. Neither case includes a dielectric-loss tangent.
 
-\textbf{Decision.} Retain finite semiconductors in the documented baseline;
-use the XLPE-only model as a verified field/capacitance simplification.
-Do not carry these omissions unchanged into the magnetic or thermal models.
+Use XLPE-only geometry when calculating insulation field and capacitance at
+50 Hz; retain the finite layers when comparing their currents or losses.
+The reference results in this report use the finite-layer model.
 
 \newpage
-\pagetitle{Mesh convergence}{Q2.3 --- Field maxima converge more slowly than capacitance}
+\pagetitle{Q2.3 --- Mesh convergence}
 \assignmentquestion{\QuestionTwoThree}
-\questionfiles{\path{section_2/study.py} varies mesh size in \path{section_2/cable.geo}; \path{section_2/analyse.py} extracts maxima/C. Outputs: \path{section_2/validation/convergence.csv}, \path{field_convergence.pos} and \path{capacitance_convergence.pos} in that validation folder.}
-The nominal bulk element size is reduced from 1 to 0.5 to 0.25 mm.
-Circular CAD interfaces are approximated by straight mesh edges, so boundary
-geometry and the P1 potential approximation improve together. The table reports
-phase A; the fine-mesh capacitance spread between phases is only
-\(1.86\times10^{-5}\%\), consistent with electrically independent screened phases.
+\guidetitle
+\begin{lstlisting}[style=command]
+python3 run.py --question 2.3 --open
+\end{lstlisting}
+\codeguide
+ {The same healthy cable with \(h=1,\ 0.5,\ 0.25\) mm:
+  cases \texttt{coarse}, \texttt{medium} and \texttt{healthy}.}
+ {\path{study.py}, line \CodeCases{}, sets the three mesh sizes.
+  \path{analyse.py}, line \CodeTriangle{}, calculates each triangle's electric field.}
+ {Gmsh opens \path{validation/field_convergence.pos}; also open
+  \path{validation/capacitance_convergence.pos}. Read DOFs, field and capacitance
+  from \path{validation/convergence.csv}.}
 
 \begin{table}[H]\centering\small
-\caption{Healthy-cable refinement; all three phase interiors are included.}
+\caption{Phase-A results; DOFs and triangle counts include all three phases.}
 \begin{tabular}{@{}r r r r r@{}}
 \toprule
 \(h\) [mm] & Complex DOFs & Triangles & \(C'\) [\(\mu\mathrm F/\mathrm{km}\)] & \(E_{\max}\) [peak \unitfield]\\
 \midrule
-1.00 & 3\,645 & 7\,842 & 0.22407752 & 4.57877\\
-0.50 & 14\,157 & 29\,394 & 0.22407594 & 4.62530\\
-0.25 & 56\,305 & 114\,758 & \HealthyC & \HealthyE\\
+\MeshRows
 \bottomrule
 \end{tabular}
 \end{table}
 \begin{figure}[H]\centering
 \begin{tikzpicture}
-\begin{axis}[report,height=4.3cm,xlabel={Complex degrees of freedom},ylabel={Peak XLPE field [kV/mm]},
- xtick={3645,14157,56305},xticklabels={3\,645,14\,157,56\,305},ymin=4.56,ymax=4.69,
- legend pos=south east]
-\addplot[blueplot,mark=*] table[x=dof,y=field,col sep=comma]{convergence.csv};
-\addlegendentry{FE maximum}
-\addplot[redplot,dashed,domain=3645:56305]{4.66776671726};\addlegendentry{Analytical inner interface}
+\begin{axis}[report,xlabel={Complex degrees of freedom},ylabel={Peak XLPE field [kV/mm]},
+ xtick={3645,14157,56305},xticklabels={3\,645,14\,157,56\,305},
+ ymin=4.56,ymax=4.69,legend pos=south east]
+\addplot[blueplot,mark=*] table[x=dof,y=field,col sep=comma]{convergence.csv};\addlegendentry{FE maximum}
+\addplot[redplot,dashed,domain=3645:56305]{\AnalyticalE};\addlegendentry{Coaxial reference}
 \end{axis}
 \end{tikzpicture}
 \par\smallskip
 \begin{tikzpicture}
-\begin{axis}[report,height=4.3cm,xlabel={Complex degrees of freedom},ylabel={\(C'\) [\(\mu\mathrm F/\mathrm{km}\)]},
+\begin{axis}[report,xlabel={Complex degrees of freedom},ylabel={\(C'\) [\(\mu\mathrm F/\mathrm{km}\)]},
  xtick={3645,14157,56305},xticklabels={3\,645,14\,157,56\,305},
  ymin=0.224074,ymax=0.2240785,ytick={0.224074,0.224076,0.224078},
  yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=6},legend pos=north east]
 \addplot[blueplot,mark=*] table[x=dof,y=cap,col sep=comma]{convergence.csv};\addlegendentry{FE phase A}
-\addplot[redplot,dashed,domain=3645:56305]{0.22407447529896};\addlegendentry{Analytical coaxial}
+\addplot[redplot,dashed,domain=3645:56305]{\AnalyticalC};\addlegendentry{Coaxial reference}
 \end{axis}
 \end{tikzpicture}
-\caption{Independent convergence of a local maximum and an integrated quantity.}
+\caption{A local maximum converges more slowly than integrated capacitance.}
 \end{figure}
-The analytical values are \(\AnalyticalE~\unitfield\) and
-\(\AnalyticalC~\mu\mathrm F/\mathrm{km}\). Fine-mesh errors are
-\textbf{\FieldError\% in the maximum field} and \textbf{\CapError\% in capacitance}.
-The last field increment is about 0.56\%; three levels demonstrate convergence,
-without proving an asymptotic error bound.
+The fine result differs from the coaxial reference by \FieldError\% in maximum
+field and \CapError\% in capacitance. The last field increment is about 0.56\%.
+This supports convergence; three levels do not establish a strict error bound.
 
-Refine near the inner XLPE interface, material boundaries and the void boundary.
-Raw P1 gradients are constant per triangle and are not smoothed for the reported
-maxima. The tested real-arithmetic GetDP build has twice as many real unknowns
-as the complex DOF count shown here. Numerical tolerances are not insulation limits.
+Refine near the inner XLPE surface, where the healthy field is largest, and
+around material interfaces and the defect. P1 gradients are constant per
+triangle, so reported maxima are unsmoothed. Circular CAD boundaries become
+straight mesh chords; geometric and solution errors are refined together.
+The tested real-arithmetic GetDP build reports twice the complex DOF count.
 
 \newpage
-\pagetitle{Admissible electric stress}{Q2.4 --- A sourced comparison, with an explicit applicability limit}
+\pagetitle{Q2.4 --- Field-strength comparison}
 \assignmentquestion{\QuestionTwoFour}
-\questionfiles{\path{section_2/analyse.py} exports interface fields to \path{section_2/results/healthy/metrics.json}. Compare them with the cited limits below. Source/limit interpretation is documented in \path{section_2/README.md}; it is not a solver boundary condition.}
-The selected NKT sheet specifies voltage and insulation dimensions, but does
-not give admissible local fields [2]. Adopt external comparison values from
-Eskom specification 240-56030625, Rev.~3, \S3.3(i) and Annex B, items 3.29--3.30
-[7]: \(8~\unitfield\) at the conductor screen and \(4~\unitfield\) at the
-insulation/core screen, at \(U_0\). Since \(U_0\) is RMS, compare RMS fields.
+\guidetitle
+\begin{lstlisting}[style=command]
+python3 run.py --question 2.4
+\end{lstlisting}
+\codeguide
+ {The healthy 50 Hz case, including XLPE fields next to the inner and outer screens.}
+ {\path{analyse.py}, line \CodeIntegrals{}, selects triangles touching each XLPE interface
+  and records their largest field.}
+ {In \path{results/healthy/metrics.json}, open \texttt{phases/A} and read
+  \texttt{inner\_screen\_peak\_kV\_mm} and \texttt{outer\_screen\_peak\_kV\_mm}.
+  Divide these peak values by \(\sqrt2\) before comparing with the RMS values below.}
 
-\textbf{Applicability.} That specification concerns 44--132 kV XLPE cables.
-Using its values for this 33 kV example is an explicitly adopted engineering
-comparison, not an NKT acceptance criterion. Neither value is a universal XLPE
-breakdown strength.
+The NKT datasheet gives no admissible local fields [2]. For a sourced comparison,
+adopt \(8~\unitfield\) RMS at the conductor screen and \(4~\unitfield\) RMS at
+the core screen from Eskom 240-56030625, \S3.3(i) [7]. That specification covers
+44--132 kV XLPE cables. These are external comparison values, not NKT-specific
+limits for the selected 33 kV cable.
 
 \begin{table}[H]\centering\small
-\caption{Healthy stresses on the XLPE side of each semiconducting interface.}
+\caption{Fields on the XLPE side of each interface, in RMS kV/mm.}
 \begin{tabularx}{\linewidth}{@{}Y r r r@{}}
 \toprule
-Location & FE [RMS \unitfield] & Analytical [RMS \unitfield] & Comparison limit\\
+Interface & FE & Coaxial reference & Adopted comparison\\
 \midrule
-Inner XLPE, \(r_i=9.3~\mathrm{mm}\) & 3.2614 & \InnerRMS & 8.0\\
-Outer XLPE, \(r_o=17.3~\mathrm{mm}\) & 1.7920 & \OuterRMS & 4.0\\
+Inner XLPE, \(r_i=9.3~\mathrm{mm}\) & \InnerFERMS & \InnerRMS & 8.0\\
+Outer XLPE, \(r_o=17.3~\mathrm{mm}\) & \OuterFERMS & \OuterRMS & 4.0\\
 \bottomrule
 \end{tabularx}
 \end{table}
-The FE interface entries use maxima from triangles with an edge on that
-interface. They differ slightly from the global FE maximum and from exact
-boundary values. In the healthy coaxial problem, use the analytical boundary
-values for the clearest comparison:
+The analytical values are
 \[
  E_{i,\mathrm{rms}}=\frac{33/\sqrt3}{r_i\ln(r_o/r_i)},\qquad
  E_{o,\mathrm{rms}}=\frac{33/\sqrt3}{r_o\ln(r_o/r_i)},
 \]
-with voltage in kV and radii in mm. Their peak counterparts are
-\(\AnalyticalE\) and \(\AnalyticalOuterE~\unitfield\).
+with kV and mm. The inner and outer peak references are \AnalyticalE{} and
+\AnalyticalOuterE{} kV/mm. FE interface values come from adjacent triangles,
+so they are not exact boundary extrapolations. Their errors are about 1.2\%
+and 1.0\%, respectively.
 
-\subhead{What follows from the calculation}
-\textbf{The healthy model is below both adopted comparison limits.}
-The analytical RMS stresses are approximately 41\% and 44\% of those limits.
-The remaining numerical boundary-field errors are about 1.2\% at the inner
-interface and 1.0\% at the outer interface, too small to alter this comparison.
+\textbf{The healthy model is below both adopted comparison values.}
+The analytical RMS stresses are about 41\% and 44\% of those values. The mesh
+error is small enough that it does not change this conclusion.
 
-This assessment applies to smooth, concentric insulation and the chosen material
-constants. It does not establish manufacturer-specific withstand, ageing life,
-impulse performance or partial-discharge inception. Surface protrusions, voids,
-contamination and local contact defects are excluded from the healthy geometry.
+The conductor screen is the inner semiconductor; the core/insulation screen
+is the outer semiconductor. The relevant stress is in XLPE next to each
+screen, rather than in the conductive screen material. In a concentric cable,
+\(E\propto1/r\), so the largest healthy stress occurs at the inner XLPE surface.
 
-\subhead{Why the interfaces matter}
-The \emph{conductor screen} is the inner semiconductor; its outer surface is the
-inner XLPE boundary. The \emph{core/insulation screen} is the outer semiconductor;
-its inner surface is the outer XLPE boundary. The high stresses are evaluated
-\textbf{in XLPE adjacent to these surfaces}, not inside the almost equipotential
-semiconducting material or at the copper-metal radius.
-
-The maximum in a healthy coaxial annulus occurs at its smallest insulation
-radius because \(E\propto1/r\). This explains the inner-interface refinement in
-Q2.3 and motivates the insulation-thickness study in Q2.8.
+This is a comparison for smooth, concentric insulation with the chosen
+properties. Manufacturer-specific acceptance, ageing, impulse performance and
+partial-discharge inception are not established by this calculation.
 
 \newpage
-\pagetitle{A controlled insulation defect}{Q2.5 --- An axial gas channel in phase A}
+\pagetitle{Q2.5 --- A gas channel in the insulation}
 \assignmentquestion{\QuestionTwoFive}
-\questionfiles{\path{section_2/settings.inc} sets the void; \path{section_2/cable.geo} meshes it; \path{section_2/cable.pro} assigns gas properties. Use \path{section_2/study.py}; inspect \path{section_2/results/void/view.geo}, \path{radial_cut.csv} in that case, and \path{section_2/validation/radial_comparison.pos}.}
-Introduce a circular gas region of radius \(0.25~\mathrm{mm}\), centred
-\(10.3~\mathrm{mm}\) from the phase-A axis on the positive local \(x\)-direction.
-Its nearest edge is \(0.75~\mathrm{mm}\) from the inner XLPE interface.
-The position and size are investigation choices, not manufacturing tolerances.
-Set \(\varepsilon_r=1\), \(\sigma=0\): an ideal dry gas before discharge.
-No gas pressure, discharge threshold or ionisation law is supplied to the solver.
+\guidetitle
+\begin{lstlisting}[style=command]
+python3 run.py --question 2.5 --open
+\end{lstlisting}
+\codeguide
+ {\texttt{healthy}, \texttt{void\_coarse} and \texttt{void}:
+  a reference plus two defect meshes to check local refinement.}
+ {\path{settings.inc} sets defect size/location; \path{cable.geo}, line \CodeVoid{},
+  inserts it. \path{analyse.py}, line \CodeCuts{}, samples the radial cut.}
+ {Gmsh opens \path{validation/defect_comparison.pos} (healthy versus fine void).
+  Open \path{results/void/view.geo} for the map. Compare gas/XLPE maxima under
+  \texttt{phases/A} in each case's \path{metrics.json}.}
 
-In 2D this disk represents an \textbf{infinitely long axial channel}.
-It does not represent a spherical bubble; a finite bubble has different 3D
-polarisation and end effects. The channel model is useful for a controlled
-field-concentration study, not a prediction of an actual NKT defect.
+The defect is a \(0.5~\mathrm{mm}\) diameter circular gas channel in phase A,
+centred \(10.3~\mathrm{mm}\) from its axis along \(+x\). Its closest edge is
+\(0.75~\mathrm{mm}\) from the inner XLPE boundary. This controlled defect is
+placed near the high-field region while remaining separate from the screen.
+Its dimensions are study parameters, not NKT manufacturing tolerances.
+
+Set \(\varepsilon_r=1\), \(\sigma=0\), representing dry gas before discharge.
+In 2D the disk extends along the cable as an infinitely long channel. A
+spherical or finite bubble requires a 3D model and has different end effects.
 
 \begin{table}[H]\centering\small
-\caption{Defect results and local refinement check (phase A).}
+\caption{Phase-A defect results, with local refinement around the channel.}
 \begin{tabularx}{\linewidth}{@{}Y r r@{}}
 \toprule
 Quantity & Coarser void mesh & Fine void mesh\\
 \midrule
-Complex DOFs (all phases) & 15\,336 & 61\,106\\
 Maximum gas field [peak \unitfield] & 6.1023 & \VoidE\\
 Maximum XLPE field [peak \unitfield] & 5.9693 & \VoidXLPE\\
-Phase-A capacitance [\(\mu\mathrm F/\mathrm{km}\)] & 0.22398569 & 0.22398426\\
 \bottomrule
 \end{tabularx}
 \end{table}
-The gas maximum changes by \VoidChange\% on the last refinement. The gas boundary
-uses a target size of \(h/12\), about \(0.0208~\mathrm{mm}\) in the fine case,
-grading back to the bulk size over 2 mm. The maximum XLPE stress increases by
-\VoidIncrease\% relative to the healthy FE maximum, whereas capacitance changes
-by only \VoidCapChange\%: a small global change can conceal a local defect.
+The last gas-field change is \VoidChange\%. The fine void-boundary target size
+is about 0.0208 mm. Compared with the healthy FE solution, maximum XLPE stress
+increases by \VoidIncrease\%, while capacitance falls by only \VoidCapChange\%.
+A small change in total capacitance therefore does not rule out a local defect.
 
 \begin{figure}[H]\centering
 \begin{tikzpicture}
-\begin{axis}[report,height=4.3cm,xmin=9.3,xmax=12,ymin=2.2,ymax=6.5,
+\begin{axis}[report,xmin=9.3,xmax=12,ymin=2.2,ymax=6.5,
  xlabel={Radius from phase-A axis [mm]},ylabel={Phasor field norm [kV/mm]},legend pos=north east]
 \addplot[blueplot] table[x=radius,y=field,col sep=comma]{healthy_cut.csv};\addlegendentry{Healthy}
 \addplot[redplot] table[x=radius,y=field,col sep=comma]{void_cut.csv};\addlegendentry{Gas channel}
@@ -313,44 +336,48 @@ by only \VoidCapChange\%: a small global change can conceal a local defect.
 \draw[densely dashed,gray] (axis cs:10.55,2.2)--(axis cs:10.55,6.5);
 \end{axis}
 \end{tikzpicture}
-\caption{Positive radial cut through the channel. Dashed lines mark its edges.
-The plotted cut need not pass through the global field maximum.}
+\caption{Radial cut through the channel. Dashed lines mark its edges.
+The cut need not contain the global maximum.}
 \end{figure}
-The field jumps at the gas/XLPE interface because permittivity changes. Normal
-total current, not electric field, is continuous. Gas stress increases while
-nearby XLPE stress redistributes; tangential field remains continuous in the
-continuum solution.
+Normal total current is continuous across the interface, but electric field
+jumps when permittivity changes. The gas and nearby XLPE fields redistribute.
 
-\textbf{Withstand is not established.} The linear model contains no discharge,
-space charge or ageing. The XLPE comparison limits of Q2.4 cannot be applied
-to gas. Additional pressure-dependent inception data, a discharge model or
-appropriate tests are required before accepting this defective cable.
+\textbf{Withstand remains undetermined.} This linear model has no pressure-dependent
+discharge, ionisation or ageing law. The XLPE comparison values in Q2.4 do not
+apply to gas. Appropriate inception data or tests are needed to accept the defect.
 
 \newpage
-\pagetitle{Current densities and conservation}{Q2.6 --- Transverse conduction and displacement currents}
+\pagetitle{Q2.6 --- Current densities and conservation}
 \assignmentquestion{\QuestionTwoSix}
-\questionfiles{\path{section_2/cable.pro} exports current-density maps; \path{section_2/analyse.py} checks conservation. Outputs in \path{section_2/results/healthy/}: \path{view.geo}, \path{j_conduction.pos}, \path{j_displacement.pos}, \path{radial_cut.csv} and \path{metrics.json}.}
-The solved field gives the peak phasors
+\guidetitle
+\begin{lstlisting}[style=command]
+python3 run.py --question 2.6 --open
+\end{lstlisting}
+\codeguide
+ {\texttt{healthy} and \texttt{void} at 50 Hz, including the gas sample in the table.}
+ {\path{cable.pro}, line \CodeCurrentMaps{}, defines the two current densities.
+  \path{analyse.py}, line \CodeTerminals{}, checks electrode and free-node balance.}
+ {In \path{results/healthy/view.geo}, toggle \texttt{|J conduction|} and
+  \texttt{|J displacement|}. Each case folder contains \path{radial_cut.csv}
+  (local samples) and \path{metrics.json} (terminal current and conservation checks).}
+
+The transverse peak current phasors are
 \[
- \widehat{\mathbf J}_{c}=\sigma\widehat{\mathbf E},\qquad
- \widehat{\mathbf J}_{d}=\mathrm j\omega\varepsilon\widehat{\mathbf E},\qquad
- \widehat{\mathbf J}_{\mathrm{tot}}=\widehat{\mathbf J}_{c}+\widehat{\mathbf J}_{d}.
+ \widehat{\mathbf J}_c=\sigma\widehat{\mathbf E},\qquad
+ \widehat{\mathbf J}_d=\mathrm j\omega\varepsilon\widehat{\mathbf E},\qquad
+ \widehat{\mathbf J}_{\mathrm{tot}}=\widehat{\mathbf J}_c+\widehat{\mathbf J}_d.
 \]
-These currents cross the insulation and semiconducting layers. They are not
-the longitudinal \(415~\mathrm A\) load current. In a uniform material their
-magnitude ratio is independent of field strength:
+In a uniform material,
 \[
  \frac{\|\widehat{\mathbf J}_c\|}{\|\widehat{\mathbf J}_d\|}
  =\frac{\sigma}{\omega\varepsilon}.
 \]
-At 50 Hz this is \(3.20\times10^5\) in the semiconductor/contact compound,
-\(1.44\times10^{-10}\) in XLPE, and zero in the ideal gas. Thus conduction
-dominates in the screens, displacement current in XLPE and gas. The total
-normal current can be continuous even when its dominant mechanism changes.
+At 50 Hz this ratio is about \(3.20\times10^5\) in semiconductors/contact bedding,
+\(1.44\times10^{-10}\) in XLPE, and zero in the ideal gas. Conduction therefore
+dominates in the screens; displacement current dominates in XLPE and gas.
 
 \begin{table}[H]\centering\small
-\caption{Representative computed samples on the positive phase-A radial cut;
-current-density magnitudes are peak norms in A/m\(^2\).}
+\caption{Computed samples on phase A's positive radius; peak current norms in A/m\(^2\).}
 \begin{tabularx}{\linewidth}{@{}Y r r r@{}}
 \toprule
 Region & Radius [mm] & \(\|\widehat{\mathbf J}_c\|\) & \(\|\widehat{\mathbf J}_d\|\)\\
@@ -359,168 +386,169 @@ Region & Radius [mm] & \(\|\widehat{\mathbf J}_c\|\) & \(\|\widehat{\mathbf J}_d
 \bottomrule
 \end{tabularx}
 \end{table}
-Samples are from the fine healthy case except the gas row, which uses the fine
-defect case. They are local values, not maxima. Full radial data and complex
-field components are saved in each case's \path{radial_cut.csv}; both magnitude
-maps can be displayed in Gmsh.
+The gas row comes from \path{results/void/radial_cut.csv}; the command runs both cases.
+The other rows are healthy-case samples.
+These are local values, not maxima. The CSV also contains complex field components.
 
-\subhead{Two complementary conservation checks}
-\textbf{Discrete weak conservation.} Post-processing reconstructs the P1 gradients
-from GetDP nodal voltages and assembles element reactions \(K_e\widehat v_e\).
-The sum at the inner electrode is its injected transverse current per metre;
-the outer-electrode sum has opposite sign. For phase A:
+\subhead{Does current balance?}
+For each triangle, the post-processor assembles the nodal reaction
+\(K_e\widehat v_e\). The sum on an electrode is its transverse current per metre;
+free-node sums should vanish. Phase A gives approximately
 \[
- \widehat I'_A\simeq 2.36\times10^{-9}+\mathrm j\,1.89675\times10^{-3}~\mathrm{A/m}.
+ \widehat I'_A=2.36\times10^{-9}+\mathrm j\,1.89675\times10^{-3}~\mathrm{A/m},
 \]
-Its norm is \(\ChargingPeak~\mathrm{A/km}\) peak, or
-\(\ChargingRMS~\mathrm{A/km}\) RMS. Terminal imbalance relative to its norm is
-\(1.25\times10^{-10}\); the largest free-node weak residual, with the same
-normalisation, is \(1.28\times10^{-10}\).
+with norm \ChargingPeak{} A/km peak, or \ChargingRMS{} A/km RMS. The relative
+terminal imbalance is \num{\TerminalImbalance}; the largest free-node residual
+relative to terminal current is \num{\ConservationResidual}.
 
-\textbf{Independent contour check.} Integrate the raw total-current field around
-circles at radii 10.8, 13.3 and 16.8 mm. The largest difference from the terminal
-reaction current is \textbf{\ContourError\%}. This is larger than the weak
-residual because raw P1 gradients do not enforce pointwise normal-flux
-continuity across every triangle edge. It quantifies a field-discretisation
-error rather than a physical current source.
+As a separate check, integrate the raw current field around circles at
+10.8, 13.3 and 16.8 mm. The largest discrepancy from electrode current is
+\ContourError\%. P1 gradients are not pointwise flux-continuous across all
+triangle edges, so this check is less exact than the assembled weak balance.
+Current conservation is satisfied to those stated accuracies.
 
-\textbf{Conclusion.} Current conservation is satisfied to the reported weak
-residual and contour accuracy. The small in-phase terminal current is sensitive
-to cancellation; do not assign high precision to the tiny leakage/loss estimate.
-No dielectric-loss tangent is included, so real dielectric heating is not fully represented.
+The tiny in-phase current is sensitive to numerical cancellation. The adopted
+XLPE model also omits dielectric polarisation loss; its tiny conductive loss
+should not be used as the complete dielectric-heating estimate.
 
 \newpage
-\pagetitle{Capacitance and frequency}{Q2.7 --- Consistent terminal, energy and analytical values}
+\pagetitle{Q2.7 --- Capacitance and frequency}
 \assignmentquestion{\QuestionTwoSeven}
-\questionfiles{\path{section_2/analyse.py} computes terminal/energy C; \path{section_2/study.py} compares frequency cases and the coaxial formula. Read \path{section_2/validation/summary.json}, \path{analytical_reference.json} in that folder, and the NKT datasheet in the repository root.}
-For each phase separately, compute the terminal admittance and capacitance:
+\guidetitle
+\begin{lstlisting}[style=command]
+python3 run.py --question 2.7
+\end{lstlisting}
+\codeguide
+ {Four frequencies with fixed geometry/materials: 5, 50, 500 and 5\,000 Hz.
+  The 50 Hz case is named \texttt{healthy}.}
+ {\path{analyse.py}, line \CodeTerminals{}, calculates terminal and energy capacitance.
+  \path{study.py}, line \CodeExact{}, calculates the layered analytical reference.}
+ {\path{results/question_2_7.json}: inside \texttt{cases}, select a case, then
+  \texttt{phases/A/capacitance\_uF\_km}. Compare it with
+  \texttt{energy\_capacitance\_uF\_km} and repeat for all four frequencies.}
+
+Calculate capacitance in two ways, per phase:
 \[
- Y'=\frac{\widehat I'}{\widehat V},\qquad
- C'_{\mathrm{FE}}=\frac{\Im Y'}{\omega}.
+ Y'=\frac{\widehat I'}{\widehat V},\qquad C'=\frac{\Im Y'}{\omega},\qquad
+ C'_E=\frac{\displaystyle\int_{\Omega_k}\varepsilon
+                 \|\widehat{\mathbf E}\|^2\,\mathrm dA}{|\widehat V_k|^2}.
 \]
-An independent energy integral gives the same effective capacitance for this
-linear two-terminal domain:
-\[
- C'_{\mathrm{energy}}=
- \frac{\displaystyle\int_{\Omega_k}\varepsilon
-       \|\widehat{\mathbf E}\|^2\,\mathrm dA}{|\widehat V_k|^2},
- \qquad
- W'_{\mathrm{avg},k}=\frac14 C'|\widehat V_k|^2.
-\]
-For peak phasors, the time-average energy uses \(1/4\), and time-average Joule
-loss uses \(1/2\). If total three-phase energy were used, its conversion would
-also require division by three. The implementation avoids that ambiguity by
-integrating each phase separately.
+The terminal and energy values agree to better than \(10^{-10}\) relative in
+the healthy solution. All results are per metre before conversion:
+\(1~\mathrm{F/m}=10^9~\mu\mathrm F/\mathrm{km}\).
 
 \begin{table}[H]\centering\small
-\caption{Phase-A capacitance at 50 Hz. Multiply F/m by \(10^9\) for \(\mu\)F/km.}
+\caption{Phase-A capacitance at 50 Hz.}
 \begin{tabularx}{\linewidth}{@{}Y r@{}}
 \toprule
 Method / reference & \(C'\) [\(\mu\mathrm F/\mathrm{km}\)]\\
 \midrule
 FE terminal susceptance & \HealthyC\\
 FE energy integral & \HealthyC\\
-Analytical coaxial, ideal semiconductors & \AnalyticalC\\
-NKT datasheet maximum [2] & 0.24000000\\
+Coaxial analytical value & \AnalyticalC\\
+NKT datasheet maximum [2] & 0.24\\
 \bottomrule
 \end{tabularx}
 \end{table}
-The FE energy and terminal values agree to better than \(10^{-10}\) relative
-in the healthy case. The \textbf{analytical insulation radii} are
-\(r_i=9.3~\mathrm{mm}\), \(r_o=17.3~\mathrm{mm}\), giving [1]
+The analytical formula [1] is
 \[
- C'=\frac{2\pi\varepsilon_0\varepsilon_{r,\mathrm{XLPE}}}{\ln(r_o/r_i)}.
+ C'=\frac{2\pi\varepsilon_0\varepsilon_{r,\mathrm{XLPE}}}{\ln(r_o/r_i)},
+ \qquad r_i=9.3~\mathrm{mm},\quad r_o=17.3~\mathrm{mm}.
 \]
-This assumes long concentric cylinders, uniform linear XLPE, ideal equipotential
-semiconductors, no end fringing and no defect. Using the metal radii instead
-would incorrectly treat semiconductors/contact bedding as high-voltage insulation.
-The finite-screen analytical correction in Q2.2 is negligible for C at 50 Hz.
+It assumes long concentric cylinders, uniform linear XLPE, ideal equipotential
+semiconductors, no defect and no end fringing. Use XLPE interface radii, not
+metal radii: the semiconducting layers are not additional high-voltage insulation.
 
-The FE result is \BelowMax\% below the datasheet's \emph{maximum}, consistent
-with that bound. It is not validation against a measured nominal capacitance.
-Unpublished dimensions and the assumed XLPE permittivity prevent a stronger claim;
-no parameter is tuned solely to force agreement with the maximum.
+The FE result is \BelowMax\% below NKT's \emph{maximum}. It is consistent with
+that bound, but the maximum is not a measured nominal value to fit.
 
 \begin{table}[H]\centering\small
-\caption{Frequency study with fixed geometry and constant material properties.}
-\begin{tabular}{@{}l r r r r@{}}
+\caption{Fixed geometry and material properties: very little frequency dependence.}
+\begin{tabular}{@{}r r@{}}
 \toprule
-Frequency [Hz] & 5 & 50 & 500 & 5\,000\\
+Frequency [Hz] & FE \(C'\) [\(\mu\mathrm F/\mathrm{km}\)]\\
 \midrule
-FE \(C'\) [\(\mu\mathrm F/\mathrm{km}\)] & 0.224074656 & 0.224074656 & 0.224074656 & 0.224074644\\
+\FrequencyRows
 \bottomrule
 \end{tabular}
 \end{table}
-For ideal screens and constant \(\varepsilon\), the formula has no frequency
-term. Finite screen resistance introduces a very weak dependence (about
-\(5.5\times10^{-8}\) relative over the tested range). This study does not
-model dielectric dispersion or establish broadband validity of the 2D approximation.
+With ideal screens and constant permittivity, the analytical C is independent
+of frequency. Finite screen resistance gives a very small correction over
+5--5\,000 Hz. Dielectric dispersion is not modelled.
+
+For peak phasors, average stored energy is
+\(W'_{\mathrm{avg}}=\tfrac14 C'|\widehat V|^2\). Using total three-phase energy
+would require division by three; the code integrates each phase separately.
 
 \newpage
-\pagetitle{A quantified design improvement}{Q2.8 --- Increase XLPE thickness from 8 to 9 mm}
+\pagetitle{Q2.8 --- Reducing electric stress}
 \assignmentquestion{\QuestionTwoEight}
-\questionfiles{\path{section_2/settings.inc} and \path{section_2/cable.geo} define added XLPE; \path{section_2/study.py} compares cases. Inspect \path{section_2/results/thicker_xlpe/metrics.json}, its \path{view.geo}, and \path{section_2/validation/radial_comparison.pos}.}
-Keep the aluminium conductor and inner semiconductor unchanged, so
-\(r_i=9.3~\mathrm{mm}\). Increase the outer XLPE radius from 17.3 to 18.3 mm.
-Retain the outer semiconductor/contact thicknesses and shift the outside
-interfaces outwards by 1 mm. This is a controlled design variant, not a new
-manufacturer specification.
+\guidetitle
+\begin{lstlisting}[style=command]
+python3 run.py --question 2.8 --open
+\end{lstlisting}
+\codeguide
+ {\texttt{healthy} with 8 mm XLPE and \texttt{thicker\_xlpe} with 9 mm XLPE, at 50 Hz.}
+ {The \texttt{thicker\_xlpe} case in \path{study.py} adds 1 mm.
+  \path{settings.inc}, line \CodeSettings{}, shifts the outer radii and cable spacing.}
+ {Gmsh opens \path{validation/design_comparison.pos}; the variant's map is
+  \path{results/thicker_xlpe/view.geo}. In \path{results/question_2_8.json}, open each
+  entry under \texttt{cases}; compare field and capacitance in \texttt{phases/A}.}
 
-The analytical reason is direct:
+Increase XLPE thickness from 8 to 9 mm, keeping the inner interface at
+\(r_i=9.3~\mathrm{mm}\). The outer XLPE radius becomes 18.3 mm. Shift the outer
+semiconductor, contact region and outside layers outwards by 1 mm; increase
+trefoil spacing by 2 mm so the nominal jackets still touch.
+
+At fixed inner radius and voltage,
 \[
  E_{i,\mathrm{pk}}=\frac{V_{\mathrm{pk}}}{r_i\ln(r_o/r_i)},\qquad
  C'=\frac{2\pi\varepsilon}{\ln(r_o/r_i)}.
 \]
-At fixed \(r_i\), raising \(r_o\) increases the logarithmic denominator, reducing
-both inner electric stress and capacitance. The improvement is checked with
-the same nominal \(0.25~\mathrm{mm}\) bulk mesh size and a healthy insulation.
+Increasing \(r_o\) reduces both inner stress and capacitance. The FE comparison
+uses the same 0.25 mm nominal bulk mesh size.
 
 \begin{table}[H]\centering\small
-\caption{Baseline versus the hypothetical thicker-insulation variant (phase A).}
+\caption{Baseline versus a hypothetical thicker-insulation cable.}
 \begin{tabularx}{\linewidth}{@{}Y r r@{}}
 \toprule
-Quantity & NKT-based baseline & Design variant\\
+Quantity & Baseline & Variant\\
 \midrule
 XLPE thickness [mm] & 8.0 & 9.0\\
-Nominal outside cable diameter [mm] & 45.5 & 47.5\\
-Touching-trefoil centre spacing [mm] & 45.5 & 47.5\\
+Nominal outside diameter / trefoil spacing [mm] & 45.5 & 47.5\\
 Maximum FE XLPE field [peak \unitfield] & \HealthyE & \ThickerE\\
 FE capacitance [\(\mu\mathrm F/\mathrm{km}\)] & \HealthyC & \ThickerC\\
-Complex DOFs (all phases) & 56\,305 & 63\,451\\
 \bottomrule
 \end{tabularx}
 \end{table}
-The computed maximum field decreases by \textbf{\FieldReduction\%}; capacitance
-falls by \textbf{\CapReduction\%}. Both effects are much larger than the healthy
-mesh errors, and the analytical formula predicts the same trend.
+Maximum field falls by \FieldReduction\%; capacitance falls by \CapReduction\%.
+These changes are much larger than the healthy mesh errors and agree with
+the analytical trend.
 
 \begin{figure}[H]\centering
 \begin{tikzpicture}
-\begin{axis}[report,height=4.3cm,xmin=9.3,xmax=18.5,ymin=0,ymax=5,
+\begin{axis}[report,xmin=9.3,xmax=18.5,ymin=0,ymax=5,
  xlabel={Radius from phase-A axis [mm]},ylabel={Phasor field norm [kV/mm]},legend pos=north east]
 \addplot[blueplot] table[x=radius,y=field,col sep=comma]{healthy_cut.csv};\addlegendentry{8 mm XLPE}
 \addplot[greenplot] table[x=radius,y=field,col sep=comma]{thicker_xlpe_cut.csv};\addlegendentry{9 mm XLPE}
 \end{axis}
 \end{tikzpicture}
-\caption{Field reduction and the outward shift of the outer XLPE interface.}
+\caption{Lower stress, with the outer XLPE interface shifted outwards.}
 \end{figure}
-\textbf{Trade-offs and geometry bookkeeping.} More insulation increases material
-use, outside diameter and thermal resistance. In this variant the copper
-annulus thickness is retained while its radius shifts outwards, so its area
-would rise from 50 to about \(52.51~\mathrm{mm^2}\). Copper is not meshed in this
-electric model, but a manufacturable redesign must specify its area and the
-remaining layers consistently.
+The trade-offs are more material, a larger cable and greater insulation thermal
+resistance. Retaining copper-annulus thickness at the larger radius would raise
+its area from 50 to about 52.51 mm\(^2\); a manufactured redesign needs a
+consistent screen specification. Copper itself is not meshed in this electric model.
 
-\textbf{Decision.} The variant is an effective electric-stress improvement.
-Its cost, manufacturability and permissible current remain to be assessed.
-The original \(415~\mathrm A\) rating is not transferred to the altered cable.
-The chosen baseline remains the original 8 mm NKT insulation.
+This is an electric-stress improvement, not a new NKT product or ampacity claim.
+Manufacturing, cost and thermal performance still need assessment. The Section 1
+baseline remains the 8 mm cable; its 415 A rating is not transferred to the variant.
 
 \newpage
-\pagetitle{Sources and reproducibility}{References and implementation record}
-Numerical values come from the saved GetDP study, not from illustrative plots.
-The report exporter checks the recorded SHA-256 hashes against the current FE
-inputs before typesetting. The three supplied TA \texttt{.pro} files are preserved.
+\pagetitle{Sources and running the full study}
+All code references above are generated from the current source line numbers.
+The numerical tables are exported from the saved GetDP study; the PDF build
+checks that its model and post-processing inputs have not changed.
 
 \begingroup\small\setlength{\parskip}{7pt}
 [1] KU Leuven, \textit{NMES Assignment 2026}, Section 2 and Appendices A--B.
@@ -564,22 +592,19 @@ J.-F.~Remacle, \textit{Gmsh Reference Manual}.
 \source{https://gmsh.info/doc/texinfo/gmsh.html}{Gmsh} official documentation.
 Complex nodal formulation, physical groups, mesh formats and post-processing.
 \endgroup
-
-\subhead{How to reproduce and inspect the results}
-From \path{Source-code/section_2}, run
-\begin{verbatim}
+\subhead{Full study and PDF build}
+From \path{Source-code/section_2}, run:
+\begin{lstlisting}[style=command]
 python3 run.py --study
-python3 run.py --open
-\end{verbatim}
-Open the generated \path{results/healthy/view.geo} or
-\path{results/void/view.geo} in Gmsh. Field, potential and current-density
-views are available. The central unmeshed disks are the ideal aluminium electrodes;
-visible outer gaps include omitted copper/PE regions, not physical air spaces.
+cd ../..
+./LaTeX/build_section_2.sh
+\end{lstlisting}
+\path{README.md} in the Section 2 folder lists the commands and files for each
+question. Start by reading \path{cable.geo}, \path{cable.pro} and \path{settings.inc}.
+\path{analyse.py} extracts the numerical quantities; \path{study.py} lists cases;
+\path{plots.py} handles display; \path{export_report.py} handles typesetting.
 
-\path{Source-code/README.md} explains the complete codebase.
-\path{section_2/README.md} gives the detailed model assumptions;
-\path{validation/summary.json} records ten cases, checks and tool versions.
-The PDF is rebuilt with \path{LaTeX/build_section_2.sh}.
-Codex assisted with coding, source lookup, verification and this LaTeX report;
-this use is declared in the README as required by the assignment.
+Codex assisted with implementation, source lookup, checks and report preparation.
+The supplied TA files are retained unchanged. Review the submitted code and
+assumptions as required by the assignment.
 \end{document}

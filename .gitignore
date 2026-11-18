@@ -15,3 +15,5 @@ Source-code/section_2/*.msh
 Source-code/section_2/*.pre
 Source-code/section_2/*.res
 __pycache__/
+.venv
+Source-code/section_3/results/

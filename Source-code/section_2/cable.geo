@@ -12,7 +12,8 @@ h = 0.001*MeshScale;
 Mesh.MeshSizeMin = h/20;
 Mesh.MeshSizeMax = h;
 
-// Circle macro using four exact CAD arcs; P1 mesh approximates them by chords.
+// CircleLoop uses cx, cy, rad and lc; returns four arcs and their curve loop.
+// CAD circles are exact; the P1 mesh uses straight chords.
 Macro CircleLoop
   center = newp; Point(center) = {cx,cy,0,lc};
   pts[] = {};
@@ -29,10 +30,12 @@ Macro CircleLoop
   loop = newll; Curve Loop(loop) = {arcs[]};
 Return
 
+// Phase centres in touching trefoil: A above, B lower left, C lower right.
 xs[] = {0,-Spacing/2,Spacing/2};
 ys[] = {Spacing/Sqrt(3),-Spacing/(2*Sqrt(3)),-Spacing/(2*Sqrt(3))};
 For phase In {0:2}
   cx = xs[phase]; cy = ys[phase];
+  // R0: Al surface; R1/R2: XLPE interfaces; R3: outer SC; R4: copper inner face.
   radii[] = {R0,R1,R2,R3,R4};
   loops[] = {}; allArcs[] = {};
   For layer In {0:4}
@@ -40,6 +43,7 @@ For phase In {0:2}
     Call CircleLoop;
     loops[] += {loop}; allArcs[] += {arcs[]};
   EndFor
+  // Q2.5: phase A alone contains the circular axial gas channel.
   If (Defect && phase == 0)
     cx = xs[phase]+VoidOffset; cy = ys[phase];
     rad = VoidRadius; lc = h/12;
@@ -53,6 +57,9 @@ For phase In {0:2}
     Field[2].DistMin = VoidRadius; Field[2].DistMax = 0.002;
     Background Field = 2;
   EndIf
+  // Surface tags: 101/201/301 inner SC; 102/202/302 XLPE;
+  // 103/203/303 outer SC; 104/204/304 equivalent contact bedding.
+  // Q2.2 IdealScreens keeps only layer 1 (XLPE).
   For layer In {0:3}
     If (!IdealScreens || layer == 1)
       surface = news;
@@ -68,6 +75,7 @@ For phase In {0:2}
   If (IdealScreens)
     inner = 1; outer = 2;
   EndIf
+  // Electrode tags: 1001/1101/1201 phase; 1002/1102/1202 grounded screen.
   Physical Curve(1000+100*phase+1) = {allArcs[4*inner],allArcs[4*inner+1],allArcs[4*inner+2],allArcs[4*inner+3]};
   Physical Curve(1000+100*phase+2) = {allArcs[4*outer],allArcs[4*outer+1],allArcs[4*outer+2],allArcs[4*outer+3]};
 EndFor
