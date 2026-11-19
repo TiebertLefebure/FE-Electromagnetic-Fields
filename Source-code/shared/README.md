@@ -1,10 +1,8 @@
-# Shared definitions
+# Course definitions
 
-- `Jacobian_Integration.pro`: original TA Jacobian/integration rules, included
-  directly by `../section_2/cable.pro`. The file is unchanged.
-- `materials.json`: electrical constants currently used by Section 2 (XLPE,
-  semiconductors/contact bedding, ideal gas and vacuum permittivity), with provenance.
-  The Section 1 PDF contains the full sourced electromagnetic/thermal property table.
+`Jacobian_Integration.pro` is the original course Jacobian and integration
+file, unchanged. It is available for the course formulations.
 
-Baseline geometry and installation inputs belong to `../section_1/`, and model-specific
-geometry, formulations and generated results belong to their numbered section folder.
+The active electric problem defines its own integration rules, following
+Jaswanth's code. Cable dimensions and material inputs are in
+`../Cable-selection-and-model-setup/parameters.pro`.

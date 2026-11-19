@@ -7,13 +7,15 @@
 *.fdb_latexmk
 *.synctex.gz
 /tmp/
-
-# Reproducible FE outputs; compact validation summaries remain versionable.
-Source-code/section_2/results/
-Source-code/section_2/res/
-Source-code/section_2/*.msh
-Source-code/section_2/*.pre
-Source-code/section_2/*.res
-__pycache__/
+.venv/
 .venv
-Source-code/section_3/results/
+__pycache__/
+
+# Generated Gmsh, ONELAB and GetDP data.
+Source-code/**/*.msh
+Source-code/**/*.pre
+Source-code/**/*.res
+Source-code/**/*.db
+Source-code/**/*.db.json
+Source-code/**/res/
+Source-code/**/results/

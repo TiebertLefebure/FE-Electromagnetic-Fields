@@ -1,71 +1,78 @@
-# FE Electromagnetic Fields
+# Finite Elements for Electromagnetic Fields
 
-Finite-element analysis of three NKT 33 kV, 1x240+50 mm² XLPE-AL cables,
-directly buried in touching trefoil. The reference load is 415 A RMS with
-both-end screen bonding. There is no armour or pipe.
+The model uses three NKT 33 kV **185 + 50 mm²** single-core cables in trefoil.
+The jacket diameter is **43 mm**. Following TA feedback, the default mesh
+uses a **0.5 mm soil gap** between each pair of jackets. The **touching** case
+represents the datasheet arrangement and serves as the comparison.
 
-## Layout
+## Code layout
 
 ```text
 Source-code/
-  section_1/       cable inputs and derived geometry
-  section_2/       electric model and verification study
-  section_3/       magnetic model and verification study
-  shared/          material inputs and TA integration rules
-  legacy/          superseded 185 mm² starter model
-LaTeX/
-  section_1/       Section 1 report sources
-  section_2/       Section 2 report sources and data
-  section_3/       Section 3 report sources, tables and figures
+  Cable-selection-and-model-setup/
+    parameters.pro                  dimensions, materials and excitation
+    cable.geo                       the shared cable geometry definition
+  Electrodynamic-analysis/
+    cable.pro                       Jaswanth's working electric model
+    cable.geo                       one-line Gmsh entry, includes shared geometry
+    electrodynamic_formulation.pro  original course reference
+  Magnetoquasistatic-analysis/
+    magnetodynamic_formulation.pro  original course starter
+  shared/
+    Jacobian_Integration.pro        original course integration definitions
 ```
 
-Final PDFs and the original assignment/datasheet stay in the repository root.
-Generated meshes, solutions and maps belong in each section's `results/`
-directory and are ignored by Git. Compact verification records are kept in
-`validation/`. See [the code guide](Source-code/README.md) for file responsibilities.
+Edit dimensions in `parameters.pro`. There are no Python preparation,
+runner or report scripts in the active code. Both analyses use the same geometry.
+See [the code overview](Source-code/README.md) and the README in each folder.
 
-## Run
+## Current reports
 
-Gmsh and GetDP are required. The runners search PATH and the neighbouring
-ONELAB installation, or accept `--gmsh` and `--getdp` executable paths.
+- [Section 1: cable selection and model setup](Reports/Section_1_Cable_Selection_and_Model_Setup.pdf)
+- [Section 2: electrodynamic analysis](Reports/Section_2_Electrodynamic_Analysis.pdf)
+- [Section 3: magnetoquasistatic analysis](Reports/Section_3_Magnetoquasistatic_Analysis.pdf)
 
-Section 2 uses Python's standard library:
+Each question has its own short code guide. Datasheet values, assumptions,
+derived values and results are distinguished explicitly. The defect case,
+independent FE boundary-current balance and magnetic cable model remain to be
+implemented; the reports state those limits. Section 3 currently contains
+the proposed model and hand checks, not results from the removed solver.
+See [Reports/README.md](Reports/README.md) for sources and rebuilding.
+
+## Mesh and electric solve
+
+In **Gmsh**, use **File > Open** to open
+`Source-code/Electrodynamic-analysis/cable.pro`, then press **Run**.
+Gmsh loads the shared geometry through the one-line companion `cable.geo`,
+creates the mesh and runs GetDP. Keep resolution **Electrodynamics** and
+compute command **-solve**. The field map is displayed after the solve.
+Select **Geometry > Jacket gap [mm]** value **0.5** for the baseline or **0**
+for contact. [Mesh files and regeneration commands](Source-code/Cable-selection-and-model-setup/README.md#build-the-two-meshes).
+See [the electric model README](Source-code/Electrodynamic-analysis/README.md)
+for details and the one-time GetDP executable selection, if requested.
+
+Alternatively, with Gmsh and GetDP on PATH, start from the repository root:
 
 ```sh
-python3 Source-code/section_2/run.py --question 2.1 --open
-python3 Source-code/section_2/run.py --study
+cd Source-code/Cable-selection-and-model-setup
+gmsh cable.geo -2
+cd ../Electrodynamic-analysis
+getdp cable.pro -msh ../Cable-selection-and-model-setup/cable.msh -solve Electrodynamics
 ```
 
-Section 3 uses NumPy, SciPy and Matplotlib:
+For the ONELAB app stored beside this repository, first run this from the
+repository root in the same terminal:
 
 ```sh
-python3 -m venv .venv
-.venv/bin/python -m pip install -r Source-code/section_3/requirements.txt
-.venv/bin/python Source-code/section_3/run.py --open
-.venv/bin/python Source-code/section_3/run.py --study
+export PATH="$PWD/../ONELAB Software/Gmsh.app/Contents/MacOS:$PATH"
 ```
 
-The magnetic study runs 15 cases covering mesh/domain convergence,
-massive/stranded phases, screen bonding, simplification and frequency.
-Executed versions: Gmsh 4.15.0-git and GetDP 4.0.0-git-259f4c38.
-Full build information is in `Source-code/section_3/validation/`.
+Open `cable.geo` or `cable.msh` in Gmsh to inspect the geometry and mesh.
+Electric field maps are written to `Electrodynamic-analysis/res/`.
+No Python installation is needed for these commands.
 
-## Build the reports
+The magnetic folder contains the course starter. Its cable-specific groups,
+materials and current/bonding constraints still need to be implemented.
 
-With `pdflatex` installed, run from the repository root:
-
-```sh
-./LaTeX/build_section_1.sh
-./LaTeX/build_section_2.sh
-./LaTeX/build_section_3.sh
-```
-
-The Section 2 and 3 scripts export completed studies and check saved input
-hashes before compiling. LaTeX intermediates use temporary directories.
-Section 3 assumes constant conductivities at 20 °C; the coupled thermal
-analysis and ampacity calculation remain Section 4.
-
-## AI assistance
-
-Codex assisted with implementation, numerical checks and report preparation.
-The reports state the modelling assumptions, sources and limitations.
+Gmsh 4.15.2 and GetDP 4.0.0-git-259f4c38 were used for the mesh and electric checks.
+Codex assisted with the geometry fixes, verification and repository cleanup.

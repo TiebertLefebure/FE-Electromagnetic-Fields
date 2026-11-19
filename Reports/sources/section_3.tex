@@ -1,0 +1,341 @@
+\def\ReportNumber{3}
+\def\ReportName{Magnetoquasistatic analysis}
+\input{common.tex}
+\begin{document}
+\section*{Q3.1 Proposed magnetic model}
+\assignmentquestion{\QuestionThreeOne}
+\textbf{Current status.} The active code contains the course magnetic
+formulation, but no cable-specific magnetic problem yet. The following answers
+state the intended model, hand checks and remaining implementation. Magnetic
+results from the removed solver are not presented as results of this code.
+
+\textbf{Domain and assumptions.} Use the single shared geometry: aluminium
+regions 21/22/23, copper screens 71/72/73, and all intervening materials and
+soil. Use the 0.5 mm gap as the baseline and the 0 mm case to check spacing
+sensitivity. The field exists throughout the domain, including the insulation and
+exterior. Assume a straight, infinitely long cable, axial currents, linear
+isotropic materials and \(\mu=\mu_0\) everywhere. At 50 Hz, displacement
+current is neglected in this magnetic model.
+
+Only aluminium and copper are treated as conducting initially. Ignoring soil
+eddy currents is a separate approximation: for the provisional
+\(\sigma_{\rm soil}=0.01~\mathrm{S/m}\), its skin depth is about 712 m,
+far larger than the 0.6 m local box. PE and XLPE are effectively insulating;
+semiconductor currents are also neglected in this first magnetic model.
+
+With \(\mathbf a=\hat a_z\mathbf e_z\), solve
+\[
+ \hat{\mathbf B}=\nabla\times\mathbf a,\qquad
+ -\nabla\!\cdot(\nu\nabla\hat a_z)=\hat J_z,\qquad \nu=1/\mu_0.
+\]
+For each massive conductor or screen \(m\),
+\[
+ \hat J_{z,m}=\sigma_m(\hat u'_m-j\omega\hat a_z),\qquad
+ \hat u'_m=-\partial_z\hat v_m.
+\]
+The constant \(\hat u'_m\) is an axial driving voltage per unit length.
+Impose \(\int_{\Omega_k}\hat J_z\,dA=\hat I_k\) for each phase,
+with peak currents \(494.975\angle(0,-120^\circ,+120^\circ)~\mathrm A\).
+For the uniform comparison, prescribe \(\hat J_{z,k}=\hat I_k/A_k\).
+
+\textbf{Truncation.} Start with the existing \(\pm0.3~\mathrm m\) box and
+\(\hat a_z=0\) on its outer boundary (group 120). This is an artificial
+far-field boundary, not a physical shield. Its error must be checked by
+enlarging the half-width to 0.6 and 1.2 m while retaining the cable mesh size.
+Balanced phase currents help the distant field decay, but do not prove that
+the initial box is large enough.
+
+\codeguide{\mfile: \texttt{FunctionSpace} and
+\texttt{Magnetodynamic\_a\_2D}. \setupfile{cable.geo}: physical groups.}
+{Use \setupfile{meshes/gap.msh} for mesh inspection. The setup
+\setupfile{README.md} gives the commands to generate both cases.}
+{The starter still needs groups, materials, current and voltage constraints,
+outer-boundary constraint, and cable-specific postoperations.}
+
+\newpage
+\section*{Q3.2 Solid and uniform conductor models}
+\assignmentquestion{\QuestionThreeTwo}
+At 50 Hz, using the Section 1 conductivities at \(20^\circ\mathrm C\),
+\[
+ \delta=\sqrt{\frac{2}{\omega\mu\sigma}},\qquad
+ \delta_{\rm Al}=11.955~\mathrm{mm},\qquad
+ \delta_{\rm Cu}=9.227~\mathrm{mm}.
+\]
+The aluminium radius is 7.4 mm, so \(r/\delta=0.619\): strong surface-only
+conduction is not expected, but skin and proximity effects are not zero.
+The equivalent copper ring is 0.4515 mm thick, much thinner than its skin
+depth; its current can still vary around the circumference because of the
+neighbouring phases.
+
+The NKT conductor is \textbf{solid}, so the massive model is physically closer.
+The course's ``stranded'' case imposes uniform current density and suppresses
+redistribution. It is a useful controlled comparison, not a description of
+this manufacturer's construction. The massive case should include skin and
+proximity losses; their size has not yet been computed with the active starter.
+
+\codeguide{\mfile: \texttt{Hregion\_i\_2D} for uniform current,
+\texttt{Hregion\_u\_Mag\_2D} for massive regions.
+\setupfile{parameters.pro}: \texttt{sigmaAl}, \texttt{sigmaCu}, \texttt{Freq}.}
+{No magnetic solve yet. Evaluate the displayed skin-depth formula using the
+listed constants; then implement both cases on the same geometry.}
+{Compare integrated phase currents, losses and inductance at identical mesh,
+frequency, conductivity and bonding. Do not change all these assumptions together.}
+
+\section*{Q3.3 Bonding and global quantities}
+\assignmentquestion{\QuestionThreeThree}
+For ideal both-end bonding, impose \(\hat u'_m=0\) in each copper screen
+and solve for its induced net current. This represents equal earth potential
+at the ends, neglecting bond-lead and earth-return impedances. A single-point
+comparison instead imposes \(\int_{\Omega_m}\hat J_zdA=0\) and solves for
+\(\hat u'_m\). Zero net current does not imply zero local eddy current.
+
+Using only \(\hat J_z=-j\omega\sigma\hat a_z\) hides the axial electric
+field and its circuit closure. The result then depends on the chosen potential
+reference unless the global voltage condition is specified consistently.
+It can represent zero axial voltage gradient in a fixed convention, but it
+does not supply a general or selectable bonding model. Keep one voltage/current
+pair per connected screen and explicitly prescribe the appropriate member.
+
+\codeguide{\mfile: global \texttt{U}/\texttt{I},
+\texttt{Voltage\_2D}, \texttt{Current\_2D}, and \texttt{DomainCWithI\_Mag}.}
+{No bonding case can be run until the cable constraints are defined.}
+{The starter's \texttt{ur} is \(\partial_z v\), so physical \(u'=-\texttt{ur}\).
+Check the signs of terminal voltage and power. Electric \texttt{ScreenGround}
+from Section 2 does not implement these axial constraints.}
+
+\newpage
+\section*{Q3.4 Which simplifications remain valid?}
+\assignmentquestion{\QuestionThreeFour}
+The magnetic field passes through XLPE, jackets and soil. The electric
+argument that grounded screens isolate each core therefore does not apply.
+The copper ring, phase spacing and exterior domain can affect magnetic
+coupling, circulating screen currents and losses.
+In Q3.10, a uniform-current hand estimate gives a 0.58\% increase in
+inductance as centre spacing goes from 43 to 43.5 mm. Quantifying the change
+in actual screen currents and losses requires the magnetic FE solve.
+
+All nonconducting regions may share \(\mu_r=1\) in the initial model.
+Keeping their geometric interfaces changes no continuum magnetic material law
+when their \(\sigma\) values are all set to zero; only the discretisation can
+change. There is no need to create a second geometry to remove those interfaces.
+
+The smooth copper ring preserves area and approximately its radial position,
+but does not reproduce wire-to-wire paths or the tape helix. Treating it as
+a connected isotropic conductor may allow current paths absent in a wire screen.
+Its loss error has not been quantified. Likewise, rounding the manufacturer's
+solid conductor to a circle neglects any local surface detail. The adopted
+diameter and effective conductivity preserve the chosen DC reference, not every
+geometrical or AC feature of the real conductor.
+
+\codeguide{\setupfile{cable.geo} defines the shared layers.
+\setupfile{parameters.pro} defines \texttt{JacketGap} and the copper ring.
+\mfile: future material groups.}
+{No magnetic simplification comparison is implemented. The existing geometry
+can already be meshed with \texttt{gmsh cable.geo -2} in the setup folder.}
+{Retain copper and aluminium as distinct conducting regions. Do not reuse the
+XLPE-only electric domain as the magnetic domain.}
+
+\section*{Q3.5 Mesh quality and convergence}
+\assignmentquestion{\QuestionThreeFive}
+Both cases mesh the full soil domain. The gap raised the minimum triangle
+quality from 0.0197 to 0.4874 at the default mesh factor. With refinement
+to factor 0.5, the touching minimum fell to 0.0100 while the gap minimum
+rose to 0.6407. The poor touching elements lie in soil at the contact points.
+
+The 0.25 mm default target near the cables is about \(\delta_{\rm Al}/48\) and
+\(\delta_{\rm Cu}/37\) at 50 Hz. Resolving the thin copper ring is more
+restrictive than resolving its skin depth; 0.25 mm is only about half its thickness.
+Triangle quality and the number of elements across the ring must be inspected.
+
+\textbf{Remaining verification.} The electric convergence study does not
+establish magnetic convergence. Run magnetic cases at factors 2, 1 and 0.5
+and compare total losses, AC resistance, inductance and screen net currents.
+As a study criterion, aim for less than 1\% change between the last two levels;
+this is a proposed tolerance, not a result. Check exterior-domain convergence
+separately, keeping near-cable mesh size fixed. At higher frequency,
+\(\delta\propto f^{-1/2}\), so the mesh must be reassessed.
+
+\codeguide{\setupfile{cable.geo}: Box field and explicit contact points.
+\setupfile{parameters.pro}: \texttt{MeshFactor}, \texttt{OuterBox}.}
+{In the setup folder: \texttt{gmsh cable.geo -2 -setnumber MeshFactor 0.5}.
+Repeat with 1 and 2. A magnetic solve and convergence plot remain to be added.}
+{Inspect copper-ring resolution and soil triangles between the jackets.
+Hold the gap fixed during refinement. Use paired meshes for the spacing check.}
+
+\newpage
+\section*{Q3.6 Magnetic flux density}
+\assignmentquestion{\QuestionThreeSix}
+\pending Once \(\hat a_z\) has been solved, recover
+\[
+ \hat{\mathbf B}=\left(\frac{\partial\hat a_z}{\partial y},
+                   -\frac{\partial\hat a_z}{\partial x},0\right).
+\]
+Plot both the complex-amplitude norm and a clearly labelled instantaneous
+field, for example \(\mathbf B(t=0)=\Re\{\hat{\mathbf B}\}\). Contours
+of \(\Re\{\hat a_z\}\) give flux lines at that instant. The norm
+\(\sqrt{|\hat B_x|^2+|\hat B_y|^2}\) need not equal the maximum length of
+the instantaneous rotating vector over a cycle.
+
+For a scale check, the self-field just outside an isolated straight phase
+conductor would be
+\[
+ |\hat B_{\rm self}|=\frac{\mu_0 I_p}{2\pi r_{\rm Al}}
+ =13.38~\mathrm{mT}.
+\]
+This omits the other phases and induced screen currents; it is not the maximum
+field of the trefoil. In the far field the balanced phase contribution decays
+faster than that of one isolated wire. Both observations are useful checks on
+future maps, but neither replaces the FE calculation.
+
+\codeguide{\mfile: postquantities \texttt{a}, \texttt{az}, \texttt{b},
+\texttt{bm}. The referenced \texttt{Mag\_Maps} postoperation still needs a cable definition.}
+{No magnetic field export is available yet. Implement the cable problem and
+its postoperations before running \texttt{Magnetodynamics}.}
+{Export tesla, label peak-phasor norm versus instantaneous field, and inspect
+both a cable close-up and the complete exterior domain.}
+
+\section*{Q3.7 Current density}
+\assignmentquestion{\QuestionThreeSeven}
+For the uniform reference, the model's conductor area is
+\(172.03~\mathrm{mm^2}\), so
+\[
+ |\hat J_{\rm uniform}|=\frac{494.975}{172.03}
+ =2.8772~\mathrm{A/mm^2}\quad\text{(peak)}.
+\]
+Its RMS value is 2.0345 A/mm\textsuperscript{2}. Using the nominal 185
+mm\textsuperscript{2} in this calculation would be inconsistent with the
+actual meshed circle and its calibrated conductivity.
+
+The massive model must calculate
+\(\hat J_z=\sigma(\hat u'-j\omega\hat a_z)\) in each aluminium and copper
+region. Report both local distributions and the complex integral
+\(\hat I_m=\int_{\Omega_m}\hat J_zdA\). Local eddy currents can cancel in
+the net integral. The required massive-conductor and screen maps are still pending.
+
+\codeguide{\mfile: \texttt{j}, \texttt{jz}, \texttt{jm} and global \texttt{I}.
+\setupfile{parameters.pro}: current amplitude and actual conductor radius.}
+{No magnetic current-density run yet. The uniform value above is a hand calculation.}
+{Verify phase integrals against the imposed complex currents; inspect each
+screen integral against its bonding constraint. Convert A/m\textsuperscript{2}
+to A/mm\textsuperscript{2} by dividing by \(10^6\).}
+
+\newpage
+\section*{Q3.8 Joule losses}
+\assignmentquestion{\QuestionThreeEight}
+For peak phasors, use the \emph{complete} current density:
+\[
+ \bar p_m=\frac{|\hat J_{z,m}|^2}{2\sigma_m},\qquad
+ P'_m=\int_{\Omega_m}\bar p_m\,dA.
+\]
+The 2D integral gives W/m, numerically equal to kW/km. Separate the aluminium
+and copper totals. Armour and pipe are absent. Environment and polymer losses
+are assumed zero in this first magnetic model.
+
+\textbf{Hand reference.} Uniform aluminium current at \(20^\circ\mathrm C\),
+excluding screen losses, gives
+\[
+ P'_{\rm Al,total}=3I_{\rm rms}^2R'_{\rm DC}
+ =\frac{3(350)^2(0.164)}{1000}=60.27~\mathrm{kW/km}.
+\]
+Here resistance is in \(\Omega/\mathrm{km}\). This is a DC benchmark,
+not the total both-end-bonded AC loss.
+
+\codeguide{\mfile: local \texttt{rhoj2} and integrated \texttt{JouleLosses}.}
+{No loss solve is available yet. Before using the starter, update its massive
+\texttt{JouleLosses} integrand to match \texttt{rhoj2}.}
+{The supplied integral omits \texttt{ur}, although the local quantity includes it.
+Use \texttt{0.5*sigma[]*SquNorm[Dt[\{a\}]+\{ur\}]} for massive regions.
+Then check integrated loss against supplied mean terminal power.}
+
+\section*{Q3.9 AC resistance and loss separation}
+\assignmentquestion{\QuestionThreeNine}
+Define a system-equivalent per-phase AC resistance, including induced screen
+losses, by
+\[
+ R'_{\rm AC,eq}=\frac{P'_{\rm total}}{3I_{\rm rms}^2}.
+\]
+If \(P'\) is in W/m, the result is in \(\Omega/\mathrm m\); multiply by
+1000 for \(\Omega/\mathrm{km}\). The DC reference is the NKT maximum
+\(0.164~\Omega/\mathrm{km}\) at \(20^\circ\mathrm C\), which our effective
+conductivity reproduces exactly. NKT does not give an AC resistance in this sheet.
+
+Separate aluminium redistribution losses as
+\(\Delta R'_{\rm Al}=(P'_{\rm Al}-P'_{\rm DC})/(3I_{\rm rms}^2)\)
+and screen losses as \(R'_{\rm Cu}=P'_{\rm Cu}/(3I_{\rm rms}^2)\), using
+consistent per-metre units. Then \(R'_{\rm AC,eq}=R'_{\rm DC}+\Delta R'_{\rm Al}+R'_{\rm Cu}\).
+To distinguish skin from proximity effects, compare an isolated massive core,
+the trefoil and the trefoil with conducting screens, keeping current and
+temperature fixed. The course aluminium coefficient
+\(\alpha=0.00390~\mathrm{K^{-1}}\) alone raises DC resistance to
+\(0.2088~\Omega/\mathrm{km}\) at \(90^\circ\mathrm C\).
+
+\codeguide{\mfile: integrated losses and terminal \texttt{U}/\texttt{I}.
+\setupfile{parameters.pro}: \texttt{sigmaAl} and \texttt{I\_RMS}.}
+{No AC resistance result yet. Implement and converge the magnetic cases before
+applying the displayed total-loss definition.}
+{Do not report the starter's individual terminal \texttt{R} as a screen-loss
+separation without checking its voltage sign, power convention and the total loss balance.}
+
+\newpage
+\section*{Q3.10 Three-phase inductance}
+\assignmentquestion{\QuestionThreeTen}
+For balanced excitation, define a system-equivalent inductance from total
+mean magnetic energy:
+\[
+ \bar W'_m=\int_\Omega\frac{|\hat{\mathbf B}|^2}{4\mu}\,dA,
+ \qquad L'_{\rm eq}=\frac{2\bar W'_m}{3I_{\rm rms}^2}.
+\]
+The domain includes the conductors, insulation and exterior. An independent
+check is \(L'_{\rm eq}=\Im\{S'\}/(3\omega I_{\rm rms}^2)\), with mean
+complex input power \(S'=\tfrac12\sum_k\hat u'_k\hat I_k^*\).
+Use the physical driving voltage \(u'\); the starter's \texttt{ur} has the
+opposite sign. The factor \(1/2\) follows from peak phasors.
+
+For balanced trefoil with uniform current in round cores and no screen current,
+the hand estimate at centre spacing \(S\) is
+\[
+ L'\simeq\frac{\mu_0}{2\pi}
+ \left[\ln\!\left(\frac{S}{r}\right)+\frac14\right],\quad r=7.4~\mathrm{mm}.
+\]
+The \(1/4\) term accounts for internal inductance under uniform current.
+At 43 mm, \(L'=0.40194~\mathrm{mH/km}\). At 43.5 mm it is
+\(0.40426~\mathrm{mH/km}\), an increase of \(0.00231~\mathrm{mH/km}\)
+or \(0.58\%\). This estimates the spacing effect with proximity and screen
+currents omitted.
+The NKT 50 Hz trefoil reactance is \(0.12~\Omega/\mathrm{km}\), giving
+\(L'=X'/(2\pi f)=0.38197~\mathrm{mH/km}\). The touching hand estimate is
+5.23\% higher than this rounded datasheet reference.
+
+Inductance can change with frequency through skin, proximity and induced
+screen currents even when \(\mu\) is constant. Its magnitude and trend must
+be obtained from the future frequency study; no magnetic sweep is currently implemented.
+
+\codeguide{\mfile: \texttt{b}, terminal \texttt{U}/\texttt{I}, and \texttt{L}.
+\setupfile{parameters.pro} defines \texttt{Spacing}, radius and \texttt{Freq}.}
+{Evaluate the formula at both spacings. The magnetic FE comparison is pending.}
+{Compare magnetic energy and terminal power once available. Convert H/m to
+mH/km by multiplying by \(10^6\).}
+
+\section*{Q3.11 Loss-reduction proposal}
+\assignmentquestion{\QuestionThreeEleven}
+Compare both-end and single-point bonding at the same 350 A, temperature and
+geometry. Single-point bonding removes net circulating screen current but can
+leave local eddies. It also introduces standing screen voltage, requiring a
+check of cable length, earthing and allowable voltage.
+
+\pending A quantitative saving cannot be obtained from the active starter.
+Report \(100(P'_{\rm both}-P'_{\rm single})/P'_{\rm both}\) and the aluminium
+and copper contributions separately. NKT's same rounded 350 A rating for
+both bondings does not establish zero loss difference.
+
+\codeguide{\mfile: \texttt{Voltage\_2D} versus \texttt{Current\_2D}
+for copper screen regions; \texttt{rhoj2} for losses.}
+{After implementing Q3.3, change only the screen closure from \(u'=0\) to \(I=0\).}
+{Compare converged screen currents and total losses.}
+
+\small\textbf{Sources.} Local \href{../NMES_Assignment_2026.pdf}{NMES Assignment 2026},
+Appendices A--B, for field, loss and phasor conventions; local
+\href{../Datasheet 33 kV single core cable XLPE-AL.pdf}{NKT datasheet}, pp.19--20,
+for solid conductor, ratings, DC resistance and reactance. Material sources
+and equivalent-layer assumptions are specified in Section 1, Q1.1.
+\end{document}

@@ -1,6 +1,0 @@
-{
-  "vacuum_permittivity_F_m": 8.8541878128e-12,
-  "xlpe": {"relative_permittivity": 2.5, "conductivity_S_m": 1e-18, "source": "Section 1 references [6,7]"},
-  "semiconductor": {"relative_permittivity": 2.25, "conductivity_S_m": 0.002, "source": "Section 1 references [2,5]; also used for equivalent contact bedding"},
-  "void": {"relative_permittivity": 1.0, "conductivity_S_m": 0.0, "source": "Ideal dry gas before discharge; controlled defect assumption, not a measured defect"}
-}

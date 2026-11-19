@@ -1,0 +1,41 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newtxtext,newtxmath,microtype}
+\usepackage[margin=21mm,headheight=14pt]{geometry}
+\usepackage{booktabs,tabularx,array,amsmath,graphicx,float,caption}
+\usepackage{xcolor,fancyhdr,lastpage,listings}
+\usepackage[hidelinks]{hyperref}
+\definecolor{accent}{HTML}{254C58}
+\input{questions.tex}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Finite Elements for Electromagnetic Fields}
+\fancyhead[R]{\small NKT 33 kV, 185 + 50 mm\textsuperscript{2}}
+\fancyfoot[L]{\small Section \ReportNumber\ -- \ReportName}
+\fancyfoot[R]{\small\thepage\,/\,\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\tabcolsep}{5pt}\renewcommand{\arraystretch}{1.13}
+\captionsetup{font=small,labelfont=bf,skip=5pt}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\file}[1]{\href{../Source-code/#1}{\nolinkurl{#1}}}
+\newcommand{\setupfile}[1]{\file{Cable-selection-and-model-setup/#1}}
+\newcommand{\efile}{\file{Electrodynamic-analysis/cable.pro}}
+\newcommand{\mfile}{\file{Magnetoquasistatic-analysis/magnetodynamic_formulation.pro}}
+\newcommand{\runE}{\texttt{getdp cable.pro -msh}\ \path{../Cable-selection-and-model-setup/cable.msh}\ \texttt{-solve Electrodynamics}}
+\newcommand{\codeguide}[3]{\par\smallskip
+ {\small\bfseries\color{accent}Code guide}\par\nobreak
+ \begingroup\small\setlength{\tabcolsep}{0pt}
+ \begin{tabularx}{\linewidth}{@{}p{14mm}Y@{}}
+ \textbf{Files} & #1\\[2pt]
+ \textbf{Run} & #2\\[2pt]
+ \textbf{Check} & #3
+ \end{tabularx}\par\endgroup\medskip}
+\newcommand{\pending}{\textbf{Status: implementation still required.} }
+\newcommand{\refurl}[2]{\href{#1}{#2}}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
+ showstringspaces=false,breaklines=true,upquote=true,
+ backgroundcolor=\color{accent!4},frame=none,
+ xleftmargin=5pt,xrightmargin=5pt,aboveskip=5pt,belowskip=5pt}
+\hypersetup{pdftitle={Section \ReportNumber: \ReportName}}
