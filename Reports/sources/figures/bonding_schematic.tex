@@ -1,0 +1,20 @@
+% Q1.3, Q3.3: screen bonding of the three cables (schematic, one cable section).
+\begin{tikzpicture}[font=\small,>=Stealth]
+\providecommand{\earth}[1]{\draw (#1) -- ++(0,-0.35); \draw (#1)++(-0.25,-0.35) -- ++(0.5,0);
+  \draw (#1)++(-0.16,-0.45) -- ++(0.32,0); \draw (#1)++(-0.07,-0.55) -- ++(0.14,0);}
+\foreach \xs/\isopen/\ttl in {0/0/{(a) both ends bonded: \(U_s=0\), \(I_s\neq0\)},
+                                    8/1/{(b) single point: \(I_s=0\), \(U_s\neq0\)}} {
+  \begin{scope}[xshift=\xs cm]
+  \node[anchor=south] at (3,1.95) {\ttl};
+  \foreach \y/\p in {1.2/A, 0.7/B, 0.2/C} {
+    \draw[orange!80!black,line width=2.2pt] (0.6,\y) -- (5.4,\y);
+    \draw[gray!70,line width=0.6pt] (0.4,\y) -- (5.6,\y);
+    \node[left] at (0.4,\y) {\p};}
+  \draw[thick] (0.6,1.2) -- (0.6,-0.3); \earth{0.6,-0.3}
+  \ifnum\isopen=0 \draw[thick] (5.4,1.2) -- (5.4,-0.3); \earth{5.4,-0.3}
+    \draw[->,KULBlue,thick] (2.2,1.42) -- node[above,font=\footnotesize] {induced \(I_s\)} (3.8,1.42);
+  \else \node[right,font=\footnotesize,align=left] at (5.55,0.45) {open end:\\ standing\\ voltage};
+  \fi
+  \end{scope}}
+\node[font=\footnotesize,gray,anchor=north] at (7,-0.95) {grey: conductor; orange: copper screen; links to earth at the bonded end(s)};
+\end{tikzpicture}

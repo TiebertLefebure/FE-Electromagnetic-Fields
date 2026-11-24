@@ -1,0 +1,7 @@
+% Q3.2: |J| along phase A's vertical diameter, massive vs stranded (peak, 50 Hz, 20 C).
+\begin{tikzpicture}\begin{axis}[xlabel={Position along phase A's vertical diameter [mm] (\(-\): side facing the trefoil centre)},
+  ylabel={$|\hat J|$ [A/mm$^2$]},xmin=-7.4,xmax=7.4,legend pos=north east,legend cell align=left]
+\addplot[cA,thick] table[x=s,y=massive,col sep=comma]{\datadir/j_profile.csv};
+\addplot[cB,thick,dashed] table[x=s,y=stranded,col sep=comma]{\datadir/j_profile.csv};
+\legend{massive (eddy currents allowed),stranded (\(\hat J=\hat I/A\))}
+\end{axis}\end{tikzpicture}

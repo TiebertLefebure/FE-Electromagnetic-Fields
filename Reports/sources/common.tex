@@ -1,39 +1,48 @@
+% Shared preamble of the five section reports: KU Leuven house style (faculty thesis front
+% page: original logo at 10 mm, sans-serif cover text; KU Leuven blue headings).
 \documentclass[11pt,a4paper]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{newtxtext,newtxmath,microtype}
-\usepackage[margin=21mm,headheight=14pt]{geometry}
-\usepackage{booktabs,tabularx,array,amsmath,graphicx,float,caption}
-\usepackage{xcolor,fancyhdr,lastpage,listings}
-\usepackage[hidelinks]{hyperref}
-\definecolor{accent}{HTML}{254C58}
+\usepackage{lmodern,tgheros,microtype}
+\usepackage[a4paper,left=21mm,right=21mm,top=24mm,bottom=22mm,
+  headheight=14pt,headsep=7mm,footskip=10mm]{geometry}
+\usepackage{booktabs,tabularx,array,amsmath,amssymb,graphicx,float,caption,tikz,pgfplots}
+\usepackage{xcolor,fancyhdr,lastpage,listings,titlesec,needspace}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\pgfplotsset{compat=1.18}
+\definecolor{KULBlue}{HTML}{00407A}\definecolor{KULLight}{HTML}{52BDEC}\definecolor{KULMid}{HTML}{1D8DB0}
+\colorlet{accent}{KULBlue}\definecolor{cA}{HTML}{00407A}\definecolor{cB}{HTML}{D1495B}\definecolor{cC}{HTML}{EDAE49}
+\usepackage[colorlinks=true,linkcolor=KULBlue,urlcolor=KULBlue,citecolor=KULBlue]{hyperref}
 \input{questions.tex}
+\titleformat{\section}{\Needspace{12\baselineskip}\sffamily\Large\bfseries\color{KULBlue}}{}{0pt}{}
+\titleformat*{\subsection}{\sffamily\large\bfseries\color{KULBlue}}
+\titlespacing*{\section}{0pt}{12pt}{6pt}
 \pagestyle{fancy}\fancyhf{}
-\fancyhead[L]{\small FE for Electromagnetic Fields -- Kutikuppala, Lefebure, Miseur}
-\fancyhead[R]{\small NKT 33 kV, 185 + 50 mm\textsuperscript{2}}
-\fancyfoot[L]{\small Section \ReportNumber\ -- \ReportName}
-\fancyfoot[R]{\small\thepage\,/\,\pageref{LastPage}}
+\fancyhead[L]{\sffamily\small Finite Elements for Electromagnetic Fields\enspace|\enspace Section \ReportNumber}
+\fancyhead[R]{\sffamily\small Kutikuppala, Lefebure, Miseur}
+\fancyfoot[L]{\sffamily\footnotesize \ReportName}
+\fancyfoot[R]{\sffamily\footnotesize\thepage\,/\,\pageref*{LastPage}}
 \renewcommand{\headrulewidth}{0.3pt}
 \setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
 \setlength{\emergencystretch}{2em}
 \setlength{\tabcolsep}{5pt}\renewcommand{\arraystretch}{1.13}
 \captionsetup{font=small,labelfont=bf,skip=5pt}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+% A figure caption under a centred figure (no float numbering).
+\newcommand{\figcap}[1]{\par\nopagebreak[4]\vspace{2pt}{\small #1}}
 \newcommand{\file}[1]{\href{../Source-code/#1}{\nolinkurl{#1}}}
 \newcommand{\setupfile}[1]{\file{Cable-selection-and-model-setup/#1}}
 \newcommand{\efile}{\file{Electrodynamic-analysis/cable.pro}}
 \newcommand{\mfile}{\file{Magnetothermal-analysis/cable.pro}}
 \newcommand{\runall}{\href{../run_all.sh}{\nolinkurl{run_all.sh}}}
-\newcommand{\runE}{\texttt{getdp cable.pro -msh}\ \path{../Cable-selection-and-model-setup/cable.msh}\ \texttt{-solve Electrodynamics}}
 \newcommand{\codeguide}[3]{\par\smallskip
- {\small\bfseries\color{accent}Code guide}\par\nobreak
+ {\sffamily\small\bfseries\color{accent}Code guide}\par\nobreak
  \begingroup\small\setlength{\tabcolsep}{0pt}
  \begin{tabularx}{\linewidth}{@{}p{14mm}Y@{}}
  \textbf{Files} & #1\\[2pt]
  \textbf{Run} & #2\\[2pt]
  \textbf{Check} & #3
  \end{tabularx}\par\endgroup\medskip}
-\newcommand{\pending}{\textbf{Status: implementation still required.} }
 \newcommand{\refurl}[2]{\href{#1}{#2}}
 \lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
  showstringspaces=false,breaklines=true,upquote=true,
@@ -41,3 +50,27 @@
  xleftmargin=5pt,xrightmargin=5pt,aboveskip=5pt,belowskip=5pt}
 \hypersetup{pdftitle={Section \ReportNumber: \ReportName},
   pdfauthor={Kutikuppala Jaswanth, Lefebure Tiebert, Miseur Torre}}
+% Cover: the faculty thesis front page (logo at x = y = 10 mm, text from x = 20 mm).
+\AtBeginDocument{\hypersetup{pageanchor=false}%
+  \begin{titlepage}\thispagestyle{empty}
+    \begin{tikzpicture}[remember picture,overlay]
+      \node[anchor=north west,inner sep=0pt] at ([xshift=10mm,yshift=-10mm]current page.north west)
+        {\includegraphics{../../Slides/figures/kuleuven_logo.pdf}};
+      \node[anchor=north west,inner sep=0pt,text width=170mm] at ([xshift=20mm,yshift=-90mm]current page.north west)
+        {\sffamily\raggedright
+         {\fontsize{24.88}{30}\selectfont Section \ReportNumber: \ReportName\par}\vspace{8mm}
+         {\fontsize{17.28}{22}\selectfont Finite Elements for Electromagnetic Fields (H9x34A)\par}\vspace{2mm}
+         {\fontsize{14.4}{18}\selectfont Project: NKT 33 kV 1\(\times\)185/50 mm\textsuperscript{2} XLPE-AL cables,
+          three single cores in trefoil, buried 1 m\par}};
+      \node[anchor=north west,inner sep=0pt,text width=170mm] at ([xshift=20mm,yshift=-150mm]current page.north west)
+        {\sffamily\raggedright\fontsize{14.4}{20}\selectfont
+         Kutikuppala Jaswanth\par Lefebure Tiebert\par Miseur Torre\par};
+      \node[anchor=north east,inner sep=0pt,text width=95mm] at ([xshift=-20mm,yshift=-200mm]current page.north east)
+        {\sffamily\raggedleft\fontsize{12}{14.5}\selectfont
+         {\itshape Report date\par}\vspace{1mm}27 November 2026\par\vspace{5mm}
+         {\itshape Presentation\par}\vspace{1mm}1 December 2026\par};
+      \node[anchor=south,inner sep=0pt] at ([yshift=15mm]current page.south)
+        {\sffamily\fontsize{14.4}{18}\selectfont Academic year 2026--2027};
+    \end{tikzpicture}\null
+  \end{titlepage}
+  \hypersetup{pageanchor=true}\setcounter{page}{1}}

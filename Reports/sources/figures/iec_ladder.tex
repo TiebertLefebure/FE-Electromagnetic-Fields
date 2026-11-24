@@ -1,0 +1,13 @@
+% Q4.6: IEC 60287 thermal ladder for one cable (heat flows from left to right).
+\begin{tikzpicture}[font=\small,>=Stealth,res/.style={draw,thick,fill=white,minimum width=12mm,minimum height=4mm}]
+\coordinate (c) at (0,0); \coordinate (s) at (3.2,0); \coordinate (e) at (6.4,0); \coordinate (a) at (9.6,0);
+\draw[thick] (c) -- (a);
+\node[res] at (1.6,0) {\(T_1\)}; \node[res] at (4.8,0) {\(T_3\)}; \node[res] at (8.0,0) {\(T_4\)};
+\foreach \p/\l/\w in {c/{\(\theta_c\)}/left, s/{\(\theta_s\)}/{above right}, e/{\(\theta_e\)}/above, a/{\(\theta_{\rm amb}=15\,^\circ\)C}/right}
+  {\fill (\p) circle (1.5pt); \node[\w=2pt] at (\p) {\l};}
+\draw[->,thick,cB] (0,1.0) node[above] {\(W_c=I^2R_{AC}(\theta_c)\)} -- (c);
+\draw[->,thick,cC!80!black] (3.2,1.0) node[above] {\(\lambda_1W_c\) (screen)} -- (s);
+\node[below=3pt,font=\footnotesize,align=center] at (1.6,-0.15) {XLPE + semicons\\ + inner filler};
+\node[below=3pt,font=\footnotesize,align=center] at (4.8,-0.15) {outer filler\\ + PE};
+\node[below=3pt,font=\footnotesize,align=center] at (8.0,-0.15) {soil, trefoil\\ (Kennelly)};
+\end{tikzpicture}

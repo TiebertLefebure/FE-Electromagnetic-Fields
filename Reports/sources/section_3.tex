@@ -38,6 +38,9 @@ spacings). The phase currents sum to zero and the screen currents nearly so
 global \(I\) (\texttt{Current\_2D}), \(\hat I_k=494.97\angle(0,-120^\circ,+120^\circ)\) A; the distribution
 inside (skin, proximity) is free. Stranded option: \(\hat{\mathbf j}=\hat I_k/A_k\) imposed, no eddy currents.
 
+\begin{center}\input{figures/magnetic_domain.tex}
+\figcap{Magnetic model: the whole EM box is solved, because the screens do not shield \(\mathbf B\);
+each massive region carries one global pair \((U,I)\).}\end{center}
 \codeguide{\mfile: \texttt{Group}, \texttt{Constraint}, \texttt{FunctionSpace}, \texttt{Magnetodynamics\_a}.}
 {Gmsh: open \mfile, resolution \texttt{Magnetodynamics}, \textbf{Run}.}
 {\texttt{res/currents\_A.dat}: three phase currents, then the three screen currents (re, im).}
@@ -55,6 +58,9 @@ against a 0.45 mm screen: skin effect is weak.
 (b) massive, 500 Hz & \Pcfhund & \Psfhund & \Rcfhund & \Lfhund\\\bottomrule
 \end{tabular}
 \end{center}
+\begin{center}\def\figw{0.85\linewidth}\def\figh{5cm}\input{figures/style.tex}\input{figures/j_profile.tex}
+\figcap{Current density across phase A: the massive conductor carries more current on the side facing the
+other two phases (proximity) and near its surface (skin); the stranded model imposes a uniform \(\hat I/A\).}\end{center}
 \textbf{Massive is the realistic model}: NKT specifies a \emph{solid} conductor, in which eddy
 currents flow freely. At 50 Hz the difference is small: \(R_{\rm cond}\) stranded \dRcstr\,\%, \(L\)
 \dLstr\,\%. The massive skin + proximity increase over the FE DC value is \SkinFE\,\%, against
@@ -66,7 +72,6 @@ currents flow freely. At 50 Hz the difference is small: \(R_{\rm cond}\) strande
 {Gmsh: \textbf{Magnetic > Conductor model}; \runall: \texttt{stranded}, \texttt{stranded-f500}, \texttt{f500}.}
 {\texttt{R\_conductors\_ohm\_km.dat}, \texttt{losses\_*.dat}, \texttt{L\_mH\_km.dat}.}
 
-\newpage
 \section*{Q3.3 Bonding with global quantities}
 \assignmentquestion{\QuestionThreeThree}
 Each copper screen is a massive region with its own \((U_m,I_m)\).
@@ -86,6 +91,9 @@ IEC: \(\lambda_1'=\frac{R_s/R}{1+(R_s/X)^2}\) with \(R_s=\)\,\IecRs\ \(\Omega\)/
 inside each ring (seen alone in the single-point case, \Pssingle\ kW/km), which IEC treats separately.
 The FE circulating part, \PcircFE\ kW/km, is \dPcirc\,\% from IEC, and the FE screen current \dIs\,\%.
 
+\begin{center}\input{figures/bonding_schematic.tex}
+\figcap{The two bonding conditions as global constraints per screen: \(U_s=0\) closes the loop (both ends),
+\(I_s=0\) opens it (single point).}\end{center}
 \textbf{Why \(\mathbf j=-j\omega\sigma\mathbf a\) alone is not a bonding condition.} Dropping \(\mathbf u_r\)
 silently sets \(U_m=0\), but measured from an arbitrary reference: \(a_z\) is defined up to a constant,
 fixed here by \(a_z=0\) on the artificial box edge. The net screen current
@@ -110,6 +118,8 @@ Semicons, fillers, PE, soil \(\sigma=0\) & skin depths of km: eddy losses neglig
 Circle as 12-arc polygon & conductor area \(-0.02\,\%\)\\\bottomrule
 \end{tabular}
 \end{center}
+\begin{center}\input{figures/ring_simplification.tex}
+\figcap{Wire screen and tape (left, schematic) replaced by one ring of the same copper area (right).}\end{center}
 \textbf{The Section 2 simplification does not hold here.} The electric model needed only the XLPE
 because the grounded screens confine \(\mathbf E\). The non-magnetic screens do not confine \(\mathbf B\):
 metals, the other cables, their spacing and the soil all matter (proximity, mutual flux, screen
@@ -118,7 +128,6 @@ induction). The semicon/filler simplifications remain valid.
 \codeguide{\setupfile{parameters.pro}: \texttt{JacketGap}, \texttt{rWireIn}. \mfile: \texttt{Insulation} group.}
 {\runall: \texttt{touching}.}{\texttt{L\_mH\_km.dat}, \texttt{R\_ac\_ohm\_km.dat}.}
 
-\newpage
 \section*{Q3.5 Mesh quality and convergence}
 \assignmentquestion{\QuestionThreeFive}
 Elements are \(\le0.25\) mm around the cables and \(\le0.6\) mm on the metal boundaries, i.e.\
@@ -166,7 +175,6 @@ eddies remain (opposite signs on the near and far side of each ring, zero net cu
 
 \codeguide{\mfile: \texttt{jm} (total current, including \(\mathbf u_r\)).}{\textbf{Run}.}{\texttt{res/j\_norm.pos}.}
 
-\newpage
 \section*{Q3.8 Joule losses per part}
 \assignmentquestion{\QuestionThreeEight}
 \(p=|\hat{\mathbf j}|^2/(2\sigma)\) with the \emph{total} current density \(-\sigma(j\omega\mathbf a+\mathbf u_r)\),
@@ -181,6 +189,8 @@ Environment (soil, \(\sigma=0\)) & 0 & 0 & --\\\midrule
 Total & \Ptbase & \Ptsingle & \IecPt\\\bottomrule
 \end{tabular}
 \end{center}
+\begin{center}\def\figw{0.62\linewidth}\def\figh{5cm}\input{figures/style.tex}\input{figures/losses_bar.tex}
+\figcap{Losses per part: the conductors dominate; single-point bonding removes almost all screen loss.}\end{center}
 Per phase \PcPhase\ kW/km in the aluminium; the three phases differ by \PhaseSym\,\% (trefoil symmetry).
 
 \codeguide{\mfile: \texttt{Losses}, \texttt{Mag\_Global}.}{\textbf{Run}.}
@@ -199,6 +209,9 @@ Conductors only (DC + skin + proximity) & \Rcbase & \IecRcond\ (IEC)\\
 Terminal check \(\Re(-U_A/I_A)\) & \Zrbase & --\\\bottomrule
 \end{tabular}
 \end{center}
+\begin{center}\def\figw{0.8\linewidth}\def\figh{3.6cm}\input{figures/style.tex}\input{figures/rac_bar.tex}
+\figcap{\(R_{AC}\) built up from the DC resistance, the skin + proximity increase and the screen losses
+(axis starts at 0.15 \(\Omega\)/km).}\end{center}
 \textbf{Separation:} \(R_{AC}=R_{DC}\,(1+\SkinFE\,\%_{\rm skin+prox}+\ScreenFE\,\%_{\rm screens})\).
 NKT gives no \(R_{AC}\); \(R_{DC}=0.164\) is matched by the choice of \(\sigma_{\rm Al}\) (Section 1). At the
 operating temperature the resistance is \(\approx\)25\,\% higher (Section 4).
@@ -206,7 +219,6 @@ operating temperature the resistance is \(\approx\)25\,\% higher (Section 4).
 \codeguide{\mfile: \texttt{R\_ohm\_km}, \texttt{Zterm\_ohm\_km}.}{\runall: \texttt{base}, \texttt{f0.01}.}
 {\texttt{R\_conductors\_ohm\_km.dat}, \texttt{R\_ac\_ohm\_km.dat}, \texttt{Z\_terminal\_ohm\_km.dat}.}
 
-\newpage
 \section*{Q3.10 Inductance}
 \assignmentquestion{\QuestionThreeTen}
 \textbf{Definition.} In a balanced, symmetric three-phase system every phase sees \(U_k=Z\,I_k\) with
@@ -221,6 +233,9 @@ Frequency [Hz] & 0.01 & 5 & 50 & 500\\\midrule
 \(R_{AC}\) [\(\Omega\)/km] & \Racfdc & \Racffive & \Racbase & \Racfhund\\\bottomrule
 \end{tabular}
 \end{center}
+\begin{center}\def\figw{0.75\linewidth}\def\figh{5cm}\input{figures/style.tex}\input{figures/l_freq.tex}
+\figcap{Inductance from DC to 500 Hz: it falls as the induced screen and eddy currents grow; at 50 Hz the
+touching FE value lies inside the NKT band.}\end{center}
 \textbf{It depends on frequency} even with constant \(\mu\): induced screen and eddy currents grow with
 \(\omega\) and oppose the flux (\dLfreq\,\% from DC to 50 Hz, \dLfreqhund\,\% at 500 Hz).
 \textbf{Comparison:} NKT \(X=0.12\) \(\Omega\)/km (touching trefoil) gives \(L=\)\,\NktL\ mH/km; FE touching

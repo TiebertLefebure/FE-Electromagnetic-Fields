@@ -45,6 +45,7 @@ The **Output** panel shows losses, R, L, the hot-spot and the ground-surface tem
 | `Tmax_conductor.dat`, `Tmax_surface.dat` | hot spot and maximum ground-surface temperature, °C |
 | `convergence.txt` | iteration, relative temperature increment |
 | `T_surface_profile.txt` | T along the ground surface |
+| `j_line_A.txt` | \|J\| along phase A's vertical diameter (x, y, z, value) |
 | `surface_heat_W_m.dat` | heat leaving through the ground surface |
 | `b_norm.pos`, `j_norm.pos`, `T.pos`, `T_cables.pos` | maps (peak phasor norms; T in deg C) |
 

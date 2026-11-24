@@ -1,0 +1,7 @@
+% Q4.8: change from the linear (sigma at 20 C) to the sigma(T) model, % (350 A).
+\begin{tikzpicture}\begin{axis}[xbar,bar width=10pt,xlabel={Change linear \(\rightarrow\) \(\sigma(T)\) [\%]},xmin=-25,xmax=35,
+  symbolic y coords={L,Rac,Pt,Ps,Pc},ytick={L,Rac,Pt,Ps,Pc},yticklabels={$L$,$R_{AC}$,total loss,screen loss,conductor loss},
+  enlarge y limits=0.15,nodes near coords,nodes near coords style={font=\scriptsize},
+  extra x ticks={0},extra x tick labels={},extra x tick style={grid=major,grid style={black}}]
+\addplot[fill=cA!80,draw=cA] table[y=q,x=change,col sep=comma]{\datadir/nl_change.csv};
+\end{axis}\end{tikzpicture}

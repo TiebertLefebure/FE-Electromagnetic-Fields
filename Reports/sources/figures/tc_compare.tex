@@ -1,0 +1,7 @@
+% Q4.6: conductor temperature at 350 A: datasheet, IEC 60287 and FE.
+\begin{tikzpicture}\begin{axis}[xbar,bar width=11pt,xlabel={Conductor temperature at 350 A [$^\circ$C]},
+  xmin=80,xmax=96,symbolic y coords={FE convection,FE isothermal,IEC 60287,NKT rating},ytick=data,
+  enlarge y limits=0.18,extra x ticks={90},extra x tick labels={},
+  extra x tick style={grid=major,grid style={cB,thick,dashed}},nodes near coords,nodes near coords style={font=\scriptsize}]
+\addplot[fill=cA!80,draw=cA] coordinates {(\Tcnl,FE convection) (\Tcnliso,FE isothermal) (\IecTheta,IEC 60287) (90,NKT rating)};
+\end{axis}\end{tikzpicture}

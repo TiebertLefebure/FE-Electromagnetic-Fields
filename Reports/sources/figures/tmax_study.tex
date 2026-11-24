@@ -1,0 +1,13 @@
+% Q4.3: hot spot versus mesh density and thermal domain size (sigma(T), 350 A).
+\begin{tikzpicture}
+\begin{axis}[name=m,width=0.44\linewidth,height=4.6cm,xmode=log,x dir=reverse,xlabel={MeshFactor (smaller = finer)},
+  ylabel={$T_{\max}$ [$^\circ$C]},xtick={0.5,1,2},xticklabels={0.5,1,2},ymin=90.5,ymax=94,xmin=0.4,xmax=2.5,
+  grid=major,grid style={gray!25},tick label style={font=\scriptsize}]
+\addplot[cA,thick,mark=*] coordinates {(2,\Tcnlcoarse) (1,\Tcnl) (0.5,\Tcnlfine)};
+\end{axis}
+\begin{axis}[at={(m.east)},anchor=west,xshift=14mm,width=0.44\linewidth,height=4.6cm,xmode=log,
+  xlabel={Thermal domain half-width = depth [m]},xtick={10,20,40},xticklabels={10,20,40},ymin=90.5,ymax=94,
+  xmin=8,xmax=50,grid=major,grid style={gray!25},tick label style={font=\scriptsize}]
+\addplot[cB,thick,mark=square*] coordinates {(10,\Tcnldomten) (20,\Tcnl) (40,\Tcnldomforty)};
+\end{axis}
+\end{tikzpicture}

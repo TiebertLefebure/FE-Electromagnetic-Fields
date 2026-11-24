@@ -1,0 +1,9 @@
+% Q3.9: AC resistance split into DC, skin + proximity and screen losses (ohm/km, 20 C).
+\begin{tikzpicture}\begin{axis}[xbar stacked,bar width=16pt,xlabel={$R$ [$\Omega$/km]},xmin=0.150,xmax=0.180,xtick distance=0.005,
+  symbolic y coords={IEC,FE},ytick=data,enlarge y limits=0.6,legend style={at={(0.5,1.03)},anchor=south},
+  legend columns=3,xticklabel style={/pgf/number format/fixed,/pgf/number format/precision=3}]
+\addplot[fill=gray!50,draw=gray] table[y=model,x=dc,col sep=comma]{\datadir/rac_split.csv};
+\addplot[fill=cA!80,draw=cA] table[y=model,x=skin,col sep=comma]{\datadir/rac_split.csv};
+\addplot[fill=cC,draw=cC!70!black] table[y=model,x=screens,col sep=comma]{\datadir/rac_split.csv};
+\legend{DC,skin + proximity,screen losses}
+\end{axis}\end{tikzpicture}

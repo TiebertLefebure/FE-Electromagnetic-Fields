@@ -1,0 +1,20 @@
+% Section 5: the three arrangements to scale (mm); cable outer radius 21.5 mm.
+\begin{tikzpicture}[scale=0.024,font=\small,>=Stealth]
+\newcommand{\cab}[3]{\fill[gray!25] (#1,#2) circle (21.5); \fill[orange!70] (#1,#2) circle (17.85);
+  \fill[white] (#1,#2) circle (17.4); \fill[green!35!teal!40] (#1,#2) circle (16.2);
+  \fill[gray!60] (#1,#2) circle (7.4); \node[font=\scriptsize] at (#1,#2) {#3};}
+% trefoil, 0.5 mm gap (centre spacing 43.5 mm)
+\cab{0}{25.1}{A}\cab{-21.75}{-12.6}{B}\cab{21.75}{-12.6}{C}
+\node[anchor=north,align=center] at (0,-45) {trefoil\\ \(s=43.5\) mm};
+% flat, 0.5 mm gap
+\begin{scope}[shift={(150,0)}]
+\cab{-43.5}{0}{A}\cab{0}{0}{B}\cab{43.5}{0}{C}
+\node[anchor=north,align=center] at (0,-45) {flat\\ \(s=43.5\) mm};
+\end{scope}
+% flat, 70 mm free distance
+\begin{scope}[shift={(400,0)}]
+\cab{-113}{0}{A}\cab{0}{0}{B}\cab{113}{0}{C}
+\draw[<->] (21.5,30) -- node[above] {70 mm} (91.5,30);
+\node[anchor=north,align=center] at (0,-45) {flat +70 mm\\ \(s=113\) mm};
+\end{scope}
+\end{tikzpicture}

@@ -33,6 +33,8 @@ PE sheath & 21.50 & NKT: nominal outer diameter 43.0 mm (2.3 mm vs nominal 2.2 m
 \bottomrule
 \end{tabularx}
 \end{table}
+\begin{center}\input{figures/cable_section.tex}
+\figcap{One cable of the model, to scale (radii in mm from its axis; \(^*\) assumed).}\end{center}
 The copper wires and tape are one ring of equal area: same DC resistance, no lay. The ring
 position only affects the screen loop (Section 3, Q3.4).
 
@@ -58,7 +60,6 @@ All materials are non-magnetic (\(\mu_r=1\)): there is no steel. Using the IEC t
 [DERIVED], [ASSUMPTION]). \setupfile{cable.geo}: the layer radii \texttt{R[]}.}
 {Open \setupfile{cable.geo} in Gmsh to see the geometry.}{\texttt{sigmaAl} reproduces 0.164 \(\Omega\)/km by construction.}
 
-\newpage
 \section*{Q1.2 Environment and computational domains}
 \assignmentquestion{\QuestionOneTwo}
 \textbf{Environment = the NKT rating conditions}: homogeneous soil, thermal resistivity 1.2 K\,m/W
@@ -70,6 +71,9 @@ and negligible in the magnetic one (skin depth \(\approx\)700 m). Soil drying an
 \textbf{Domains (one mesh).} Electromagnetic box \(\pm0.3\) m around the trefoil (Sections 2--3), nested in
 a soil rectangle up to the ground surface, \(\pm20\) m wide and 20 m deep (Section 4).
 
+\begin{center}\input{figures/domain.tex}
+\figcap{Environment and computational domains (not to scale): the electromagnetic box (Sections 2--3) is a
+sub-domain of the thermal soil domain (Section 4) in one mesh.}\end{center}
 \textbf{Spacing (TA advice).} Exactly touching jackets create zero-angle soil wedges that ruin
 the triangles. We leave a 0.5 mm soil gap (centre spacing 43.5 mm instead of 43.0 mm):
 \begin{center}\small
@@ -97,6 +101,9 @@ Sections 2 and 3 quantify the effect of the gap: \(E_{\max}\) \dEtouch\,\%, \(L\
 rating row. Circulating screen currents are therefore allowed (Section 3: \(U=0\) per screen).
 Single-point bonding (\(I=0\)) is studied as a loss-reduction option (Q3.11, Section 5).
 There is no armour or pipe. In the electric model the screens are simply at 0 V.
+\begin{center}\input{figures/bonding_schematic.tex}
+\figcap{Both-end bonding (our choice, NKT rating row) closes the screen loop through the earth links, so a
+current is induced; single-point bonding leaves one end open, so no net screen current flows.}\end{center}
 
 \section*{Q1.4 Excitation}
 \assignmentquestion{\QuestionOneFour}
@@ -106,6 +113,8 @@ Peak phasors, \(x(t)=\Re\{\hat x\,e^{j\omega t}\}\), 50 Hz, positive sequence A,
  \hat V_k=\frac{\sqrt2\,33}{\sqrt3}e^{-j2\pi k/3}=26.944\,e^{-j2\pi k/3}\ \mathrm{kV},\qquad
  \hat I_k=\sqrt2\,350\,e^{-j2\pi k/3}=494.97\,e^{-j2\pi k/3}\ \mathrm{A}.
 \]
+\begin{center}\input{figures/phasors.tex}
+\figcap{Peak phasors of the three phases at \(t=0\); they rotate counter-clockwise at \(\omega=2\pi\,50\) rad/s.}\end{center}
 The voltages drive the electric model, the currents the magnetic one (independent linear problems,
 so the load power factor is irrelevant). Results are reported as RMS values and time-averaged losses.
 

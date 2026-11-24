@@ -1,0 +1,13 @@
+% Q4.9: hot spot versus current. Linear model: T - 15 grows exactly with I^2. sigma(T): through the
+% two coupled runs (350 A and I1), interpolated in I^2 as in Section 5.
+\begin{tikzpicture}\begin{axis}[xlabel={Phase current [A RMS]},ylabel={$T_{\max}$ [$^\circ$C]},xmin=300,xmax=400,
+  ymin=55,ymax=105,legend pos=north west,legend cell align=left,samples=40]
+\addplot[cA,thick,domain=300:400] {15+(\Tclin-15)*(x/350)^2};
+\addplot[cB,thick,domain=320:380] {\Tcnl+(x^2-350^2)*(\TctrefoilIone-\Tcnl)/(\Ionetrefoil^2-350^2)};
+\addplot[black,dashed,domain=300:400] {90};
+\addplot[cA,densely dotted] coordinates {(\AmpLin,55) (\AmpLin,90)};
+\addplot[cB,densely dotted] coordinates {(\Amptrefoil,55) (\Amptrefoil,90)};
+\legend{linear (\(\sigma\) at 20\,\(^\circ\)C),\(\sigma(T)\),90\,\(^\circ\)C limit}
+\node[anchor=south west,font=\scriptsize,cA] at (axis cs:\AmpLin,56) {\AmpLin\ A};
+\node[anchor=south east,font=\scriptsize,cB] at (axis cs:\Amptrefoil,56) {\Amptrefoil\ A};
+\end{axis}\end{tikzpicture}

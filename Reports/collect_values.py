@@ -352,4 +352,16 @@ for case, name in [('nl', 'nl_history'), ('nl-coarse', 'nl_history_coarse'), ('n
 for case, name in [('nl', 'surface_nl'), ('nl-h20', 'surface_h20'), ('nl-h5', 'surface_h5')]:
     prof = [l_.split() for l_ in open(os.path.join(M, case, 'T_surface_profile.txt'))]
     csv(name + '.csv', 'x,T', [(f'{float(x[0]):.3f}', f'{float(x[3]):.4f}') for x in prof])
+# Q3.2: |J| (A/mm2) along phase A's vertical diameter; s < 0 = side facing the trefoil centre.
+jl = {c: [l_.split() for l_ in open(os.path.join(M, c, 'j_line_A.txt'))] for c in ('base', 'stranded')}
+yc = (float(jl['base'][0][1]) + float(jl['base'][-1][1])) / 2
+csv('j_profile.csv', 's,massive,stranded', [(f'{(float(a[1]) - yc) * 1e3:.3f}', f'{float(a[3]) / 1e6:.4f}',
+                                             f'{float(c[3]) / 1e6:.4f}') for a, c in zip(jl['base'], jl['stranded'])])
+# Q3.9: R_AC split into DC, skin + proximity and screens (ohm/km), FE and IEC 60287 at 20 C.
+R20 = Rac20 / (1 + ys + yp)
+csv('rac_split.csv', 'model,dc,skin,screens',
+    [('FE', f"{mv['fdc']['Rac']:.5f}", f"{b['Rc'] - mv['fdc']['Rac']:.5f}", f"{b['Rac'] - b['Rc']:.5f}"),
+     ('IEC', f'{R20 * 1e3:.5f}', f'{(Rac20 - R20) * 1e3:.5f}', f'{Rac20 * lam20 * 1e3:.5f}')])
+# Q4.8: change from the linear (20 C) to the sigma(T) model, %.
+csv('nl_change.csv', 'q,change', [(k, f"{pct(mv['nl'][k], mv['lin'][k]):.2f}") for k in ('Pc', 'Ps', 'Pt', 'Rac', 'L')])
 print(len(macros), 'values written')

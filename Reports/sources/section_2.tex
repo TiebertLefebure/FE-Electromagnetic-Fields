@@ -44,9 +44,11 @@ ends (terminations), would need a different model.
 {Gmsh: \textbf{File > Open} \efile, \textbf{Run} (resolution \texttt{Electrodynamics}).}
 {\texttt{res/potential.pos}, \texttt{res/field\_norm.pos}; only the XLPE carries a field.}
 
-\newpage
 \section*{Q2.2 Geometric simplifications}
 \assignmentquestion{\QuestionTwoTwo}
+\begin{center}\input{figures/electric_domain.tex}
+\figcap{The grounded core screen confines the field: only the XLPE annulus between two electrodes is
+solved (one per phase); everything outside it is left out exactly.}\end{center}
 \begin{center}\small
 \begin{tabular}{@{}p{62mm}p{92mm}@{}}\toprule
 Simplification & Quantified effect\\\midrule
@@ -92,7 +94,6 @@ needed} at the conductor-screen interface (and around a defect, where Q2.5 uses
 {\runall: cases \texttt{coarse}, \texttt{gap}, \texttt{fine} (Gmsh: \textbf{Mesh > Mesh factor}).}
 {``Dofs'' in the GetDP log, \texttt{max\_field\_kV\_mm.dat}, \texttt{capacitance\_uF\_km.dat}.}
 
-\newpage
 \section*{Q2.4 Admissible field strength}
 \assignmentquestion{\QuestionTwoFour}
 NKT gives no admissible local field. We use the design limits of 8 kV/mm RMS at the conductor
@@ -106,6 +107,10 @@ Conductor screen, \(r_i=7.8\) mm & \AnaEirms & \(\Egapfine/\sqrt2\) & 8\\
 Core screen, \(r_o=15.8\) mm & \AnaEorms & -- & 4\\\bottomrule
 \end{tabular}
 \end{center}
+\begin{center}\def\figw{0.8\linewidth}\def\figh{5cm}
+\input{figures/style.tex}\input{figures/radial_limits.tex}
+\figcap{RMS field across the healthy XLPE: the peak sits at the conductor screen, at 43\,\% of the
+8 kV/mm design limit; at the core screen the field is 43\,\% of 4 kV/mm.}\end{center}
 \(E_{\rm rms}(r)=V_{\rm ph}/(r\ln(r_o/r_i))\). The healthy cable is at 43\,\% of both limits: it is
 well within them. This checks the stress design only; it does not establish lifetime.
 
@@ -157,7 +162,6 @@ partial-discharge test would reject this cable.
 {Gmsh: \textbf{Geometry > Insulation defect} = Air void, \textbf{Run} (remeshes).}
 {\texttt{res/field\_norm.pos}, \texttt{res/radial\_field\_A.txt} (x, y, z, \(|E|\) in V/m).}
 
-\newpage
 \section*{Q2.6 Conduction and displacement currents; conservation}
 \assignmentquestion{\QuestionTwoSix}
 \(\hat{\mathbf J}_c=\sigma\hat{\mathbf E}\) and \(\hat{\mathbf J}_d=j\omega\varepsilon\hat{\mathbf E}\), both radial.
@@ -178,8 +182,12 @@ The magnitude \(|I|\) equals \(\omega C'V\): \IchFE\ A/km RMS charging current p
 \AnaIch), with \(\Re I/\Im I=\)\,\IratioFE\(\,=\sigma/(\omega\varepsilon)\). It is a radial current,
 not the 350 A load current.
 
-\begin{center}\includegraphics[width=0.38\linewidth,trim=150 0 150 0,clip]{e_jdisp.png}\\
-{\small \(|\hat{\mathbf J}_d|\) [A/m\textsuperscript2], healthy; with void: Q2.5.}\end{center}
+\begin{center}\begin{minipage}[c]{0.36\linewidth}\centering
+\includegraphics[width=\linewidth,trim=150 0 150 0,clip]{e_jdisp.png}\end{minipage}\hfill
+\begin{minipage}[c]{0.6\linewidth}\def\figw{0.93\linewidth}\def\figh{5cm}
+\input{figures/style.tex}\input{figures/currents_radial.tex}\end{minipage}
+\figcap{Left: \(|\hat{\mathbf J}_d|\) [A/m\textsuperscript2] in the healthy XLPE (with void: Q2.5). Right: both
+densities along the phase-A radius; displacement exceeds conduction by ten orders of magnitude.}\end{center}
 
 \codeguide{\efile: \texttt{jc}, \texttt{jd}, \texttt{I}, \texttt{GlobalTerm}.}{\textbf{Run}.}
 {\texttt{res/displacement\_current.pos}, \texttt{res/conduction\_current.pos},
@@ -206,6 +214,9 @@ homogeneous annulus the factor \(\sigma+j\omega\varepsilon\) cancels from the eq
 constant properties \(C\) cannot depend on \(f\). Real XLPE has a slightly frequency-dependent
 \(\varepsilon\) and \(\tan\delta\approx10^{-3}\), not modelled.
 
+\begin{center}\def\figw{0.7\linewidth}\def\figh{4.6cm}
+\input{figures/style.tex}\input{figures/cap_freq.tex}
+\figcap{FE capacitance from 5 Hz to 5 kHz: constant and on the analytical value, below the NKT maximum.}\end{center}
 \codeguide{\efile: \texttt{C\_energy}, \texttt{C\_charge}.}{\runall: \texttt{f5}, \texttt{f500}, \texttt{f5000}
 (Gmsh: \textbf{Cable > Frequency}).}{\texttt{capacitance\_uF\_km.dat}, \texttt{capacitance\_charge\_uF\_km.dat}.}
 

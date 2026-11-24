@@ -1,0 +1,19 @@
+% Q2.1, Q2.2: what the electric model keeps. Left: the real cable; right: the FE domain (XLPE only).
+\begin{tikzpicture}[font=\small,>=Stealth,scale=0.075]
+\begin{scope}
+\fill[gray!20] (0,0) circle (21.5); \fill[white] (0,0) circle (19.2);
+\fill[orange!70] (0,0) circle (17.85); \fill[white] (0,0) circle (17.4);
+\fill[black!70] (0,0) circle (16.2); \fill[green!35!teal!40] (0,0) circle (15.8);
+\fill[black!70] (0,0) circle (7.8); \fill[gray!55] (0,0) circle (7.4);
+\node[anchor=north,align=center] at (0,-23) {real cable};
+\end{scope}
+\draw[->,thick] (26,0) -- node[above,align=center] {keep the XLPE;\\ screens = electrodes} (62,0);
+\begin{scope}[shift={(88,0)}]
+\fill[green!35!teal!40,even odd rule] (0,0) circle (15.8) circle (7.8);
+\draw[KULBlue,very thick] (0,0) circle (7.8); \draw[black,very thick] (0,0) circle (15.8);
+\draw[KULBlue,<-] (5.5,5.5) -- (24,19) node[right,align=left,KULBlue] {conductor screen (101):\\ \(v=\hat V_k\), one unknown \((U,I)\)};
+\draw[<-] (11.2,-11.2) -- (24,-19) node[right,align=left] {core screen (111): \(v=0\), \((U,I)\)};
+\node[align=center] at (0,0) {\footnotesize no field\\[-2pt]\footnotesize here};
+\node[anchor=north,align=center] at (0,-23) {FE domain: XLPE, \(r=7.8\)--15.8 mm};
+\end{scope}
+\end{tikzpicture}

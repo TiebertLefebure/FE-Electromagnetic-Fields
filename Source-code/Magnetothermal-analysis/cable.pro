@@ -310,6 +310,9 @@ PostOperation {
       Print[jm, OnElementsOf Region[{DomainC_Mag, DomainS0_Mag}], Name "|J| [A/m2]",
         File StrCat[ResultDir,"/j_norm.pos"]];
       Print[bm, OnElementsOf Domain_Mag, Name "|B| [T]", File StrCat[ResultDir,"/b_norm.pos"]];
+      // [Q3.2, Q3.7] |J| along phase A's vertical diameter (bottom = side facing the trefoil centre).
+      Print[jm, OnLine {{xA, yA-rCon+1e-6, 0}{xA, yA+rCon-1e-6, 0}} {200},
+        Format SimpleTable, File StrCat[ResultDir,"/j_line_A.txt"]];
     }
   }
   { Name The_Global; NameOfPostProcessing The;

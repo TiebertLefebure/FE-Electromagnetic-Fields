@@ -1,0 +1,12 @@
+% Q2.4: RMS field along the phase-A radius against the admissible values [Eskom].
+\begin{tikzpicture}\begin{axis}[xlabel={Radius from phase-A axis [mm]},ylabel={$E_{\rm rms}$ [kV/mm]},
+  xmin=7.5,xmax=16.1,ymin=0,ymax=9,legend pos=north east,legend cell align=left]
+\addplot[cA,thick] table[x=r,y expr=\thisrow{E}/sqrt(2),col sep=comma]{\datadir/radial_healthy.csv};
+\addplot[black,dashed,domain=7.8:15.8,samples=50] {19.05256/(x*ln(15.8/7.8))};
+\addplot[cB,very thick] coordinates {(7.6,8) (9.2,8)};
+\addplot[cB,very thick,densely dashed] coordinates {(14.2,4) (16.0,4)};
+\addplot[only marks,mark=*,cA] coordinates {(7.8,\AnaEirms) (15.8,\AnaEorms)};
+\legend{FE (default mesh),Analytical $V_{\rm ph}/(r\ln(r_o/r_i))$,limit at conductor screen (8),limit at core screen (4)}
+\node[anchor=north west,font=\small] at (axis cs:7.85,3.35) {\AnaEirms};
+\node[anchor=south,font=\small] at (axis cs:15.2,1.75) {\AnaEorms};
+\end{axis}\end{tikzpicture}

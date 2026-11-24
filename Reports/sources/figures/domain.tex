@@ -1,0 +1,22 @@
+% Q1.2, Q4.2: environment and computational domains (not to scale).
+\begin{tikzpicture}[font=\small,>=Stealth]
+\fill[KULLight!12] (-7,0) rectangle (7,0.8);
+\fill[brown!12] (-7,0) rectangle (7,-5);
+\draw[KULBlue,very thick] (-7,0) -- (7,0);
+\draw[thick] (-7,0) -- (-7,-5) -- (7,-5) -- (7,0);
+\node[anchor=west] at (-6.9,0.4) {air, \(T_{\rm amb}=15\,^\circ\)C};
+\node[anchor=east,KULBlue] at (6.9,0.4) {ground surface: \(-\kappa\,\partial_nT=h\,(T-T_{\rm amb})\), \(h=10\) W/(m\(^2\)K)};
+\node[rotate=90,anchor=south] at (-7,-2.5) {\(\partial_nT=0\) at \(x=-20\) m};
+\node[rotate=-90,anchor=south] at (7,-2.5) {\(\partial_nT=0\) at \(x=+20\) m};
+\node[anchor=south] at (0,-5) {\(T=T_{\rm amb}=15\,^\circ\)C at 20 m depth};
+\node[align=center] at (-3.7,-2.7) {soil: \(\rho_T=1.2\) K\,m/W\\ (\(\kappa=0.833\) W/(m\,K)), 15\,\(^\circ\)C};
+\draw[<->] (6.4,0) -- node[pos=0.72,left] {20 m} (6.4,-5);
+\draw[<->] (-7,-4.3) -- node[above,fill=brown!12,inner sep=1pt] {40 m} (6.4,-4.3);
+% EM box with the trefoil
+\draw[KULBlue,thick,fill=white] (-0.45,-1.75) rectangle (0.45,-0.85);
+\foreach \x/\y in {0/-1.18, -0.13/-1.41, 0.13/-1.41} \fill[black!70] (\x,\y) circle (0.13);
+\draw[<->] (-0.75,0) -- node[left] {1.0 m} (-0.75,-1.3);
+\draw[dashed,gray] (-0.85,-1.3) -- (-0.45,-1.3);
+\draw[KULBlue,->] (0.5,-1.3) -- (1.5,-2.0) node[right,align=left,KULBlue]
+  {EM box \(\pm0.3\) m around the trefoil\\ (Sections 2--3; \(a_z=0\) on its edge)};
+\end{tikzpicture}

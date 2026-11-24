@@ -1,0 +1,14 @@
+% Q4.1, Q4.7: staggered magneto-thermal coupling (resolution MagnetoThermal).
+\begin{tikzpicture}[font=\footnotesize,>=Stealth,node distance=7mm and 24mm,
+  box/.style={draw=KULBlue,thick,fill=KULBlue!6,rounded corners=2pt,align=center,inner sep=4pt}]
+\node[box] (mag) {magnetic solve (complex)\\ \(\nabla\times\nu\nabla\times\hat{\mathbf a}=-\sigma(T)\,(j\omega\hat{\mathbf a}+\hat{\mathbf u}_r)\)};
+\node[box,right=of mag] (p) {heat source (real)\\ \(p=\tfrac12\sigma(T)\,|j\omega\hat{\mathbf a}+\hat{\mathbf u}_r|^2\)\\ \texttt{<a>[\,...\,]} with \texttt{SquNorm}};
+\node[box,below=of p] (th) {thermal solve (real)\\ \(-\nabla\cdot(\kappa\nabla T)=p\) \(\Rightarrow T_k\)};
+\node[box,below=of mag] (sig) {update \(\sigma(T)=\sigma_{20}/(1+\alpha(T-20))\)\\ \texttt{sigma[<T>[\{T\}]]}};
+\node[box,fill=white,above=5mm of mag] (start) {start: \(T_0=20\,^\circ\)C (pass 1 = linear model)};
+\draw[->,thick] (start) -- (mag); \draw[->,thick] (mag) -- (p); \draw[->,thick] (p) -- (th);
+\draw[->,thick] (th) -- node[above,align=center] {not\\ converged} (sig);
+\draw[->,thick] (sig) -- (mag);
+\node[box,fill=white,below=5mm of th] (end) {converged: \(\|T_k-T_{k-1}\|_2/\|T_k\|_2<10^{-6}\)};
+\draw[->,thick] (th) -- (end);
+\end{tikzpicture}

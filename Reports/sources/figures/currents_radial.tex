@@ -1,0 +1,9 @@
+% Q2.6: conduction and displacement current densities along the phase-A radius (peak, healthy).
+% J_d = omega eps0 eps_r |E| = 6.954e-3 A/m2 per kV/mm; J_c = sigma |E| = 1e-12 A/m2 per kV/mm.
+\begin{tikzpicture}\begin{axis}[xlabel={Radius from phase-A axis [mm]},ylabel={$|\hat J|$ [A/m$^2$]},
+  ymode=log,xmin=7.8,xmax=15.8,ymin=1e-13,ymax=1,legend style={at={(0.03,0.5)},anchor=west},legend cell align=left]
+\addplot[cA,thick] table[x=r,y expr=6.954e-3*\thisrow{E},col sep=comma]{\datadir/radial_healthy.csv};
+\addplot[cB,thick] table[x=r,y expr=1e-12*\thisrow{E},col sep=comma]{\datadir/radial_healthy.csv};
+\legend{displacement $\omega\varepsilon|\hat E|$,conduction $\sigma|\hat E|$}
+\draw[<->,gray] (axis cs:12.8,4e-12) -- node[right,font=\footnotesize,black,align=left] {$\sigma/\omega\varepsilon=\AnaRatio$\\ at every radius} (axis cs:12.8,2.4e-2);
+\end{axis}\end{tikzpicture}
