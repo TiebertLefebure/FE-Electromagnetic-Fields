@@ -3,6 +3,8 @@
 Electric, magnetic and coupled magneto-thermal FE analysis of three NKT 33 kV
 **1×185/50 mm² XLPE-AL** single-core cables buried 1 m deep in trefoil (rating: 350 A, 90 °C).
 
+Group: **Kutikuppala Jaswanth, Lefebure Tiebert, Miseur Torre**. Presentation: 1 December 2026.
+
 Versions: **Gmsh 4.15.2**, **GetDP 4.0.0-git-259f4c38** (ONELAB bundle).
 
 ## Files
