@@ -47,7 +47,7 @@ Excitation & $\hat V=26.94$ kV, $\hat I=495$ A, ABC, 50 Hz (peak)\\\bottomrule
 \end{tabular}\\[5pt]
 \begin{itemize}\footnotesize
 \item One parameterised geometry; \alert{all data are ONELAB parameters}
-\item 0.5 mm soil gap between jackets: min.\ triangle quality 0.02 $\rightarrow$ 0.49
+\item 0.5 mm soil gap between jackets: min.\ triangle quality \MeshQminTouch\ $\rightarrow$ \MeshQminGap
 \item $\sigma_{\rm Al}$ fitted to $R_{DC}=0.164$ $\Omega$/km; polymers $\rho_T=3.5$ K\,m/W (IEC)
 \item EM box $\pm$0.3 m inside a 40$\times$21 m soil domain: \alert{one mesh for all physics}
 \end{itemize}
@@ -60,18 +60,18 @@ Excitation & $\hat V=26.94$ kV, $\hat I=495$ A, ABC, 50 Hz (peak)\\\bottomrule
 \column{0.55\textwidth}\small
 \[-\nabla\cdot\big((\sigma+j\omega\varepsilon)\nabla v\big)=0\ \text{ in the XLPE}\]
 \begin{itemize}\small
-\item Semicons ideal: $v=\hat V_k$ / $v=0$ on the XLPE interfaces (drop across them $\approx$7 mV)
+\item Semicons ideal: $v=\hat V_k$ / $v=0$ on the XLPE interfaces (drop across them $\approx$\AnaDrop\ mV)
 \item Grounded screens shield everything outside $\Rightarrow$ domain = 3 annuli
 \item Each interface is one \emph{electrode}: unknown $U$, dual current $I$
 \end{itemize}
 \begin{tabular}{@{}lrr@{}}\toprule
 $E_{\max}$ RMS [kV/mm] & cond.\ screen & core screen\\\midrule
-Analytical / FE & 3.46 / 3.46 & 1.71\\
+Analytical & \AnaEirms & \AnaEorms\\
 Limit (Eskom spec.) & 8 & 4\\\bottomrule
 \end{tabular}\\[2pt]
 Healthy insulation at $\le$43\% of the admissible stress.
 \column{0.45\textwidth}\centering
-\map{0.95\linewidth}{e_field}\\{\scriptsize $|\hat E|$ [V/m], peak \Egapfine\ kV/mm (analytical 4.894)}
+\map{0.95\linewidth}{e_field}\\{\scriptsize $|\hat E|$ [V/m], peak \Egapfine\ kV/mm (analytical \AnaEi)}
 \end{columns}
 \end{frame}
 
@@ -84,13 +84,13 @@ Healthy insulation at $\le$43\% of the admissible stress.
 \column{0.44\textwidth}\small
 \begin{tabular}{@{}lr@{}}\toprule
 $C'$ [$\mu$F/km] & per phase\\\midrule
-$2\pi\varepsilon/\ln(r_o/r_i)$ & 0.197031\\
+$2\pi\varepsilon/\ln(r_o/r_i)$ & \AnaC\\
 FE energy / charge & \Cgap\\
 NKT (max.) & 0.22\\\bottomrule
 \end{tabular}\\[3pt]
 Same $C$ from 5 to 5000 Hz.\\[3pt]
-$|J_c/J_d|=\sigma/\omega\varepsilon=1.4\cdot10^{-10}$ in XLPE.\\
-Electrode currents: $I_{\rm in}+I_{\rm out}=0$ to $10^{-14}$; $|I|=\omega CV$ (1.18 A/km).
+$|J_c/J_d|=\sigma/\omega\varepsilon=\AnaRatio$ in XLPE.\\
+Electrode currents: $|I_{\rm in}+I_{\rm out}|/|I|=\Ibalance$; $|I|=\omega CV$ (\IchFE\ A/km).
 \end{columns}
 \end{frame}
 
@@ -101,8 +101,8 @@ Electrode currents: $I_{\rm in}+I_{\rm out}=0$ to $10^{-14}$; $|I|=\omega CV$ (1
 \map{\linewidth}{e_field_defect_zoom}\\{\scriptsize void $r$=0.25 mm at 8.8 mm, $\varepsilon_r$=1}
 \column{0.66\textwidth}
 \plot{\linewidth}{3.9cm}{radial_defect}\\[-3pt]\small
-Void field \alert{\Vmeandefectfine--\Edefectfine\ kV/mm} ($1.41\times$; cylinder theory $1.43\times$) $>$
-air breakdown 5.1--5.8 kV/mm $\Rightarrow$ \alert{partial discharges at rated voltage}: erosion, treeing, \alert{not withstood}.\\
+Void field \alert{\Vmeandefectfine--\Edefectfine\ kV/mm} ($\VoidRatio E_0$; cylinder theory $1.43E_0$) $>$
+air breakdown \AnaEb--5.8 kV/mm $\Rightarrow$ \alert{partial discharges at rated voltage}: erosion, treeing, \alert{not withstood}.\\
 \textbf{Design}: 9 mm XLPE (same $\varnothing$) $\Rightarrow$ $E_{\max}$ \Egap\ $\rightarrow$ \Ethick\ kV/mm ($-$8\%).
 \end{columns}
 \src{2D void = infinite channel (sphere: $1.25\times$): conservative. Breakdown: Paschen/Schumann, Kuffel et al.\ ch.~5.}
@@ -115,9 +115,9 @@ air breakdown 5.1--5.8 kV/mm $\Rightarrow$ \alert{partial discharges at rated vo
 \begin{columns}[T]
 \column{0.5\textwidth}
 \begin{itemize}\small
-\item Screens do \emph{not} shield $\mathbf B$: whole EM box, $a_z=0$ at 0.3 m (balanced: $\propto1/r^2$; 0.6 m: $L$ +0.3\%)
-\item Solid Al $\Rightarrow$ \textbf{massive}: imposed $I_k$, eddy currents free ($\delta$=12 mm $>r$=7.4 mm)
-\item Stranded ($J=I/A$): $R_{\rm cond}$ $-$0.5\% at 50 Hz, $-$20\% at 500 Hz
+\item Screens do \emph{not} shield $\mathbf B$: whole EM box, $a_z=0$ at 0.3 m (balanced: $\propto1/r^2$; 0.6 m: $L$ \dLbox\%)
+\item Solid Al $\Rightarrow$ \textbf{massive}: imposed $I_k$, eddy currents free ($\delta$=\AnaDeltaAl\ mm $>r$=7.4 mm)
+\item Stranded ($J=I/A$): $R_{\rm cond}$ \dRcstr\% at 50 Hz, \dRcstrhund\% at 500 Hz
 \end{itemize}
 \column{0.5\textwidth}
 \begin{itemize}\small
@@ -132,18 +132,18 @@ air breakdown 5.1--5.8 kV/mm $\Rightarrow$ \alert{partial discharges at rated vo
 \begin{frame}{Magnetic results vs IEC 60287 and datasheet \q{Q3.6--Q3.10}}
 \begin{columns}[T]
 \column{0.24\textwidth}\centering
-\map{0.9\linewidth}{m_b}\\{\scriptsize $|\hat B|$, max 15.6 mT}\\[2pt]
+\map{0.9\linewidth}{m_b}\\{\scriptsize $|\hat B|$, max \Bmax\ mT}\\[2pt]
 \map{0.9\linewidth}{m_j}\\{\scriptsize $|\hat J|$ in Al and Cu}
 \column{0.76\textwidth}\footnotesize
 \begin{tabular}{@{}lrr@{}}\toprule
 350 A, 50 Hz, 20\,$^\circ$C & FE & Reference\\\midrule
-Losses conductors / screens [kW/km] & \Pcbase\ / \Psbase & 60.55 / 3.44 (IEC)\\
-Screen current [A] & \Isbase & 58.3 (IEC)\\
+Losses conductors / screens [kW/km] & \Pcbase\ / \Psbase & \IecPc\ / \IecPs\ (IEC)\\
+Screen current [A] & \Isbase & \IecIs\ (IEC)\\
 $R_{DC}$ (FE at 0.01 Hz) [$\Omega$/km] & \Racfdc & 0.164 (NKT)\\
-$R_{AC}=P/(3I^2)$ [$\Omega$/km] & \Racbase & 0.1741 (IEC)\\
-$L$ (touching) [mH/km] & \Ltouching & 0.382 (NKT)\\\bottomrule
+$R_{AC}=P/(3I^2)$ [$\Omega$/km] & \Racbase & \IecRac\ (IEC)\\
+$L$ (touching) [mH/km] & \Ltouching & \NktL\ (NKT)\\\bottomrule
 \end{tabular}\\[4pt]
-$R_{AC}=R_{DC}(1+0.45\%_{\,\rm skin+prox}+6.2\%_{\,\rm screens})$; IEC $y_s+y_p$ = 0.46\%.\\
+$R_{AC}=R_{DC}(1+\SkinFE\%_{\,\rm skin+prox}+\ScreenFE\%_{\,\rm screens})$; IEC $y_s+y_p$ = \IecYsp\%.\\
 $L=\int\nu|\hat b|^2/(3\hat I^2)$ = positive-sequence $L$; falls with $f$ (screen currents):
 \Lfdc\ (DC), \Lbase\ (50 Hz), \Lfhund\ (500 Hz).
 \end{columns}
@@ -154,10 +154,10 @@ $L=\int\nu|\hat b|^2/(3\hat I^2)$ = positive-sequence $L$; falls with $f$ (scree
 \begin{columns}[T]
 \column{0.52\textwidth}
 \plot{\linewidth}{3.9cm}{mag_convergence}\\
-{\scriptsize $h/\delta\le0.05$; mesh $\times$0.5: $R_{AC}$ +0.06\%, $L$ +0.2\%, screen loss +1\% (thin ring: refine there)}
+{\scriptsize $h/\delta\le0.05$; mesh $\times$0.5: $R_{AC}$ \dRacfine\%, $L$ \dLfine\%, screen loss \dPsfine\% (thin ring: refine there)}
 \column{0.48\textwidth}
 \plot{0.95\linewidth}{4.0cm}{bonding}\\[-2pt]\small
-Single-point bonding: losses \alert{\dPtSingle\%}; price: 19.5 V/km standing screen voltage.
+Single-point bonding: losses \alert{\dPtSingle\%}; price: \Usingle\ V/km standing screen voltage.
 \end{columns}
 \end{frame}
 
@@ -186,7 +186,7 @@ Single-point bonding: losses \alert{\dPtSingle\%}; price: 19.5 V/km standing scr
 \map{0.8\linewidth}{t_cables_nl}\\{\scriptsize $T$ in the cables [$^\circ$C]}\\[2pt]
 \map{0.8\linewidth}{t_soil_nl}\\{\scriptsize $T$ around them; ground surface on top}
 \column{0.74\textwidth}\small
-Hot spot \alert{\Tcnl\,$^\circ$C} in the \HotSpot\ (XLPE limit 90\,$^\circ$C).
+Hot spot \alert{\Tcnl\,$^\circ$C} in the lower cables B, C (A: $-$\dTcAlow\ K); XLPE limit 90\,$^\circ$C.
 Max.\ ground-surface temperature \Tsnl\,$^\circ$C, above the trefoil.
 Isothermal surface ($T$=15\,$^\circ$C): hot spot \Tcnliso\,$^\circ$C (convection adds \dTcIso\ K).\\[4pt]
 \plot{0.9\linewidth}{4.3cm}{surface_profile}
@@ -198,14 +198,14 @@ Isothermal surface ($T$=15\,$^\circ$C): hot spot \Tcnliso\,$^\circ$C (convection
 \begin{columns}[T]
 \column{0.47\textwidth}\small
 \[\Delta\theta=W_c\left[T_1+(1+\lambda_1)(T_3+T_4)\right]\]
-$T_1$=0.476, $T_3$=0.104 K\,m/W (polymers 3.5 K\,m/W),\\
-$T_4=\frac{1.5}{\pi}\rho_T\left[\ln(2u)-0.630\right]$=2.236 K\,m/W (touching trefoil, $u=2L/D_e$)\\[3pt]
+$T_1$=\IecTone, $T_3$=\IecTthree\ K\,m/W (polymers 3.5 K\,m/W),\\
+$T_4=\frac{1.5}{\pi}\rho_T\left[\ln(2u)-0.630\right]$=\IecTfour\ K\,m/W (touching trefoil, $u=2L/D_e$)\\[3pt]
 $R(\theta)$, $y_s$, $y_p$, $\lambda_1$ iterated with $\theta$; no dielectric loss.
 \column{0.53\textwidth}\small
 \begin{tabular}{@{}lrr@{}}\toprule
 350 A & $\theta_c$ [$^\circ$C] & ampacity [A]\\\midrule
 NKT datasheet & 90 & 350\\
-IEC 60287 (isothermal surface) & 89.3 & 351\\
+IEC 60287 (isothermal surface) & \IecTheta & \IecAmp\\
 FE $\sigma(T)$, isothermal surface & \Tcnliso & --\\
 FE $\sigma(T)$, $h$=10 W/(m$^2$K) & \Tcnl & \Amptrefoil\\\bottomrule
 \end{tabular}\\[4pt]
@@ -250,7 +250,7 @@ flat +70 mm, both & \Psflatsev & \Lflatsev & \Tcflatsev\\
 flat +70 mm, single & \Psflatsevsp & \Lflatsevsp & \Tcflatsevsp\\\bottomrule
 \end{tabular}\\[4pt]
 \small Spacing cools, but with both ends bonded the screen losses quadruple and eat the gain;
-single-point bonding removes them. All six FE ratings within $-$3.6\% \ldots\ +0.3\% of NKT.
+single-point bonding removes them. All six FE ratings within \dNktMin\% \ldots\ \dNktMax\% of NKT.
 \end{columns}
 \src{Topic chosen by us (none assigned yet). Ampacity: two coupled runs per case, interpolated in $I^2$ to 90\,$^\circ$C.}
 \end{frame}
@@ -260,8 +260,8 @@ single-point bonding removes them. All six FE ratings within $-$3.6\% \ldots\ +0
 \footnotesize
 \begin{tabular}{@{}p{38mm}p{52mm}p{44mm}@{}}\toprule
 Proposal & Quantified gain & Price\\\midrule
-9 mm XLPE (Q2.8) & $E_{\max}$ $-$8\%, more margin for voids & thicker insulation: $T_1$ +11\%\\
-Single-point / cross-bonding (Q3.11) & losses \dPtSingle\%, ampacity \dAmpSingle\ A (trefoil) & standing voltage 19.5 V/km, SVLs\\
+9 mm XLPE (Q2.8) & $E_{\max}$ $-$8\%, more margin for voids & filler kept: $T_1$ +\dToneThick\% ($\approx$\dTthick\ K)\\
+Single-point / cross-bonding (Q3.11) & losses \dPtSingle\%, ampacity \dAmpSingle\ A (trefoil) & standing voltage \Usingle\ V/km, SVLs\\
 Flat, 70 mm apart, single point (S5) & ampacity \Ampflatsevsp\ A vs \Amptrefoil\ A & $\approx$3$\times$ wider trench, $L$ +53\%\\\bottomrule
 \end{tabular}\\[8pt]
 \textbf{Best arrangement:} for 350 A the rated trefoil is at its limit (FE \Tcnl\,$^\circ$C, within 3 K of 90\,$^\circ$C);
@@ -274,8 +274,8 @@ cross-bonding gives the largest margin (\Ampflatsevsp\ A).
 \small
 \begin{itemize}
 \item \textbf{One geometry, two models} (electric; magneto-thermal), all inputs ONELAB parameters, \textbf{Run} reproduces every slide
-\item \textbf{Verified}: $E_{\max}$ $-$0.15\%, $C$ $<$0.001\% (analytical); $R_{\rm cond}$ vs IEC $y_s+y_p$; current balance $10^{-14}$; mesh, domain, frequency studies
-\item \textbf{Validated}: $C$ $<$ NKT max; $R_{DC}$ 0.164; $L$ within NKT rounding; \textbf{350 A $\rightarrow$ \Tcnl\,$^\circ$C} vs NKT 90\,$^\circ$C and IEC 89.3\,$^\circ$C
+\item \textbf{Verified}: $E_{\max}$ \dEfine\%, $C$ \dCana\% (analytical); $R_{\rm cond}$ vs IEC $y_s+y_p$; current balance \Ibalance; mesh, domain, frequency studies
+\item \textbf{Validated}: $C$ $<$ NKT max; $R_{DC}$ 0.164; $L$ within NKT rounding; \textbf{350 A $\rightarrow$ \Tcnl\,$^\circ$C} vs NKT 90\,$^\circ$C and IEC \IecTheta\,$^\circ$C
 \item Healthy insulation at 43\% of its limit; a 0.5 mm void discharges at rated voltage
 \item $\sigma(T)$ adds \dPtNL\% losses and \dTcNL\ K: the linear model is unsafe for rating
 \item Limits: 2D (no lay, no ends), constant soil properties (no drying), steady state
@@ -287,14 +287,14 @@ cross-bonding gives the largest margin (\Ampflatsevsp\ A).
 \scriptsize
 \begin{tabularx}{\linewidth}{@{}lrrY@{}}\toprule
 Quantity & FE (linear) & FE ($\sigma(T)$) & Reference$^*$\\\midrule
-Max.\ field, conductor screen (kV/mm pk) & \Egapfine & -- & 4.894 (analytical)\\
-Max.\ field with defect (kV/mm pk, void) & \Edefectfine & -- & 6.20 (analytical, $1.43E_0$)\\
+Max.\ field, conductor screen (kV/mm pk) & \Egapfine & -- & \AnaEi\ (analytical)\\
+Max.\ field with defect (kV/mm pk, void) & \Edefectfine & -- & \AnaEvoid\ (analytical, $1.43E_0$)\\
 Capacitance ($\mu$F/km) & 0.19703 & -- & 0.19703 (analytical); $\le$0.22 (NKT)\\
 DC resistance ($\Omega$/km) & \Racfdc & -- & 0.164 (NKT max., 20\,$^\circ$C)\\
-AC resistance ($\Omega$/km) & \Raclin & \Racnl & 0.1741 at 20\,$^\circ$C; 0.2165 at 90\,$^\circ$C (IEC)\\
-Inductance (mH/km) & \Llin & \Lnl & 0.382 (NKT, $X$=0.12 $\Omega$/km)\\
-Losses (kW/km): cond.\ / sheaths / armour & \Pclin\ / \Pslin\ / -- & \Pcnl\ / \Psnl\ / -- & 60.55 / 3.44 at 20\,$^\circ$C; 76.8 / 2.83 at 90\,$^\circ$C (IEC)\\
-Max.\ conductor temperature ($^\circ$C) & \Tclin & \Tcnl & 90 (NKT, at 350 A); 89.3 (IEC)\\
+AC resistance ($\Omega$/km) & \Raclin & \Racnl & \IecRac\ at 20\,$^\circ$C; \IecRacHot\ at \IecTheta\,$^\circ$C (IEC)\\
+Inductance (mH/km) & \Llin & \Lnl & \NktL\ (NKT, $X$=0.12 $\Omega$/km)\\
+Losses (kW/km): cond.\ / sheaths / armour & \Pclin\ / \Pslin\ / -- & \Pcnl\ / \Psnl\ / -- & \IecPc\ / \IecPs\ at 20\,$^\circ$C; \IecPcHot\ / \IecPsHot\ hot (IEC)\\
+Max.\ conductor temperature ($^\circ$C) & \Tclin & \Tcnl & 90 (NKT, at 350 A); \IecTheta\ (IEC)\\
 Max.\ surface temperature ($^\circ$C) & \Tslin & \Tsnl & 15 (IEC: isothermal surface)\\
 Nonlinear iterations & -- & \Nitnl & --\\\bottomrule
 \end{tabularx}\\[5pt]
@@ -311,9 +311,9 @@ both ends bonded, $h$=10 W/(m$^2$K), default mesh. Linear = $\sigma$ at 20\,$^\c
 \begin{tabular}{@{}lrl@{\hskip 10pt}lrrrl@{}}\toprule
 Region & $r_o$ [mm] & basis & Material & $\varepsilon_r$ & $\sigma$ [S/m] & $\kappa$ [W/mK] & source\\\midrule
 Al conductor & 7.40 & NKT & Al & -- & $3.544\cdot10^7$, $\alpha$ 0.0039 & 237 & fitted; Lee; course\\
-Inner semicon & 7.80 & assumed & Cu & -- & $5.95\cdot10^7$, $\alpha$ 0.00386 & 402 & Lee; course\\
+Inner semicon & 7.80 & assumed & Cu & -- & $5.80\cdot10^7$, $\alpha$ 0.00386 & 402 & IEC; course\\
 XLPE & 15.80 & NKT 8 mm & semicon & 2.25 & $2\cdot10^{-3}$ & 0.286 & Lee, OES; IEC\\
-Outer semicon & 16.20 & assumed & XLPE & 2.5 & $10^{-18}$ & 0.286 & Chipp.; IEC\\
+Outer semicon & 16.20 & assumed & XLPE & 2.5 & $10^{-18}$ & 0.286 & IEC; course\\
 Inner filler & 17.40 & assumed & PE, fillers & 2.25 & $10^{-18}$ / 0 & 0.286 & IEC; assumption\\
 Cu ring 50 mm$^2$ & 17.85 & area kept & soil & 10 & $10^{-2}$ & 0.833 & course; NKT 1.2 K\,m/W\\
 Outer filler & 19.20 & NKT $\varnothing$38.4 & air (void) & 1 & $10^{-15}$ & -- & assumption\\
@@ -365,9 +365,9 @@ Voltages drive the electric model, currents the magnetic one. Reported: RMS valu
 \small
 \begin{tabular}{@{}lr@{}}\toprule
 Simplification & Effect\\\midrule
-0.5 mm gap vs touching & $E_{\max}$ +0.01\%, $C$ $<10^{-5}$\%\\
-Ideal semicons & drop $\approx$7 mV ($3\cdot10^{-7}V$)\\
-Voltage at 7.4 mm instead of 7.8 mm & $C$ $-$6.9\% (screen thickness matters)\\
+0.5 mm gap vs touching & $E_{\max}$ \dEtouch\%, $C$ $<$\dCtouch\%\\
+Ideal semicons & drop $\approx$\AnaDrop\ mV ($3\cdot10^{-7}V$)\\
+Voltage at 7.4 mm instead of 7.8 mm & $C$ \dCbare\% (screen thickness matters)\\
 Metals, fillers, PE, soil not solved & exactly zero (shielded)\\\bottomrule
 \end{tabular}
 \end{frame}
@@ -386,7 +386,7 @@ DoFs & $E_{\max}$ & $C'$\\\midrule
 
 \begin{frame}{Q2.4 Admissible field}
 \small No NKT value: 8 kV/mm RMS (conductor screen) and 4 kV/mm RMS (core screen), Eskom 240-56030625.
-Healthy: 3.46 / 1.71 kV/mm RMS $\Rightarrow$ within limits.\\[4pt]
+Healthy: \AnaEirms\ / \AnaEorms\ kV/mm RMS $\Rightarrow$ within limits.\\[4pt]
 \centering\map{0.38\linewidth}{e_field}
 \end{frame}
 
@@ -398,21 +398,21 @@ Healthy: 3.46 / 1.71 kV/mm RMS $\Rightarrow$ within limits.\\[4pt]
 \column{0.25\textwidth}\centering\map{\linewidth}{e_jdisp_defect_zoom}\\{\scriptsize $|J_d|$ with void}
 \end{columns}
 \small Air void 0.5 mm, 0.75 mm from the conductor screen; $E_{\rm void}$ \Vmeandefectfine\ (mean) / \Edefectfine\ (max) kV/mm
-$>$ $E_b$ 5.1--5.8 kV/mm $\Rightarrow$ PD inception $\approx$16 kV $<U_0$=19 kV.
+$>$ $E_b$ \AnaEb--5.8 kV/mm $\Rightarrow$ PD inception $\approx$\PdInception\ kV $<U_0$=19 kV.
 \end{frame}
 
 \begin{frame}{Q2.6 Current densities and conservation}
 \begin{columns}[T]\column{0.35\textwidth}\centering\map{\linewidth}{e_jdisp}
 \column{0.65\textwidth}\small
-XLPE: $|J_d|$=0.034, $|J_c|=4.9\cdot10^{-12}$ A/m$^2$ peak: displacement dominates
+XLPE: $|J_d|$=\AnaJd, $|J_c|$=\AnaJc\ A/m$^2$ peak: displacement dominates
 (insulators, air); conduction dominates in semicons ($3\cdot10^5\times$), metals, soil.\\[4pt]
-Per phase $|I_{\rm in}+I_{\rm out}|/|I_{\rm in}|<10^{-14}$: exact global balance (sum of test functions = 1);
+Per phase $|I_{\rm in}+I_{\rm out}|/|I_{\rm in}|\le\Ibalance$: exact global balance (sum of test functions = 1);
 normal $J$ jumps between linear elements locally.
 \end{columns}
 \end{frame}
 
 \begin{frame}{Q2.7 Capacitance}
-\small $C'=2\pi\varepsilon_0\varepsilon_r/\ln(r_o/r_i)$, $r_i$=7.8, $r_o$=15.8 mm (XLPE interfaces; semicons are the electrodes) = 0.197031 $\mu$F/km.\\[4pt]
+\small $C'=2\pi\varepsilon_0\varepsilon_r/\ln(r_o/r_i)$, $r_i$=7.8, $r_o$=15.8 mm (XLPE interfaces; semicons are the electrodes) = \AnaC\ $\mu$F/km.\\[4pt]
 FE energy \Cgap, charge \Cqgap; NKT $\le$0.22. 5/50/500/5000 Hz: \Cffive, \Cgap, \Cfhund, \Cfthou\ $\Rightarrow$
 frequency independent: $(\sigma+j\omega\varepsilon)$ uniform per region cancels (no dispersion modelled).
 \end{frame}
@@ -420,7 +420,7 @@ frequency independent: $(\sigma+j\omega\varepsilon)$ uniform per region cancels 
 \begin{frame}{Q2.8 Electric design}
 \begin{columns}[T]\column{0.6\textwidth}\plot{\linewidth}{4.4cm}{radial_thick}
 \column{0.4\textwidth}\small 9 mm XLPE, same outer diameter: $E_{\max}$ \Egap\ $\rightarrow$ \Ethick\ kV/mm, $C$ $-$8\%.
-Thermal price: $T_1$ +11\%.
+Same $T_1$ here (filler and XLPE same $\kappa$); with the filler kept: $T_1$ +\dToneThick\%.
 \end{columns}
 \end{frame}
 
@@ -430,12 +430,12 @@ Thermal price: $T_1$ +11\%.
 \item $\nabla\times\nu\nabla\times\mathbf a=\mathbf j$ in the $0.6\times0.6$ m EM box; $a_z=0$ on its edge
 \item Massive Al, Cu: $\mathbf j=-\sigma(j\omega\mathbf a+\mathbf u_r)$, one $\mathbf u_r$ per region; rest $\sigma=0$, $\mu_r=1$
 \item Phase currents: \texttt{Current\_2D} on the global $I$ of each Al region
-\item Box edge: $|B|<1\%$ of peak; 0.6 m box changes $L$ by +0.3\%
+\item Box edge: $|B|<1\%$ of peak; 0.6 m box changes $L$ by \dLbox\%
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Q3.2 Stranded vs massive}
-\small $\delta_{\rm Al}$=11.96 mm $>$ $r$=7.4 mm.\\[4pt]
+\small $\delta_{\rm Al}$=\AnaDeltaAl\ mm $>$ $r$=7.4 mm.\\[4pt]
 \begin{tabular}{@{}lrrr@{}}\toprule
 & $R_{\rm cond}$ [$\Omega$/km] & $P_{\rm screen}$ [kW/km] & $L$ [mH/km]\\\midrule
 Stranded 50 Hz & \Rcstranded & \Psstranded & \Lstranded\\
@@ -449,17 +449,17 @@ Solid Al (NKT) $\Rightarrow$ massive; small difference at 50 Hz, large at 500 Hz
 \begin{frame}{Q3.3 Bonding with global quantities}
 \small
 \begin{itemize}
-\item Both ends: \texttt{Voltage\_2D} $U$=0 $\Rightarrow$ $I_s$ = \Isbase\ A RMS (IEC 58.3 A)
-\item Single point: \texttt{Current\_2D} $I$=0 $\Rightarrow$ standing voltage 19.5 V/km (IEC $XI$=19.9)
+\item Both ends: \texttt{Voltage\_2D} $U$=0 $\Rightarrow$ $I_s$ = \Isbase\ A RMS (IEC \IecIs\ A)
+\item Single point: \texttt{Current\_2D} $I$=0 $\Rightarrow$ standing voltage \Usingle\ V/km (IEC $XI$=\IecUs)
 \item $\mathbf j=-j\omega\sigma\mathbf a$ only: implicitly $U=0$ relative to the arbitrary box reference; net current depends on the truncation; $I=0$ impossible
-\item Check: $\sum I_{\rm screens}\approx0.14$ A of 80 A: nothing returns through the box edge
+\item Check: $|\sum I_{\rm screens}|=\IsSum$ A of \IsPeak\ A: nothing returns through the box edge
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Q3.4 Simplifications}
 \small
 \begin{itemize}
-\item Gap vs touching: $L$ +0.5\%, $R_{AC}$ +0.1\%, screen loss +1.7\%
+\item Gap vs touching: $L$ \dLtouch\%, $R_{AC}$ \dRactouch\%, screen loss \dPstouch\%
 \item Wires + tape $\to$ equal-area ring: DC resistance kept, lay ignored
 \item Semicons, fillers, soil $\sigma$=0: negligible ($\delta\gg$ size)
 \item Section 2's ``XLPE only'' is \textbf{not} valid: $\mathbf B$ is not shielded
@@ -479,7 +479,7 @@ DoFs & $R_{AC}$ & $L$ & $P_s$\\\midrule
 \end{frame}
 
 \begin{frame}{Q3.6 Magnetic flux density}
-\centering\map{0.45\linewidth}{m_b}\\\small Peak 15.6 mT on the conductor surfaces facing the trefoil centre.
+\centering\map{0.45\linewidth}{m_b}\\\small Peak \Bmax\ mT on the conductor surfaces facing the trefoil centre.
 \end{frame}
 
 \begin{frame}{Q3.7 Current density}
@@ -493,17 +493,17 @@ DoFs & $R_{AC}$ & $L$ & $P_s$\\\midrule
 \small
 \begin{tabular}{@{}lrrr@{}}\toprule
 {[kW/km], 20\,$^\circ$C} & both ends & single point & IEC\\\midrule
-Al conductors & \Pcbase & \Pcsingle & 60.55\\
-Cu screens & \Psbase & \Pssingle & 3.44\\
+Al conductors & \Pcbase & \Pcsingle & \IecPc\\
+Cu screens & \Psbase & \Pssingle & \IecPs\\
 Armour / pipe / soil & -- / -- / 0 & -- & --\\
-Total & \Ptbase & \Ptsingle & 63.99\\\bottomrule
+Total & \Ptbase & \Ptsingle & \IecPt\\\bottomrule
 \end{tabular}\\[4pt]
 $p=|\hat j|^2/(2\sigma)$ with the total current density. At operating temperature: Q4.8.
 \end{frame}
 
 \begin{frame}{Q3.9 AC resistance}
 \small $R_{AC}=P_{\rm tot}/(3I^2)$ = \Racbase\ $\Omega$/km; conductors only \Rcbase; DC \Racfdc\ (NKT 0.164).\\[4pt]
-Skin + proximity +0.45\% (IEC 0.46\%); screens +6.2\% (IEC $\lambda_1'$ 5.7\% + eddy).
+Skin + proximity +\SkinFE\% (IEC \IecYsp\%); screens +\ScreenFE\% (IEC $\lambda_1'$ \IecLam\% + eddy).
 At operating temperature: \Racnl\ $\Omega$/km (Q4.8).
 \end{frame}
 
@@ -513,13 +513,13 @@ At operating temperature: \Racnl\ $\Omega$/km (Q4.8).
 $f$ [Hz] & 0.01 & 5 & 50 & 500\\\midrule
 $L$ [mH/km] & \Lfdc & \Lffive & \Lbase & \Lfhund\\\bottomrule
 \end{tabular}\\[4pt]
-Decreases with $f$ (screen + eddy currents). NKT 0.382 (0.366--0.398) vs FE touching \Ltouching.
+Decreases with $f$ (screen + eddy currents). NKT \NktL\ (0.366--0.398) vs FE touching \Ltouching.
 \end{frame}
 
 \begin{frame}{Q3.11 Loss-reducing design}
 \begin{columns}[T]\column{0.5\textwidth}\centering\plot{0.95\linewidth}{4.4cm}{bonding}
 \column{0.5\textwidth}\small Single-point (or cross-) bonding: losses \dPtSingle\%, $R_{AC}$ \Racbase\ $\rightarrow$ \Racsingle.
-Trade-off: 19.5 V/km standing voltage. Thermal gain: \dAmpSingle\ A (Section 5).
+Trade-off: \Usingle\ V/km standing voltage. Thermal gain: \dAmpSingle\ A (Section 5).
 \end{columns}
 \end{frame}
 
@@ -528,7 +528,7 @@ Trade-off: 19.5 V/km standing voltage. Thermal gain: \dAmpSingle\ A (Section 5).
 \[-\nabla\cdot(\kappa\nabla T)=p,\qquad p=\frac{|\hat{\mathbf j}|^2}{2\sigma}=\tfrac12\sigma(T)\,|j\omega\hat{\mathbf a}+\hat{\mathbf u}_r|^2\ \text{(time average, peak phasors)}\]
 \begin{itemize}
 \item \texttt{<a>[\,0.5*sigma[]*SquNorm[Dt[\{a\}]+\{ur\}]\,]}: evaluated in the complex magnetic system, returns a real number
-\item Steady state; dielectric loss $\omega CU_0^2\tan\delta\approx0.02$ W/m per phase (0.1\%): neglected (IEC)
+\item Steady state; dielectric loss $\omega CU_0^2\tan\delta=\AnaWd$ W/m per phase (\AnaWdShare\%): neglected (IEC)
 \end{itemize}
 \end{frame}
 
@@ -556,7 +556,7 @@ Domain 10 / 20 / 40 m & \Tcnldomten\ / \Tcnl\ / \Tcnldomforty & \Nitnldomten\ / 
 
 \begin{frame}{Q4.4 Temperature in the cable}
 \begin{columns}[T]\column{0.45\textwidth}\centering\map{\linewidth}{t_cables_nl}
-\column{0.55\textwidth}\small Hot spot \Tcnl\,$^\circ$C in the aluminium (isothermal to 0.01 K); the XLPE at the conductor screen is $\approx$0.8 K cooler (drop across the 0.4 mm semicon).
+\column{0.55\textwidth}\small Hot spot \Tcnl\,$^\circ$C in the aluminium (isothermal to 0.01 K); the XLPE at the conductor screen is $\approx$\dTsemi\ K cooler (drop across the 0.4 mm semicon).
 NKT and IEC limit: 90\,$^\circ$C continuous. At 350 A the FE is \emph{at} the limit: the rating is confirmed, with no margin.
 \end{columns}
 \end{frame}
@@ -569,7 +569,7 @@ Max.\ surface \Tsnl\,$^\circ$C ($h$=10). Isothermal surface: conductor \Tcnliso\
 \end{frame}
 
 \begin{frame}{Q4.6 Validation vs IEC 60287}
-\small IEC ladder at 350 A: $\theta_c$ = 89.3\,$^\circ$C (ampacity 351 A at 90\,$^\circ$C);
+\small IEC ladder at 350 A: $\theta_c$ = \IecTheta\,$^\circ$C (ampacity \IecAmp\ A at 90\,$^\circ$C);
 FE isothermal \Tcnliso, FE convective \Tcnl. Differences: surface condition, Kennelly + empirical trefoil
 factor vs 2D conduction, FE screen losses (circulating + eddy), 0.5 mm gap, finite domain.
 \end{frame}
@@ -577,16 +577,26 @@ factor vs 2D conduction, FE screen losses (circulating + eddy), 0.5 mm gap, fini
 \begin{frame}{Q4.7 Convergence of the nonlinear coupling}
 \begin{columns}[T]\column{0.55\textwidth}\plot{\linewidth}{4.4cm}{nl_history}
 \column{0.45\textwidth}\small Criterion: $\|T_k-T_{k-1}\|_2/\|T_k\|_2<10^{-6}$, all nodal $T$ (GetDP \texttt{GetNormIncrement}).
-\Nitnl\ iterations; same with MeshFactor 2 and 0.5. Linear (fixed-point) convergence, factor $\approx$0.2.
+\Nitnl\ iterations; same with MeshFactor 2 and 0.5. Linear (fixed-point) convergence, factor $\approx$\ConvRate.
 \end{columns}
 \end{frame}
 
-\begin{frame}{Q4.8 Linear vs $\sigma(T)$}
+\begin{frame}{Q4.8 Linear vs $\sigma(T)$: maps and values}
 \begin{columns}[T]
-\column{0.3\textwidth}\centering\map{\linewidth}{t_cables_lin}\\{\scriptsize linear}
-\column{0.3\textwidth}\centering\map{\linewidth}{t_cables_nl}\\{\scriptsize $\sigma(T)$}
-\column{0.4\textwidth}\small Losses \dPtNL\%, $R_{AC}$ \dRacNL\%, $L$ \dLNL\%, $T_{\max}$ \dTcNL\ K.
-$B$ unchanged (currents imposed); $J$ slightly more uniform ($\delta\propto1/\sqrt\sigma$); screen loss \dPsNL\%.
+\column{0.14\textwidth}\centering\map{\linewidth}{t_cables_lin}\\{\tiny $T$ linear}\\[2pt]\map{\linewidth}{t_cables_nl}\\{\tiny $T$ $\sigma(T)$}
+\column{0.14\textwidth}\centering\map{\linewidth}{m_j}\\{\tiny $|J|$ linear}\\[2pt]\map{\linewidth}{m_j_nl}\\{\tiny $|J|$ $\sigma(T)$}
+\column{0.14\textwidth}\centering\map{\linewidth}{m_b}\\{\tiny $|B|$ linear}\\[2pt]\map{\linewidth}{m_b_nl}\\{\tiny $|B|$ $\sigma(T)$}
+\column{0.58\textwidth}\scriptsize
+\begin{tabular}{@{}lrrr@{}}\toprule
+& linear & $\sigma(T)$ & change\\\midrule
+$P$ cond.\ [kW/km] & \Pclin & \Pcnl & \dPcNL\%\\
+$P$ screens [kW/km] & \Pslin & \Psnl & \dPsNL\%\\
+$R_{AC}$ [$\Omega$/km] & \Raclin & \Racnl & \dRacNL\%\\
+$L$ [mH/km] & \Llin & \Lnl & \dLNL\%\\
+$T_{\max}$ / surface [$^\circ$C] & \Tclin\ / \Tslin & \Tcnl\ / \Tsnl & \dTcNL\ K\\\bottomrule
+\end{tabular}\\[4pt]
+Significant: losses, $R_{AC}$, $T$ (resistivity +\RhoHot\% at \Tcnl\,$^\circ$C). Screen loss drops
+($\lambda_1\approx X^2/R_s$). $B$ and $L$ barely change (currents imposed, $\mu_r=1$); $J$ slightly more uniform.
 \end{columns}
 \end{frame}
 

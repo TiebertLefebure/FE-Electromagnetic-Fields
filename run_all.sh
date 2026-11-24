@@ -1,5 +1,5 @@
 #!/bin/sh
-# Reproduces EVERY number in the reports and slides (about 45 min on a laptop).
+# Reproduces EVERY number in the reports and slides (about 50 min on a laptop).
 # Each line is one case: the same options go to Gmsh (mesh) and GetDP (solve).
 # Results land in Source-code/<analysis>/results/<case>/ ; then run
 #   python3 Reports/collect_values.py && ./Reports/build.sh   (reports)
@@ -19,7 +19,11 @@ solve() { # solve <folder> <resolution> <case> <mesh> [options]
   dir=$1; res=$2; name=$3; m=$4; shift 4
   (cd "$ROOT/$dir" && getdp cable.pro -msh "$MESH/$m.msh" -solve "$res" \
      -setstring ResultDir "results/$name" -v 3 "$@" > "results-$name.log" 2>&1 \
-   && mkdir -p "results/$name" && mv "results-$name.log" "results/$name/getdp.log")
+   && mv "results-$name.log" "results/$name/getdp.log")
+  case "$name" in   # keep the field maps (.pos) only for the cases shown as maps
+    gap|defect|base|single|lin|nl|flat70) ;;
+    *) rm -f "$ROOT/$dir/results/$name/"*.pos ;;
+  esac
   echo "$dir/$name done"
 }
 E() { solve Electrodynamic-analysis Electrodynamics "$@"; }

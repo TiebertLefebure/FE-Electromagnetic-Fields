@@ -49,12 +49,14 @@ map "$E/gap/potential.pos"          e_potential.png 1 0 0 'View[0].Name = "Re(v)
 map "$E/gap/field_norm.pos"         e_field.png     1 0 0
 map "$E/defect/field_norm.pos"      e_field_defect.png 1 0 0
 map "$E/defect/field_norm.pos"      e_field_defect_zoom.png 12 0.0088 0.018836
-map "$E/gap/displacement_current_norm.pos"    e_jdisp.png 1 0 0
-map "$E/defect/displacement_current_norm.pos" e_jdisp_defect_zoom.png 12 0.0088 0.018836
+map "$E/gap/displacement_current.pos"    e_jdisp.png 1 0 0
+map "$E/defect/displacement_current.pos" e_jdisp_defect_zoom.png 12 0.0088 0.018836
 # Magnetic maps (EM box +-0.3 m centred at 0): |B| zoomed on the trefoil, |J| in the metals.
 map "$B/base/b_norm.pos"     m_b.png  5 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 0.016;'
-map "$B/base/j_norm.pos"     m_j.png  1 0 0
-map "$B/single/j_norm.pos"   m_j_single.png 1 0 0
+map "$B/base/j_norm.pos"     m_j.png  1 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 3.2e6;'
+map "$B/single/j_norm.pos"   m_j_single.png 1 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 3.2e6;'
+map "$B/nl/b_norm.pos"       m_b_nl.png  5 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 0.016;'
+map "$B/nl/j_norm.pos"       m_j_nl.png  1 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 3.2e6;'
 # Thermal maps: T in the cables (EM box) and around them (whole domain, centre (0,-9) m).
 map "$B/nl/T_cables.pos"     t_cables_nl.png  6 0 0
 map "$B/lin/T_cables.pos"    t_cables_lin.png 6 0 0

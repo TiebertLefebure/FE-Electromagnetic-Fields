@@ -29,8 +29,8 @@ each with both-end bonding (\(U=0\) per screen) and single-point bonding (\(I=0\
 \textbf{FE ampacity.} For each case: (1) coupled run at 350 A gives \(T_0\); (2) a second run at
 \(I_1=350\sqrt{75/(T_0-15)}\) gives \(T_1\approx90\,^\circ\)C; (3) since the temperature rise is
 nearly proportional to \(I^2\) (\(R\) varies only by \(\alpha\Delta T\) between the two runs),
-\(I_{90}^2=350^2+(90-T_0)(I_1^2-350^2)/(T_1-T_0)\). The second run is within about 1 K of
-90\,\(^\circ\)C, so the interpolation error is negligible.
+\(I_{90}^2=350^2+(90-T_0)(I_1^2-350^2)/(T_1-T_0)\). The second run lands within \dTIone\ K of
+90\,\(^\circ\)C, so the remaining interpolation error is a few amperes at most.
 
 \section*{Results}
 \begin{center}\small
@@ -52,7 +52,7 @@ Flat +70 mm, single point & \Pcflatsevsp & \Psflatsevsp & \Lflatsevsp & \Tcflats
 \textbf{Validation.} The FE reproduces the datasheet trends: close trefoil and close flat are
 equivalent (\Amptrefoil/\Ampflat\ A both ends, \Amptrefoilsp/\Ampflatsp\ A single point; NKT 350 A
 for all four), and spacing the flat formation by 70 mm raises the rating, much more with
-single-point bonding. All six FE ampacities lie within \(-3.6\,\%\) and \(+0.3\,\%\) of NKT's. The FE
+single-point bonding. All six FE ampacities lie within \dNktMin\,\% and \dNktMax\,\% of NKT's. The FE
 tends to be slightly low, consistently with Section 4 (convective ground surface instead of IEC's
 isothermal one; FE screen losses include eddy currents).
 

@@ -1,8 +1,7 @@
-// Magnetoquasistatic (Section 3) and coupled magneto-thermal (Sections 4-5) model.
-// Resolutions:  Magnetodynamics  -> a-v problem only, sigma at 20 C           (Section 3)
-//               MagnetoThermal   -> losses -> heat -> T, optional sigma(T) loop (Section 4)
-// Question tags: Q3.x magnetic, Q4.x thermal. Built from the course starter
-// magnetodynamic_formulation.pro (kept in this folder as reference only).
+// Sections 3-5: magnetoquasistatic a-v model and coupled heat conduction, one mesh.
+// Resolutions: Magnetodynamics = magnetic only, sigma at 20 C (Section 3);
+//              MagnetoThermal  = losses -> T, with the sigma(T) loop (Sections 4-5).
+// Search a question tag (Q3.x, Q4.x) to find the block that answers it.
 Include "../Cable-selection-and-model-setup/parameters.pro";
 SetString["GetDP/1ResolutionChoices", "MagnetoThermal"];
 SetString["GetDP/9ComputeCommand", "-solve"];
@@ -103,8 +102,7 @@ Jacobian {
 Integration {
   { Name I1; Case { { Type Gauss; Case {
       { GeoElement Line; NumberOfPoints 4; }
-      { GeoElement Triangle; NumberOfPoints 4; }
-      { GeoElement Quadrangle; NumberOfPoints 4; } } } } }
+      { GeoElement Triangle; NumberOfPoints 4; } } } } }
 }
 
 FunctionSpace {
@@ -247,11 +245,7 @@ PostProcessing {
       { Name jm; Value {
           Term { [ Norm[-sigma[<T>[{T}]]*(Dt[{a}] + {ur})] ]; In DomainC_Mag; Jacobian Vol; }
           Term { [ Norm[js0[]] ]; In DomainS0_Mag; Jacobian Vol; } } }
-      // [Q3.8, Q4.1] Time-averaged Joule loss density |j|^2/(2 sigma) (W/m3).
-      { Name p; Value {
-          Term { [ 0.5*sigma[<T>[{T}]]*SquNorm[Dt[{a}] + {ur}] ]; In DomainC_Mag; Jacobian Vol; }
-          Term { [ 0.5/sigma[<T>[{T}]]*SquNorm[js0[]] ]; In DomainS0_Mag; Jacobian Vol; } } }
-      // [Q3.8] Losses per unit length (W/m = kW/km).
+      // [Q3.8] Time-averaged Joule losses |j|^2/(2 sigma) per unit length (W/m = kW/km).
       { Name Losses; Value {
           Integral { [ 0.5*sigma[<T>[{T}]]*SquNorm[Dt[{a}] + {ur}] ];
             In DomainC_Mag; Jacobian Vol; Integration I1; }
@@ -276,9 +270,9 @@ PostProcessing {
   { Name The; NameOfFormulation Thermal_T;
     Quantity {
       { Name T; Value { Term { [ {T} ]; In Region[{Domain_The, GroundSurface}]; Jacobian Vol; } } }
-      // [Q4.4, Q4.5] Maxima stored in registers by the prints below.
       // [Q4.7] Convergence history: iteration number and relative T increment.
       { Name ConvHist; Value { Term { Type Global; [ Vector[$it, $rel, 0] ]; In GroundSurface; } } }
+      // [Q4.4, Q4.5] Maxima stored in registers 1 and 2 by the prints in The_Global.
       { Name Tmax_cond; Value { Term { Type Global; [ #1 ]; In GroundSurface; } } }
       { Name Tmax_surf; Value { Term { Type Global; [ #2 ]; In GroundSurface; } } }
       // [Q4.2] Heat leaving through the ground surface (W/m): equals the total losses.
@@ -315,8 +309,6 @@ PostOperation {
     Operation {
       Print[jm, OnElementsOf Region[{DomainC_Mag, DomainS0_Mag}], Name "|J| [A/m2]",
         File StrCat[ResultDir,"/j_norm.pos"]];
-      Print[p, OnElementsOf Region[{DomainC_Mag, DomainS0_Mag}], Name "Joule loss density [W/m3]",
-        File StrCat[ResultDir,"/loss_density.pos"]];
       Print[bm, OnElementsOf Domain_Mag, Name "|B| [T]", File StrCat[ResultDir,"/b_norm.pos"]];
     }
   }
@@ -332,8 +324,6 @@ PostOperation {
         SendToServer "Output/7Max surface temperature [deg C]", File StrCat[ResultDir,"/Tmax_surface.dat"]];
       Print[T, OnLine {{-ThermalHalfWidth, BurialDepth-1e-6, 0}{ThermalHalfWidth, BurialDepth-1e-6, 0}} {500},
         Format SimpleTable, File StrCat[ResultDir,"/T_surface_profile.txt"]];
-      Print[T, OnLine {{0, BurialDepth-1e-6, 0}{0, BurialDepth-ThermalDepth+1e-6, 0}} {600},
-        Format SimpleTable, File StrCat[ResultDir,"/T_vertical_profile.txt"]];
       Print[SurfaceHeat[GroundSurface], OnGlobal, Format Table, File StrCat[ResultDir,"/surface_heat_W_m.dat"]];
     }
   }

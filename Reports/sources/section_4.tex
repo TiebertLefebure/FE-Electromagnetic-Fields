@@ -27,9 +27,9 @@ expression in the complex magnetic system, and \texttt{SquNorm} returns the real
 (\verb|sigma[<T>[{T}]]|). Coupling (Q4.7):
 \(\sigma(T)=\sigma_0/(1+\alpha(T-20))\), \(\alpha_{\rm Al}=0.0039\), \(\alpha_{\rm Cu}=0.00386\) K\(^{-1}\).
 
-\textbf{Neglected heat sources.} Dielectric loss \(\omega C U_0^2\tan\delta\approx
-314\times0.197\,10^{-9}\times19052^2\times10^{-3}=0.02\) W/m per phase, 0.1\,\% of the
-conductor loss; IEC 60287 neglects it for XLPE below \(U_0=127\) kV [IEC-1]. Eddy currents in
+\textbf{Neglected heat sources.} Dielectric loss \(\omega C U_0^2\tan\delta=\)\,\AnaWd\ W/m per phase
+(\(\tan\delta=10^{-3}\) [IEC-1]), \AnaWdShare\,\% of the conductor loss; IEC 60287 neglects it for XLPE
+below \(U_0=127\) kV [IEC-1]. Eddy currents in
 soil and semiconductors are zero in the magnetic model (Section 3).
 
 \codeguide{\mfile: \texttt{Hgrad\_T}, \texttt{Thermal\_T}, functions \texttt{kappa}, \texttt{sigma}.}
@@ -47,13 +47,15 @@ centre (NKT burial depth), extending \(\pm20\) m sideways and to 20 m below the 
 \begin{center}\small
 \begin{tabular}{@{}lll@{}}\toprule
 Boundary & Condition & Justification\\\midrule
-Ground surface (130) & \(-\kappa\,\partial_nT=h(T-T_{\rm amb})\), \(h=10\) W/(m\(^2\)K), 15\,\(^\circ\)C & convection 2--5 + radiation \(4\varepsilon\sigma_{\rm SB}T^3\approx5.4\)\\
+Ground surface (130) & \(-\kappa\,\partial_nT=h(T-T_{\rm amb})\), \(h=10\) W/(m\(^2\)K), 15\,\(^\circ\)C & convection \(\approx2\) + radiation \(4\varepsilon\sigma_{\rm SB}T^3=\)\,\Hrad, + wind\\
 Sides, \(x=\pm20\) m & \(\partial_nT=0\) & far from the cables: heat flows vertically\\
 Bottom, 20 m deep (132) & \(T=15\,^\circ\)C & deep ground at the NKT ambient\\\bottomrule
 \end{tabular}
 \end{center}
-\(h\) is an assumption: still air gives 2--5 W/(m\(^2\)K) by convection, plus about 5 by
-radiation from a surface with emissivity 0.95. Q4.5 varies \(h\) from 5 to 20 and compares
+\(h\) is an assumption: natural convection over a warm horizontal surface with
+\(\Delta T\approx2\) K gives \(h_c\approx1.5\,\Delta T^{1/3}\approx2\) W/(m\(^2\)K), linearised radiation of a surface
+with emissivity 0.95 adds \Hrad\ [Incropera], and wind raises the convective part; 10 is a
+round mid value. Q4.5 varies \(h\) from 5 to 20 and compares
 with \(T=T_{\rm amb}\). Of the \Ptnl\ W/m generated, \QsFrac\,\% leaves through the
 surface, the rest through the bottom.
 
@@ -65,7 +67,7 @@ sink, the ground surface, is 1 m away. The domain must contain the surface and t
 \textbf{One mesh.} The EM box is a sub-domain of the thermal mesh, so \(p\) is evaluated on the very
 elements where \(T\) is solved: no interpolation between meshes. Outside the box, elements grow by
 15 cm per metre (Gmsh MathEval field), so the extra 840 m\textsuperscript2 of soil costs few elements:
-\MDofsnl\ complex magnetic and about 150\,000 real thermal unknowns.
+\MDofsnl\ complex magnetic and \TDofsnl\ real thermal unknowns.
 
 \begin{center}\includegraphics[width=0.75\linewidth,trim=0 100 0 100,clip]{mesh_domain.png}\end{center}
 
@@ -90,12 +92,12 @@ Domain \(\pm20\) m, 20 m deep (default) & \Tcnl & \Tsnl & \Nitnl\\
 Domain \(\pm40\) m, 40 m deep & \Tcnldomforty & \Tsnldomforty & \Nitnldomforty\\\bottomrule
 \end{tabular}
 \end{center}
-Refining from MeshFactor 1 to 0.5 raises the hot spot by about 0.4 K (0.5\,\% of the
-temperature rise) and the losses by 0.1\,\%; the coarse mesh is 1 K low. The remaining error comes
+Refining from MeshFactor 1 to 0.5 changes the hot spot by \dTcFine\ K (under 1\,\% of the
+temperature rise); the coarse mesh is \dTcCoarse\ K off. The remaining error comes
 mostly from the soil, where linear elements grow to metres, and from the screen losses (Section 3).
 The number of coupling iterations does not change. A small domain is \emph{non-conservative}: the
-\(T=15\,^\circ\)C bottom acts as an extra heat sink. From \(\pm20\) to \(\pm40\) m the hot spot changes by
-about 0.1 K, so the default domain is adequate.
+\(T=15\,^\circ\)C bottom acts as an extra heat sink (\(\pm10\) m: \dTcDomten\ K). From \(\pm20\) to \(\pm40\) m the
+hot spot changes by \dTcDom\ K, so the default domain is adequate.
 
 \codeguide{\runall: cases \texttt{nl-coarse}, \texttt{nl-fine}, \texttt{nl-dom10}, \texttt{nl-dom40}.}
 {Gmsh: \textbf{Mesh factor}, \textbf{Thermal domain half-width/depth}.}{\texttt{Tmax\_conductor.dat}.}
@@ -108,12 +110,13 @@ about 0.1 K, so the default domain is adequate.
 {\small \(\sigma(T)\) (left) and linear (right) temperature in the cable area}
 \end{center}
 The aluminium is nearly isothermal (\(\kappa=237\)); the temperature drops mainly across the
-XLPE (\(T_1\)) and the soil. The hot spot is \textbf{\Tcnl\,\(^\circ\)C} in the
-\HotSpot: the two lower cables lie deeper, further from the cooling surface, and the three
-phase losses are equal to 0.1\,\%. The maximum admissible continuous conductor temperature is 90\,\(^\circ\)C
-(NKT, IEC for XLPE). At its rated current the FE hot spot is 2.8 K above that limit: the cable is
-at its thermal limit, as a rating should be, and the excess is within the uncertainty of the
-assumed surface coefficient and material data (Q4.5, Q4.6).
+XLPE (\(T_1\)) and the soil. The hot spot is \textbf{\Tcnl\,\(^\circ\)C} in the aluminium of
+the two lower cables (B and C, \TcB\,\(^\circ\)C each); the top cable A is only \dTcAlow\ K cooler. The
+lower cables lie deeper, further from the cooling surface; the three phase losses are equal to
+\PhaseSym\,\%, so mutual heating is symmetric. The maximum admissible continuous conductor temperature is 90\,\(^\circ\)C
+(NKT, IEC for XLPE). At its rated current the FE hot spot is \dTcNkt\ K from that limit: the cable is at its thermal
+limit, as a rating should be, and the difference is within the uncertainty of the assumptions:
+\(h\) (Q4.5: \(\pm1\) K), the filler conductivity (halving it adds \dTfiller\ K) and the soil.
 The linear model gives \Tclin\,\(^\circ\)C (Q4.8).
 
 \codeguide{\mfile: \texttt{The\_Global} (register 1).}{\textbf{Run}.}
@@ -136,8 +139,7 @@ Convection \(h=20\) & \Tsnlhtwenty & \Tcnlhtwenty\\
 Dirichlet \(T=T_{\rm amb}\) & 15.00 & \Tcnliso\\\bottomrule
 \end{tabular}
 \end{center}
-The ground above the trefoil is warmed by about 2.4 K (\Tsnl\,\(^\circ\)C), spread over a few
-metres. A Dirichlet surface removes that offset and lowers the conductor by \dTcIso\ K:
+The ground above the trefoil is warmed by \dTsurf\ K (\Tsnl\,\(^\circ\)C), spread over a few metres. A Dirichlet surface removes that offset and lowers the conductor by \dTcIso\ K:
 it is non-conservative, but by little, because the surface resistance \(1/h=0.1\) m\(^2\)K/W is
 small compared with the soil resistance between cable and surface.
 
@@ -154,20 +156,20 @@ IEC 60287 thermal ladder for one cable of the trefoil (no armour, no dielectric 
 \begin{center}\small
 \begin{tabular}{@{}lll@{}}\toprule
 Quantity & Formula & Value\\\midrule
-\(T_1\) insulation incl.\ semicons + inner filler & \(\frac{\rho}{2\pi}\ln(17.4/7.4)\), \(\rho=3.5\) & 0.476 K\,m/W\\
-\(T_3\) outer filler + sheath & \(\frac{\rho}{2\pi}\ln(21.5/17.85)\) & 0.104 K\,m/W\\
-\(T_4\) soil, touching trefoil [IEC-2] & \(\frac{1.5}{\pi}\rho_T[\ln(2u)-0.630]\), \(u=2L/D_e=46.5\) & 2.236 K\,m/W\\
-\(R_{AC}(\theta_c)\) & \(R_{20}(1+\alpha(\theta_c-20))(1+y_s+y_p)\) & 0.2089 \(\Omega\)/km\\
-\(\lambda_1\) (screen at 77\,\(^\circ\)C) & \(\frac{R_s/R}{1+(R_s/X)^2}\) & 0.037\\\bottomrule
+\(T_1\) insulation incl.\ semicons + inner filler & \(\frac{\rho}{2\pi}\ln(17.4/7.4)\), \(\rho=3.5\) & \IecTone\ K\,m/W\\
+\(T_3\) outer filler + sheath & \(\frac{\rho}{2\pi}\ln(21.5/17.85)\) & \IecTthree\ K\,m/W\\
+\(T_4\) soil, touching trefoil [IEC-2] & \(\frac{1.5}{\pi}\rho_T[\ln(2u)-0.630]\), \(u=2L/D_e=\IecU\) & \IecTfour\ K\,m/W\\
+\(R_{AC}(\theta_c)\) & \(R_{20}(1+\alpha(\theta_c-20))(1+y_s+y_p)\) & \IecRcondHot\ \(\Omega\)/km\\
+\(\lambda_1\) (screen at \IecThetaS\,\(^\circ\)C) & \(\frac{R_s/R}{1+(R_s/X)^2}\) & \IecLamHot\,\%\\\bottomrule
 \end{tabular}
 \end{center}
-Solving iteratively at 350 A gives \(\theta_c=89.3\,^\circ\)C; the current giving 90\,\(^\circ\)C is
-351 A. IEC thus confirms the NKT rating (350 A, 90\,\(^\circ\)C) with the same material data.
+Solving iteratively at 350 A gives \(\theta_c=\)\,\IecTheta\,\(^\circ\)C; the current giving 90\,\(^\circ\)C is
+\IecAmp\ A. IEC thus confirms the NKT rating (350 A, 90\,\(^\circ\)C) with the same material data.
 \begin{center}\small
 \begin{tabular}{@{}lrr@{}}\toprule
 350 A, \(\sigma(T)\) & \(\theta_c\) [\(^\circ\)C] & ampacity at 90\,\(^\circ\)C [A]\\\midrule
 NKT datasheet & 90 & 350\\
-IEC 60287 (isothermal surface) & 89.3 & 351\\
+IEC 60287 (isothermal surface) & \IecTheta & \IecAmp\\
 FE, isothermal surface & \Tcnliso & --\\
 FE, convection \(h=10\) & \Tcnl & \Amptrefoil\\\bottomrule
 \end{tabular}
@@ -202,7 +204,7 @@ spot, far below any physical uncertainty.
 \input{figures/style.tex}\input{figures/nl_history.tex}\end{center}
 \Nitnl\ iterations are needed (\Nitnlcoarse\ and \Nitnlfine\ with MeshFactor 2 and 0.5): the
 convergence does not depend on the mesh. It is linear, the increment dropping by a constant factor
-\(\approx0.2\) per iteration. That factor is the sensitivity of the hot spot to itself:
+\(\approx\)\,\ConvRate\ per iteration. That factor is the sensitivity of the hot spot to itself:
 \(\partial T/\partial T_{\rm prev}\approx\alpha\,\Delta T\,/(1+\alpha(T-20))\approx0.0039\times75/1.3\approx0.22\).
 It would approach 1 (divergence: thermal runaway) only for a much larger temperature rise.
 
@@ -225,14 +227,20 @@ Hot spot [\(^\circ\)C] & \Tclin & \Tcnl & \dTcNL\ K\\
 Max.\ surface temperature [\(^\circ\)C] & \Tslin & \Tsnl & \\\bottomrule
 \end{tabular}
 \end{center}
-\textbf{What changes significantly.} Aluminium at \(\approx\)\Tcnl\,\(^\circ\)C has a 28\,\% higher
+\textbf{What changes significantly.} Aluminium at \(\approx\)\Tcnl\,\(^\circ\)C has a \RhoHot\,\% higher
 resistivity than at 20\,\(^\circ\)C: with imposed current, the conductor loss grows almost proportionally, and so do
 \(R_{AC}\) and every temperature rise. The \textbf{screen loss decreases}: with \(R_s\gg X\),
 \(\lambda_1\approx X^2/(R_sR)\), so a more resistive screen carries less circulating current.
 \textbf{What hardly changes.} \(\mathbf B\) and \(L\): the currents are imposed and the materials are
 non-magnetic; only the small screen reaction and internal distribution change. The current density
-becomes slightly more uniform (\(\delta\propto1/\sqrt\sigma\) grows). Maps: Q4.4 (temperature),
-Section 3 (\(|\mathbf B|\), \(|\mathbf J|\), visually identical).
+becomes slightly more uniform (\(\delta\propto1/\sqrt\sigma\) grows).
+\begin{center}
+\includegraphics[width=0.23\linewidth,trim=150 0 150 0,clip]{m_b.png}\hfill
+\includegraphics[width=0.23\linewidth,trim=150 0 150 0,clip]{m_b_nl.png}\hfill
+\includegraphics[width=0.23\linewidth,trim=150 0 150 0,clip]{m_j.png}\hfill
+\includegraphics[width=0.23\linewidth,trim=150 0 150 0,clip]{m_j_nl.png}\\
+{\small \(|\hat{\mathbf B}|\) linear / \(\sigma(T)\), then \(|\hat{\mathbf J}|\) linear / \(\sigma(T)\) (same colour scales).
+Temperature maps: Q4.4.}\end{center}
 
 \codeguide{\runall: cases \texttt{lin}, \texttt{nl}.}{\textbf{Thermal > Conductivity model}.}{All \texttt{.dat} outputs.}
 
@@ -247,7 +255,9 @@ A linear model is only acceptable if \(\sigma\) is evaluated at the maximum oper
 the screen losses (Q4.8).
 
 \subsection*{Sources}
-\small \textbf{[IEC-1]} IEC 60287-1-1, \S2.2 (dielectric losses), \S2.1 (\(y_s,y_p\)), \S2.3 (\(\lambda_1\)).
+\small \textbf{[Incropera]} F.P.~Incropera, D.P.~DeWitt et al., \emph{Fundamentals of Heat and Mass Transfer},
+ch.~9 (natural convection, horizontal plates) and ch.~12 (radiation).
+\textbf{[IEC-1]} IEC 60287-1-1, \S2.2 (dielectric losses), \S2.1 (\(y_s,y_p\)), \S2.3 (\(\lambda_1\)).
 \textbf{[IEC-2]} IEC 60287-2-1, \S4.1--4.2 (\(T_1\), \(T_3\), \(T_4\) for touching trefoil), Table 1 (\(\rho_T=3.5\) K\,m/W).
 Local \href{../NMES_Assignment_2026.pdf}{assignment} (eqs.\ 10--12, 15) and
 \href{../Datasheet 33 kV single core cable XLPE-AL.pdf}{NKT datasheet} (rating conditions).

@@ -1,241 +1,125 @@
 \def\ReportNumber{1}
 \def\ReportName{Cable selection and model setup}
 \input{common.tex}
+\graphicspath{{../../Slides/figures/}}
+\input{data/values.tex}
 \begin{document}
-\section*{Q1.1 Cable construction and dimensions}
+\section*{Q1.1 Cable: construction, dimensions, rating, materials}
 \assignmentquestion{\QuestionOneOne}
-We use three NKT 33 kV single-core XLPE-AL cables, each rated
-\(185+50~\mathrm{mm^2}\): nominal aluminium conductor area plus copper screen
-area [NKT, pp.19--20]. The datasheet describes a \textbf{solid circular aluminium
-conductor}, two extruded semiconducting screens, XLPE insulation, copper wires
-with counter-wound tape, and an individual PE sheath. There is no armour or pipe.
+Three NKT 33 kV single-core XLPE-AL cables, \(1\times185/50\) mm\textsuperscript2 (aluminium
+conductor / copper screen) [NKT, pp.~19--20]: a \textbf{solid} circular aluminium conductor, extruded
+semiconducting conductor screen, XLPE insulation, extruded semiconducting insulation screen,
+concentric copper wires with a counter-wound copper tape, and a PE sheath. No armour, no pipe.
 
-\textbf{Rating used.} The \(350~\mathrm A\) RMS rating applies to direct burial
-in touching trefoil, screens bonded at both ends, soil at \(15^\circ\mathrm C\),
-burial depth \(1.0~\mathrm m\), and soil thermal resistivity
-\(1.2~\mathrm{K\,m/W}\). The maximum continuous conductor temperature is
-\(90^\circ\mathrm C\). This is a datasheet rating, not a temperature result from our model.
+\textbf{Rating and laying conditions} [NKT]: 33 kV between phases; \textbf{350 A} continuous for a
+conductor at \textbf{90\,\(^\circ\)C}, direct in ground, depth 1.0 m, ground at 15\,\(^\circ\)C, soil
+thermal resistivity 1.2 K\,m/W, trefoil touching (\(S=D\)), screens bonded at both ends. The same
+table gives 350/350/365 A (both ends) and 350/350/380 A (single point) for trefoil / flat touching
+/ flat with 70 mm free distance (used in Section 5). Also given: \(R_{DC}\le0.164\) \(\Omega\)/km at
+20\,\(^\circ\)C, \(C\le0.22\) \(\mu\)F/km, \(X=0.12\) \(\Omega\)/km (trefoil, 50 Hz).
 
 \begin{table}[H]\centering\small
-\caption{One cable: agreed radial model. All radii are measured from its axis.}
+\caption{Radial model of one cable (radii from its axis).}
 \begin{tabularx}{\linewidth}{@{}Y r Y@{}}
-\toprule Region & Outer radius [mm] & Basis\\\midrule
-Aluminium & 7.4000 & NKT: diameter 14.8 mm\\
-Inner semiconductor & 7.8000 & Assumed thickness 0.4 mm\\
-XLPE & 15.8000 & NKT: thickness 8.0 mm\\
-Outer semiconductor & 16.2000 & Assumed thickness 0.4 mm\\
-Inner filler/contact region & 17.4000 & Assumed copper-ring position\\
-Equivalent copper ring & 17.8515 & Derived from 50 mm\textsuperscript{2} area\\
-Outer filler & 19.2000 & NKT: screen envelope diameter 38.4 mm\\
-PE jacket & 21.5000 & NKT: nominal outside diameter 43.0 mm\\
+\toprule Layer & Outer radius [mm] & Basis\\\midrule
+Aluminium (solid) & 7.40 & NKT: diameter 14.8 mm\\
+Conductor screen (semicon) & 7.80 & derived: NKT ``over insulation'' 32.4 = 14.8 + 2\(\times\)8.0 + 2\(\times\)0.8\\
+XLPE & 15.80 & NKT: 8.0 mm\\
+Insulation screen (semicon) & 16.20 & derived as above (0.4 mm each, assuming both are included)\\
+Inner filler (tapes) & 17.40 & assumption: Cu ring midway in the 3 mm screen layer\\
+Copper ring & 17.85 & area = 50 mm\textsuperscript2 (NKT): \(r_o=\sqrt{17.4^2+50/\pi}\)\\
+Outer filler (tape) & 19.20 & NKT: diameter over screen 38.4 mm\\
+PE sheath & 21.50 & NKT: nominal outer diameter 43.0 mm (2.3 mm vs nominal 2.2 mm)\\
 \bottomrule
 \end{tabularx}
 \end{table}
-
-\textbf{Dimensions that need interpretation.} NKT lists \(32.4~\mathrm{mm}\)
-``over insulation''. Our model interprets this as including the outer
-semiconductor: \(2(7.4+0.4+8.0+0.4)=32.4~\mathrm{mm}\).
-The actual XLPE outside diameter is therefore \(31.6~\mathrm{mm}\).
-This interpretation and both 0.4 mm screen thicknesses are assumptions; they
-are not additional manufacturer dimensions.
-
-The jacket outer diameter is the nominal 43 mm. The 47 mm on p.19 is the
-maximum. The nominal envelopes give an effective jacket thickness of
-\((43-38.4)/2=2.3~\mathrm{mm}\) compared with the listed nominal 2.2 mm.
-
-\textbf{Spacing assumption.} Following the TA's advice, the assignment
-baseline has a \(0.5~\mathrm{mm}\) soil gap between each pair of PE jackets.
-Centre spacing is \(43.5~\mathrm{mm}\). The touching comparison uses
-\(43.0~\mathrm{mm}\), matching the datasheet arrangement. Both cases use the
-same radial dimensions. We use the datasheet's 350 A as a study input in both.
-
-\textbf{Mesh check.} At the same 0.25 mm target size, touching gives
-292,312 triangles and the gap gives 295,014. Both cover the full box with
-zero Gmsh warnings. The gap raises the minimum shape quality from 0.0197 to
-0.4874 and removes all 24 soil triangles with \(q<0.10\). The quality measure
-\(q=4\sqrt3 A/(\ell_1^2+\ell_2^2+\ell_3^2)\) is 1 for an equilateral triangle.
-
-\codeguide{\setupfile{parameters.pro} defines \texttt{JacketGap} in mm.
-\setupfile{cable.geo} builds the two soil configurations.}
-{Open the setup \texttt{cable.geo} in Gmsh. Choose \textbf{Jacket gap [mm]}
-value 0.5 or 0, then use \textbf{Mesh > 2D}.}
-{Open \setupfile{meshes/gap.msh} and \setupfile{meshes/touching.msh}.
-See the \setupfile{README.md} for commands to regenerate both files.}
-
-\newpage
-\section*{Q1.1 Equivalent regions and material properties}
-\textbf{Copper approximation.} Wires and tape become one smooth annulus.
-Its assumed inner radius is 17.4 mm and its area is preserved:
-\[
- r_{\mathrm{Cu},o}=\sqrt{r_{\mathrm{Cu},i}^2+A_{\mathrm{Cu}}/\pi}
- =17.8515~\mathrm{mm}.
-\]
-This preserves copper area but omits individual wires, helical paths and local
-contact. The filler regions close the remaining geometric gaps; their actual
-composition is unknown (bedding/swelling tapes, semiconducting compound). Electrically
-they lie outside the grounded XLPE boundary, so their effect is zero; magnetically they
-are non-conducting and non-magnetic; thermally we give them the polymer value
-\(\kappa=0.286\) W/(m\,K) [IEC] (assumption, quantified in Section 4).
-
-\textbf{Material choices.} All proposed materials are homogeneous, isotropic
-and nonmagnetic, \(\mu_r=1\). Electrical and thermal properties are constant;
-metal conductivities refer to \(20^\circ\mathrm C\) and follow
-\(\sigma(T)=\sigma_0/(1+\alpha(T-20))\) with \(\alpha_{\rm Al}=0.00390\), \(\alpha_{\rm Cu}=0.00386\)
-K\(^{-1}\) in the nonlinear model of Section 4 [Course].
+The copper wires and tape are one ring of equal area: same DC resistance, no lay. The ring
+position only affects the screen loop (Section 3, Q3.4).
 
 \begin{table}[H]\centering\small
-\caption{Material values and their provenance (all are ONELAB parameters in
-\texttt{parameters.pro}). ``--'' means not used by any model.}
-\begin{tabularx}{\linewidth}{@{}Y c c c l@{}}
-\toprule Material & \(\varepsilon_r\) & \(\sigma\) [S/m] & \(\kappa\) [W/(m K)] & Basis\\\midrule
-Aluminium & -- & \(3.5444\,10^7\) & 237 & Derived; [Lee]\\
-Copper & -- & \(5.95\,10^7\) & 402 & [Lee]\\
-Semiconducting PE & 2.25 & \(2\,10^{-3}\) & 0.286 & [Lee, OES]; [IEC]\\
-XLPE & 2.5 & \(10^{-18}\) & 0.286 & [Chipp, COMSOL]; [IEC]\\
-PE jacket & 2.25 & \(10^{-18}\) & 0.286 & [IEC]\\
-Equivalent fillers & -- & 0 & 0.286 & assumption (polymer)\\
-Soil & 10 & \(10^{-2}\) & 0.8333 & [Course]; [NKT]\\
+\caption{Material properties (all are ONELAB parameters in \texttt{parameters.pro}).}
+\begin{tabularx}{\linewidth}{@{}l c c c Y@{}}
+\toprule Material & \(\varepsilon_r\) & \(\sigma\) at 20\,\(^\circ\)C [S/m] & \(\kappa\) [W/(m K)] & Basis\\\midrule
+Aluminium & -- & \(3.544\,10^7\), \(\alpha=0.0039\) & 237 & \(\sigma\) fitted to NKT \(R_{DC}\) (IEC: \(3.538\,10^7\), 0.2\,\% apart); \(\alpha\) [Course]; \(\kappa\) [Lee]\\
+Copper (screen) & -- & \(5.80\,10^7\), \(\alpha=0.00386\) & 402 & annealed Cu, \(\rho=1.7241\,10^{-8}\) [IEC]; \(\alpha\) [Course]; \(\kappa\) [Lee]\\
+XLPE & 2.5 & \(10^{-18}\) & 0.286 & \(\varepsilon_r\) [IEC, Chipp]; \(\sigma\) [Course, COMSOL]; \(\rho_T=3.5\) K\,m/W [IEC]\\
+Semicons & -- & \(2\,10^{-3}\) & 0.286 & \(\sigma\): OES limit 500 \(\Omega\)m [OES]; \(\kappa\) as XLPE (assumption)\\
+PE sheath & 2.25 & \(10^{-18}\) & 0.286 & [Course]; \(\rho_T=3.5\) K\,m/W [IEC]\\
+Fillers (tapes) & -- & 0 & 0.286 & assumption: polymer, as XLPE\\
+Soil & 10 & \(10^{-2}\) & 0.833 & \(\varepsilon_r,\sigma\) [Course App.~C]; \(\rho_T=1.2\) K\,m/W [NKT]\\
+Air (void, Q2.5) & 1 & \(10^{-15}\) & -- & assumption\\
 \bottomrule
 \end{tabularx}
 \end{table}
+All materials are non-magnetic (\(\mu_r=1\)): there is no steel. Using the IEC thermal resistivity
+3.5 K\,m/W for all polymers makes the FE model and the IEC 60287 check of Section 4 use the same data.
 
-\textbf{What is implemented.} The electric solve uses only
-\(\varepsilon_r=2.5\) and \(\sigma=10^{-18}~\mathrm{S/m}\) in XLPE.
-Both semiconductors are ideal equipotential boundaries, so their tabulated
-finite conductivity is a proposed value for a later detailed model. The
-\(2\,10^{-3}~\mathrm{S/m}\) value corresponds to the OES screen resistivity
-limit of \(500~\Omega\mathrm m\) at \(90^\circ\mathrm C\); it is a conservative
-surrogate, not a measured NKT compound property. All polymers use the IEC 60287
-thermal resistivity \(\rho_T=3.5\) K\,m/W (\(\kappa=0.286\)), so that the FE model and the
-IEC validation of Section 4 use identical data.
-
-\textbf{Aluminium area and conductivity.} The listed diameter gives
-\(A=\pi(7.4)^2=172.03~\mathrm{mm^2}\), which differs from the nominal
-185 mm\textsuperscript{2} designation. We retain the diameter and calibrate an
-\emph{effective} conductivity to the maximum datasheet DC resistance:
-\[
- \sigma_{\mathrm{Al}}=\frac{1000}{0.164\,\pi(0.0074)^2}
- =3.5444\,10^7~\mathrm{S/m}.
-\]
-This reproduces \(0.164~\Omega/\mathrm{km}\) at \(20^\circ\mathrm C\), by
-construction; it is not an independent validation or a measured bulk conductivity.
-
-\codeguide{\setupfile{parameters.pro}: source tags \texttt{[NKT]},
-\texttt{[ASSUMPTION]} and \texttt{[DERIVED]} identify the basis of each input.}
-{No solve needed to check the table; inspect the constants and direct formulas.}
-{\texttt{rWireOut} preserves copper area. \texttt{sigmaAl} preserves the DC
-reference. Only \texttt{epsXLPE} and \texttt{sigmaXLPE} enter the current electric material law.}
+\codeguide{\setupfile{parameters.pro}: every value with its basis tag ([NKT], [IEC], [COURSE],
+[DERIVED], [ASSUMPTION]). \setupfile{cable.geo}: the layer radii \texttt{R[]}.}
+{Open \setupfile{cable.geo} in Gmsh to see the geometry.}{\texttt{sigmaAl} reproduces 0.164 \(\Omega\)/km by construction.}
 
 \newpage
-\section*{Q1.2 Environment and burial}
+\section*{Q1.2 Environment and computational domains}
 \assignmentquestion{\QuestionOneTwo}
-We choose uniform soil under the NKT buried-trefoil rating conditions.
-The thermal conductivity follows directly from the stated thermal resistivity:
-\[
- \kappa_{\mathrm{soil}}=1/1.2=0.8333~\mathrm{W/(m\,K)}.
-\]
-The ambient temperature is \(15^\circ\mathrm C\). We neglect soil drying,
-layering and moisture changes. The example electrical values
-\(\varepsilon_r=10\), \(\sigma=0.01~\mathrm{S/m}\), \(\mu_r=1\) come
-from the course Appendix C. They are provisional homogeneous-soil choices,
-not site measurements, and are unused in the present screened electric solve.
+\textbf{Environment = the NKT rating conditions}: homogeneous soil, thermal resistivity 1.2 K\,m/W
+(\(\kappa=0.833\)), 15\,\(^\circ\)C, trefoil centre 1.0 m below the ground surface (we take the depth to
+the arrangement centre, as IEC 60287 does for a trefoil group). Air above at 15\,\(^\circ\)C. Soil
+electrical data from the course (\(\varepsilon_r=10\), \(\sigma=0.01\) S/m): shielded in the electric model
+and negligible in the magnetic one (skin depth \(\approx\)700 m). Soil drying and layering are neglected.
 
-\textbf{Depth convention.} We interpret the stated 1 m burial depth as the
-depth of the trefoil centroid. NKT does not define this reference precisely.
-With the 0.5 mm gap, the centre depths are 0.9749 m for A and 1.0126 m
-for B and C. At contact they are 0.9752 m and 1.0124 m, respectively.
+\textbf{Domains (one mesh).} Electromagnetic box \(\pm0.3\) m around the trefoil (Sections 2--3), nested in
+a soil rectangle up to the ground surface, \(\pm20\) m wide and 20 m deep (Section 4).
 
-\textbf{Computational boundary.} Both meshes use a 0.6 m square centred on
-the trefoil. With the gap, soil connects the centre to the exterior. At exact
-contact, three shared vertices close the central soil pocket, which is meshed
-separately. Both configurations assign all soil to group 99. The square is
-the local electromagnetic domain. The thermal model (Section 4) adds the soil up to
-the ground surface, 1 m above the trefoil centre, and 20 m to the sides and below.
+\textbf{Spacing (TA advice).} Exactly touching jackets create zero-angle soil wedges that ruin
+the triangles. We leave a 0.5 mm soil gap (centre spacing 43.5 mm instead of 43.0 mm):
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}\toprule
+Default mesh & Touching & 0.5 mm gap\\\midrule
+Triangles (whole domain) & \MeshTriTouch & \MeshTriGap\\
+XLPE triangles, phase A & \MeshXlpeTouch & \MeshXlpeGap\\
+Minimum quality \(q=4\sqrt3A/\sum\ell_i^2\) (1 = equilateral) & \MeshQminTouch & \MeshQminGap\\
+Triangles with \(q<0.1\) & \MeshBadTouch & \MeshBadGap\\\bottomrule
+\end{tabular}
+\end{center}
+\begin{center}
+\includegraphics[width=0.4\linewidth,trim=0 70 230 150,clip]{mesh_touching.png}\hspace{4mm}
+\includegraphics[width=0.4\linewidth,trim=0 70 230 150,clip]{mesh_gap.png}\\
+{\small Near a contact point: touching (left) vs 0.5 mm gap (right); colours = layers.}
+\end{center}
+Sections 2 and 3 quantify the effect of the gap: \(E_{\max}\) \dEtouch\,\%, \(L\) \dLtouch\,\%.
 
-\codeguide{\setupfile{parameters.pro}: \texttt{T\_amb}, \texttt{SoilK},
-\texttt{OuterBox} and the trefoil centres. \setupfile{cable.geo}: exterior region 99.}
-{In \path{Source-code/Cable-selection-and-model-setup}: \texttt{gmsh cable.geo -2}.}
-{The outer square is \(\pm0.3~\mathrm m\) in local coordinates.
-\texttt{T\_amb} and \texttt{SoilK} are stored inputs for the thermal model (Section 4).}
+\codeguide{\setupfile{cable.geo}: EM box (group 120), thermal rectangle (98, 130, 132), \texttt{JacketGap}.}
+{\runall: meshes \texttt{gap}, \texttt{touching}.}{\texttt{Reports/collect\_values.py} computes the mesh statistics.}
 
-\section*{Q1.3 Screen bonding}
+\section*{Q1.3 Sheath bonding}
 \assignmentquestion{\QuestionOneThree}
-We assume \textbf{solid bonding at both ends}: each copper screen is connected
-to a common earth at both ends through ideal leads. This matches the selected
-350 A rating row. Net circulating screen currents are allowed. There is no
-armour, pipe or additional metallic sheath to connect.
+\textbf{Both ends bonded} (solid bonding), with ideal earth leads: the bonding of the NKT 350 A
+rating row. Circulating screen currents are therefore allowed (Section 3: \(U=0\) per screen).
+Single-point bonding (\(I=0\)) is studied as a loss-reduction option (Q3.11, Section 5).
+There is no armour or pipe. In the electric model the screens are simply at 0 V.
 
-In the electric problem, the outer semiconductor is set to zero potential.
-This approximates radial electrostatic shielding. It does not by itself
-specify the screen's axial voltage or current. The magnetic model still needs
-one global current/voltage relation per copper screen. Ideal both-end bonding
-will impose zero longitudinal voltage drop while allowing the induced net current.
-
-\codeguide{\setupfile{parameters.pro}: the final comment records the both-end
-bonding assumption. \setupfile{cable.geo}: copper screen regions 71/72/73.}
-{No solver run. This question records the bonding choice; its implementation
-and current checks belong to Section 3.}
-{Use the NKT buried-trefoil rating row with screens bonded at both ends.
-The three copper screens are separate regions; there is no armour or pipe.}
-
-\newpage
-\section*{Q1.4 Excitation and phasor convention}
+\section*{Q1.4 Excitation}
 \assignmentquestion{\QuestionOneFour}
-We use peak phasors with time dependence \(\Re\{\hat x e^{j\omega t}\}\),
-frequency \(f=50~\mathrm{Hz}\), and positive ABC sequence:
+Peak phasors, \(x(t)=\Re\{\hat x\,e^{j\omega t}\}\), 50 Hz, positive sequence A, B, C at
+\(0,-120^\circ,+120^\circ\):
 \[
- \hat V_k=V_p e^{j\theta_k},\qquad
- \hat I_k=I_p e^{j\theta_k},\qquad
- (\theta_A,\theta_B,\theta_C)=(0,-120^\circ,+120^\circ).
+ \hat V_k=\frac{\sqrt2\,33}{\sqrt3}e^{-j2\pi k/3}=26.944\,e^{-j2\pi k/3}\ \mathrm{kV},\qquad
+ \hat I_k=\sqrt2\,350\,e^{-j2\pi k/3}=494.97\,e^{-j2\pi k/3}\ \mathrm{A}.
 \]
-The stated 33 kV is line-to-line RMS. The phase-to-ground quantities are
-\[
- V_{\mathrm{ph,rms}}=\frac{33}{\sqrt3}=19.0526~\mathrm{kV},\qquad
- V_p=\sqrt2 V_{\mathrm{ph,rms}}=26.9444~\mathrm{kV},\qquad
- I_p=\sqrt2(350)=494.975~\mathrm A.
-\]
-We assume unity load power factor when assigning the same angles to current
-and voltage. This is a study assumption, not given by NKT. The electric and
-magnetic problems are solved separately, so the relative load angle does not
-affect either field magnitude in these linear models.
+The voltages drive the electric model, the currents the magnetic one (independent linear problems,
+so the load power factor is irrelevant). Results are reported as RMS values and time-averaged losses.
 
-Only the voltages are applied in the working electric model. The 350 A
-longitudinal load current is the input of the magnetic problem (Section 3);
-it is not the radial charging current calculated from the electric field.
-Fields and current densities exported by GetDP use peak phasors. Divide
-single-phase magnitudes by \(\sqrt2\) when comparing with RMS limits; use
-\(1/2\) in average power integrals formed from peak phasors.
+\codeguide{\setupfile{parameters.pro}: \texttt{U\_LL}, \texttt{I\_RMS}, \texttt{Freq}, \texttt{Vpeak}, \texttt{Ipeak}.}
+{No solve.}{\(V_p=26944\) V, \(I_p=494.97\) A.}
 
-\codeguide{\setupfile{parameters.pro}: \texttt{U\_LL}, \texttt{I\_RMS},
-\texttt{Freq}, and the direct formulas for \texttt{Vpeak} and \texttt{Ipeak}.}
-{No solver run. Check the RMS-to-peak conversions above with a calculator.}
-{\texttt{Vpeak} must be 26944.4 V phase-to-ground and \texttt{Ipeak}
-494.975 A. The assumed ABC angles are stated above; these inputs will be
-applied in Sections 2 and 3.}
-
-\subsection*{References used in Section 1}
-\begingroup\small
-\textbf{[NKT]} Local \href{../Datasheet 33 kV single core cable XLPE-AL.pdf}{33 kV single-core XLPE-AL datasheet},
-printed pp.19--20, 185 + 50 mm\textsuperscript{2} column and buried-trefoil rating row.
-
-\textbf{[Course]} Local \href{../NMES_Assignment_2026.pdf}{NMES Assignment 2026}, Appendices A--C:
-phasor convention, analytical formulas and example soil properties.
-
-\textbf{[Lee]} Lee et al., \emph{Energies} 16(1), 167 (2023), Table 3:
-\refurl{https://doi.org/10.3390/en16010167}{doi:10.3390/en16010167}.
-Metal conductivity, thermal conductivity and semiconducting material reference.
-
-\textbf{[OES]} Oman OES 2, fourth edition (2024), printed pp.20--23:
-\refurl{https://www.dcrp-oman.com/documents/DCRP\%20Updates/OES2\%204th\%20Edition-Circular.pdf}{screen resistivity requirement}.
-Used as a surrogate limit, not an NKT material test.
-
-\textbf{[Chipp]} R. Chippendale, \emph{Parameters for extra large cables}
-(2016), Tables 3--4: \refurl{https://www.transmissionexcel.com/wp-content/uploads/2016/11/Parameters-for-extra-large-cables-FINAL.pdf}{XLPE permittivity and thermal conductivity}.
-
-\textbf{[COMSOL]} \refurl{https://doc.comsol.com/6.4/doc/com.comsol.help.models.acdc.submarine_cable_08_inductive_effects_3d/submarine_cable_08_inductive_effects_3d.html}{Submarine Cable 8: Inductive Effects 3D}, material definitions:
-XLPE conductivity \(10^{-18}~\mathrm{S/m}\). No dielectric loss tangent is modelled.
-
-\textbf{[IEC]} IEC 60287-2-1, \emph{Electric cables -- Calculation of the current rating --
-Thermal resistance}, Table 1: \(\rho_T=3.5\) K\,m/W for XLPE and PE.
-\endgroup
+\subsection*{Sources}
+\small
+\textbf{[NKT]} \href{../Datasheet 33 kV single core cable XLPE-AL.pdf}{NKT 33 kV single-core XLPE-AL datasheet}, pp.~19--20, 185 mm\textsuperscript2 column.
+\textbf{[Course]} \href{../NMES_Assignment_2026.pdf}{NMES assignment 2026}, Appendices A--C.
+\textbf{[IEC]} IEC 60287-1-1, Table 1 (\(\rho_{\rm Cu}=1.7241\,10^{-8}\), \(\rho_{\rm Al}=2.8264\,10^{-8}\) \(\Omega\)m), Table 3 (XLPE \(\varepsilon_r\), \(\tan\delta\));
+IEC 60287-2-1, Table 1 (\(\rho_T=3.5\) K\,m/W for XLPE and PE).
+\textbf{[Lee]} Lee et al., \emph{Energies} 16(1), 167 (2023), Table 3, \refurl{https://doi.org/10.3390/en16010167}{doi:10.3390/en16010167}.
+\textbf{[OES]} Oman OES~2, 4th ed.\ (2024), pp.~20--23, semicon resistivity limit.
+\textbf{[Chipp]} R.~Chippendale, \emph{Parameters for extra large cables} (2016), Tables 3--4.
+\textbf{[COMSOL]} Submarine Cable 8 model, material definitions (XLPE \(\sigma=10^{-18}\) S/m).
 \end{document}

@@ -1,8 +1,9 @@
 // NKT 33 kV 1x185+50 mm2 XLPE-AL, three single cores buried in soil. SI units, T in deg C.
 // ALL cable, material and excitation data are ONELAB parameters (left panel in Gmsh).
 // Basis tags: [NKT] datasheet pp.19-20, 185 mm2 column; [COURSE] assignment App. A-C;
-// [IEC] IEC 60287-1-1 / 60287-2-1; [LEE] Lee et al., Energies 16(1) 167 (2023), Table 3;
-// [CHIPP] Chippendale (2016), Tables 3-4; [ASSUMPTION] our choice, defended in the reports.
+// [IEC] IEC 60287-1-1 (Tables 1, 3) / 60287-2-1 (Table 1); [LEE] Lee et al., Energies 16(1)
+// 167 (2023), Table 3; [DERIVED] computed from NKT data; [ASSUMPTION] our choice, defended
+// in the reports (Section 1 lists every value with its source).
 // Search a question tag (Q1.4, Q4.2, ...) to find where a value is used.
 DefineConstant[
   // ---- Excitation [Q1.4] ---------------------------------------------------------
@@ -28,20 +29,25 @@ DefineConstant[
 
   // ---- Radial construction [Q1.1] ---------------------------------------------------
   rCon     = {0.0074, Name "Geometry/10 Conductor radius [m]"},                   // [NKT] 14.8 mm
-  tSemiIn  = {0.0004, Name "Geometry/11 Inner semicon thickness [m] (ASSUMPTION)"},
+  // [DERIVED] NKT "over insulation" 32.4 mm = 14.8 + 2 x 8.0 + 2 x 0.8: 0.4 mm per semicon,
+  // assuming both semicons are included in that diameter.
+  tSemiIn  = {0.0004, Name "Geometry/11 Inner semicon thickness [m]"},
   tXLPE    = {0.0080, Name "Geometry/12 XLPE thickness [m]"},                     // [NKT]; Q2.8: 0.009
-  tSemiOut = {0.0004, Name "Geometry/13 Outer semicon thickness [m] (ASSUMPTION)"},
+  tSemiOut = {0.0004, Name "Geometry/13 Outer semicon thickness [m]"},
+  // [ASSUMPTION] Cu ring placed midway in the 3 mm screen layer (16.2 to 19.2 mm).
   rWireIn  = {0.0174, Name "Geometry/14 Cu ring inner radius [m] (ASSUMPTION)"},
   AWire    = {50e-6,  Name "Geometry/15 Cu screen cross-section [m2]"},          // [NKT]
   rScreenOuter = {0.0192, Name "Geometry/16 Over-screen radius [m]"},             // [NKT] 38.4 mm
   rJacket  = {0.0215, Name "Geometry/17 Outer radius [m]"},                       // [NKT] 43 mm
 
   // ---- Electromagnetic materials [Q1.1, Q2.1, Q3.1] -----------------------------------
-  epsXLPE   = {2.5,   Name "Materials/01 XLPE relative permittivity"},           // [CHIPP]
+  epsXLPE   = {2.5,   Name "Materials/01 XLPE relative permittivity"},           // [IEC] Table 3
   sigmaXLPE = {1e-18, Name "Materials/02 XLPE conductivity", Units "S/m"},        // [COURSE]
-  // [DERIVED] Fitted so that 1/(sigma*pi*rCon^2) = 0.164 ohm/km, the NKT DC maximum at 20 C.
+  // [DERIVED] Fitted so that 1/(sigma*pi*rCon^2) = 0.164 ohm/km, the NKT DC maximum at 20 C
+  // (3.544e7 S/m; IEC 60287 Table 1 gives 3.538e7 for Al: 0.2 % apart).
   sigmaAl = {1000/(0.164*Pi*rCon^2), Name "Materials/03 Al conductivity at 20 C", Units "S/m"},
-  sigmaCu = {5.95e7, Name "Materials/04 Cu conductivity at 20 C", Units "S/m"},   // [LEE]
+  // [IEC] Annealed copper, rho = 1.7241e-8 ohm m at 20 C (IEC 60287-1-1 Table 1, IEC 60228).
+  sigmaCu = {1/1.7241e-8, Name "Materials/04 Cu conductivity at 20 C", Units "S/m"},
   muR     = {1,      Name "Materials/05 Relative permeability (all regions)"},    // no steel
   epsVoid   = {1.0,   Name "Materials/06 Void relative permittivity (air)"},
   sigmaVoid = {1e-15, Name "Materials/07 Void conductivity (dry air)", Units "S/m"},
@@ -53,7 +59,8 @@ DefineConstant[
   T_amb = {15, Name "Thermal/01 Ambient (air and deep soil) temperature [deg C]"}, // [NKT]
   BurialDepth = {1.0, Name "Thermal/02 Burial depth of trefoil centre [m]"},        // [NKT]
   kSoil = {1/1.2, Name "Thermal/03 Soil thermal conductivity", Units "W/(m K)"},    // [NKT] 1.2 K m/W
-  // [ASSUMPTION] natural convection (2-5) + long-wave radiation (~5) at a bare surface.
+  // [ASSUMPTION] bare ground in still air: natural convection ~2 + radiation 4 e s T^3 ~5
+  // (e = 0.95, T = 288 K), raised for wind; 5 to 20 and isothermal studied in Q4.5.
   hConv = {10, Name "Thermal/04 Surface heat transfer coefficient", Units "W/(m2 K)"},
   // [ASSUMPTION] lateral (zero flux) and bottom (T = T_amb) boundaries 20 m away: Q4.3
   // shows T_max changes by about 0.1 K from 20 m to 40 m (and -0.8 K at 5 m).

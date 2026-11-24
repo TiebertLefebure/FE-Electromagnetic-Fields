@@ -1,9 +1,9 @@
 # Electrodynamic analysis
 
-`cable.pro` is the complete electric model (Section 2). It reads the shared
+`cable.pro` is the complete electric model (Section 2), built from the course starter
+`electrodynamic_formulation.pro` (see git history). It reads the shared
 `../Cable-selection-and-model-setup/parameters.pro`; the one-line `cable.geo` here
 includes the shared geometry so the Gmsh **Run** button works.
-`electrodynamic_formulation.pro` is the unchanged course reference (not used).
 
 ## Run in Gmsh (ONELAB)
 
@@ -41,9 +41,9 @@ Defect: add `-setnumber Flag_Defect 1` to **both** commands (and use another mes
 
 | File | Meaning |
 |---|---|
-| `potential.pos`, `electric_field.pos`, `field_norm.pos` | v (V), E and \|E\| (V/m), peak |
-| `conduction_current.pos`, `displacement_current(_norm).pos` | sigma E and j omega eps E (A/m²), peak |
-| `radial_field_A.txt` / `.pos` | \|E\| along phase A's +x radius (x y z value), through the void |
+| `potential.pos`, `field_norm.pos` | v (V) and \|E\| (V/m), peak |
+| `conduction_current.pos`, `displacement_current.pos` | \|sigma E\| and \|j omega eps E\| (A/m²), peak |
+| `radial_field_A.txt` | \|E\| along phase A's +x radius (x y z value), through the void |
 | `max_field_kV_mm.dat` | maximum element \|E\| (kV/mm, peak) |
 | `capacitance_uF_km.dat` | phase-average C from field energy (µF/km) |
 | `capacitance_charge_uF_km.dat` | C per phase from the electrode current |

@@ -1,8 +1,8 @@
 # Magneto-thermal analysis (Sections 3, 4 and 5)
 
 `cable.pro` holds the magnetic a-v model and the thermal model in one file, on the shared mesh.
-The one-line `cable.geo` includes the shared geometry so the Gmsh **Run** button works.
-`magnetodynamic_formulation.pro` is the course starter it was built from (reference only).
+The magnetic part is built from the course starter `magnetodynamic_formulation.pro` (see git
+history). The one-line `cable.geo` includes the shared geometry so the Gmsh **Run** button works.
 
 | Resolution | Section | What it does |
 |---|---|---|
@@ -44,8 +44,8 @@ The **Output** panel shows losses, R, L, the hot-spot and the ground-surface tem
 | `currents_A.dat`, `voltages_V_m.dat`, `Z_terminal_ohm_km.dat` | global I, U per region; −U/I per phase |
 | `Tmax_conductor.dat`, `Tmax_surface.dat` | hot spot and maximum ground-surface temperature, °C |
 | `convergence.txt` | iteration, relative temperature increment |
-| `T_surface_profile.txt`, `T_vertical_profile.txt` | T along the ground surface / the vertical through the centre |
+| `T_surface_profile.txt` | T along the ground surface |
 | `surface_heat_W_m.dat` | heat leaving through the ground surface |
-| `b_norm.pos`, `j_norm.pos`, `loss_density.pos`, `T.pos`, `T_cables.pos` | maps |
+| `b_norm.pos`, `j_norm.pos`, `T.pos`, `T_cables.pos` | maps (peak phasor norms; T in deg C) |
 
 `.dat` columns: index, real part (and imaginary part for complex quantities).
