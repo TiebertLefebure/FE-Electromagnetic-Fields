@@ -2,7 +2,7 @@
 % Build: pdflatex slides.tex (twice); speaker notes: pdflatex speaker_notes.tex (twice). Numbers: ../Reports/sources/data/values.tex (collect_values.py);
 % plots: ../Reports/sources/figures/*.tex; field maps: figures/*.png (export_maps.sh).
 \documentclass[aspectratio=169,10pt]{beamer}
-\usetheme[progressbar=frametitle,numbering=fraction,block=fill]{metropolis}
+\usetheme[progressbar=frametitle,block=fill]{metropolis}
 % Speaker notes: speaker_notes.tex defines \SpeakerNotes and gets one page per main slide
 % (thumbnail + \note text). slides.pdf itself never shows the notes.
 \ifdefined\SpeakerNotes
@@ -11,14 +11,42 @@
 \fi
 \usepackage{booktabs,tabularx,amsmath,pgfplots,tikz}
 \pgfplotsset{compat=1.18}
-\definecolor{accent}{HTML}{254C58}\definecolor{warm}{HTML}{D1495B}
-\setbeamercolor{frametitle}{bg=accent}\setbeamercolor{progress bar}{fg=warm}
+% ---- KU Leuven house style: KU Leuven blue, the light blue of the logo, the official
+% KU Leuven / Faculty of Engineering Science logo (from the faculty thesis template) on the
+% title page, its KU Leuven block alone in the footer, and the Sedes Sapientiae seal as a
+% title-page watermark.
+\definecolor{KULBlue}{HTML}{00407A}\definecolor{KULLight}{HTML}{52BDEC}\definecolor{KULMid}{HTML}{1D8DB0}
+\colorlet{accent}{KULBlue}\definecolor{warm}{HTML}{D1495B}
+\setbeamercolor{normal text}{fg=black!85,bg=white}
+\setbeamercolor{frametitle}{fg=KULBlue,bg=white}\setbeamerfont{frametitle}{series=\bfseries}
+\setbeamercolor{progress bar}{fg=KULLight,bg=KULBlue!12}
 \setbeamercolor{alerted text}{fg=warm}
+\setbeamercolor{palette primary}{fg=white,bg=KULBlue}   % standout (appendix) frame
+\setbeamercolor{title}{fg=KULBlue}\setbeamerfont{title}{size=\LARGE,series=\bfseries}
+\setbeamertemplate{footline}{%
+  \hbox to\paperwidth{\hspace{4mm}\raisebox{2.5mm}{\includegraphics[trim=0 42.5 57.2 0,clip,height=4.5mm]%
+  {figures/kuleuven_logo.pdf}}\hfill\raisebox{3.5mm}{\usebeamerfont{page number in head/foot}\color{KULBlue}%
+  \insertframenumber/\inserttotalframenumber}\hspace{4mm}}}
+\setbeamertemplate{title page}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=east,inner sep=0,opacity=0.07] at ([xshift=-10mm,yshift=-3mm]current page.east)
+      {\includegraphics[height=0.78\paperheight]{figures/sedes.pdf}};
+    \node[anchor=north west,inner sep=0] at ([xshift=8mm,yshift=-7mm]current page.north west)
+      {\includegraphics[height=15mm]{figures/kuleuven_logo.pdf}};
+    \node[anchor=north west,inner sep=0,text width=0.8\paperwidth,align=left]
+      at ([xshift=8mm,yshift=-29mm]current page.north west) {%
+      {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par}\vspace{2mm}
+      {\large\color{KULMid}\insertsubtitle\par}\vspace{3mm}
+      {\color{KULLight}\rule{0.5\paperwidth}{1.2pt}}\par\vspace{3mm}
+      {\insertauthor\par}\vspace{1mm}
+      {\small\color{black!70}\insertinstitute\par\insertdate\par}};
+    \fill[KULLight] (current page.south west) rectangle ([yshift=2.5mm]current page.south east);
+  \end{tikzpicture}}
 \input{../Reports/sources/data/values.tex}
 \def\datadir{../Reports/sources/data}
-\newcommand{\plot}[3]{{\def\figw{#1}\def\figh{#2}\input{../Reports/sources/figures/style.tex}\input{../Reports/sources/figures/#3.tex}}}
+\newcommand{\plot}[3]{{\def\figw{#1}\def\figh{#2}\input{../Reports/sources/figures/style.tex}\colorlet{cA}{KULBlue}\input{../Reports/sources/figures/#3.tex}}}
 \newcommand{\map}[2]{\includegraphics[width=#1,trim=150 0 150 0,clip]{figures/#2.png}}
-\newcommand{\q}[1]{{\color{warm}\bfseries #1}}
+\newcommand{\q}[1]{{\color{KULMid}\bfseries #1}}
 \newcommand{\src}[1]{\par\vfill{\tiny\color{gray}#1}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \title{Electromagnetic and thermal FE analysis of a 33 kV cable system}
@@ -45,9 +73,11 @@ geometry and two GetDP models, and every number on these slides is regenerated b
 \fill[black!70] (0,0) circle (16.2); \fill[green!35!teal!40] (0,0) circle (15.8);
 \fill[black!70] (0,0) circle (7.8); \fill[gray!55] (0,0) circle (7.4);
 \draw[gray] (0,0) circle (21.5);
-\foreach \r/\t/\y in {7.4/{Al solid, $r$ 7.4}/15, 7.8/semicon 0.4$^*$/9, 15.8/XLPE 8.0/3,
-   16.2/semicon 0.4$^*$/-3, 17.6/{Cu ring 50 mm$^2$$^*$}/-9, 21.5/{PE, $\varnothing$43}/-15}
-  \draw[->,thin] (24,\y) node[right,font=\tiny]{\t} -- ({\r*cos(\y*3)},{\r*sin(\y*3)});
+% leader line from each label to a dot in the MIDDLE of its layer (radius r, angle a; no crossings)
+\foreach \r/\a/\t/\y in {3.7/30/{Al solid, $r$ 7.4}/15, 7.6/20/semicon 0.4$^*$/9, 11.8/0/XLPE 8.0/3,
+   16.0/-12/semicon 0.4$^*$/-3, 17.625/-25/{Cu ring 50 mm$^2$$^*$}/-9, 20.35/-40/{PE, $\varnothing$43}/-15}
+  {\draw[thin,black!75] (24,\y) node[right,font=\tiny,black]{\t} -- ({\r*cos(\a)},{\r*sin(\a)});
+   \fill[black] ({\r*cos(\a)},{\r*sin(\a)}) circle (0.45);}
 \end{tikzpicture}\\
 {\tiny radii in mm, to scale; $^*$ assumed}
 \column{0.6\textwidth}\footnotesize
