@@ -22,7 +22,8 @@ Source-code/
     cable.geo           one-line include of the shared geometry (Gmsh Run button)
 run_all.sh              every case in the reports and slides (exact commands)
 Reports/                Section 1-5 PDFs, LaTeX sources, collect_values.py (results -> numbers)
-Slides/                 slides.tex -> slides.pdf; export_maps.sh renders the field maps
+Slides/                 slides.tex -> slides.pdf; export_maps.sh renders the field maps;
+                        speaker_notes.tex -> speaker_notes.pdf (timing + notes per main slide)
 ```
 
 Search a question tag (`Q2.5`, `Q4.7`, ...) in the `.pro`/`.geo` files to find the code that
@@ -60,7 +61,7 @@ export PATH="$PWD/../ONELAB Software/Gmsh.app/Contents/MacOS:$PATH"   # gmsh + g
 python3 Reports/collect_values.py   # results + analytical/IEC references -> values.tex + CSV
 ./Reports/build.sh                  # Section 1-5 PDFs
 ./Slides/export_maps.sh             # field maps (needs a display)
-cd Slides && pdflatex slides.tex && pdflatex slides.tex
+cd Slides && pdflatex slides.tex && pdflatex slides.tex          # notes: speaker_notes.tex
 ```
 
 `run_all.sh` lists one line per case with the question it answers. The same `-setnumber`
