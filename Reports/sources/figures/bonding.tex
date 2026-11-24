@@ -1,0 +1,10 @@
+% Q3.11: losses per km for both-end vs single-point bonding (massive Al, 350 A, 20 C).
+\begin{tikzpicture}\begin{axis}[xbar stacked,bar width=14pt,xmin=0,xmax=78,clip=false,
+  xlabel={Losses [kW/km]},ytick={1,2},yticklabels={Single point,Both ends},ymin=0.4,ymax=2.6,
+  legend style={at={(0.5,1.03)},anchor=south,legend columns=2}]
+\addplot[fill=cA!80,draw=none] coordinates {(\Pcsingle,1) (\Pcbase,2)};
+\addplot[fill=cB!90,draw=none] coordinates {(\Pssingle,1) (\Psbase,2)};
+\legend{Al conductors,Cu screens}
+\node[font=\scriptsize,anchor=west] at (axis cs:\Ptbase,2) {\Ptbase};
+\node[font=\scriptsize,anchor=west] at (axis cs:\Ptsingle,1) {\Ptsingle};
+\end{axis}\end{tikzpicture}

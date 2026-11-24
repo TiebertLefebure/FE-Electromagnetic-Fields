@@ -1,6 +1,8 @@
 \def\ReportNumber{2}
 \def\ReportName{Electrodynamic analysis}
 \input{common.tex}
+\usepackage{pgfplots}\pgfplotsset{compat=1.18}
+\input{data/values.tex}
 \begin{document}
 \section*{Q2.1 Domain, equations and boundaries}
 \assignmentquestion{\QuestionTwoOne}
@@ -25,7 +27,11 @@ partial discharge are omitted. Linear nodal triangles approximate the potential.
 \textbf{Dirichlet conditions.} At the inner XLPE boundary, apply
 \(26.9444~\mathrm{kV}\) peak at angles \(0,-120^\circ,+120^\circ\).
 At each outer XLPE boundary, apply \(\hat v=0\). These boundaries are physical
-groups 101/102/103 and 110, respectively.
+groups 101/102/103 and 111/112/113, respectively. Each boundary is one
+\emph{electrode}: all its nodes share a single unknown (\texttt{BF\_GroupOfNodes}),
+whose value is the imposed voltage \(U\) and whose dual is the total current \(I\)
+injected into the insulation (used in Q2.6 and Q2.7). In the defect case
+(Q2.5) an air region 44 is added inside phase A's XLPE.
 
 The weak form used in \texttt{cable.pro} is, for test functions vanishing on
 the voltage boundaries,
@@ -34,7 +40,10 @@ the voltage boundaries,
        \nabla\hat v\cdot\nabla w\,dA=0.
 \]
 The \texttt{sigma} Galerkin term and the \texttt{DtDof[epsilon...]} term
-implement conduction and displacement current, respectively.
+implement conduction and displacement current, respectively. The extra
+\texttt{GlobalTerm \{[-Dof\{I\},\{U\}]\}} on the electrodes is the boundary
+integral of the weak form, \(\oint \hat{\mathbf J}\cdot\mathbf n\,w\,ds\), with
+\(w=1\) on the electrode: it turns the electrode reaction into the current \(I\).
 
 \textbf{Truncation and shielding.} The electric domain ends at each grounded
 outer XLPE interface. A 0.6 m square soil region is retained in the shared mesh
@@ -63,6 +72,13 @@ properties and boundary voltages the same. Thus the exact solution for the
 model gives identical peak field and capacitance at 0 and 0.5 mm gap. The
 aluminium interior, copper wires and exterior soil can also be simplified
 outside these ideal boundaries.
+
+\textbf{Semiconductors as ideal equipotentials.} With
+\(\sigma_{\rm sc}=2\,10^{-3}~\mathrm{S/m}\gg\omega\varepsilon_0\varepsilon_r=6\,10^{-9}~\mathrm{S/m}\),
+the screens are resistive conductors. The radial charging current density at
+the inner screen (0.034 A/m\textsuperscript{2} peak) across 0.4 mm causes a drop of only
+\(0.034\times0.4\,10^{-3}/2\,10^{-3}\approx7~\mathrm{mV}\), i.e.\ \(3\,10^{-7}\) of
+\(V_p\): the equipotential assumption is exact to plotting precision.
 
 Screen thicknesses still determine the dielectric radii. Putting the inner
 voltage at 7.4 rather than 7.8 mm would give
@@ -100,14 +116,28 @@ output folders. Restore gap 0.5, factor 1 and directory \texttt{res} afterward.}
 \newpage
 \section*{Q2.3 Mesh convergence}
 \assignmentquestion{\QuestionTwoThree}
-\input{data/convergence_table.tex}
+\begin{center}\small
+\begin{tabular}{@{}rrrr@{}}\toprule
+Target \(h\) [mm] & Complex DoFs & Peak \(E\) [kV/mm] & \(C'\) [\(\mu\)F/km]\\\midrule
+0.500 & \Dofsgapcoarse & \Egapcoarse & \Cgapcoarse\\
+0.250 & \Dofsgap & \Egap & \Cgap\\
+0.125 & \Dofsgapfine & \Egapfine & \Cgapfine\\\midrule
+Analytical & & 4.894 & 0.1970307\\\bottomrule
+\end{tabular}
+\end{center}
 With the 0.5 mm gap, the peak approaches \(4.89372~\mathrm{kV/mm}\).
 The default mesh is 0.43\% low and the finest is 0.15\% low. Refinement from
 the default to the fine mesh raises the peak by 0.274\% and reduces capacitance
 by 0.00066\%. The integral capacitance is less sensitive
 than the local gradient. Refine near the inner interface, where \(E\propto1/r\).
 
-\includegraphics[width=\linewidth]{figures/convergence.pdf}
+\begin{center}\def\figw{0.9\linewidth}\def\figh{4.6cm}
+\input{figures/style.tex}\input{figures/convergence.tex}\end{center}
+\textbf{Where to refine.} The error is local: \(E\propto1/r\) is steepest at the
+conductor screen, and a constant-gradient triangle there under-predicts the
+interface value. Refine the first layers of elements along the inner XLPE
+interface (and around any defect, see Q2.5, where \(h=r_{\rm void}/8\) is used);
+the outer part of the insulation and the capacitance are already converged.
 
 \codeguide{\setupfile{parameters.pro}: \texttt{MeshFactor};
 \setupfile{cable.geo}: Box mesh field; \efile: linear potential space.}
@@ -152,26 +182,59 @@ to avoid ambiguous element lookup exactly on the boundary.}
 
 \section*{Q2.5 Insulation defect}
 \assignmentquestion{\QuestionTwoFive}
-\pending The current simple geometry contains no defect. A defensible next
-case is a circular dry-air void of radius 0.25 mm, centred 8.8 mm from phase A's
-axis along \(+x\), with \(\varepsilon_r=1\) and negligible conductivity.
-Its nearest edge is 0.75 mm from the inner XLPE interface. These dimensions
-and air properties are explicit study assumptions.
+\textbf{Defect.} A gas (air) void, e.g.\ a cavity left by cross-linking by-products
+or a manufacturing inclusion. Circular, radius \(0.25~\mathrm{mm}\) (0.5 mm
+diameter), centred at \(r=8.8~\mathrm{mm}\) on phase A's \(+x\) radius, i.e.\ 0.75 mm
+from the conductor screen where the stress is highest. Air: \(\varepsilon_r=1\),
+\(\sigma=10^{-15}~\mathrm{S/m}\) (before discharge). All are study assumptions,
+exposed as ONELAB parameters (\texttt{Flag\_Defect}, \texttt{rVoid},
+\texttt{rVoidPos}, \texttt{epsVoid}, \texttt{sigmaVoid}). The mesh is refined to
+\(r_{\rm void}/8\) at the void edge with a Ball size field.
 
-In 2D this represents an infinitely long cylindrical channel parallel to the
-cable, not a spherical bubble. For a small cylindrical inclusion in an almost
-uniform transverse field, the electrostatic estimate is
-\(E_{\rm void}/E_{\rm healthy}\simeq2\varepsilon_{\rm XLPE}/
-(\varepsilon_{\rm XLPE}+\varepsilon_{\rm air})=1.43\).
-This only predicts the tendency to amplify the field; it is not the requested
-FE radial-cut comparison. A withstand conclusion also needs a justified gas
-breakdown or partial-discharge criterion. Both checks remain to be done.
+\textbf{2D meaning.} The 2D cross-section represents an infinitely long
+cylindrical channel parallel to the conductor, not a spherical bubble. For a
+small inclusion in a uniform field, the internal field is
+\(2\varepsilon_{\rm X}/(\varepsilon_{\rm X}+\varepsilon_{\rm air})E_0=1.43E_0\)
+for a cylinder and \(3\varepsilon_{\rm X}/(2\varepsilon_{\rm X}+\varepsilon_{\rm air})E_0=1.25E_0\)
+for a sphere: the 2D model is conservative.
 
-\codeguide{\setupfile{cable.geo}: add a hole and a separately tagged air surface
-in phase-A XLPE. \efile: include that region with its own material law.}
-{No defect command exists yet. The Q2.4 command produces only the healthy reference.}
-{After implementation, compare the same radial cut for healthy and void cases,
-with local mesh refinement around the void. No archived defect result is claimed here.}
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}\toprule
+Quantity (peak) & Healthy & With void\\\midrule
+Field at \(r=8.8\) mm (analytical, healthy) [kV/mm] & 4.338 & --\\
+Mean field inside the void, radial cut [kV/mm] & -- & \Vmeandefectfine\\
+Maximum element field (void) [kV/mm], \(h\)=0.25 / 0.125 mm & 4.873 / 4.886 & \Edefect\ / \Edefectfine\\
+Uniform-field estimate \(1.43E_0\) [kV/mm] & -- & 6.197\\
+Phase-A capacitance [\(\mu\)F/km] & 0.197032 & 0.196937\\\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}\def\figw{0.9\linewidth}\def\figh{5cm}
+\input{figures/style.tex}\input{figures/radial_defect.tex}\end{center}
+
+The field inside the void is about 1.41 times the healthy field. At the void's poles
+on the radial line, the XLPE field \emph{drops} (normal \(D\) is continuous, so
+\(E_{\rm XLPE}=E_{\rm void}/2.5\)); at its flanks it rises to about \(1.43E_0\approx6.2\)
+kV/mm peak (4.4 kV/mm RMS), still below the 8 kV/mm RMS benchmark of Q2.4.
+The bulk XLPE therefore does not break down.
+
+\textbf{Does the cable withstand it? No (long term).} The void gas breaks down first.
+For air at 1 bar in a 0.5 mm gap, the Schumann/Paschen fits give
+\(E_b\approx5.1\)--\(5.8~\mathrm{kV/mm}\) peak [Kuffel]. The void field
+(\(\approx6.1\)--\(6.3~\mathrm{kV/mm}\)) exceeds it, so partial discharges start
+at rated voltage. The inception voltage is about
+\(U_0E_b/E_{\rm void}\approx19.05\times5.14/6.1\approx16~\mathrm{kV}\) RMS
+phase-to-ground, below \(U_0=19.05~\mathrm{kV}\). Repetitive discharges erode
+the cavity wall and initiate electrical trees, which eventually cause
+breakdown. A routine partial-discharge test would reject this cable.
+
+\codeguide{\setupfile{parameters.pro}: defect parameters.
+\setupfile{cable.geo}: void circle, hole in XLPE\_A, region 44, Ball field.
+\efile: \texttt{Void} group and its material law.}
+{In Gmsh open \efile, set \textbf{Geometry > Insulation defect} to
+\emph{Air void in phase A} and press \textbf{Run} (remeshes automatically).}
+{\texttt{res/field\_norm.pos} (zoom on the void), \texttt{res/radial\_field\_A.txt}
+(columns x, y, z, \(|E|\) in V/m) and \texttt{res/max\_field\_kV\_mm.dat}.}
 
 \newpage
 \section*{Q2.6 Conduction, displacement and conservation}
@@ -201,33 +264,30 @@ behaviour; PE and XLPE are primarily dielectric. No current densities in those
 other regions are calculated by this XLPE-only model. In particular, a zero or
 blank value there cannot establish zero physical current.
 
-\textbf{Conservation: what is checked.} The weak equation enforces
-\(\nabla\cdot\hat{\mathbf J}=0\). For the coaxial analytical solution,
-\[
- \hat J_r(r)=(\sigma+j\omega\varepsilon)
- \frac{\hat V}{r\ln(r_o/r_i)},\qquad
- 2\pi r\hat J_r(r)=\text{constant}.
-\]
-The total current leaving the inner boundary therefore equals the current
-entering the outer boundary. This analytical check is exact.
-
-The current code does not yet export an independent FE boundary-flux balance.
-Linear nodal elements do not guarantee pointwise continuous normal current
-across every triangle. Thus solving the weak equation is not, by itself, a
-quantified conservation test. The remaining check is to integrate total
-\(\hat{\mathbf J}\cdot\mathbf n\) on both interfaces and report
-\[
- \eta_I=\frac{|I_{\rm inner}+I_{\rm outer}|}
-                  {\max(|I_{\rm inner}|,|I_{\rm outer}|)}
-\]
-using outward normals of the XLPE annulus, then test its mesh dependence.
+\textbf{Conservation.} The weak equation enforces \(\nabla\cdot\hat{\mathbf J}=0\)
+in the weak sense. We check it independently with the electrode currents
+\(I\) (total current injected into the XLPE at each boundary; default mesh, A/m, peak):
+\begin{center}\small
+\begin{tabular}{@{}lrrr@{}}\toprule
+Phase & \(I_{\rm inner}\) & \(I_{\rm outer}\) & \(|I_{\rm in}+I_{\rm out}|/|I_{\rm in}|\)\\\midrule
+A & \(2.40\,10^{-13}+j\,1.667843\,10^{-3}\) & \(-2.40\,10^{-13}-j\,1.667843\,10^{-3}\) & \(<10^{-14}\)\\
+B & \(1.444394\,10^{-3}-j\,0.833921\,10^{-3}\) & \(-1.444394\,10^{-3}+j\,0.833921\,10^{-3}\) & \(<10^{-14}\)\\\bottomrule
+\end{tabular}
+\end{center}
+The current entering at the conductor screen leaves at the core screen, to
+round-off. The magnitude matches \(\omega C'V_p=1.66785\,10^{-3}~\mathrm{A/m}\),
+i.e.\ \(1.179~\mathrm{A/km}\) RMS charging current per phase, and the ratio
+\(\Re I/\Im I=1.44\,10^{-10}=\sigma/(\omega\varepsilon)\). This global balance is
+exact because the sum of all nodal test functions of a phase equals one.
+Locally, linear elements give a normal current that jumps across element edges;
+those jumps shrink with refinement but are not zero.
 
 \codeguide{\efile: \texttt{jCond}, \texttt{jDisp} and their exports in
 \texttt{Ele\_Maps}. \setupfile{parameters.pro}: \texttt{sigmaXLPE}, \texttt{epsXLPE}, \texttt{Freq}.}
 {In Gmsh open \efile\ and press \textbf{Run}.}
 {Open \texttt{res/conduction\_current.pos} and
 \texttt{res/displacement\_current.pos}; units are A/m\textsuperscript{2}, peak.
-The separate boundary-flux integral is still to be added.}
+\texttt{res/electrode\_currents.dat}: \(I\) for regions 101--103 then 111--113 (re, im).}
 
 \newpage
 \section*{Q2.7 Capacitance and frequency}
@@ -251,8 +311,9 @@ capacitance is calculated directly from field energy:
 \]
 The code multiplies F/m by \(10^9\) to export \(\mu\mathrm{F/km}\).
 With peak phasors, \(\tfrac14\int\varepsilon|\hat E|^2dA\) is the mean stored
-energy. The separately exported \texttt{ElectricEnergy} is twice that mean;
-its definition is stated in the source comment so the peak/RMS factor is explicit.
+energy. A second, independent extraction uses the electrode charge:
+\(C'=\Im(I/U)/\omega\) on each live electrode. Both agree to 7 digits
+(0.1970321 \(\mu\)F/km, default mesh).
 
 \begin{center}\small
 \begin{tabular}{@{}lr@{}}\toprule
@@ -280,7 +341,8 @@ and resistive screens could change that conclusion; none is included here.
 \setupfile{parameters.pro}: \texttt{Freq}.}
 {In Gmsh open \efile. Set \textbf{Frequency [Hz]} to 500 and press \textbf{Run}.
 Repeat with 5, 50 and 5000. Restore 50 Hz afterward.}
-{Read \texttt{res/capacitance\_uF\_km.dat}: the second column is the real
+{Read \texttt{res/capacitance\_uF\_km.dat} (energy) and
+\texttt{res/capacitance\_charge\_uF\_km.dat} (charge, per phase): the second column is the real
 capacitance. Each run overwrites \texttt{res/}; save the value before the next run.}
 
 \newpage
@@ -306,7 +368,8 @@ The analytical maximum falls by 8.00\% and the FE peak by 8.19\%.
 Both cases use the 0.5 mm gap and the same 0.25 mm target mesh size.
 Capacitance and charging current also decrease by about 8\%.
 
-\includegraphics[width=\linewidth]{figures/radial_comparison.pdf}
+\begin{center}\def\figw{0.9\linewidth}\def\figh{5cm}
+\input{figures/style.tex}\input{figures/radial_thick.tex}\end{center}
 
 \codeguide{\setupfile{parameters.pro}: \texttt{tXLPE}, derived radii and fixed
 \texttt{rWireIn}. \efile: radial cut and field exports.}
@@ -322,6 +385,10 @@ Geometry and voltage: local \href{../Datasheet 33 kV single core cable XLPE-AL.p
 printed pp.19--20. Equations and phasors: local
 \href{../NMES_Assignment_2026.pdf}{NMES Assignment 2026}, Appendices A--B.
 Material references and their limitations are listed in Section 1, Q1.1.
+
+\textbf{[Kuffel]} E.~Kuffel, W.S.~Zaengl, J.~Kuffel, \emph{High Voltage Engineering:
+Fundamentals}, 2nd ed., Newnes, 2000, ch.~5 (Paschen's law; uniform-field
+breakdown of air \(V_b=24.22\,\delta d+6.08\sqrt{\delta d}\) kV, \(d\) in cm).
 
 \textbf{[Eskom]} \refurl{https://www.etenders.gov.za/home/Download/?blobName=b55b97a6-fb2e-492f-8eb0-01bc9574c555.pdf\&downloadedFileName=240-56030625_Specificatin+for+HV+XLPE+cables+and+accessories.pdf}{Specification 240-56030625, Rev.3}, \S3.3(i), Annex B.
 Its voltage range differs from our cable; see Q2.4.

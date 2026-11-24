@@ -1,0 +1,79 @@
+\def\ReportNumber{5}
+\def\ReportName{Additional investigation: cable arrangement}
+\input{common.tex}
+\usepackage{pgfplots}\pgfplotsset{compat=1.18}
+\graphicspath{{../../Slides/figures/}}
+\input{data/values.tex}
+\begin{document}
+\section*{Question and choice of topic}
+\assignmentquestion{\QuestionFive}
+No topic had been assigned by the teaching team when this work was done, so we chose the
+\textbf{arrangement of the three single cores combined with the screen bonding}: \emph{what is the
+best arrangement for a given specification?} It answers a practical design question and, unlike
+most alternatives, can be \emph{validated}: the NKT datasheet gives the 90\,\(^\circ\)C rating for
+six arrangement/bonding combinations under the same laying conditions.
+
+\section*{Cases and method}
+Six cases, all with the coupled \(\sigma(T)\) model of Section 4 (same soil, depth, \(h\), mesh rules):
+\begin{center}\small
+\begin{tabular}{@{}llll@{}}\toprule
+Case & Geometry & Centre spacing & NKT row\\\midrule
+Trefoil & equilateral, 0.5 mm gap & 43.5 mm & trefoil, close together, \(S=D\)\\
+Flat & A, B, C in a horizontal line, 0.5 mm gap & 43.5 mm & flat, close together, \(S=D\)\\
+Flat +70 mm & horizontal line, 70 mm free distance & 113 mm & flat, \(S=D+70\) mm\\\bottomrule
+\end{tabular}
+\end{center}
+each with both-end bonding (\(U=0\) per screen) and single-point bonding (\(I=0\)). All cables are
+1 m below the surface (arrangement centre). Phase B is the middle cable of the flat formations.
+
+\textbf{FE ampacity.} For each case: (1) coupled run at 350 A gives \(T_0\); (2) a second run at
+\(I_1=350\sqrt{75/(T_0-15)}\) gives \(T_1\approx90\,^\circ\)C; (3) since the temperature rise is
+nearly proportional to \(I^2\) (\(R\) varies only by \(\alpha\Delta T\) between the two runs),
+\(I_{90}^2=350^2+(90-T_0)(I_1^2-350^2)/(T_1-T_0)\). The second run is within about 1 K of
+90\,\(^\circ\)C, so the interpolation error is negligible.
+
+\section*{Results}
+\begin{center}\small
+\begin{tabular}{@{}lrrrrrrr@{}}\toprule
+Case, bonding & \(P_c\) & \(P_s\) & \(L\) & \(T_{\max}\) at 350 A & \(I_1\) / \(T_1\) & FE ampacity & NKT\\
+& [kW/km] & [kW/km] & [mH/km] & [\(^\circ\)C] & [A] / [\(^\circ\)C] & [A] & [A]\\\midrule
+Trefoil, both ends & \Pctrefoil & \Pstrefoil & \Ltrefoil & \Tctrefoil & \Ionetrefoil\ / \TctrefoilIone & \Amptrefoil & 350\\
+Trefoil, single point & \Pctrefoilsp & \Pstrefoilsp & \Ltrefoilsp & \Tctrefoilsp & \Ionetrefoilsp\ / \TctrefoilspIone & \Amptrefoilsp & 350\\
+Flat, both ends & \Pcflat & \Psflat & \Lflat & \Tcflat & \Ioneflat\ / \TcflatIone & \Ampflat & 350\\
+Flat, single point & \Pcflatsp & \Psflatsp & \Lflatsp & \Tcflatsp & \Ioneflatsp\ / \TcflatspIone & \Ampflatsp & 350\\
+Flat +70 mm, both ends & \Pcflatsev & \Psflatsev & \Lflatsev & \Tcflatsev & \Ioneflatsev\ / \TcflatsevIone & \Ampflatsev & 365\\
+Flat +70 mm, single point & \Pcflatsevsp & \Psflatsevsp & \Lflatsevsp & \Tcflatsevsp & \Ioneflatsevsp\ / \TcflatsevspIone & \Ampflatsevsp & 380\\\bottomrule
+\end{tabular}
+\end{center}
+\begin{center}\def\figw{0.8\linewidth}\def\figh{5.5cm}
+\input{figures/style.tex}\input{figures/arrangement.tex}\end{center}
+
+\section*{Discussion}
+\textbf{Validation.} The FE reproduces the datasheet trends: close trefoil and close flat are
+equivalent (\Amptrefoil/\Ampflat\ A both ends, \Amptrefoilsp/\Ampflatsp\ A single point; NKT 350 A
+for all four), and spacing the flat formation by 70 mm raises the rating, much more with
+single-point bonding. All six FE ampacities lie within \(-3.6\,\%\) and \(+0.3\,\%\) of NKT's. The FE
+tends to be slightly low, consistently with Section 4 (convective ground surface instead of IEC's
+isothermal one; FE screen losses include eddy currents).
+
+\textbf{Physics.} Spacing the cables reduces their mutual heating (each cable sits less in its
+neighbours' temperature field). With both-end bonding, however, the screen-loop area grows with the
+spacing: the induced screen voltage \(\propto\ln(2s/d)\) and the circulating losses rise from
+\Pstrefoil\ to \Psflatsev\ kW/km (\(P_s\) column), eating most of the thermal gain
+(\Ampflatsev\ A instead of \Ampflatsevsp\ A). Single-point bonding removes the circulating current, so
+the full thermal benefit of spacing is obtained; the price is a standing voltage that also grows
+with spacing, and a 3 times wider trench. The inductance grows with spacing (\(\ln s\)), which
+increases the series voltage drop.
+
+\textbf{Best arrangement.} For the specified 350 A, the datasheet trefoil with both ends bonded is
+at its limit (\Tcnl\,\(^\circ\)C with \(h=10\), within 3 K of 90\,\(^\circ\)C); it is the most compact,
+with the lowest inductance and external magnetic field. Single-point bonding of the same trefoil
+brings it to \Tctrefoilsp\,\(^\circ\)C at no space cost. If more current is needed in the same trench conditions, a spaced flat formation with
+single-point or cross-bonded screens gives the largest ampacity (\Ampflatsevsp\ A).
+
+\codeguide{\setupfile{parameters.pro}: \texttt{Formation}, \texttt{JacketGap}.
+\setupfile{cable.geo}: centres and mesh box follow the formation. \mfile: unchanged.}
+{\runall: section ``Section 5'' (function \texttt{amp}); Gmsh: \textbf{Geometry > Formation} = Flat,
+\textbf{Jacket gap} = 70, \textbf{Magnetic > Screen bonding}.}
+{\texttt{results/<case>/Tmax\_conductor.dat}; \texttt{Reports/collect\_values.py} does the interpolation.}
+\end{document}

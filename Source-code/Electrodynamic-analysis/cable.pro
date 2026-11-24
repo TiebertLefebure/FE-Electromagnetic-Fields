@@ -1,95 +1,102 @@
-// 185 mm2 screened-XLPE electric model.
+// 185 mm2 screened-XLPE electric model (Section 2).
 // Question map: Q2.1 domain/equation/BCs; Q2.2 ideal screens; Q2.3 linear FE;
-// Q2.4 field stress; Q2.6 current densities; Q2.7 capacitance; Q2.8 thickness trial.
-// Q2.5 defect and the Q2.6 independent boundary-flux check are not implemented.
+// Q2.4 field stress; Q2.5 air void; Q2.6 currents + balance; Q2.7 capacitance;
+// Q2.8 thickness trial. Search for a tag (e.g. Q2.6) to find the relevant block.
 Include "../Cable-selection-and-model-setup/parameters.pro";
-// [Q2.1 - GMSH RUN BUTTON] The resolution already runs Ele_Maps, so use -solve
-// without a second -pos pass. Source: GetDP's reserved ONELAB parameter names.
+// [Q2.1 - GMSH RUN BUTTON] The resolution already runs Ele_Maps, so use -solve.
 SetString["GetDP/1ResolutionChoices", "Electrodynamics"];
 SetString["GetDP/9ComputeCommand", "-solve"];
-// [OUTPUT] Override with -setstring ResultDir results/coarse, for example.
+// [OUTPUT] Override with -setstring ResultDir results/case-name to keep a run.
 DefineConstant[ResultDir = {"res", Name "Output/Directory"}];
 
-// [Q2.1, Q2.2] Computational domain and geometric simplification.
-// JacketGap moves the three annuli without changing their radii or voltages.
-// With the ideal grounded boundaries, a gap changes only the discretisation error.
-// [MODEL] Only XLPE participates. The other meshed layers have no
-// electric unknowns; their blank field maps do not indicate missing mesh.
+// [Q2.1, Q2.2] Computational domain: the three XLPE annuli (+ the void if present).
+// The semiconductors are ideal equipotentials, so the inner XLPE boundary carries
+// the phase voltage and the outer XLPE boundary is grounded. Everything outside
+// the grounded screens cannot influence the field in the insulation.
 Group {
-  PhaseA = Region[41]; PhaseB = Region[42]; PhaseC = Region[43];
-  Domain_Ele = Region[{41,42,43}];
+  XLPE = Region[{41,42,43}];
+  Void = Region[{44}];                    // empty when Flag_Defect = 0
+  Domain_Ele = Region[{XLPE, Void}];
   LiveA = Region[101]; LiveB = Region[102]; LiveC = Region[103];
-  ScreenGround = Region[110];
+  GroundA = Region[111]; GroundB = Region[112]; GroundC = Region[113];
+  Live = Region[{LiveA, LiveB, LiveC}];
+  // [Q2.6] Each boundary is one "electrode": one global voltage U and current I.
+  Electrodes = Region[{Live, GroundA, GroundB, GroundC}];
 }
 
-// [Q2.1] Constitutive law. [Q2.6, Q2.7] Constants used in current and energy calculations.
+// [Q2.1] Constitutive laws. [Q2.6] sigma vs omega*epsilon sets the current ratio.
 Function {
-  epsilon[Domain_Ele] = eps0*epsXLPE;
-  sigma[Domain_Ele] = sigmaXLPE;
+  epsilon[XLPE] = eps0*epsXLPE;
+  sigma[XLPE] = sigmaXLPE;
+  epsilon[Void] = eps0*epsVoid;
+  sigma[Void] = sigmaVoid;
 }
 
-// [Q2.1] Dirichlet boundary conditions. [Q1.4] Apply the chosen ABC peak phasors.
-// [Q2.2] Ideal semiconductors are represented by their interface potentials.
-// [ASSUMPTION] Inner SC follows its phase conductor; outer SC is grounded.
-// This does not impose axial screen bonding or calculate the 350 A load.
+// [Q2.1, Q1.4] Dirichlet conditions as electrode voltages (peak phasors, ABC).
 Constraint {
-  { Name ElectricScalarPotential; Type Assign;
+  { Name ElectrodeVoltage; Type Assign;
     Case {
       { Region LiveA; Value Complex[Vpeak, 0]; }
       { Region LiveB; Value Complex[Vpeak*Cos[-2*Pi/3], Vpeak*Sin[-2*Pi/3]]; }
       { Region LiveC; Value Complex[Vpeak*Cos[ 2*Pi/3], Vpeak*Sin[ 2*Pi/3]]; }
-      { Region ScreenGround; Value 0; }
+      { Region GroundA; Value 0; }
+      { Region GroundB; Value 0; }
+      { Region GroundC; Value 0; }
     }
   }
 }
 
-// [Q2.1] 2D area mapping and numerical integration for the weak equation.
 Jacobian {
   { Name Vol; Case { { Region All; Jacobian Vol; } } }
 }
 Integration {
-  { Name I1; Case {
-      { Type Gauss; Case {
-          { GeoElement Triangle; NumberOfPoints 4; }
-          { GeoElement Quadrangle; NumberOfPoints 4; }
-        }
-      }
-    }
-  }
+  { Name I1; Case { { Type Gauss; Case {
+      { GeoElement Triangle; NumberOfPoints 4; }
+      { GeoElement Quadrangle; NumberOfPoints 4; } } } } }
 }
 
-// [Q2.3] Linear nodal potential: its gradient is constant within each triangle.
-// MeshFactor is changed in parameters.pro/Gmsh; no different FE space is needed.
+// [Q2.3] Linear nodal potential: E = -grad v is constant within each triangle.
+// [Q2.6] All nodes of one electrode share ONE coefficient (BF_GroupOfNodes):
+// its value is the electrode voltage U, and its associated quantity I is the
+// total (conduction + displacement) current injected into the XLPE there.
 FunctionSpace {
   { Name Hgrad_v_Ele; Type Form0;
     BasisFunction {
       { Name sn; NameOfCoef vn; Function BF_Node;
-        Support Domain_Ele; Entity NodesOf[All]; }
+        Support Domain_Ele; Entity NodesOf[All, Not Electrodes]; }
+      { Name sf; NameOfCoef vf; Function BF_GroupOfNodes;
+        Support Domain_Ele; Entity GroupsOfNodesOf[Electrodes]; }
+    }
+    GlobalQuantity {
+      { Name U; Type AliasOf; NameOfCoef vf; }
+      { Name I; Type AssociatedWith; NameOfCoef vf; }
     }
     Constraint {
-      { NameOfCoef vn; EntityType NodesOf;
-        NameOfConstraint ElectricScalarPotential; }
+      { NameOfCoef U; EntityType GroupsOfNodesOf; NameOfConstraint ElectrodeVoltage; }
     }
   }
 }
 
-// [Q2.1] Governing weak equation. [Q2.6] Total-current conservation in weak form;
-// a separate boundary-flux balance has not yet been exported.
-// [COURSE] Weak form of -div((sigma+j*omega*epsilon)*grad(v)) = 0.
-// DtDof becomes j*omega; phasors use exp(j*omega*t).
+// [Q2.1] Weak form of -div((sigma + j*omega*epsilon) grad v) = 0.
+// DtDof gives the j*omega factor; phasors use exp(j*omega*t), peak values.
+// [Q2.6] The boundary term of the weak form is the electrode current I.
 Formulation {
   { Name Electrodynamics_v; Type FemEquation;
-    Quantity { { Name v; Type Local; NameOfSpace Hgrad_v_Ele; } }
+    Quantity {
+      { Name v; Type Local;  NameOfSpace Hgrad_v_Ele; }
+      { Name U; Type Global; NameOfSpace Hgrad_v_Ele [U]; }
+      { Name I; Type Global; NameOfSpace Hgrad_v_Ele [I]; }
+    }
     Equation {
-      Galerkin { [sigma[]*Dof{d v}, {d v}];
+      Galerkin { [ sigma[] * Dof{d v}, {d v} ];
         In Domain_Ele; Jacobian Vol; Integration I1; }
-      Galerkin { DtDof[epsilon[]*Dof{d v}, {d v}];
+      Galerkin { DtDof[ epsilon[] * Dof{d v}, {d v} ];
         In Domain_Ele; Jacobian Vol; Integration I1; }
+      GlobalTerm { [ -Dof{I}, {U} ]; In Electrodes; }
     }
   }
 }
 
-// [Q2.1] Assemble, solve and export the electric problem at the selected frequency.
 Resolution {
   { Name Electrodynamics;
     System {
@@ -107,79 +114,65 @@ Resolution {
 PostProcessing {
   { Name EleDyn_v; NameOfFormulation Electrodynamics_v;
     Quantity {
-      // [Q2.1] Potential map checks the imposed phase and screen voltages.
-      { Name v; Value {
-          Term { [ {v} ]; In Domain_Ele; Jacobian Vol; }
-        }
-      }
-      // [Q2.3, Q2.4, Q2.8] Electric field and peak-phasor norm for stress comparisons.
-      { Name e; Value {
-          Term { [ -{d v} ]; In Domain_Ele; Jacobian Vol; }
-        }
-      }
-      { Name em; Value {
-          Term { [ Norm[-{d v}] ]; In Domain_Ele; Jacobian Vol; }
-        }
-      }
-      { Name d; Value {
-          Term { [ -epsilon[]*{d v} ]; In Domain_Ele; Jacobian Vol; }
-        }
-      }
-      // [Q2.6] Conduction current sigma*E and displacement current j*omega*epsilon*E.
-      // These are radial insulation currents, not the 350 A axial load current.
-      { Name jCond; Value {
-          Term { [ -sigma[]*{d v} ]; In Domain_Ele; Jacobian Vol; }
-        }
-      }
-      { Name jDisp; Value {
-          Term { [ -epsilon[]*Dt[{d v}] ]; In Domain_Ele; Jacobian Vol; }
-        }
-      }
-      // [Q2.7] Field-energy route to per-unit-length capacitance.
-      // [PEAK PHASORS] This is Wstar = 1/2 integral(eps*|Ehat|^2).
-      // Mean stored energy is Wstar/2. Keep this factor when using RMS/peak data.
-      { Name ElectricEnergy; Value {
-          Integral { [ 0.5*epsilon[]*SquNorm[{d v}] ];
-            In Domain_Ele; Jacobian Vol; Integration I1; }
-        }
-      }
-      // [Q2.3, Q2.7] Integral output for convergence and analytical/datasheet comparisons.
-      // [DERIVED] Balanced-phase average capacitance, in microfarads/km.
-      // Factor 3 accounts for all three phases; Vpeak is phase-to-ground.
-      { Name CapacitancePerPhase; Value {
+      // [Q2.1] Potential map: checks the imposed phase and screen voltages.
+      { Name v; Value { Term { [ {v} ]; In Domain_Ele; Jacobian Vol; } } }
+      // [Q2.3, Q2.4, Q2.5] Field vector and peak-phasor norm (V/m).
+      { Name e;  Value { Term { [ -{d v} ]; In Domain_Ele; Jacobian Vol; } } }
+      { Name em; Value { Term { [ Norm[-{d v}] ]; In Domain_Ele; Jacobian Vol; } } }
+      // [Q2.6] Conduction sigma*E and displacement j*omega*epsilon*E (A/m2, peak).
+      // These are RADIAL insulation currents, not the 350 A axial load current.
+      { Name jCond; Value { Term { [ -sigma[]*{d v} ]; In Domain_Ele; Jacobian Vol; } } }
+      { Name jDisp; Value { Term { [ -epsilon[]*Dt[{d v}] ]; In Domain_Ele; Jacobian Vol; } } }
+      { Name jDispNorm; Value { Term { [ Norm[-epsilon[]*Dt[{d v}]] ]; In Domain_Ele; Jacobian Vol; } } }
+      // [Q2.6] Electrode voltage and injected current per unit length (V, A/m peak).
+      { Name U; Value { Term { [ {U} ]; In Electrodes; } } }
+      { Name I; Value { Term { [ {I} ]; In Electrodes; } } }
+      // [Q2.7] Capacitance per phase from the electrode charge: C = Im(I/U)/omega.
+      { Name C_charge_uF_km; Value {
+          Term { [ Im[{I}/{U}]/(2*Pi*Freq)*1e9 ]; In Live; } } }
+      // [Q2.3, Q2.4] Maximum |E| over all elements, read from register #1 (kV/mm).
+      { Name Emax_kV_mm; Value { Term { Type Global; [ #1*1e-6 ]; In Live; } } }
+      // [Q2.7] Capacitance from field energy, averaged over the 3 phases:
+      // C = sum(int eps |E|^2) / (3 Vpeak^2), converted from F/m to uF/km.
+      { Name C_energy_uF_km; Value {
           Integral { [ epsilon[]*SquNorm[{d v}]/(3*Vpeak^2)*1e9 ];
-            In Domain_Ele; Jacobian Vol; Integration I1; }
-        }
-      }
+            In Domain_Ele; Jacobian Vol; Integration I1; } } }
     }
   }
 }
 
-// The same solve writes the outputs used by several questions; no separate solver per question.
 PostOperation {
   { Name Ele_Maps; NameOfPostProcessing EleDyn_v;
     Operation {
-      // [Q2.1] Inspect the domain, phase voltages and ideal grounded screens.
-      Print[v, OnElementsOf Domain_Ele, File StrCat[ResultDir,"/potential.pos"]];
-      Print[e, OnElementsOf Domain_Ele, File StrCat[ResultDir,"/electric_field.pos"]];
-      Print[d, OnElementsOf Domain_Ele, File StrCat[ResultDir,"/displacement.pos"]];
-      // [Q2.6] Compare the magnitudes of the two current-density maps (A/m2, peak).
-      Print[jCond, OnElementsOf Domain_Ele, File StrCat[ResultDir,"/conduction_current.pos"]];
-      Print[jDisp, OnElementsOf Domain_Ele, File StrCat[ResultDir,"/displacement_current.pos"]];
-      // [Q2.7] Capacitance in microfarads/km and the defined energy quantity.
-      Print[ElectricEnergy[Domain_Ele], OnGlobal, Format Table,
-        File StrCat[ResultDir,"/electric_energy.dat"]];
-      Print[CapacitancePerPhase[Domain_Ele], OnGlobal, Format Table,
+      Print[v, OnElementsOf Domain_Ele, Name "v [V]", File StrCat[ResultDir,"/potential.pos"]];
+      Print[e, OnElementsOf Domain_Ele, Name "E [V/m]", File StrCat[ResultDir,"/electric_field.pos"]];
+      Print[jCond, OnElementsOf Domain_Ele, Name "J cond [A/m2]",
+        File StrCat[ResultDir,"/conduction_current.pos"]];
+      Print[jDisp, OnElementsOf Domain_Ele, Name "J disp [A/m2]",
+        File StrCat[ResultDir,"/displacement_current.pos"]];
+      Print[jDispNorm, OnElementsOf Domain_Ele, Name "|J disp| [A/m2]",
+        File StrCat[ResultDir,"/displacement_current_norm.pos"]];
+      // [Q2.6] Current balance: per phase, I(live) + I(ground) must be 0.
+      Print[I, OnRegion Electrodes, Format Table, File StrCat[ResultDir,"/electrode_currents.dat"]];
+      // [Q2.7] Two independent capacitance extractions (uF/km per phase).
+      Print[C_charge_uF_km, OnRegion Live, Format Table,
+        File StrCat[ResultDir,"/capacitance_charge_uF_km.dat"]];
+      Print[C_energy_uF_km[Domain_Ele], OnGlobal, Format Table,
+        SendToServer "Output/1Capacitance [uF per km]",
         File StrCat[ResultDir,"/capacitance_uF_km.dat"]];
-      // [Q2.4, Q2.8] Healthy phase-A radial stress cut and thickness comparison.
-      // [Q2.5 - NOT IMPLEMENTED] A defect comparison needs a separate void region/material.
-      // [NUMERICAL] Sample 1 micrometre inside each XLPE boundary, avoiding
-      // ambiguous element lookup exactly on an interface (false zero samples).
-      Print[em, OnLine {{xA+rSemiIn+1e-6, yA, 0}{xA+rXLPEOut-1e-6, yA, 0}} {101},
-        File StrCat[ResultDir,"/radial_field_A.pos"]];
-      // [Q2.3, Q2.4, Q2.8] Maximum field in V/m, peak; divide by 1e6 for kV/mm.
-      // Print this map last so ONELAB displays the field after pressing Run.
-      Print[em, OnElementsOf Domain_Ele, File StrCat[ResultDir,"/field_norm.pos"]];
+      // [Q2.4, Q2.5, Q2.8] Phase-A radial cut along +x (through the void if present),
+      // 1 um inside each XLPE boundary to avoid ambiguous lookup on an interface.
+      Print[em, OnLine {{xA+rSemiIn+1e-6, yA, 0}{xA+rXLPEOut-1e-6, yA, 0}} {1600},
+        Format SimpleTable, File StrCat[ResultDir,"/radial_field_A.txt"]];
+      Print[em, OnLine {{xA+rSemiIn+1e-6, yA, 0}{xA+rXLPEOut-1e-6, yA, 0}} {400},
+        Name "|E| radial cut phase A [V/m]", File StrCat[ResultDir,"/radial_field_A.pos"]];
+      // [Q2.3, Q2.4] Maximum field: the GUI shows the map range; the register
+      // keeps the largest element value, sent to the ONELAB panel in kV/mm.
+      Print[em, OnElementsOf Domain_Ele, Name "|E| [V/m]", StoreMaxInRegister 1,
+        File StrCat[ResultDir,"/field_norm.pos"]];
+      Print[Emax_kV_mm, OnRegion LiveA, Format Table,
+        SendToServer "Output/2Max field [kV per mm, peak]",
+        File StrCat[ResultDir,"/max_field_kV_mm.dat"]];
     }
   }
 }

@@ -1,0 +1,13 @@
+% Q2.3: maximum field and capacitance versus number of unknowns (MeshFactor 2, 1, 0.5).
+\begin{tikzpicture}
+\begin{axis}[name=l,width=0.5\figwlen,xmode=log,xlabel={Complex DoFs},ylabel={$E_{\max}$ [kV/mm]},
+  ymin=4.83,ymax=4.90,yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=2}]
+\addplot[cA,thick,mark=*] table[x=dofs,y=Emax,col sep=comma]{\datadir/convergence.csv};
+\addplot[black,dashed,domain=1e4:4e5] {4.893719};
+\node[font=\scriptsize,anchor=north east] at (rel axis cs:0.98,0.78) {analytical 4.894};
+\end{axis}
+\begin{axis}[at={(l.east)},anchor=west,xshift=1.9cm,width=0.5\figwlen,xmode=log,xlabel={Complex DoFs},
+  ylabel={$C'$ [$\mu$F/km]},scaled y ticks=false,yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=6}]
+\addplot[cB,thick,mark=square*] table[x=dofs,y=C,col sep=comma]{\datadir/convergence.csv};
+\addplot[black,dashed,domain=1e4:4e5] {0.1970307};
+\end{axis}\end{tikzpicture}

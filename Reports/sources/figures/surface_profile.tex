@@ -1,0 +1,9 @@
+% Q4.5: temperature along the ground surface (sigma(T) model, 350 A).
+\begin{tikzpicture}\begin{axis}[xlabel={$x$ along the ground surface [m]},
+  ylabel={$T$ [$^\circ$C]},xmin=-6,xmax=6,ymin=14.8,legend pos=north east]
+\addplot[cB,thick] table[x=x,y=T,col sep=comma]{\datadir/surface_h5.csv};
+\addplot[cA,thick] table[x=x,y=T,col sep=comma]{\datadir/surface_nl.csv};
+\addplot[cC,thick] table[x=x,y=T,col sep=comma]{\datadir/surface_h20.csv};
+\addplot[black,dashed,domain=-6:6] {15};
+\legend{$h=5$,$h=10$ (baseline),$h=20$ W/(m$^2$K),isothermal $T_{\rm amb}$}
+\end{axis}\end{tikzpicture}

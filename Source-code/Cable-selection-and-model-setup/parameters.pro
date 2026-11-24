@@ -1,91 +1,95 @@
-// NKT 33 kV 185+50 mm2 cable. SI units throughout.
-// Section 1: this file records the inputs and assumptions; it does not solve a field.
-// Search for a question number (e.g. Q1.4) to find the relevant constants.
-// Sources: [NKT] local datasheet, printed pp.19-20, 185 mm2 column;
-// [COURSE] NMES Assignment 2026, Appendix A;
-// [CHIPP] R. Chippendale, Parameters for extra large cables (2016), Tables 3-4;
-// [COMSOL] Submarine Cable 8: Inductive Effects 3D, material definitions;
-// [LEE] Lee et al., Energies 16(1), 167 (2023), Table 3.
-// ONELAB uses slashes in Name to create folders. Put units with a slash in Units.
+// NKT 33 kV 1x185+50 mm2 XLPE-AL, three single cores buried in soil. SI units, T in deg C.
+// ALL cable, material and excitation data are ONELAB parameters (left panel in Gmsh).
+// Basis tags: [NKT] datasheet pp.19-20, 185 mm2 column; [COURSE] assignment App. A-C;
+// [IEC] IEC 60287-1-1 / 60287-2-1; [LEE] Lee et al., Energies 16(1) 167 (2023), Table 3;
+// [CHIPP] Chippendale (2016), Tables 3-4; [ASSUMPTION] our choice, defended in the reports.
+// Search a question tag (Q1.4, Q4.2, ...) to find where a value is used.
 DefineConstant[
-  // [Q1.1, Q1.4] Cable rating and excitation: line-line RMS voltage and phase RMS current.
-  // [NKT] Line-to-line RMS voltage and both-end-bonded, buried-trefoil rating.
-  U_LL = {33000, Name "Cable/01 Line-line RMS voltage [V]"},
-  I_RMS = {350, Name "Cable/02 Phase RMS current [A]"},
-  // [Q1.4] Study frequency. [Q2.7] Override Freq for the electric frequency check.
-  // [COURSE] Time-harmonic study frequency; phasors below are peak values.
-  Freq = {50, Name "Cable/03 Frequency [Hz]"},
-  // [Q2.3] Mesh convergence: use MeshFactor = 2, 1, 0.5 and remesh each time.
-  // [Q3.5] The same input can later be used for magnetic mesh convergence.
-  // [NUMERICAL] Multiplies mesh sizes; 1 gives a 0.25 mm target near the cables.
+  // ---- Excitation [Q1.4] ---------------------------------------------------------
+  U_LL  = {33000, Name "Cable/01 Line-line RMS voltage [V]"},          // [NKT]
+  I_RMS = {350,   Name "Cable/02 Phase RMS current [A]"},              // [NKT] trefoil rating
+  Freq  = {50,    Name "Cable/03 Frequency [Hz]"},                     // [NKT]
+
+  // ---- Mesh and electromagnetic box [Q2.3, Q3.5, Q4.3] ---------------------------
   MeshFactor = {1, Min 0.3, Max 3, Step 0.1, Name "Mesh/01 Mesh factor (smaller = finer)"},
-  // [Q1.2] Local exterior geometry; the ground surface is not represented.
-  // [MODEL] Half-width of the computational box, not the burial depth.
-  OuterBox = {0.3, Name "Geometry/01 Electromagnetic half-box [m]"},
-  // [Q1.1, Q2.2, Q3.4 - ASSUMPTION] Following TA feedback, leave 0.5 mm of
-  // soil between each pair of jackets to avoid the narrow soil tips at contact.
-  // Use 0 mm for the datasheet's touching trefoil. The jacket radius stays fixed.
-  JacketGap = {0.5, Choices{0.5, 0}, Name "Geometry/02 Jacket gap [mm]"},
-  // [Q1.1, Q1.2] Soil conditions for the chosen buried-trefoil rating.
-  // [NKT] Rating conditions; these are not thermal boundary conditions yet.
-  T_amb = {15, Name "Thermal/01 Soil temperature [deg C]"},
-  SoilK = {1/1.2, Name "Thermal/02 Soil thermal conductivity", Units "W/(m K)"},
-  // [Q1.1] Radial construction: manufacturer dimensions and assumed screens.
-  // [NKT] 14.8 mm conductor diameter and 8 mm XLPE thickness.
-  rCon = {0.0074, Name "Geometry/10 Conductor radius [m]"},
-  // [ASSUMPTION] Jaswanth's 0.4 mm screens; NKT does not specify them.
-  tSemiIn = {0.0004, Name "Geometry/11 Inner semiconductor thickness [m] (ASSUMPTION)"},
-  // [Q2.8] Design trial: override tXLPE = 0.009 in BOTH Gmsh and GetDP.
-  // This uses some assumed filler space; copper and outside radii stay fixed.
-  tXLPE = {0.0080, Name "Geometry/12 XLPE thickness [m]"},
-  tSemiOut = {0.0004, Name "Geometry/13 Outer semiconductor thickness [m] (ASSUMPTION)"},
-  // [ASSUMPTION] Radial position of the equivalent copper ring, not OEM wire data.
-  rWireIn = {0.0174, Name "Geometry/14 Equivalent wire ring inner radius [m] (ASSUMPTION)"},
-  // [NKT] Copper area and nominal diameters over screen (38.4) and jacket (43) mm.
-  AWire = {50e-6, Name "Geometry/15 Copper wire screen cross-section [m2]"},
-  rScreenOuter = {0.0192, Name "Geometry/16 Over screen radius [m]"},
-  rJacket = {0.0215, Name "Geometry/17 Nominal outer radius [m]"},
-  // [Q1.1] Material sources. [Q2.6] sigma versus omega*epsilon sets the current ratio.
-  // [Q2.7] Constant permittivity is an assumption of the capacitance/frequency check.
-  // [CHIPP, COMSOL] Borrowed constant XLPE properties, not an NKT compound test.
-  // No dielectric loss tangent or discharge model is included.
-  epsXLPE = {2.5, Name "Materials/01 XLPE relative permittivity (REFERENCE)"},
-  sigmaXLPE = {1e-18, Name "Materials/02 XLPE conductivity", Units "S/m"},
-  // [Q1.1] Effective aluminium conductivity from the listed diameter and DC resistance.
-  // [Q3.2, Q3.9] Inputs for later skin-depth and resistance checks, not magnetic results.
-  // [DERIVED, NKT] Match R = length/(sigma*area) to the maximum DC resistance
-  // 0.164 ohm/km at 20 C, keeping the listed conductor diameter.
-  // Metal conductivities are not used by the current XLPE-only electric solve.
-  sigmaAl = {1000/(0.164*Pi*rCon^2), Name "Materials/03 Al conductivity", Units "S/m"},
-  sigmaCu = {5.95e7, Name "Materials/04 Cu conductivity", Units "S/m"}
+  OuterBox = {0.3, Name "Geometry/01 Electromagnetic half-box [m]"},   // [ASSUMPTION] a = 0 here
+
+  // ---- Arrangement [Q1.1, Section 5] ----------------------------------------------
+  // 0 = trefoil (datasheet rating), 1 = flat (A, B, C from left to right).
+  Formation = {0, Choices{0="Trefoil", 1="Flat"}, Name "Geometry/02 Formation"},
+  // [ASSUMPTION] 0.5 mm soil between jackets (TA advice: no zero-angle soil wedges).
+  // 0 = exact touching (trefoil only); 70 = NKT "flat, free distance S = D + 70 mm".
+  JacketGap = {0.5, Name "Geometry/03 Jacket gap [mm]"},
+
+  // ---- Insulation defect [Q2.5] ------------------------------------------------------
+  Flag_Defect = {0, Choices{0="Healthy", 1="Air void in phase A"}, Name "Geometry/04 Insulation defect"},
+  rVoid    = {0.00025, Name "Geometry/05 Void radius [m]"},                       // [ASSUMPTION]
+  rVoidPos = {0.0088,  Name "Geometry/06 Void centre distance from phase-A axis [m]"}, // [ASSUMPTION]
+
+  // ---- Radial construction [Q1.1] ---------------------------------------------------
+  rCon     = {0.0074, Name "Geometry/10 Conductor radius [m]"},                   // [NKT] 14.8 mm
+  tSemiIn  = {0.0004, Name "Geometry/11 Inner semicon thickness [m] (ASSUMPTION)"},
+  tXLPE    = {0.0080, Name "Geometry/12 XLPE thickness [m]"},                     // [NKT]; Q2.8: 0.009
+  tSemiOut = {0.0004, Name "Geometry/13 Outer semicon thickness [m] (ASSUMPTION)"},
+  rWireIn  = {0.0174, Name "Geometry/14 Cu ring inner radius [m] (ASSUMPTION)"},
+  AWire    = {50e-6,  Name "Geometry/15 Cu screen cross-section [m2]"},          // [NKT]
+  rScreenOuter = {0.0192, Name "Geometry/16 Over-screen radius [m]"},             // [NKT] 38.4 mm
+  rJacket  = {0.0215, Name "Geometry/17 Outer radius [m]"},                       // [NKT] 43 mm
+
+  // ---- Electromagnetic materials [Q1.1, Q2.1, Q3.1] -----------------------------------
+  epsXLPE   = {2.5,   Name "Materials/01 XLPE relative permittivity"},           // [CHIPP]
+  sigmaXLPE = {1e-18, Name "Materials/02 XLPE conductivity", Units "S/m"},        // [COURSE]
+  // [DERIVED] Fitted so that 1/(sigma*pi*rCon^2) = 0.164 ohm/km, the NKT DC maximum at 20 C.
+  sigmaAl = {1000/(0.164*Pi*rCon^2), Name "Materials/03 Al conductivity at 20 C", Units "S/m"},
+  sigmaCu = {5.95e7, Name "Materials/04 Cu conductivity at 20 C", Units "S/m"},   // [LEE]
+  muR     = {1,      Name "Materials/05 Relative permeability (all regions)"},    // no steel
+  epsVoid   = {1.0,   Name "Materials/06 Void relative permittivity (air)"},
+  sigmaVoid = {1e-15, Name "Materials/07 Void conductivity (dry air)", Units "S/m"},
+  // [COURSE eq. 12] sigma(T) = sigma0 / (1 + alpha (T - 20 C)).
+  alphaAl = {0.00390, Name "Materials/08 Al temperature coefficient [1/K]"},
+  alphaCu = {0.00386, Name "Materials/09 Cu temperature coefficient [1/K]"},
+
+  // ---- Thermal data [Q1.1, Q1.2, Q4.2] -------------------------------------------------
+  T_amb = {15, Name "Thermal/01 Ambient (air and deep soil) temperature [deg C]"}, // [NKT]
+  BurialDepth = {1.0, Name "Thermal/02 Burial depth of trefoil centre [m]"},        // [NKT]
+  kSoil = {1/1.2, Name "Thermal/03 Soil thermal conductivity", Units "W/(m K)"},    // [NKT] 1.2 K m/W
+  // [ASSUMPTION] natural convection (2-5) + long-wave radiation (~5) at a bare surface.
+  hConv = {10, Name "Thermal/04 Surface heat transfer coefficient", Units "W/(m2 K)"},
+  // [ASSUMPTION] lateral (zero flux) and bottom (T = T_amb) boundaries 20 m away: Q4.3
+  // shows T_max changes by about 0.1 K from 20 m to 40 m (and -0.8 K at 5 m).
+  ThermalHalfWidth = {20, Name "Thermal/05 Thermal domain half-width [m]"},
+  ThermalDepth     = {20, Name "Thermal/06 Thermal domain depth below surface [m]"},
+  kAl  = {237, Name "Thermal/10 Al thermal conductivity", Units "W/(m K)"},          // [LEE]
+  kCu  = {402, Name "Thermal/11 Cu thermal conductivity", Units "W/(m K)"},          // [LEE]
+  // [IEC] 60287-2-1 Table 1: rho = 3.5 K m/W for XLPE and PE. Semicons and the equivalent
+  // fillers are polymer compounds/tapes: [ASSUMPTION] same value.
+  kPoly = {1/3.5, Name "Thermal/12 XLPE, PE, semicon, filler conductivity", Units "W/(m K)"}
 ];
 
-// [Q1.1, Q2.2] Screen thicknesses determine the actual XLPE interface radii.
-rSemiIn = rCon + tSemiIn;        // [DERIVED] 7.8 mm, inner XLPE interface.
-rXLPEOut = rSemiIn + tXLPE;     // [DERIVED] 15.8 mm, outer XLPE interface.
-rSemiOut = rXLPEOut + tSemiOut; // [DERIVED] 16.2 mm.
-// [Q1.1] Equivalent copper annulus. [Q3.4] Its magnetic loss error is not yet checked.
-// [MODEL] A smooth ring preserves copper area but omits wire/tape lay and gaps.
-rWireOut = Sqrt[rWireIn*rWireIn + AWire/Pi];
-// [MODEL] Filler regions close the published envelopes; their composition is
-// unspecified. They are meshed but not solved in the current electric model.
-// The effective jacket is 2.3 mm; NKT lists a nominal 2.2 mm sheath.
+// ---- Derived radii [Q1.1, Q2.2] --------------------------------------------------------
+rSemiIn  = rCon + tSemiIn;          // 7.8 mm, inner XLPE interface (conductor screen)
+rXLPEOut = rSemiIn + tXLPE;         // 15.8 mm, outer XLPE interface (core screen)
+rSemiOut = rXLPEOut + tSemiOut;     // 16.2 mm
+rWireOut = Sqrt[rWireIn^2 + AWire/Pi]; // Cu ring with the 50 mm2 area of the wires + tape
 
-// [Q1.1, Q1.2] Arrangement and local coordinates of the three cable centres.
-// [MODEL] Equilateral trefoil, centred at the origin. Convert the gap to metres.
-// The centre spacing is 43.5 mm with the gap or 43.0 mm at exact contact.
-Diameter = 2*rJacket;
-Spacing = Diameter + JacketGap*0.001;
-triHeight = Sqrt[3]/2*Spacing;
-xA = 0;           yA = 2*triHeight/3;
-xB = -Spacing/2;  yB = -triHeight/3;
-xC = Spacing/2;   yC = -triHeight/3;
-// [Q1.4] Excitation conversion: Vpeak = 26944.4 V, Ipeak = 494.975 A.
-// [COURSE] Convert line-to-line RMS voltage to phase-to-ground peak voltage.
-Vpeak = Sqrt[2]*U_LL/Sqrt[3];
-Ipeak = Sqrt[2]*I_RMS;
+// ---- Cable centres [Q1.1, Section 5] ----------------------------------------------------
+// Origin = centre of the arrangement (trefoil centroid), BurialDepth below the surface.
+Spacing = 2*rJacket + JacketGap*0.001;   // centre-to-centre distance
+If (Formation == 0)
+  triHeight = Sqrt[3]/2*Spacing;
+  xA = 0;          yA = 2*triHeight/3;
+  xB = -Spacing/2; yB = -triHeight/3;
+  xC = Spacing/2;  yC = -triHeight/3;
+Else
+  xA = -Spacing; yA = 0;
+  xB = 0;        yB = 0;
+  xC = Spacing;  yC = 0;
+EndIf
+
+// ---- Excitation as peak phasors [Q1.4] ---------------------------------------------------
+Vpeak = Sqrt[2]*U_LL/Sqrt[3];   // 26944 V phase-to-ground
+Ipeak = Sqrt[2]*I_RMS;          // 494.97 A
 eps0 = 8.854187817e-12;
-// [Q1.3] Bonding choice recorded here. [Q3.3] Axial circuit constraints remain to be added.
-// [ASSUMPTION FOR SECTION 3] Both ends of each screen are bonded to common
-// earth with ideal leads. Axial bonding/current constraints are not implemented
-// by the electric grounding condition; they belong to the magnetic model.
+mu0 = 4*Pi*1e-7;
+// [Q1.3] Screens bonded at both ends (rating row): Magnetothermal-analysis/cable.pro,
+// Flag_Bonding = 0 (U = 0 per screen); single-point bonding is Flag_Bonding = 1 (I = 0).

@@ -1,5 +1,5 @@
-// Course starter: cable groups, materials, boundary conditions and bonding
-// constraints must still be supplied. This file is not a runnable cable model.
+// Course starter, kept for reference only. The runnable cable model is cable.pro
+// in this folder (groups, materials, constraints and bonding added there).
 // The NKT datasheet describes a SOLID aluminium conductor. Use the massive
 // model for that interpretation; a uniform stranded model is a comparison.
 // Question tags below identify the relevant starter blocks, NOT completed answers.
@@ -344,6 +344,4 @@ PostOperation{
   }
 }
 
-// [Q3.5 - NOT IMPLEMENTED] Magnetic mesh/domain convergence has not been run.
-// [Q3.11 - NOT IMPLEMENTED] Compare screen U=0 and I=0 closures only after
-// Q3.3 is implemented; no bonding-loss saving is available from this starter yet.
+// The cable-specific model built from this starter is cable.pro in this folder.

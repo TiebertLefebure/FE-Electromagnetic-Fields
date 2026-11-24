@@ -1,0 +1,9 @@
+% Q4.7: relative temperature increment per coupling iteration (three meshes).
+\begin{tikzpicture}\begin{axis}[ymode=log,xlabel={Coupling iteration $k$},
+  ylabel={$\|T_k-T_{k-1}\|_2/\|T_k\|_2$},xmin=0.5,ymax=2,legend pos=north east]
+\addplot[cB,thick,mark=*,mark size=1.6pt] table[x=it,y=rel,col sep=comma]{\datadir/nl_history.csv};
+\addplot[cA,mark=square,mark size=1.6pt] table[x=it,y=rel,col sep=comma]{\datadir/nl_history_coarse.csv};
+\addplot[cC,thick,mark=triangle,mark size=1.8pt] table[x=it,y=rel,col sep=comma]{\datadir/nl_history_fine.csv};
+\addplot[black,dashed,domain=0.5:16] {1e-6};
+\legend{MeshFactor 1,MeshFactor 2,MeshFactor 0.5,tolerance $10^{-6}$}
+\end{axis}\end{tikzpicture}

@@ -97,3 +97,36 @@ Get the per-unit-length inductance (mH/km). How do you define it for a
 three-phase system? Does it vary with frequency? Compare with the datasheet.}
 \newcommand{\QuestionThreeEleven}{%
 Propose a design change that reduces the losses, and support it quantitatively.}
+\newcommand{\QuestionFourOne}{%
+Define the equations solved. How are the complex magnetoquasistatic fields turned into a real heat source?}
+\newcommand{\QuestionFourTwo}{%
+Define the thermal computational domain and boundary conditions. How is the cable cooled?
+Apply a convective condition (11) at the ground (or water/air) surface with a justified heat
+transfer coefficient. Where do you truncate the domain laterally and in depth? Why must the
+thermal domain be much larger than the electromagnetic one? Do you use one mesh or two?}
+\newcommand{\QuestionFourThree}{%
+The ambient temperature must be consistent with the datasheet rating conditions. How do the
+results vary with the mesh refinement and with the domain size?}
+\newcommand{\QuestionFourFour}{%
+Get the temperature distribution in the cable and identify the hot spot. Is it within the
+operating temperature limits (typically 90\,\(^\circ\)C for XLPE in continuous operation; check the datasheet)?}
+\newcommand{\QuestionFourFive}{%
+Get the temperature distribution around the cable. What is the maximum temperature at the
+ground/air interface? Compare with a Dirichlet condition \(T=T_{\rm amb}\) at the surface.}
+\newcommand{\QuestionFourSix}{%
+\textbf{Validation.} Compare your conductor temperature with the analytical estimate of
+Appendix B (IEC 60287 approach). At the datasheet ampacity and laying conditions, does your
+model predict the admissible conductor temperature? Explain the differences.}
+\newcommand{\QuestionFourSeven}{%
+Define your convergence criterion precisely: which quantity, which norm, which tolerance
+(e.g.\ relative increment of the temperature below \(10^{-6}\)). How many nonlinear iterations do
+you need? Is the convergence influenced by the mesh density? Plot the convergence history.}
+\newcommand{\QuestionFourEight}{%
+Compare all magnetoquasistatic and thermal quantities of Sections 3 and 4 (flux density,
+current density, losses, AC resistance, inductance, temperatures) with the linear case, with
+field maps. Which quantities change significantly, and why?}
+\newcommand{\QuestionFourNine}{%
+Is the linear model conservative or not? What does this imply for the cable rating?}
+\newcommand{\QuestionFive}{%
+Additional investigation (not optional), e.g.\ arrangement of single-core cables (trefoil versus
+flat), spacing, bonding: what is the best cable arrangement for a given specification?}

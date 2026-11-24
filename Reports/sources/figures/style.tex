@@ -1,0 +1,8 @@
+% Shared pgfplots style for the report and the slides. \figw / \figh set the size.
+\providecommand{\figw}{0.95\linewidth}\providecommand{\figh}{5.2cm}
+\providecommand{\datadir}{data}
+\ifdefined\figwlen\else\newlength\figwlen\fi\setlength{\figwlen}{\figw}
+\pgfplotsset{every axis/.append style={width=\figw,height=\figh,grid=major,
+  grid style={gray!25},tick label style={font=\scriptsize},label style={font=\small},
+  legend style={font=\scriptsize,draw=none,fill=white,fill opacity=0.85,text opacity=1}}}
+\definecolor{cA}{HTML}{254C58}\definecolor{cB}{HTML}{D1495B}\definecolor{cC}{HTML}{EDAE49}

@@ -1,0 +1,11 @@
+% Section 5: FE ampacity at 90 C (sigma(T) model) vs NKT ratings, per arrangement and bonding.
+\begin{tikzpicture}\begin{axis}[ybar,bar width=7pt,ymin=300,ymax=420,ylabel={Ampacity at 90\,$^\circ$C [A]},
+  symbolic x coords={T-both,T-single,F-both,F-single,F70-both,F70-single},xtick=data,
+  xticklabels={{trefoil\\both},{trefoil\\single},{flat\\both},{flat\\single},{flat+70\\both},{flat+70\\single}},
+  xticklabel style={align=center,font=\scriptsize},legend style={at={(0.5,1.03)},anchor=south},legend columns=2,enlarge x limits=0.12]
+\addplot[fill=cA!80,draw=none] coordinates {(T-both,\Amptrefoil) (T-single,\Amptrefoilsp) (F-both,\Ampflat)
+  (F-single,\Ampflatsp) (F70-both,\Ampflatsev) (F70-single,\Ampflatsevsp)};
+\addplot[fill=cC!90,draw=none] coordinates {(T-both,350) (T-single,350) (F-both,350) (F-single,350)
+  (F70-both,365) (F70-single,380)};
+\legend{FE (this work),NKT datasheet}
+\end{axis}\end{tikzpicture}

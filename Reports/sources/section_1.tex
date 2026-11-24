@@ -72,27 +72,28 @@ Its assumed inner radius is 17.4 mm and its area is preserved:
 \]
 This preserves copper area but omits individual wires, helical paths and local
 contact. The filler regions close the remaining geometric gaps; their actual
-composition is unknown. We do not assign them invented manufacturer properties.
-Their effect is zero in the present electric problem because they lie outside
-the prescribed grounded XLPE boundary. Their magnetic and thermal effects need
-separate checks before those models are used.
+composition is unknown (bedding/swelling tapes, semiconducting compound). Electrically
+they lie outside the grounded XLPE boundary, so their effect is zero; magnetically they
+are non-conducting and non-magnetic; thermally we give them the polymer value
+\(\kappa=0.286\) W/(m\,K) [IEC] (assumption, quantified in Section 4).
 
 \textbf{Material choices.} All proposed materials are homogeneous, isotropic
 and nonmagnetic, \(\mu_r=1\). Electrical and thermal properties are constant;
-metal conductivities refer to \(20^\circ\mathrm C\). The table separates
-properties needed now from choices for later work.
+metal conductivities refer to \(20^\circ\mathrm C\) and follow
+\(\sigma(T)=\sigma_0/(1+\alpha(T-20))\) with \(\alpha_{\rm Al}=0.00390\), \(\alpha_{\rm Cu}=0.00386\)
+K\(^{-1}\) in the nonlinear model of Section 4 [Course].
 
 \begin{table}[H]\centering\small
-\caption{Material values and their provenance. Only XLPE properties are used by
-the active electric solve. ``--'' means unused or not yet assigned.}
+\caption{Material values and their provenance (all are ONELAB parameters in
+\texttt{parameters.pro}). ``--'' means not used by any model.}
 \begin{tabularx}{\linewidth}{@{}Y c c c l@{}}
 \toprule Material & \(\varepsilon_r\) & \(\sigma\) [S/m] & \(\kappa\) [W/(m K)] & Basis\\\midrule
 Aluminium & -- & \(3.5444\,10^7\) & 237 & Derived; [Lee]\\
 Copper & -- & \(5.95\,10^7\) & 402 & [Lee]\\
-Semiconducting PE & 2.25 & \(2\,10^{-3}\) & 0.286 & [Lee, OES]\\
-XLPE & 2.5 & \(10^{-18}\) & 0.286 & [Chipp, COMSOL]\\
-PE jacket & 2.25 & \(10^{-18}\) & 0.46 & [Li]\\
-Equivalent fillers & -- & -- & -- & Composition unknown\\
+Semiconducting PE & 2.25 & \(2\,10^{-3}\) & 0.286 & [Lee, OES]; [IEC]\\
+XLPE & 2.5 & \(10^{-18}\) & 0.286 & [Chipp, COMSOL]; [IEC]\\
+PE jacket & 2.25 & \(10^{-18}\) & 0.286 & [IEC]\\
+Equivalent fillers & -- & 0 & 0.286 & assumption (polymer)\\
 Soil & 10 & \(10^{-2}\) & 0.8333 & [Course]; [NKT]\\
 \bottomrule
 \end{tabularx}
@@ -104,8 +105,9 @@ Both semiconductors are ideal equipotential boundaries, so their tabulated
 finite conductivity is a proposed value for a later detailed model. The
 \(2\,10^{-3}~\mathrm{S/m}\) value corresponds to the OES screen resistivity
 limit of \(500~\Omega\mathrm m\) at \(90^\circ\mathrm C\); it is a conservative
-surrogate, not a measured NKT compound property. The thermal values are
-reference choices; there is no thermal solve in the active code.
+surrogate, not a measured NKT compound property. All polymers use the IEC 60287
+thermal resistivity \(\rho_T=3.5\) K\,m/W (\(\kappa=0.286\)), so that the FE model and the
+IEC validation of Section 4 use identical data.
 
 \textbf{Aluminium area and conductivity.} The listed diameter gives
 \(A=\pi(7.4)^2=172.03~\mathrm{mm^2}\), which differs from the nominal
@@ -147,14 +149,14 @@ for B and C. At contact they are 0.9752 m and 1.0124 m, respectively.
 the trefoil. With the gap, soil connects the centre to the exterior. At exact
 contact, three shared vertices close the central soil pocket, which is meshed
 separately. Both configurations assign all soil to group 99. The square is
-a local electromagnetic domain. A thermal model needs the ground surface
-at the stated depth and must assess how the gaps change heat flow.
+the local electromagnetic domain. The thermal model (Section 4) adds the soil up to
+the ground surface, 1 m above the trefoil centre, and 20 m to the sides and below.
 
 \codeguide{\setupfile{parameters.pro}: \texttt{T\_amb}, \texttt{SoilK},
 \texttt{OuterBox} and the trefoil centres. \setupfile{cable.geo}: exterior region 99.}
 {In \path{Source-code/Cable-selection-and-model-setup}: \texttt{gmsh cable.geo -2}.}
 {The outer square is \(\pm0.3~\mathrm m\) in local coordinates.
-\texttt{T\_amb} and \texttt{SoilK} are stored inputs, not implemented thermal boundary conditions.}
+\texttt{T\_amb} and \texttt{SoilK} are stored inputs for the thermal model (Section 4).}
 
 \section*{Q1.3 Screen bonding}
 \assignmentquestion{\QuestionOneThree}
@@ -198,7 +200,7 @@ magnetic problems are solved separately, so the relative load angle does not
 affect either field magnitude in these linear models.
 
 Only the voltages are applied in the working electric model. The 350 A
-longitudinal load current is an input for the future magnetic problem;
+longitudinal load current is the input of the magnetic problem (Section 3);
 it is not the radial charging current calculated from the electric field.
 Fields and current densities exported by GetDP use peak phasors. Divide
 single-phase magnitudes by \(\sqrt2\) when comparing with RMS limits; use
@@ -233,7 +235,7 @@ Used as a surrogate limit, not an NKT material test.
 \textbf{[COMSOL]} \refurl{https://doc.comsol.com/6.4/doc/com.comsol.help.models.acdc.submarine_cable_08_inductive_effects_3d/submarine_cable_08_inductive_effects_3d.html}{Submarine Cable 8: Inductive Effects 3D}, material definitions:
 XLPE conductivity \(10^{-18}~\mathrm{S/m}\). No dielectric loss tangent is modelled.
 
-\textbf{[Li]} W. Li et al., \emph{JMSE} 12(6), 895 (2024), Table 2, PE:
-\refurl{https://doi.org/10.3390/jmse12060895}{doi:10.3390/jmse12060895}.
+\textbf{[IEC]} IEC 60287-2-1, \emph{Electric cables -- Calculation of the current rating --
+Thermal resistance}, Table 1: \(\rho_T=3.5\) K\,m/W for XLPE and PE.
 \endgroup
 \end{document}

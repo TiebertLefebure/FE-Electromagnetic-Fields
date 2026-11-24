@@ -19,3 +19,9 @@ Source-code/**/*.db
 Source-code/**/*.db.json
 Source-code/**/res/
 Source-code/**/results/
+
+# LaTeX/Beamer by-products
+*.nav
+*.snm
+*.vrb
+Slides/figures/.print.geo

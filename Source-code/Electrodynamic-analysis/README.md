@@ -1,120 +1,54 @@
 # Electrodynamic analysis
 
-`cable.pro` is Jaswanth's working electric model. It reads the shared
-`../Cable-selection-and-model-setup/parameters.pro` directly.
-`electrodynamic_formulation.pro` is the unchanged course reference; it is
-not included in `cable.pro` and is not a standalone cable problem.
+`cable.pro` is the complete electric model (Section 2). It reads the shared
+`../Cable-selection-and-model-setup/parameters.pro`; the one-line `cable.geo` here
+includes the shared geometry so the Gmsh **Run** button works.
+`electrodynamic_formulation.pro` is the unchanged course reference (not used).
 
 ## Run in Gmsh (ONELAB)
 
-1. Use **File > Open** and select `cable.pro` in this folder.
-2. Check that the resolution is **Electrodynamics** and the compute command
-   is **-solve**, then press **Run** at the bottom of the left panel.
-3. Gmsh builds the mesh, GetDP solves, and the electric-field magnitude is
-   displayed. Other maps are available in the post-processing list.
-
-`cable.geo` beside `cable.pro` is a one-line entry file that includes
-`../Cable-selection-and-model-setup/cable.geo`. The geometry is defined only
-in the setup folder. Gmsh needs this companion because it looks for a `.geo`
-file with the same name and folder as the opened `.pro` file. Opening the
-`.pro` without it previously produced an empty mesh.
+1. **File > Open** `cable.pro` in this folder; keep resolution **Electrodynamics**
+   and compute command **-solve**; press **Run**.
+2. Gmsh meshes, GetDP solves, the `|E|` map opens and the **Output** panel shows the
+   capacitance (µF/km) and the maximum field (kV/mm, peak).
+3. Defect: **Geometry > Insulation defect** = *Air void in phase A*, press **Run**
+   (the mesh is rebuilt). Other studies: see the table in the root README.
 
 If Gmsh asks for the GetDP executable, select
-`ONELAB Software/Gmsh.app/Contents/MacOS/getdp` in the course folder beside
-this repository. This is a one-time solver setup for that Gmsh installation.
+`ONELAB Software/Gmsh.app/Contents/MacOS/getdp` in the course folder beside this repository.
 
-For parameter studies, change **Mesh factor**, **Frequency [Hz]** or
-**XLPE thickness [m]** in the left panel, then press **Run** again. Gmsh
-updates the shared geometry when needed. Leave the compute command at
-`-solve`: the resolution already calls the field exports.
-
-## Run from a terminal (alternative)
-
-First create the shared mesh:
+## Run from a terminal
 
 ```sh
-cd ../Cable-selection-and-model-setup
-gmsh cable.geo -2
+cd ../Cable-selection-and-model-setup && mkdir -p meshes && gmsh cable.geo -2 -o meshes/gap.msh
 cd ../Electrodynamic-analysis
-getdp cable.pro -msh ../Cable-selection-and-model-setup/cable.msh -solve Electrodynamics
+getdp cable.pro -msh ../Cable-selection-and-model-setup/meshes/gap.msh -solve Electrodynamics
 ```
-
-These commands assume a terminal initially in this folder and Gmsh/GetDP on PATH.
-GetDP writes `cable.pre`, `cable.res` and the `res/` field maps here.
-With the Gmsh Run button, its same-folder mesh is `cable.msh` here. The terminal
-command above instead explicitly uses the mesh in the setup folder. Both
-meshes come from the same geometry definition.
-
-## Find the code for a question
-
-Search for `Q2.1`, `Q2.3`, etc. in `cable.pro` and the shared setup files.
-Comments sit above the domain, boundary conditions, weak equation, field/current
-outputs and capacitance calculation. Missing work is labelled `NOT IMPLEMENTED`;
-a question tag on the magnetic starter indicates where to adapt it, not a
-completed cable calculation.
+Defect: add `-setnumber Flag_Defect 1` to **both** commands (and use another mesh name).
 
 ## Model
 
-Only XLPE regions 41, 42 and 43 are solved. The inner semiconductors are
-assumed to follow their conductor voltages; the outer semiconductors are
-assumed grounded. Apply 33 kV line-to-line RMS as phase-to-ground peak
-phasors of 26.9444 kV at 0, -120 and +120 degrees, at 50 Hz.
+- Domain: the three XLPE annuli (41/42/43) and, if enabled, the air void (44).
+  Semiconductors are ideal equipotentials, so the inner XLPE boundary (101/102/103)
+  carries the phase voltage and the outer one (111/112/113) is grounded. The grounded
+  screens shield everything outside: those regions are meshed but not solved here.
+- Equation: `-div((sigma + j omega eps) grad v) = 0`, peak phasors, 26.944 kV at 0/-120/+120°.
+- Each boundary is an *electrode* (`BF_GroupOfNodes`): one unknown `U`, whose dual `I`
+  is the total current entering the XLPE. This gives the current balance (Q2.6) and a
+  second capacitance `Im(I/U)/omega` (Q2.7).
 
-Other regions remain in the shared mesh but do not participate in this
-electric solve. A blank field map there does not mean the mesh is missing.
-The 350 A axial load is for the later magnetic/thermal analysis.
+## Outputs (`res/`)
 
-## Inspect
+| File | Meaning |
+|---|---|
+| `potential.pos`, `electric_field.pos`, `field_norm.pos` | v (V), E and \|E\| (V/m), peak |
+| `conduction_current.pos`, `displacement_current(_norm).pos` | sigma E and j omega eps E (A/m²), peak |
+| `radial_field_A.txt` / `.pos` | \|E\| along phase A's +x radius (x y z value), through the void |
+| `max_field_kV_mm.dat` | maximum element \|E\| (kV/mm, peak) |
+| `capacitance_uF_km.dat` | phase-average C from field energy (µF/km) |
+| `capacitance_charge_uF_km.dat` | C per phase from the electrode current |
+| `electrode_currents.dat` | I of 101,102,103,111,112,113 (A/m, re/im): inner + outer = 0 |
 
-Open these files in Gmsh:
-
-- `res/potential.pos`: complex potential, in volts.
-- `res/electric_field.pos`: electric field vector, in V/m.
-- `res/field_norm.pos`: field phasor norm, in V/m; divide by 1e6 for kV/mm.
-- `res/displacement_current.pos` and `res/conduction_current.pos`: A/m².
-- `res/radial_field_A.pos`: field along the phase-A radial cut.
-- `res/capacitance_uF_km.dat`: phase-average capacitance, in µF/km
-  (the second column is its real value).
-- `res/electric_energy.dat`: half the integral of epsilon times squared
-  peak field over all three phases. Mean stored energy is half this value.
-
-Phasors are peak values; divide by sqrt(2) for RMS. At the default mesh size,
-the gapped mesh gives a maximum field of about 4.873 kV/mm peak versus 4.894
-analytically, an error of about 0.43%. The coaxial capacitance reference is 0.197031 µF/km per
-phase. A more detailed field study and defect analysis can be added from here.
-
-The radial cut starts and ends 1 µm inside XLPE to avoid a false zero caused
-by ambiguous element lookup exactly on an interface.
-
-## Small parameter studies
-
-For Q2.2, select **Geometry > Jacket gap [mm]** in Gmsh and run **0.5** and **0**
-with identical inputs. Use **Output > Directory** values `results/gap` and
-`results/touching` to keep both sets of maps. Compare the peak in `field_norm.pos`
-and the capacitance in `capacitance_uF_km.dat`. The ideal grounded screens fix
-each XLPE solution independently, so small FE differences reflect the mesh.
-For the terminal workflow, generate the two named meshes using the setup README:
-
-```sh
-getdp cable.pro -msh ../Cable-selection-and-model-setup/meshes/gap.msh -solve Electrodynamics -setnumber JacketGap 0.5 -setstring ResultDir results/gap
-getdp cable.pro -msh ../Cable-selection-and-model-setup/meshes/touching.msh -solve Electrodynamics -setnumber JacketGap 0 -setstring ResultDir results/touching
-```
-
-Use the same `JacketGap` in Gmsh and GetDP so the phase-A radial cut is in
-the right location. Gmsh shares this parameter automatically with GetDP.
-
-Use `gmsh cable.geo -2 -setnumber MeshFactor 0.5` from the setup folder to
-refine the mesh, then run the same GetDP command. The default factor is 1.
-Frequency does not require remeshing: append `-setnumber Freq 500` to GetDP.
-To try 9 mm XLPE, append `-setnumber tXLPE 0.009` to **both** Gmsh and GetDP.
-This keeps the copper ring and outside diameter fixed and reduces the assumed
-inner filler to 0.2 mm. It is a trial design, not manufacturer data.
-
-Each run overwrites `res/`. To preserve a case, append
-`-setstring ResultDir results/case-name` to GetDP; the output directory is
-created automatically. Mesh convergence, frequency and thickness checks are
-reported with input settings in `../../Reports/`.
-
-The independent FE boundary-flux conservation check and defect model are not
-implemented. Solving the weak current equation alone is not a quantified
-boundary-current balance test.
+Linear triangles: E is constant per element, so the maximum is slightly below the
+interface value (−0.4 % at the default mesh, −0.15 % at `MeshFactor` 0.5).
+The radial cut starts 1 µm inside XLPE to avoid ambiguous lookup on an interface.
