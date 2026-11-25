@@ -1,33 +1,24 @@
-% Q1.2: the three cables in trefoil, to scale (mm), same colours as cable_section.tex.
+% Q1.1: the three cables in trefoil, to scale (mm), same layer colours as cable_section.tex.
 % Centre spacing 43.5 mm = 43 mm jacket + 0.5 mm soil gap; origin (+) = trefoil centre.
-% Scale through the unit vectors (not "scale="), so that \spy magnifies the right point.
-\def\trefS{43.5}\pgfmathsetmacro{\trefH}{sqrt(3)/2*\trefS}% outside the picture: \spy uses them at its end
-\begin{tikzpicture}[x=0.7mm, y=0.7mm,
-    spy using outlines={circle, magnification=12, size=2.6cm, connect spies, black!55}]
-\fill[brown!28] (-50,-46) rectangle (112,52);
-\node[font=\small,brown!60!black,anchor=north west] at (-49,51) {soil};
-\foreach \x/\y in {0/{2*\trefH/3}, {-\trefS/2}/{-\trefH/3}, {\trefS/2}/{-\trefH/3}} {
+\begin{tikzpicture}[x=0.7mm, y=0.7mm]
+\def\trefS{43.5}\pgfmathsetmacro{\trefH}{sqrt(3)/2*\trefS}
+\foreach \x/\y/\p/\ang in {0/{2*\trefH/3}/A/{0^\circ}, {-\trefS/2}/{-\trefH/3}/B/{-120^\circ},
+                           {\trefS/2}/{-\trefH/3}/C/{+120^\circ}} {
   \begin{scope}[shift={(\x,\y)}]
     \fill[gray!20] (0,0) circle (21.5); \fill[white] (0,0) circle (19.2);
     \fill[orange!70] (0,0) circle (17.85); \fill[white] (0,0) circle (17.4);
     \fill[black!70] (0,0) circle (16.2); \fill[green!35!teal!40] (0,0) circle (15.8);
     \fill[black!70] (0,0) circle (7.8); \fill[gray!55] (0,0) circle (7.4);
-    \draw[gray,line width=0.2pt] (0,0) circle (21.5);
+    \draw[gray] (0,0) circle (21.5); \draw[gray!60] (0,0) circle (19.2); \draw[gray!60] (0,0) circle (16.2);
+    \node[align=center,inner sep=0pt] at (0,0) {\textbf{\p}\\[-1pt]{\tiny\(\ang\)}};
   \end{scope}}
-\node[font=\bfseries] at (0,{2*\trefH/3}) {A};
-\node[font=\bfseries] at ({-\trefS/2},{-\trefH/3}) {B};
-\node[font=\bfseries] at ({\trefS/2},{-\trefH/3}) {C};
-\node[font=\small,anchor=south] at (0,{2*\trefH/3+22}) {phase A, \(0^\circ\)};
-\node[font=\small,anchor=north east] at ({-\trefS/2-10},{-\trefH/3-19}) {phase B, \(-120^\circ\)};
-\node[font=\small,anchor=north west] at ({\trefS/2+10},{-\trefH/3-19}) {phase C, \(+120^\circ\)};
 \draw[thick] (-1.6,0) -- (1.6,0) (0,-1.6) -- (0,1.6);   % trefoil centre = origin
+% the 0.5 mm soil gap at the B-C contact: leader straight down through the soil between B and C
+\fill[black] (0,{-\trefH/3}) circle (0.5);
+\draw[thin,black!75] (0,{-\trefH/3}) -- (0,{-\trefH/3-21});
+\node[font=\small,anchor=north,inner sep=1pt] at (0,{-\trefH/3-21}) {0.5 mm gap};
 % centre spacing B-C
-\draw[{Latex[length=4pt]}-{Latex[length=4pt]},thin] ({-\trefS/2},{-\trefH/3-29}) -- ({\trefS/2},{-\trefH/3-29})
-  node[midway,fill=brown!28,font=\small,inner sep=1pt] {43.5 mm};
-\draw[thin,gray] ({-\trefS/2},{-\trefH/3-26}) -- ({-\trefS/2},{-\trefH/3-32}) ({\trefS/2},{-\trefH/3-26}) -- ({\trefS/2},{-\trefH/3-32});
-% the 0.5 mm soil gap at the B-C contact, magnified (the tiny arrow is only visible in the zoom)
-\draw[{Latex[length=0.5pt,width=0.5pt]}-{Latex[length=0.5pt,width=0.5pt]},line width=0.06pt]
-  (-0.25,{-\trefH/3+1.2}) -- (0.25,{-\trefH/3+1.2});
-\spy on (0,{-\trefH/3}) in node at (88,8);
-\node[font=\small,align=center,anchor=north] at (88,-12) {0.5 mm soil gap\\B--C contact, \(\times\)12};
+\draw[thin,gray] ({-\trefS/2},{-\trefH/3-23}) -- ({-\trefS/2},{-\trefH/3-35}) ({\trefS/2},{-\trefH/3-23}) -- ({\trefS/2},{-\trefH/3-35});
+\draw[{Latex[length=4pt]}-{Latex[length=4pt]},thin] ({-\trefS/2},{-\trefH/3-32}) -- ({\trefS/2},{-\trefH/3-32})
+  node[midway,fill=white,font=\small,inner sep=1.5pt] {43.5 mm};
 \end{tikzpicture}
