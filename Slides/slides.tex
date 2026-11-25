@@ -197,7 +197,7 @@ air breakdown \AnaEb--5.8 kV/mm $\Rightarrow$ \alert{partial discharges at rated
 \src{2D void = infinite channel (sphere: $1.25\times$): conservative. Breakdown: Paschen/Schumann, Kuffel et al.\ ch.~5.}
 \note{\textbf{[1:10 \,|\, clock 4:05]}\par\smallskip 
 \begin{itemize}
-\item Defect: a 0.5 mm air void, 0.75 mm from the conductor screen, where the stress is highest.
+\item Defect: a 0.5 mm air void centred at $r=8.8$ mm, its edge 0.75 mm from the conductor screen, where the stress is highest.
 \item In 2D this is an infinite channel along the cable. A sphere would see $1.25E_0$ instead of
 $1.43E_0$, so our 2D estimate is conservative.
 \item The field in the void is \Vmeandefectfine\ kV/mm ($\VoidRatio E_0$, theory 1.43). Air breaks down at about
@@ -258,7 +258,7 @@ $L=\int\nu|\hat b|^2/(3\hat I^2)$ = positive-sequence $L$; falls with $f$ (scree
 \end{columns}
 \note{\textbf{[1:00 \,|\, clock 6:10]}\par\smallskip 
 \begin{itemize}
-\item $|B|$ peaks at \Bmax\ mT at the conductor surface; $|J|$ is \Javg\ A/mm$^2$ mean and \Jmax\ maximum (proximity).
+\item $|B|$ peaks at \Bmax\ mT at the conductor surface; $|J|$ is \Javg\ A/mm$^2$ mean and \Jmax\ maximum (proximity). These are peak amplitudes, not RMS.
 \item Conductor losses \Pcbase\ kW/km, same as IEC. Screens \Psbase\ against IEC \IecPs: the FE also has eddy
 currents in the rings. Screen current \Isbase\ A against IEC \IecIs.
 \item $R_{AC}=R_{DC}(1+\SkinFE\,\%+\ScreenFE\,\%)$: the skin and proximity part matches IEC (\IecYsp\,\%).
@@ -279,7 +279,7 @@ Single-point bonding: losses \alert{\dPtSingle\%}; price: \Usingle\ V/km standin
 \end{columns}
 \note{\textbf{[0:50 \,|\, clock 7:00]}\par\smallskip 
 \begin{itemize}
-\item Halving the mesh changes $R_{AC}$ by \dRacfine\,\% and $L$ by \dLfine\,\%. The screen loss is slowest
+\item The longest element edge in the metals is \MeshHmetalGap\ mm, below 5\,\% of the skin depth. Halving the mesh changes $R_{AC}$ by \dRacfine\,\% and $L$ by \dLfine\,\%. The screen loss is slowest
 (\dPsfine\,\%) because the ring is thin: that is where to refine.
 \item Single-point bonding cuts the total losses by \dPtSingle\,\%. The price is a standing voltage of \Usingle\ V/km
 (section length, sheath voltage limiters). The gain is small because \CondShare\,\% of the loss is in the
@@ -478,7 +478,9 @@ $^*$ analytical (Appendix B, IEC 60287) or datasheet (NKT), as stated. 350 A RMS
 both ends bonded, $h$=10 W/(m$^2$K), default mesh unless stated. Linear = $\sigma$ at 20\,$^\circ$C.
 \note{\textbf{[0:15 \,|\, clock 13:55]}\par\smallskip 
 Table 1 collects everything; leave it on screen for the questions. The appendix has one slide per
-question (Q1.1 to Q4.9, plus Section 5) if the examiners want detail. Spare time: about one minute.}
+question (Q1.1 to Q4.9, plus Section 5), each starting with the assignment question, and two slides with the
+required field maps (void; linear vs $\sigma(T)$). All required maps and values are also in the Deliverables
+folder. Spare time: about one minute.}
 \end{frame}
 
 % ================================================================= APPENDIX
