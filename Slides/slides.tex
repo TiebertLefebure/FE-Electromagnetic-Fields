@@ -102,12 +102,12 @@ geometry and two GetDP models, and every number on these slides is regenerated b
 Rating (NKT) & 33 kV, 350 A, conductor at 90\,$^\circ$C\\
 Laying (NKT) & touching trefoil, 1.0 m deep, soil 15\,$^\circ$C, 1.2 K\,m/W\\
 Bonding & screens earthed at both ends (as in the rating)\\
-Excitation & 19 kV and 350 A RMS per phase, 50 Hz, 120$^\circ$ apart\\\bottomrule
+Excitation & $\hat V=26.94$ kV, $\hat I=495$ A, ABC, 50 Hz (peak)\\\bottomrule
 \end{tabular}\\[5pt]
 \begin{itemize}\footnotesize
 \item \alert{All cable, material and source data are ONELAB parameters} in one file
 \item Cables 0.5 mm apart instead of touching: no degenerate triangles (min.\ quality \MeshQminTouch\ $\rightarrow$ \MeshQminGap)
-\item Al conductivity chosen to give NKT's DC resistance (0.164 $\Omega$/km); polymer thermal data from IEC 60287
+\item $\sigma_{\rm Al}$ fitted to NKT's $R_{DC}=0.164$ $\Omega$/km; polymers $\rho_T=3.5$ K\,m/W (IEC 60287)
 \item \alert{One mesh}: a 0.6 m box for the electromagnetic fields, inside a 40 m $\times$ 21 m soil domain for the heat
 \end{itemize}
 \end{columns}
@@ -130,7 +130,7 @@ $\rightarrow$ \MeshQminGap, effect on results below 1\,\%); $\sigma_{\rm Al}$ fi
 \column{0.55\textwidth}\small
 \[-\nabla\cdot\big((\sigma+j\omega\varepsilon)\nabla v\big)=0\ \text{ in the XLPE}\]
 \begin{itemize}\small
-\item The semiconducting layers act as electrodes: phase voltage inside, 0 V outside (error $\approx$\AnaDrop\ mV)
+\item Semicons as ideal electrodes: $v=\hat V_k$ on the inner one, $v=0$ on the outer one (error $\approx$\AnaDrop\ mV)
 \item The grounded screen shields everything beyond it, so we model only the three XLPE rings
 \item Course formulation, unchanged; the voltages are imposed as boundary values
 \end{itemize}
@@ -170,7 +170,7 @@ NKT datasheet (maximum) & 0.22\\\bottomrule
 \end{tabular}\\[3pt]
 \begin{itemize}\small
 \item $C$ is the same from 5 to 5000 Hz
-\item XLPE: conduction current $=\AnaRatio\times$ displacement current
+\item XLPE: $|J_c/J_d|=\sigma/\omega\varepsilon=\AnaRatio$, displacement current dominates
 \item Current conserved: charging current \IchFE\ A/km $=\omega CV$
 \end{itemize}
 \end{columns}
@@ -221,14 +221,14 @@ The bulk XLPE survives, but repeated discharges erode the cavity and grow trees:
 \begin{itemize}\small
 \item Screens do \emph{not} shield $\mathbf B$: all three cables in a 0.6 m box, $a=0$ on its edge (box $\times$2: $L$ \dLbox\,\%)
 \item Solid Al = \textbf{massive} conductor: net current imposed, eddy currents free
-\item Skin depth \AnaDeltaAl\ mm $>$ radius 7.4 mm: weak skin effect
-\item Uniform current (stranded model): $R$ \dRcstr\,\% at 50 Hz, \dRcstrhund\,\% at 500 Hz
+\item $\delta=\AnaDeltaAl$ mm $>r=7.4$ mm: weak skin effect
+\item Stranded model ($J=I/A$): $R_{\rm cond}$ \dRcstr\,\% at 50 Hz, \dRcstrhund\,\% at 500 Hz
 \end{itemize}
 \column{0.5\textwidth}
 \begin{itemize}\small
 \item \textbf{Bonding}: each screen has a voltage $U$ and a current $I$; both ends: $U=0$, single point: $I=0$
-\item Without $U$ and $I$, the screen current would depend on the arbitrary box edge
-\item Soil, semicons, fillers: $\sigma=0$ (skin depth $\gg$ their size)
+\item Only $\mathbf j=-j\omega\sigma\mathbf a$: screen current set by the arbitrary $a=0$ at the box edge, no defined circuit
+\item Soil, semicons, fillers: $\sigma=0$ ($\delta\gg$ their size)
 \end{itemize}
 \end{columns}
 \note{\textbf{[1:05 \,|\, clock 5:10]}\par\smallskip 
@@ -278,7 +278,7 @@ $L$ falls with frequency because of the screen currents.
 \begin{columns}[T]
 \column{0.52\textwidth}
 \plot{\linewidth}{3.9cm}{mag_convergence}\\
-{\scriptsize Elements $<5\,\%$ of the skin depth. Halving them: $R_{AC}$ \dRacfine\,\%, $L$ \dLfine\,\%, screen loss \dPsfine\,\% (thin ring)}
+{\scriptsize $h/\delta<0.05$ in the metals. Halving $h$: $R_{AC}$ \dRacfine\,\%, $L$ \dLfine\,\%, screen loss \dPsfine\,\% (thin ring: refine there)}
 \column{0.48\textwidth}
 \plot{0.95\linewidth}{4.0cm}{bonding}\\[-2pt]\small
 Single-point bonding: no circulating screen current, losses \alert{\dPtSingle\,\%}. Price: \Usingle\ V/km on the open screen end.
@@ -299,9 +299,9 @@ conductor, which matches NKT's equal 350 A for both bondings.
 \column{0.5\textwidth}\small
 \[-\nabla\cdot(\kappa\nabla T)=p=\tfrac12\sigma(T)|j\omega\hat{\mathbf a}+\hat{\mathbf u}_r|^2\]
 \begin{itemize}\small
-\item Heat source: time-averaged Joule loss of the magnetic solution
-\item Ground surface 1 m up: convection to 15\,$^\circ$C air, $h$ = 10 W/(m$^2$K)
-\item Sides at $\pm$20 m: no heat flow; bottom 20 m deep: 15\,$^\circ$C (40 m domain: \dTcDom\ K)
+\item Heat source $p$: time-averaged Joule loss of the magnetic solution (real)
+\item Ground surface 1 m up: $-\kappa\,\partial_nT=h(T-15)$, $h$ = 10 W/(m$^2$K)
+\item Sides at $\pm$20 m: $\partial_nT=0$; bottom 20 m deep: $T=15\,^\circ$C (40 m domain: \dTcDom\ K)
 \item Heat spreads much further than $\mathbf B$ ($\ln r$ vs $1/r^2$): domain $\gg$ magnetic box
 \item One mesh: the magnetic box is part of the soil domain, no interpolation
 \end{itemize}
@@ -351,7 +351,7 @@ The profile shows the sensitivity to $h$.
 \[\Delta\theta=W_c\left[T_1+(1+\lambda_1)(T_3+T_4)\right]\]
 \begin{itemize}\small
 \item Thermal resistances [K\,m/W]: insulation $T_1$ = \IecTone, sheath $T_3$ = \IecTthree, soil $T_4$ = \IecTfour\ (trefoil formula)
-\item Resistance and screen losses at the conductor temperature (iterated)
+\item $R$, $y_s$, $y_p$, $\lambda_1$ at the conductor temperature $\theta$ (iterated)
 \item No dielectric loss (negligible for XLPE at 33 kV)
 \end{itemize}
 \column{0.58\textwidth}\small
@@ -382,7 +382,7 @@ eddy losses, and the gap. All of these are inside the assumption uncertainty: $h
 \begin{columns}[T]
 \column{0.5\textwidth}
 \plot{\linewidth}{4.3cm}{nl_history}\\
-{\scriptsize Stop when all temperatures change by less than $10^{-6}$ (relative): \Nitnl\ iterations on every mesh}
+{\scriptsize Stop when $\|T_k-T_{k-1}\|_2/\|T_k\|_2<10^{-6}$ (all nodal temperatures): \Nitnl\ iterations on every mesh}
 \column{0.5\textwidth}\small
 \begin{tabular}{@{}lrrr@{}}\toprule
 & linear & $\sigma(T)$ & change\\\midrule
@@ -393,8 +393,8 @@ $L$ [mH/km] & \Llin & \Lnl & \dLNL\%\\
 $T_{\max}$ [$^\circ$C] & \Tclin & \Tcnl & \dTcNL\ K\\\bottomrule
 \end{tabular}\\[4pt]
 \begin{itemize}\small
-\item Hotter Al conducts worse: losses \dPtNL\,\%
-\item Screen loss \emph{drops}: a more resistive screen carries less current
+\item Hotter Al: lower $\sigma$, so losses \dPtNL\,\%
+\item Screen loss \emph{drops}: more resistive screen, less current ($\lambda_1\approx X^2/(R_sR)$)
 \item \alert{Linear model not conservative}: \AmpLin\ A instead of \Amptrefoil\ A
 \end{itemize}
 \end{columns}
