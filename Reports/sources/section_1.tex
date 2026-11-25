@@ -6,6 +6,13 @@
 \begin{document}
 \section*{Q1.1 Cable: construction, dimensions, rating, materials}
 \assignmentquestion{\QuestionOneOne}
+\answer{Our cable is the NKT 33 kV single-core XLPE-AL cable \(1\times185/50\) mm\textsuperscript2: a solid
+aluminium conductor (radius 7.4 mm), a 0.4 mm semiconducting conductor screen, 8 mm of XLPE, a 0.4 mm
+semiconducting insulation screen, a 50 mm\textsuperscript2 copper wire screen with a copper tape, and a PE sheath with
+an outer diameter of 43 mm. It is rated 33 kV between phases (19 kV to ground) and 350 A continuously at a conductor
+temperature of 90\,\(^\circ\)C, for three cables in touching trefoil laid directly in ground 1.0 m deep, in soil
+of 1.2 K\,m/W at 15\,\(^\circ\)C, with the screens bonded at both ends. Table~1 gives the radii and their basis;
+Table~2 gives the electromagnetic and thermal properties of every material with its source.}
 Three NKT 33 kV single-core XLPE-AL cables, \(1\times185/50\) mm\textsuperscript2 (aluminium
 conductor / copper screen) [NKT, pp.~19--20]: a \textbf{solid} circular aluminium conductor, extruded
 semiconducting conductor screen, XLPE insulation, extruded semiconducting insulation screen,
@@ -62,6 +69,11 @@ All materials are non-magnetic (\(\mu_r=1\)): there is no steel. Using the IEC t
 
 \section*{Q1.2 Environment and computational domains}
 \assignmentquestion{\QuestionOneTwo}
+\answer{We take the environment of the datasheet rating: homogeneous soil with a thermal resistivity of
+1.2 K\,m/W at 15\,\(^\circ\)C, the trefoil centre 1.0 m below the ground surface, and air at 15\,\(^\circ\)C above
+it. The electrical soil properties (\(\varepsilon_r=10\), \(\sigma=0.01\) S/m, from the course) hardly matter:
+the grounded screens shield the electric field from the soil, and the soil skin depth of about 700 m makes its eddy
+currents negligible. Like the datasheet rating, we neglect soil drying and layering.}
 \textbf{Environment = the NKT rating conditions}: homogeneous soil, thermal resistivity 1.2 K\,m/W
 (\(\kappa=0.833\)), 15\,\(^\circ\)C, trefoil centre 1.0 m below the ground surface (we take the depth to
 the arrangement centre, as IEC 60287 does for a trefoil group). Air above at 15\,\(^\circ\)C. Soil
@@ -97,6 +109,9 @@ Sections 2 and 3 quantify the effect of the gap: \(E_{\max}\) \dEtouch\,\%, \(L\
 
 \section*{Q1.3 Sheath bonding}
 \assignmentquestion{\QuestionOneThree}
+\answer{We assume both-end (solid) bonding with ideal earth connections, because that is the bonding of the
+NKT 350 A rating: circulating screen currents are allowed. Single-point bonding, with no net screen current, is
+studied as a loss-reducing alternative in Q3.11 and Section~5. The cable has no armour and no pipe.}
 \textbf{Both ends bonded} (solid bonding), with ideal earth leads: the bonding of the NKT 350 A
 rating row. Circulating screen currents are therefore allowed (Section 3: \(U=0\) per screen).
 Single-point bonding (\(I=0\)) is studied as a loss-reduction option (Q3.11, Section 5).
@@ -107,6 +122,10 @@ current is induced; single-point bonding leaves one end open, so no net screen c
 
 \section*{Q1.4 Excitation}
 \assignmentquestion{\QuestionOneFour}
+\answer{We impose the phase-to-ground voltage \(\hat V=\sqrt2\cdot33/\sqrt3=26.944\) kV and the phase current
+\(\hat I=\sqrt2\cdot350=494.97\) A as peak phasors at 50 Hz, in positive sequence: phase A at \(0^\circ\), B at
+\(-120^\circ\) and C at \(+120^\circ\). The voltages drive the electric model of Section~2 and the currents the
+magnetic model of Section~3.}
 Peak phasors, \(x(t)=\Re\{\hat x\,e^{j\omega t}\}\), 50 Hz, positive sequence A, B, C at
 \(0,-120^\circ,+120^\circ\):
 \[

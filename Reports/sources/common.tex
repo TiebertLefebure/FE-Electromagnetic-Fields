@@ -28,6 +28,8 @@
 \setlength{\tabcolsep}{5pt}\renewcommand{\arraystretch}{1.13}
 \captionsetup{font=small,labelfont=bf,skip=5pt}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+% Direct answer to the assignment question, in sentences (details, figures and code follow).
+\newcommand{\answer}[1]{\par{\sffamily\bfseries\color{KULBlue}Answer.}\enspace #1\par\medskip}
 % A figure caption under a centred figure (no float numbering).
 \newcommand{\figcap}[1]{\par\nopagebreak[4]\vspace{2pt}{\small #1}}
 \newcommand{\file}[1]{\href{../Source-code/#1}{\nolinkurl{#1}}}
@@ -65,10 +67,6 @@
       \node[anchor=north west,inner sep=0pt,text width=170mm] at ([xshift=20mm,yshift=-150mm]current page.north west)
         {\sffamily\raggedright\fontsize{14.4}{20}\selectfont
          Kutikuppala Jaswanth\par Lefebure Tiebert\par Miseur Torre\par};
-      \node[anchor=north east,inner sep=0pt,text width=95mm] at ([xshift=-20mm,yshift=-200mm]current page.north east)
-        {\sffamily\raggedleft\fontsize{12}{14.5}\selectfont
-         {\itshape Report date\par}\vspace{1mm}27 November 2026\par\vspace{5mm}
-         {\itshape Presentation\par}\vspace{1mm}1 December 2026\par};
       \node[anchor=south,inner sep=0pt] at ([yshift=15mm]current page.south)
         {\sffamily\fontsize{14.4}{18}\selectfont Academic year 2026--2027};
     \end{tikzpicture}\null

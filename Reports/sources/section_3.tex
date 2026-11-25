@@ -12,6 +12,13 @@ inside GetDP; currents reported RMS, losses time-averaged. Every case is one lin
 
 \section*{Q3.1 Domain, equations, boundary conditions, sources}
 \assignmentquestion{\QuestionThreeOne}
+\answer{We solve \(\nabla\times(\nu\nabla\times\mathbf a)=\mathbf j\) for \(\mathbf a=a_z\mathbf e_z\) in a
+\(0.6\times0.6\) m box that contains the three cables and the soil between and around them, with \(a_z=0\) on the
+box edge. All cables must be in the domain because the screens do not shield the magnetic field. We truncate at
+0.3 m because the balanced phase currents make the field decay like \(1/r^2\): at the box edge it is below 1\,\%
+of its peak. The aluminium and the copper are massive regions with \(\mathbf j=-\sigma(j\omega\mathbf a+\mathbf
+u_r)\); each phase current is imposed as the net current of its aluminium region (\texttt{Current\_2D}), so that
+skin and proximity effects are free.}
 \textbf{Equations.} With \(\mathbf a=a_z(x,y)\mathbf e_z\) and \(\mathbf b=\nabla\times\mathbf a\):
 \[
  \nabla\times(\nu\nabla\times\mathbf a)=\mathbf j,\qquad
@@ -47,6 +54,11 @@ each massive region carries one global pair \((U,I)\).}\end{center}
 
 \section*{Q3.2 Conductor model: massive vs stranded}
 \assignmentquestion{\QuestionThreeTwo}
+\answer{The skin depth in aluminium at 50 Hz is \AnaDeltaAl\ mm, larger than the 7.4 mm conductor radius,
+so skin effect is weak. The massive model is the realistic one, because NKT specifies a solid aluminium conductor in
+which eddy currents flow freely. At 50 Hz the two models differ little (conductor resistance \dRcstr\,\%,
+inductance \dLstr\,\%), but only the massive model shows the current crowding towards the other phases and the
+skin and proximity increase of the resistance (\SkinFE\,\%).}
 Skin depths at 50 Hz: \(\delta_{\rm Al}=\)\,\AnaDeltaAl\ mm against \(r_c=7.4\) mm, \(\delta_{\rm Cu}=\)\,\AnaDeltaCu\ mm
 against a 0.45 mm screen: skin effect is weak.
 \begin{center}\small
@@ -74,6 +86,12 @@ currents flow freely. At 50 Hz the difference is small: \(R_{\rm cond}\) strande
 
 \section*{Q3.3 Bonding with global quantities}
 \assignmentquestion{\QuestionThreeThree}
+\answer{Each copper screen is a massive region with its own voltage per unit length \(U\) and net current
+\(I\). Both-end bonding imposes \(U=0\) and the circulating current follows from the solution; single-point bonding
+imposes \(I=0\) and a standing voltage follows. Using only \(\mathbf j=-j\omega\sigma\mathbf a\) in the screens
+silently sets \(U=0\) relative to the arbitrary reference \(a_z=0\) on the truncation boundary, so the net screen
+current would depend on the size and shape of the box instead of on a real earthing, and \(I=0\) could not be
+imposed at all.}
 Each copper screen is a massive region with its own \((U_m,I_m)\).
 \textbf{Both ends bonded} (Q1.3): ideal earth leads at both ends, so no voltage along the
 screen: \texttt{Voltage\_2D} \(U_m=0\), \(I_m\) computed. \textbf{Single point}: one end open, so no
@@ -108,6 +126,11 @@ nor a defined earthing is represented, and \(I=0\) cannot be imposed at all. Wit
 
 \section*{Q3.4 Simplifications}
 \assignmentquestion{\QuestionThreeFour}
+\answer{Yes, within limits. Replacing touching jackets by a 0.5 mm gap changes the inductance by
+\dLtouch\,\% and \(R_{AC}\) by \dRactouch\,\%, and modelling the copper wires and tape as one ring of the same
+area keeps the DC resistance and the screen loop. The main simplification of Section~2 is no longer valid: the
+screens do not confine the magnetic field, so all metals, all three cables, their spacing and the soil must be
+kept. Only the simplifications of the semicons and fillers remain valid.}
 \begin{center}\small
 \begin{tabular}{@{}p{58mm}p{96mm}@{}}\toprule
 Simplification & Effect\\\midrule
@@ -130,6 +153,10 @@ induction). The semicon/filler simplifications remain valid.
 
 \section*{Q3.5 Mesh quality and convergence}
 \assignmentquestion{\QuestionThreeFive}
+\answer{Elements are at most 0.25 mm around the cables, below 5\,\% of the skin depth in aluminium and
+copper, so the mesh is limited by the geometry, not by the skin depth. Refining from MeshFactor 1 to 0.5 changes
+\(R_{AC}\) by \dRacfine\,\%, the inductance by \dLfine\,\% and the screen losses by \dPsfine\,\%. The screen
+losses converge slowest because the current varies across the thin copper ring, so that is where to refine.}
 Elements are \(\le0.25\) mm around the cables and \(\le0.6\) mm on the metal boundaries, i.e.\
 \(h/\delta\le0.05\) in Al and Cu (the usual rule is \(h\lesssim\delta/3\)). Resolution is limited by
 geometry (the 0.45 mm screen has one or two elements across), not by \(\delta\). Minimum triangle
@@ -155,6 +182,9 @@ screens} (two or more element layers). The default mesh is adequate for \(R\) an
 
 \section*{Q3.6 Magnetic flux density}
 \assignmentquestion{\QuestionThreeSix}
+\answer{The flux density peaks at \Bmax\ mT on the conductor surfaces that face the centre of the trefoil.
+It grows linearly inside each conductor, decreases like \(1/r\) across the insulation, and the field of the
+balanced trefoil decays quickly in the soil, to below 1\,\% of its peak at the box edge.}
 \begin{center}\includegraphics[width=0.55\linewidth,trim=150 0 150 0,clip]{m_b.png}\end{center}
 Peak \(|\hat{\mathbf B}|=\)\,\Bmax\ mT, on the conductor surfaces facing the trefoil centre
 (single-conductor estimate \(\mu_0\hat I/(2\pi r_c)=\)\,\Bsingle\ mT, raised by the neighbours). \(|\mathbf B|\)
@@ -165,6 +195,10 @@ trefoil field decays fast in the soil (below 1\,\% of the peak at the box edge).
 
 \section*{Q3.7 Current density}
 \assignmentquestion{\QuestionThreeSeven}
+\answer{In the aluminium the mean current density is \Javg\ A/mm\textsuperscript2 and the maximum is
+\Jmax\ A/mm\textsuperscript2, at the surface facing the other phases (proximity effect). With both ends bonded the
+screens carry a circulating current of about \Jscreen\ A/mm\textsuperscript2 on average; with single-point bonding
+only local eddy currents remain, with zero net current.}
 \begin{center}\includegraphics[width=0.42\linewidth,trim=150 0 150 0,clip]{m_j.png}\hfill
 \includegraphics[width=0.42\linewidth,trim=150 0 150 0,clip]{m_j_single.png}\\
 {\small Both ends bonded (left), single point (right), \(|\hat{\mathbf J}|\) [A/m\textsuperscript2].}\end{center}
@@ -177,6 +211,9 @@ eddies remain (opposite signs on the near and far side of each ring, zero net cu
 
 \section*{Q3.8 Joule losses per part}
 \assignmentquestion{\QuestionThreeEight}
+\answer{With both ends bonded, the aluminium conductors dissipate \Pcbase\ kW/km and the copper screens
+\Psbase\ kW/km, \Ptbase\ kW/km in total for the three phases. With single-point bonding the screen losses drop to
+\Pssingle\ kW/km. There is no armour or pipe, and the soil has no losses because its conductivity is neglected.}
 \(p=|\hat{\mathbf j}|^2/(2\sigma)\) with the \emph{total} current density \(-\sigma(j\omega\mathbf a+\mathbf u_r)\),
 integrated per region (W/m = kW/km).
 \begin{center}\small
@@ -198,6 +235,10 @@ Per phase \PcPhase\ kW/km in the aluminium; the three phases differ by \PhaseSym
 
 \section*{Q3.9 AC resistance}
 \assignmentquestion{\QuestionThreeNine}
+\answer{The AC resistance defined from the total losses, \(R_{AC}=P/(3I^2)\), is \Racbase\ \(\Omega\)/km
+at 20\,\(^\circ\)C, against a DC resistance of \Racfdc\ \(\Omega\)/km (NKT: at most 0.164 \(\Omega\)/km). Skin and
+proximity effect add \SkinFE\,\% (IEC 60287: \IecYsp\,\%) and the screen losses add \ScreenFE\,\%; IEC 60287 gives
+\IecRac\ \(\Omega\)/km in total. The datasheet does not list an AC resistance.}
 \(R_{AC}=P_{\rm tot}/(3I^2)\), \(I=350\) A RMS.
 \begin{center}\small
 \begin{tabular}{@{}lrr@{}}\toprule
@@ -221,6 +262,12 @@ operating temperature the resistance is \(\approx\)25\,\% higher (Section 4).
 
 \section*{Q3.10 Inductance}
 \assignmentquestion{\QuestionThreeTen}
+\answer{For a balanced, symmetric three-phase system we define the positive-sequence inductance per phase
+from the stored magnetic energy, \(L=\int\nu|\hat{\mathbf b}|^2dA/(3\hat I^2)\); it includes the internal
+inductance and the reaction of the screen currents. It is \Lbase\ mH/km at 50 Hz and it does vary with frequency
+(\Lfdc\ mH/km at DC, \Lfhund\ mH/km at 500 Hz), because the induced screen and eddy currents oppose the flux more
+at higher frequency. For touching cables the FE gives \Ltouching\ mH/km, against \NktL\ mH/km from the NKT
+reactance of 0.12 \(\Omega\)/km (\dLnkt\,\%).}
 \textbf{Definition.} In a balanced, symmetric three-phase system every phase sees \(U_k=Z\,I_k\) with
 the same positive-sequence \(Z=R+j\omega L\). The stored energy is
 \(W=\tfrac34L\hat I^2=\tfrac14\int\nu|\hat{\mathbf b}|^2dA\), hence \(L=\int\nu|\hat{\mathbf b}|^2dA/(3\hat I^2)\),
@@ -248,6 +295,10 @@ touching FE value lies inside the NKT band.}\end{center}
 
 \section*{Q3.11 Loss reduction: single-point (or cross-) bonding}
 \assignmentquestion{\QuestionThreeEleven}
+\answer{We propose single-point (or cross-) bonding of the screens. It removes the circulating screen
+current, so the total losses fall from \Ptbase\ to \Ptsingle\ kW/km (\dPtSingle\,\%) and \(R_{AC}\) from
+\Racbase\ to \Racsingle\ \(\Omega\)/km. The price is a standing voltage of \Usingle\ V/km on the open screen end,
+which limits the section length and requires sheath voltage limiters.}
 \begin{center}\def\figw{0.6\linewidth}\def\figh{4.6cm}
 \input{figures/style.tex}\input{figures/bonding.tex}\end{center}
 Opening the screen loop at one end removes the circulating current: total losses \Ptbase\ \(\to\)
