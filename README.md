@@ -88,7 +88,7 @@ options are passed to Gmsh and GetDP.
 | h = 10 W/(m² K) at the ground surface | natural convection ≈2 + radiation ≈5 + wind; 5–20 and isothermal studied | Q4.2, Q4.5 |
 | Domain ±20 m, 20 m deep; bottom T = 15 °C, sides adiabatic | T_max within 0.1 K of a 40 m domain | Q4.3 |
 | No dielectric losses | IEC 60287: negligible for XLPE below U₀ = 127 kV | Q4.1 |
-| Section 5 topic chosen by us (none assigned yet) | arrangement can be checked against six NKT rating rows | S5 |
+| Section 5 topic: free choice (arrangement × bonding) | arrangement can be checked against six NKT rating rows | S5 |
 
 ## Use of AI tools
 
