@@ -135,8 +135,8 @@ induction). The semicon/filler simplifications remain valid.
 \section*{Q3.5 Mesh quality and convergence}
 \assignmentquestion{\QuestionThreeFive}
 \answer{\AnsThreeFive}
-Elements are \(\le0.25\) mm around the cables and \(\le0.6\) mm on the metal boundaries, i.e.\
-\(h/\delta\le0.05\) in Al and Cu (the usual rule is \(h\lesssim\delta/3\)). Resolution is limited by
+The target element size is 0.25 mm around the cables; the longest edge in the Al and Cu is
+\MeshHmetalGap\ mm, i.e.\ \(h/\delta<0.05\) in both (the usual rule is \(h\lesssim\delta/3\)). Resolution is limited by
 geometry (the 0.45 mm screen has one or two elements across), not by \(\delta\). Minimum triangle
 quality \MeshQminGap\ (Section 1).
 \begin{center}\small
@@ -273,5 +273,5 @@ modest; NKT indeed rates the trefoil at 350 A for both bondings. Thermal effect:
 \subsection*{Sources}
 \small \textbf{[IEC]} IEC 60287-1-1: \(y_s,y_p\) (\S2.1.2--2.1.4), \(\lambda_1'\) for single-core cables in trefoil
 bonded at both ends (\S2.3.1), Table 1 (resistivities). Local \href{../NMES_Assignment_2026.pdf}{assignment}
-(eqs.~7--9, 14) and \href{../Datasheet 33 kV single core cable XLPE-AL.pdf}{NKT datasheet}.
+(eqs.~7--9, 14) and \href{../Datasheet NKT 33 kV single core cable XLPE-AL.pdf}{NKT datasheet}.
 \end{document}

@@ -154,7 +154,8 @@ put('AnaEb', Eb / 0.5, '{:.2f}')
 
 # ===================================================================== Section 1: mesh quality
 def mesh_stats(path):
-    """Triangles, minimum and number of q < 0.1 with q = 4 sqrt(3) A / sum(l^2), XLPE_A count."""
+    """Triangles, minimum and number of q < 0.1 with q = 4 sqrt(3) A / sum(l^2), XLPE_A count,
+    longest element edge in the aluminium and copper regions (21-23, 71-73) in m."""
     nodes, tri, phys = {}, [], []
     lines = open(path).read().split('\n')
     i = lines.index('$Nodes')
@@ -165,19 +166,22 @@ def mesh_stats(path):
         t = l.split()
         if t[1] == '2':
             tri.append(t[-3:]); phys.append(int(t[3]))
-    q = []
-    for (a, b_, c) in tri:
+    q, hmetal = [], 0.0
+    for (a, b_, c), p in zip(tri, phys):
         (x1, y1), (x2, y2), (x3, y3) = nodes[a], nodes[b_], nodes[c]
         area = abs((x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1)) / 2
-        l2 = (x2 - x1)**2 + (y2 - y1)**2 + (x3 - x2)**2 + (y3 - y2)**2 + (x1 - x3)**2 + (y1 - y3)**2
-        q.append(4 * math.sqrt(3) * area / l2)
-    return len(tri), min(q), sum(1 for x in q if x < 0.1), sum(1 for p in phys if p == 41)
+        e2 = [(x2 - x1)**2 + (y2 - y1)**2, (x3 - x2)**2 + (y3 - y2)**2, (x1 - x3)**2 + (y1 - y3)**2]
+        q.append(4 * math.sqrt(3) * area / sum(e2))
+        if p in (21, 22, 23, 71, 72, 73):
+            hmetal = max(hmetal, math.sqrt(max(e2)))
+    return len(tri), min(q), sum(1 for x in q if x < 0.1), sum(1 for p in phys if p == 41), hmetal
 
 
 for case, key in [('gap', 'Gap'), ('touching', 'Touch')]:
-    n_, qmin, nbad, nx = mesh_stats(os.path.join(SRC, 'Cable-selection-and-model-setup/meshes', case + '.msh'))
+    n_, qmin, nbad, nx, hmetal = mesh_stats(os.path.join(SRC, 'Cable-selection-and-model-setup/meshes', case + '.msh'))
     put('MeshTri' + key, n_, '{:,}'); put('MeshQmin' + key, qmin, '{:.3f}')
     put('MeshBad' + key, nbad, '{:d}'); put('MeshXlpe' + key, nx, '{:,}')
+    put('MeshHmetal' + key, hmetal * 1e3, '{:.2f}')   # mm, longest edge in Al and Cu [Q3.5]
 
 # ===================================================================== Section 2
 electric = {'gap': 'gap', 'touching': 'touching', 'coarse': 'gapcoarse', 'fine': 'gapfine',

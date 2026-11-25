@@ -47,13 +47,18 @@
 \input{../Reports/sources/answers.tex}   % written answers, shared with the reports
 \colorlet{cA}{KULBlue}\definecolor{cB}{HTML}{D1495B}\definecolor{cC}{HTML}{EDAE49}
 \usetikzlibrary{arrows.meta,calc,positioning}\usepackage{adjustbox}
-% Appendix: one slide per question = the written answer (left) and its key figure (right).
-\newcommand{\qslide}[3]{\begin{frame}{#1}\begin{columns}[T]
-  \column{0.56\textwidth}\footnotesize #2
-  \column{0.42\textwidth}\centering #3\end{columns}\end{frame}}
+\input{../Reports/sources/questions.tex} % assignment question texts, shared with the reports
+% Appendix: one slide per question = the assignment question (box), the written answer (left)
+% and its key figure (right).
+\newcommand{\qbox}[1]{\begin{tcolorbox}[colback=KULBlue!5,colframe=KULBlue!60,boxrule=0.3pt,
+  leftrule=1.5pt,arc=0pt,boxsep=0pt,left=4pt,right=4pt,top=2.5pt,bottom=2.5pt,
+  before skip=0pt,after skip=6pt,fontupper=\scriptsize]\textbf{Question.} #1\end{tcolorbox}}
+\newcommand{\qslide}[4]{\begin{frame}{#1}\qbox{#2}\par\vspace{1.3em}\begin{columns}[T,onlytextwidth]
+  \column{0.56\textwidth}\footnotesize #3
+  \column{0.42\textwidth}\centering #4\end{columns}\end{frame}}
 \newcommand{\fig}[1]{\adjustbox{max width=\linewidth,max height=5.4cm}{\input{../Reports/sources/figures/#1.tex}}}
 % Wide figures (schematics, two-panel plots): answer across the slide, figure below it.
-\newcommand{\qslidewide}[3]{\begin{frame}{#1}\footnotesize #2\par\vfill\centering #3\par\vfill\end{frame}}
+\newcommand{\qslidewide}[4]{\begin{frame}{#1}\qbox{#2}\footnotesize #3\par\vfill\centering #4\par\vfill\end{frame}}
 \newcommand{\wfig}[2]{\adjustbox{max width=\linewidth,max height=#2}{\input{../Reports/sources/figures/#1.tex}}}
 \def\datadir{../Reports/sources/data}
 \newcommand{\plot}[3]{{\def\figw{#1}\def\figh{#2}\input{../Reports/sources/figures/style.tex}\colorlet{cA}{KULBlue}\input{../Reports/sources/figures/#3.tex}}}
@@ -482,6 +487,7 @@ question (Q1.1 to Q4.9, plus Section 5) if the examiners want detail. Spare time
 \begin{frame}[standout]Appendix: one slide per question\end{frame}
 
 \begin{frame}{Q1.1 Construction and material properties}
+\qbox{\QuestionOneOne}
 \footnotesize\AnsOneOne\par\smallskip
 \tiny\centering
 \begin{tabular}{@{}lrl@{\hskip 10pt}lrrrl@{}}\toprule
@@ -498,15 +504,15 @@ PE sheath & 21.50 & NKT $\varnothing$43 & & & & & \\\bottomrule
 {\scriptsize $\mu_r=1$ in all materials: the cable has no steel.}
 \end{frame}
 
-\qslidewide{Q1.2 Environment}{\AnsOneTwo}{\wfig{domain}{3.6cm}}
-\qslidewide{Q1.3 Sheath bonding}{\AnsOneThree}{\wfig{bonding_schematic}{3.4cm}}
-\qslidewide{Q1.4 Excitation}{\AnsOneFour}{\wfig{phasors}{3.6cm}}
-\qslide{Q2.1 Domain, equations, boundary conditions}{\AnsTwoOne}{\map{0.9\linewidth}{e_potential}\\{\scriptsize $\Re(\hat v)$ [V]}}
-\qslidewide{Q2.2 Geometric simplifications}{\AnsTwoTwo}{\wfig{electric_domain}{3.4cm}}
-\qslide{Q2.3 Mesh convergence}{\AnsTwoThree}{\plot{\linewidth}{4.6cm}{convergence}}
-\qslide{Q2.4 Admissible field}{\AnsTwoFour}{\plot{\linewidth}{4.8cm}{radial_limits}}
-\qslide{Q2.5 Insulation defect}{\AnsTwoFive}{\plot{\linewidth}{4.8cm}{radial_defect}}
-\qslide{Q2.6 Current densities and conservation}{\AnsTwoSix}{\plot{\linewidth}{4.8cm}{currents_radial}}
+\qslidewide{Q1.2 Environment}{\QuestionOneTwo}{\AnsOneTwo}{\wfig{domain}{3.6cm}}
+\qslidewide{Q1.3 Sheath bonding}{\QuestionOneThree}{\AnsOneThree}{\wfig{bonding_schematic}{3.4cm}}
+\qslidewide{Q1.4 Excitation}{\QuestionOneFour}{\AnsOneFour}{\wfig{phasors}{3.6cm}}
+\qslide{Q2.1 Domain, equations, boundary conditions}{\QuestionTwoOne}{\AnsTwoOne}{\map{0.9\linewidth}{e_potential}\\{\scriptsize $\Re(\hat v)$ [V]}}
+\qslidewide{Q2.2 Geometric simplifications}{\QuestionTwoTwo}{\AnsTwoTwo}{\wfig{electric_domain}{3.4cm}}
+\qslide{Q2.3 Mesh convergence}{\QuestionTwoThree}{\AnsTwoThree}{\plot{\linewidth}{4.6cm}{convergence}}
+\qslide{Q2.4 Admissible field}{\QuestionTwoFour}{\AnsTwoFour}{\plot{\linewidth}{4.8cm}{radial_limits}}
+\qslide{Q2.5 Insulation defect}{\QuestionTwoFive}{\AnsTwoFive}{\plot{\linewidth}{4.8cm}{radial_defect}}
+\qslide{Q2.6 Current densities and conservation}{\QuestionTwoSix}{\AnsTwoSix}{\plot{\linewidth}{4.8cm}{currents_radial}}
 \begin{frame}{Q2.5, Q2.6 Field maps with and without the void}
 \begin{columns}[T]
 \column{0.25\textwidth}\centering\map{\linewidth}{e_field}\\{\scriptsize $|\hat E|$ [V/m], healthy}
@@ -518,30 +524,30 @@ PE sheath & 21.50 & NKT $\varnothing$43 & & & & & \\\bottomrule
 screens and fall like $1/r$. In the void ($\varepsilon_r=1$) the field rises to \Vmeandefectfine--\Edefectfine\ kV/mm, but the
 displacement current density drops to about $1.43/2.5\approx0.57$ of its XLPE value, because $\varepsilon$ is 2.5 times lower.
 \end{frame}
-\qslide{Q2.7 Capacitance}{\AnsTwoSeven}{\plot{\linewidth}{4.6cm}{cap_freq}}
-\qslide{Q2.8 Electric design}{\AnsTwoEight}{\plot{\linewidth}{4.8cm}{radial_thick}}
-\qslidewide{Q3.1 Domain, equations, boundary conditions, sources}{\AnsThreeOne}{\wfig{magnetic_domain}{4.0cm}}
-\qslide{Q3.2 Stranded vs massive}{\AnsThreeTwo}{\plot{\linewidth}{4.8cm}{j_profile}}
-\qslidewide{Q3.3 Bonding with global quantities}{\AnsThreeThree}{\wfig{bonding_schematic}{3.2cm}}
-\qslidewide{Q3.4 Simplifications}{\AnsThreeFour}{\wfig{ring_simplification}{3.4cm}}
-\qslide{Q3.5 Mesh and convergence}{\AnsThreeFive}{\plot{\linewidth}{4.6cm}{mag_convergence}}
-\qslide{Q3.6 Magnetic flux density}{\AnsThreeSix}{\map{0.85\linewidth}{m_b}}
-\qslide{Q3.7 Current density}{\AnsThreeSeven}{\map{0.48\linewidth}{m_j}\hfill\map{0.48\linewidth}{m_j_single}\\
+\qslide{Q2.7 Capacitance}{\QuestionTwoSeven}{\AnsTwoSeven}{\plot{\linewidth}{4.6cm}{cap_freq}}
+\qslide{Q2.8 Electric design}{\QuestionTwoEight}{\AnsTwoEight}{\plot{\linewidth}{4.8cm}{radial_thick}}
+\qslidewide{Q3.1 Domain, equations, boundary conditions, sources}{\QuestionThreeOne}{\AnsThreeOne}{\wfig{magnetic_domain}{3.6cm}}
+\qslide{Q3.2 Stranded vs massive}{\QuestionThreeTwo}{\AnsThreeTwo}{\plot{\linewidth}{4.8cm}{j_profile}}
+\qslidewide{Q3.3 Bonding with global quantities}{\QuestionThreeThree}{\AnsThreeThree}{\wfig{bonding_schematic}{3.2cm}}
+\qslidewide{Q3.4 Simplifications}{\QuestionThreeFour}{\AnsThreeFour}{\wfig{ring_simplification}{3.4cm}}
+\qslide{Q3.5 Mesh and convergence}{\QuestionThreeFive}{\AnsThreeFive}{\plot{\linewidth}{4.6cm}{mag_convergence}}
+\qslide{Q3.6 Magnetic flux density}{\QuestionThreeSix}{\AnsThreeSix}{\map{0.85\linewidth}{m_b}}
+\qslide{Q3.7 Current density}{\QuestionThreeSeven}{\AnsThreeSeven}{\map{0.48\linewidth}{m_j}\hfill\map{0.48\linewidth}{m_j_single}\\
   {\scriptsize $|\hat J|$: both ends bonded (left), single point (right)}}
-\qslide{Q3.8 Joule losses per part}{\AnsThreeEight}{\plot{\linewidth}{4.8cm}{losses_bar}}
-\qslide{Q3.9 AC resistance}{\AnsThreeNine}{\plot{\linewidth}{3.6cm}{rac_bar}}
-\qslide{Q3.10 Inductance}{\AnsThreeTen}{\plot{\linewidth}{4.8cm}{l_freq}}
-\qslide{Q3.11 Loss-reducing design}{\AnsThreeEleven}{\plot{\linewidth}{4.6cm}{bonding}}
-\qslidewide{Q4.1 Equations and heat source}{\AnsFourOne}{\wfig{coupling}{3.6cm}}
-\qslidewide{Q4.2 Thermal domain and boundary conditions}{\AnsFourTwo}{\wfig{domain}{3.3cm}}
-\qslidewide{Q4.3 Ambient, mesh and domain size}{\AnsFourThree}{\adjustbox{max width=0.85\linewidth,max height=3.8cm}{\input{../Reports/sources/figures/tmax_study.tex}}}
-\qslide{Q4.4 Temperature in the cable}{\AnsFourFour}{\map{0.85\linewidth}{t_cables_nl}}
-\qslidewide{Q4.5 Temperature around the cable and at the surface}{\AnsFourFive}{%
+\qslide{Q3.8 Joule losses per part}{\QuestionThreeEight}{\AnsThreeEight}{\plot{\linewidth}{4.8cm}{losses_bar}}
+\qslide{Q3.9 AC resistance}{\QuestionThreeNine}{\AnsThreeNine}{\plot{\linewidth}{3.6cm}{rac_bar}}
+\qslide{Q3.10 Inductance}{\QuestionThreeTen}{\AnsThreeTen}{\plot{\linewidth}{4.8cm}{l_freq}}
+\qslide{Q3.11 Loss-reducing design}{\QuestionThreeEleven}{\AnsThreeEleven}{\plot{\linewidth}{4.6cm}{bonding}}
+\qslidewide{Q4.1 Equations and heat source}{\QuestionFourOne}{\AnsFourOne}{\wfig{coupling}{3.6cm}}
+\qslidewide{Q4.2 Thermal domain and boundary conditions}{\QuestionFourTwo}{\AnsFourTwo}{\wfig{domain}{2.85cm}}
+\qslidewide{Q4.3 Ambient, mesh and domain size}{\QuestionFourThree}{\AnsFourThree}{\adjustbox{max width=0.85\linewidth,max height=3.8cm}{\input{../Reports/sources/figures/tmax_study.tex}}}
+\qslide{Q4.4 Temperature in the cable}{\QuestionFourFour}{\AnsFourFour}{\map{0.85\linewidth}{t_cables_nl}}
+\qslidewide{Q4.5 Temperature around the cable and at the surface}{\QuestionFourFive}{\AnsFourFive}{%
   \begin{minipage}[c]{0.3\linewidth}\centering\map{\linewidth}{t_soil_nl}\\{\scriptsize $T$ [$^\circ$C] in the soil, surface on top}\end{minipage}\hfill
   \begin{minipage}[c]{0.66\linewidth}\centering\plot{\linewidth}{3.6cm}{surface_profile}\end{minipage}}
-\qslide{Q4.6 Validation vs IEC 60287}{\AnsFourSix}{\plot{\linewidth}{4.6cm}{tc_compare}}
-\qslide{Q4.7 Convergence of the nonlinear coupling}{\AnsFourSeven}{\plot{\linewidth}{4.8cm}{nl_history}}
-\qslide{Q4.8 Linear vs $\sigma(T)$}{\AnsFourEight}{\plot{\linewidth}{4.8cm}{nl_change}}
+\qslide{Q4.6 Validation vs IEC 60287}{\QuestionFourSix}{\AnsFourSix}{\plot{\linewidth}{4.6cm}{tc_compare}}
+\qslide{Q4.7 Convergence of the nonlinear coupling}{\QuestionFourSeven}{\AnsFourSeven}{\plot{\linewidth}{4.8cm}{nl_history}}
+\qslide{Q4.8 Linear vs $\sigma(T)$}{\QuestionFourEight}{\AnsFourEight}{\plot{\linewidth}{4.8cm}{nl_change}}
 \begin{frame}{Q4.8 Field maps: linear vs $\sigma(T)$}
 \begin{columns}[T]
 \column{0.32\textwidth}\centering\map{0.54\linewidth}{t_cables_lin}\\{\scriptsize $T$ [$^\circ$C], linear: \Tclin}\\[2pt]
@@ -554,8 +560,8 @@ displacement current density drops to about $1.43/2.5\approx0.57$ of its XLPE va
 \footnotesize $|\hat J|$ and $|\hat B|$ share one colour scale per pair; each $T$ map has its own scale. Only the temperature
 changes visibly (\dTcNL\ K); $J$ and $B$ barely move because the currents are imposed and $\mu_r=1$.
 \end{frame}
-\qslide{Q4.9 Is the linear model conservative?}{\AnsFourNine}{\plot{\linewidth}{4.8cm}{rating_curve}}
-\qslidewide{Section 5 Arrangement and bonding}{\AnsFive}{\plot{0.8\linewidth}{3.6cm}{arrangement}}
+\qslide{Q4.9 Is the linear model conservative?}{\QuestionFourNine}{\AnsFourNine}{\plot{\linewidth}{4.8cm}{rating_curve}}
+\qslidewide{Section 5 Arrangement and bonding}{\QuestionFive}{\AnsFive}{\plot{0.8\linewidth}{3.6cm}{arrangement}}
 
 \begin{frame}{Reproducibility}
 \small
