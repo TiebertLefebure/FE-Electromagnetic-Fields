@@ -147,7 +147,7 @@ balance and a second capacitance for free.
 \item Result: \AnaEi\ kV/mm peak at the conductor screen, \AnaEirms\ kV/mm RMS, against a limit of 8.
 The healthy cable uses 43\,\% of the admissible stress.
 \end{itemize}
-\emph{If asked about the limit:} NKT gives none; we use an Eskom specification for 44--132 kV cables, which is conservative for 33 kV.}
+\emph{If asked about the limit:} NKT gives none; we use an Eskom specification for 44--132 kV cables. HV cables are designed for higher stress than MV cables, so it is an upper benchmark, not an acceptance criterion.}
 \end{frame}
 
 % ============================================================ 3. electric verification
@@ -356,7 +356,7 @@ FE reproduces the rating within a few kelvin. Differences: convective surface (\
 \item IEC gives \IecTheta\,$^\circ$C at 350 A and \IecAmp\ A at 90\,$^\circ$C: it confirms the datasheet with our data.
 \item FE: \Tcnl\,$^\circ$C with convection, \Tcnliso\ isothermal; FE ampacity \Amptrefoil\ A (\dNkttrefoil\,\%).
 \item Differences: the surface condition, IEC's empirical trefoil formula versus real 2D conduction, the FE screen
-eddy losses, and the gap. All of these are inside the assumption uncertainty: $h$ gives $\pm$1 K, halving the filler $\kappa$ gives +\dTfiller\ K.
+eddy losses, and the gap. All of these are inside the assumption uncertainty: $h$ from 5 to 20 gives \Tcnlhfive\ to \Tcnlhtwenty\,$^\circ$C, halving the filler $\kappa$ gives +\dTfiller\ K.
 \end{itemize}}
 \end{frame}
 
@@ -375,14 +375,14 @@ $R_{AC}$ [$\Omega$/km] & \Raclin & \Racnl & \dRacNL\%\\
 $L$ [mH/km] & \Llin & \Lnl & \dLNL\%\\
 $T_{\max}$ [$^\circ$C] & \Tclin & \Tcnl & \dTcNL\ K\\\bottomrule
 \end{tabular}\\[4pt]
-Hotter Al $\Rightarrow$ lower $\sigma$ $\Rightarrow$ more loss. Screen loss \emph{drops} ($\lambda_1\approx X^2/R_s$).\\
+Hotter Al $\Rightarrow$ lower $\sigma$ $\Rightarrow$ more loss. Screen loss \emph{drops} ($\lambda_1\approx X^2/(R_sR)$).\\
 \alert{Linear model is not conservative}: it would rate the cable at \AmpLin\ A instead of \Amptrefoil\ A.
 \end{columns}
 \note{\textbf{[1:00 \,|\, clock 11:10]}\par\smallskip 
 \begin{itemize}
 \item Criterion: relative $L_2$ increment of all nodal temperatures below $10^{-6}$. It takes \Nitnl\ iterations on every mesh.
 The rate is \ConvRate\ per iteration, roughly $\alpha\Delta T/(1+\alpha(T-20))$: far from thermal runaway.
-\item Versus linear: losses and $R_{AC}$ \dPtNL\,\%, hot spot \dTcNL\ K. The screen loss \emph{drops} by \dPsNL\,\% ($\lambda_1\approx X^2/R_s$).
+\item Versus linear: losses and $R_{AC}$ \dPtNL\,\%, hot spot \dTcNL\ K. The screen loss \emph{drops} by \dPsNL\,\% ($\lambda_1\approx X^2/(R_sR)$: a more resistive screen carries less current).
 $B$ and $L$ barely move, because the currents are imposed.
 \item The linear model is \textbf{not conservative}: it would rate the cable at \AmpLin\ A instead of \Amptrefoil\ A.
 \end{itemize}}
@@ -458,8 +458,8 @@ Limits: 2D (no lay, no cable ends), constant soil without drying, steady state.}
 \scriptsize
 \begin{tabularx}{\linewidth}{@{}lrrY@{}}\toprule
 Quantity & FE (linear) & FE ($\sigma(T)$) & Reference$^*$\\\midrule
-Max.\ field, conductor screen (kV/mm pk) & \Egapfine & -- & \AnaEi\ (analytical)\\
-Max.\ field with defect (kV/mm pk, void) & \Edefectfine & -- & \AnaEvoid\ (analytical, $1.43E_0$)\\
+Max.\ field, conductor screen (kV/mm pk, fine mesh) & \Egapfine & -- & \AnaEi\ (analytical)\\
+Max.\ field with defect (kV/mm pk, void, fine mesh) & \Edefectfine & -- & \AnaEvoid\ (analytical, $1.43E_0$)\\
 Capacitance ($\mu$F/km) & 0.19703 & -- & 0.19703 (analytical); $\le$0.22 (NKT)\\
 DC resistance ($\Omega$/km) & \Racfdc & -- & 0.164 (NKT max., 20\,$^\circ$C)\\
 AC resistance ($\Omega$/km) & \Raclin & \Racnl & \IecRac\ at 20\,$^\circ$C; \IecRacHot\ at \IecTheta\,$^\circ$C (IEC)\\
@@ -470,7 +470,7 @@ Max.\ surface temperature ($^\circ$C) & \Tslin & \Tsnl & 15 (IEC: isothermal sur
 Nonlinear iterations & -- & \Nitnl & --\\\bottomrule
 \end{tabularx}\\[5pt]
 $^*$ analytical (Appendix B, IEC 60287) or datasheet (NKT), as stated. 350 A RMS, 50 Hz, 0.5 mm gap, massive Al,
-both ends bonded, $h$=10 W/(m$^2$K), default mesh. Linear = $\sigma$ at 20\,$^\circ$C.
+both ends bonded, $h$=10 W/(m$^2$K), default mesh unless stated. Linear = $\sigma$ at 20\,$^\circ$C.
 \note{\textbf{[0:15 \,|\, clock 13:55]}\par\smallskip 
 Table 1 collects everything; leave it on screen for the questions. The appendix has one slide per
 question (Q1.1 to Q4.9, plus Section 5) if the examiners want detail. Spare time: about one minute.}
@@ -494,7 +494,8 @@ Inner filler & 17.40 & assumed & PE, fillers & 2.25 & $10^{-18}$ / 0 & 0.286 & I
 Cu ring 50 mm$^2$ & 17.85 & area kept & soil & 10 & $10^{-2}$ & 0.833 & course; NKT 1.2 K\,m/W\\
 Outer filler & 19.20 & NKT $\varnothing$38.4 & air (void) & 1 & $10^{-15}$ & -- & assumption\\
 PE sheath & 21.50 & NKT $\varnothing$43 & & & & & \\\bottomrule
-\end{tabular}
+\end{tabular}\\[3pt]
+{\scriptsize $\mu_r=1$ in all materials: the cable has no steel.}
 \end{frame}
 
 \qslidewide{Q1.2 Environment}{\AnsOneTwo}{\wfig{domain}{3.6cm}}
@@ -506,6 +507,17 @@ PE sheath & 21.50 & NKT $\varnothing$43 & & & & & \\\bottomrule
 \qslide{Q2.4 Admissible field}{\AnsTwoFour}{\plot{\linewidth}{4.8cm}{radial_limits}}
 \qslide{Q2.5 Insulation defect}{\AnsTwoFive}{\plot{\linewidth}{4.8cm}{radial_defect}}
 \qslide{Q2.6 Current densities and conservation}{\AnsTwoSix}{\plot{\linewidth}{4.8cm}{currents_radial}}
+\begin{frame}{Q2.5, Q2.6 Field maps with and without the void}
+\begin{columns}[T]
+\column{0.25\textwidth}\centering\map{\linewidth}{e_field}\\{\scriptsize $|\hat E|$ [V/m], healthy}
+\column{0.25\textwidth}\centering\map{\linewidth}{e_field_defect_zoom}\\{\scriptsize $|\hat E|$ [V/m], void (zoom)}
+\column{0.25\textwidth}\centering\map{\linewidth}{e_jdisp}\\{\scriptsize $|\hat J_d|$ [A/m$^2$], healthy}
+\column{0.25\textwidth}\centering\map{\linewidth}{e_jdisp_defect_zoom}\\{\scriptsize $|\hat J_d|$ [A/m$^2$], void (zoom)}
+\end{columns}\medskip
+\footnotesize Peak amplitudes. The field and the displacement current $\omega\varepsilon|\hat E|$ are highest at the conductor
+screens and fall like $1/r$. In the void ($\varepsilon_r=1$) the field rises to \Vmeandefectfine--\Edefectfine\ kV/mm, but the
+displacement current density drops to about $1.43/2.5\approx0.57$ of its XLPE value, because $\varepsilon$ is 2.5 times lower.
+\end{frame}
 \qslide{Q2.7 Capacitance}{\AnsTwoSeven}{\plot{\linewidth}{4.6cm}{cap_freq}}
 \qslide{Q2.8 Electric design}{\AnsTwoEight}{\plot{\linewidth}{4.8cm}{radial_thick}}
 \qslidewide{Q3.1 Domain, equations, boundary conditions, sources}{\AnsThreeOne}{\wfig{magnetic_domain}{4.0cm}}
@@ -524,10 +536,24 @@ PE sheath & 21.50 & NKT $\varnothing$43 & & & & & \\\bottomrule
 \qslidewide{Q4.2 Thermal domain and boundary conditions}{\AnsFourTwo}{\wfig{domain}{3.3cm}}
 \qslidewide{Q4.3 Ambient, mesh and domain size}{\AnsFourThree}{\adjustbox{max width=0.85\linewidth,max height=3.8cm}{\input{../Reports/sources/figures/tmax_study.tex}}}
 \qslide{Q4.4 Temperature in the cable}{\AnsFourFour}{\map{0.85\linewidth}{t_cables_nl}}
-\qslide{Q4.5 Temperature around the cable and at the surface}{\AnsFourFive}{\plot{\linewidth}{4.6cm}{surface_profile}}
+\qslidewide{Q4.5 Temperature around the cable and at the surface}{\AnsFourFive}{%
+  \begin{minipage}[c]{0.3\linewidth}\centering\map{\linewidth}{t_soil_nl}\\{\scriptsize $T$ [$^\circ$C] in the soil, surface on top}\end{minipage}\hfill
+  \begin{minipage}[c]{0.66\linewidth}\centering\plot{\linewidth}{3.6cm}{surface_profile}\end{minipage}}
 \qslide{Q4.6 Validation vs IEC 60287}{\AnsFourSix}{\plot{\linewidth}{4.6cm}{tc_compare}}
 \qslide{Q4.7 Convergence of the nonlinear coupling}{\AnsFourSeven}{\plot{\linewidth}{4.8cm}{nl_history}}
 \qslide{Q4.8 Linear vs $\sigma(T)$}{\AnsFourEight}{\plot{\linewidth}{4.8cm}{nl_change}}
+\begin{frame}{Q4.8 Field maps: linear vs $\sigma(T)$}
+\begin{columns}[T]
+\column{0.32\textwidth}\centering\map{0.54\linewidth}{t_cables_lin}\\{\scriptsize $T$ [$^\circ$C], linear: \Tclin}\\[2pt]
+  \map{0.54\linewidth}{t_cables_nl}\\{\scriptsize $T$ [$^\circ$C], $\sigma(T)$: \Tcnl}
+\column{0.32\textwidth}\centering\map{0.54\linewidth}{m_j}\\{\scriptsize $|\hat J|$ [A/m$^2$], linear}\\[2pt]
+  \map{0.54\linewidth}{m_j_nl}\\{\scriptsize $|\hat J|$ [A/m$^2$], $\sigma(T)$}
+\column{0.32\textwidth}\centering\map{0.54\linewidth}{m_b}\\{\scriptsize $|\hat B|$ [T], linear}\\[2pt]
+  \map{0.54\linewidth}{m_b_nl}\\{\scriptsize $|\hat B|$ [T], $\sigma(T)$}
+\end{columns}\smallskip
+\footnotesize $|\hat J|$ and $|\hat B|$ share one colour scale per pair; each $T$ map has its own scale. Only the temperature
+changes visibly (\dTcNL\ K); $J$ and $B$ barely move because the currents are imposed and $\mu_r=1$.
+\end{frame}
 \qslide{Q4.9 Is the linear model conservative?}{\AnsFourNine}{\plot{\linewidth}{4.8cm}{rating_curve}}
 \qslidewide{Section 5 Arrangement and bonding}{\AnsFive}{\plot{0.8\linewidth}{3.6cm}{arrangement}}
 

@@ -48,8 +48,8 @@ The datasheet gives no admissible field, so we use the design limits of the Esko
 specification: 8 kV/mm RMS at the conductor screen and 4 kV/mm RMS at the core screen. The healthy cable has
 \AnaEirms\ kV/mm and \AnaEorms\ kV/mm RMS at these two screens, 43\,\% of each limit, so it is well within them.}
 \newcommand{\AnsTwoFive}{%
-We add an air-filled void (a gas cavity) of radius 0.25 mm, centred 0.75 mm from the conductor screen
-where the stress is highest, with \(\varepsilon_r=1\). In a 2D cross-section the void is an infinitely long channel
+We add an air-filled void (a gas cavity) of radius 0.25 mm with \(\varepsilon_r=1\), centred at
+\(r=8.8\) mm so that its edge is 0.75 mm from the conductor screen, where the stress is highest. In a 2D cross-section the void is an infinitely long channel
 along the cable; its field enhancement (\(1.43E_0\)) is larger than that of a real spherical void (\(1.25E_0\)), so
 the 2D result is conservative. Along the radial cut the field inside the void rises to \Vmeandefectfine\ kV/mm
 (\(\VoidRatio E_0\)), while the field in the surrounding XLPE stays close to the healthy one. The cable does not
@@ -108,11 +108,12 @@ copper, so the mesh is limited by the geometry, not by the skin depth. Refining 
 \(R_{AC}\) by \dRacfine\,\%, the inductance by \dLfine\,\% and the screen losses by \dPsfine\,\%. The screen
 losses converge slowest because the current varies across the thin copper ring, so that is where to refine.}
 \newcommand{\AnsThreeSix}{%
-The flux density peaks at \Bmax\ mT on the conductor surfaces that face the centre of the trefoil.
+The flux density amplitude is highest, \Bmax\ mT (peak), on the conductor surfaces that face the
+centre of the trefoil.
 It grows linearly inside each conductor, decreases like \(1/r\) across the insulation, and the field of the
 balanced trefoil decays quickly in the soil, to below 1\,\% of its peak at the box edge.}
 \newcommand{\AnsThreeSeven}{%
-In the aluminium the mean current density is \Javg\ A/mm\textsuperscript2 and the maximum is
+In the aluminium the mean current density amplitude is \Javg\ A/mm\textsuperscript2 (peak) and the maximum is
 \Jmax\ A/mm\textsuperscript2, at the surface facing the other phases (proximity effect). With both ends bonded the
 screens carry a circulating current of about \Jscreen\ A/mm\textsuperscript2 on average; with single-point bonding
 only local eddy currents remain, with zero net current.}

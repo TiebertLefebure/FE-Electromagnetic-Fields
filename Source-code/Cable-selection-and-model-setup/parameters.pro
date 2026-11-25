@@ -63,7 +63,7 @@ DefineConstant[
   // (e = 0.95, T = 288 K), raised for wind; 5 to 20 and isothermal studied in Q4.5.
   hConv = {10, Name "Thermal/04 Surface heat transfer coefficient", Units "W/(m2 K)"},
   // [ASSUMPTION] lateral (zero flux) and bottom (T = T_amb) boundaries 20 m away: Q4.3
-  // shows T_max changes by about 0.1 K from 20 m to 40 m (and -0.8 K at 5 m).
+  // shows T_max changes by about 0.1 K from 20 m to 40 m (and -0.3 K at 10 m).
   ThermalHalfWidth = {20, Name "Thermal/05 Thermal domain half-width [m]"},
   ThermalDepth     = {20, Name "Thermal/06 Thermal domain depth below surface [m]"},
   kAl  = {237, Name "Thermal/10 Al thermal conductivity", Units "W/(m K)"},          // [LEE]

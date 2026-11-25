@@ -71,7 +71,7 @@ options are passed to Gmsh and GetDP.
 
 | Assumption | Why / effect | Where |
 |---|---|---|
-| 0.5 mm soil gap between jackets | removes zero-angle soil wedges (min. quality 0.02 → 0.49); ΔE 0.01 %, ΔL 0.5 % vs touching | S1, Q2.2, Q3.4 |
+| 0.5 mm soil gap between jackets | removes zero-angle soil wedges (min. triangle quality 0.020 → 0.575); ΔE 0.01 %, ΔL 0.5 % vs touching | S1, Q2.2, Q3.4 |
 | Semiconductors 0.4 mm, ideal equipotentials (electric) | NKT gives 32.4 mm over insulation; drop across them ≈ 7 mV | Q1.1, Q2.2 |
 | Cu wires + tape → ring of 50 mm² | same DC resistance; lay not representable in 2D | Q1.1, Q3.4 |
 | σ_Al fitted to R_DC = 0.164 Ω/km | NKT gives diameter and R_DC, not σ; within 0.2 % of the IEC value | Q1.1 |

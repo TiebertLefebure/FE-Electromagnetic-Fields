@@ -41,7 +41,7 @@ Centre spacing = `2 rJacket + JacketGap` (gap in mm).
 | Flat, NKT "S = D + 70 mm" (Section 5) | `Formation 1`, `JacketGap 70` | 113 mm |
 
 The 0.5 mm gap removes the zero-angle soil wedges at the contact points: minimum triangle
-quality 0.020 (touching) → 0.487 (gap). Sections 2–3 show it changes E_max by 0.01 %,
+quality 4√3·A/Σℓ² 0.020 (touching) → 0.575 (gap). Sections 2–3 show it changes E_max by 0.01 %,
 C by < 1e-5 %, L by 0.5 %.
 
 ## Mesh

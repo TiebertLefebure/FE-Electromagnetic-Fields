@@ -50,5 +50,5 @@ Defect: add `-setnumber Flag_Defect 1` to **both** commands (and use another mes
 | `electrode_currents.dat` | I of 101,102,103,111,112,113 (A/m, re/im): inner + outer = 0 |
 
 Linear triangles: E is constant per element, so the maximum is slightly below the
-interface value (−0.4 % at the default mesh, −0.15 % at `MeshFactor` 0.5).
+interface value (−0.43 % at the default mesh, −0.17 % at `MeshFactor` 0.5).
 The radial cut starts 1 µm inside XLPE to avoid ambiguous lookup on an interface.
