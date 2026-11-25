@@ -1,0 +1,93 @@
+% Plots and value tables of the assignment's deliverables list (Section 6), one page each.
+% Built by Slides/make_deliverables.sh, which turns every page into a PNG in Deliverables/.
+% Same figure sources and generated numbers as the reports and slides.
+\documentclass[border=8pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}\renewcommand{\familydefault}{\sfdefault}
+\usepackage{amsmath,amssymb,booktabs,xcolor,tikz,pgfplots}
+\pgfplotsset{compat=1.18}
+\definecolor{KULBlue}{HTML}{00407A}
+\input{../Reports/sources/data/values.tex}
+\def\datadir{../Reports/sources/data}
+\newcommand{\plot}[3]{{\def\figw{#1}\def\figh{#2}\input{../Reports/sources/figures/style.tex}\input{../Reports/sources/figures/#3.tex}}}
+\newenvironment{dpage}[1]{\begin{minipage}{15cm}\centering
+  {\large\bfseries\color{KULBlue}#1}\par\medskip}{\end{minipage}}
+\standaloneenv{dpage}
+\begin{document}
+
+% ---- 1. Electrodynamic analysis ---------------------------------------------------------
+\begin{dpage}{Electric field along a radial cut of phase A, with and without the air void}
+\plot{12cm}{7cm}{radial_defect}\par\smallskip
+\small Peak field, 33 kV, 50 Hz. Void: air, radius 0.25 mm, centred at $r=8.8$ mm.
+\end{dpage}
+
+\begin{dpage}{Per-unit-length capacitance versus frequency}
+\plot{12cm}{7cm}{cap_freq}\par\smallskip
+\small FE (field energy) at 5, 50, 500 and 5000 Hz; analytical coaxial value; NKT maximum.
+\end{dpage}
+
+\begin{dpage}{Per-unit-length capacitance per phase}
+\begin{tabular}{@{}lrr@{}}\toprule
+ & $C'$ [$\mu$F/km] & FE vs reference\\\midrule
+FE, field energy & \Cgap & \\
+FE, electrode charge & \Cqgap & \\
+Analytical $2\pi\varepsilon_0\varepsilon_r/\ln(r_o/r_i)$, $r_i=7.8$, $r_o=15.8$ mm & \AnaC & \dCana\,\%\\
+NKT datasheet (maximum) & 0.22 & \dCnkt\,\%\\\bottomrule
+\end{tabular}
+\end{dpage}
+
+% ---- 2. Magnetoquasistatic analysis -----------------------------------------------------
+\begin{dpage}{Time-averaged Joule losses in each conducting part}
+\plot{11cm}{7cm}{losses_bar}\par\smallskip
+\small 350 A, 50 Hz, conductivities at 20\,$^\circ$C, three phases. No armour or pipe; soil $\sigma=0$ (no loss).
+\end{dpage}
+
+\begin{dpage}{Per-unit-length AC resistance $R_{AC}=P/(3I^2)$}
+\plot{12cm}{4.5cm}{rac_bar}\par\smallskip
+\small DC resistance, skin and proximity effect, and screen losses; 20\,$^\circ$C. FE: \Racbase, IEC 60287: \IecRac\ $\Omega$/km.
+\end{dpage}
+
+\begin{dpage}{Per-unit-length inductance versus frequency}
+\plot{12cm}{7cm}{l_freq}\par\smallskip
+\small Positive-sequence inductance $L=\int\nu|\hat{\mathbf b}|^2dA/(3\hat I^2)$.
+\end{dpage}
+
+\begin{dpage}{Magnetoquasistatic values at 350 A, 50 Hz, 20\,$^\circ$C (both ends bonded)}
+\begin{tabular}{@{}lrl@{}}\toprule
+Quantity & FE & Reference\\\midrule
+Joule losses, aluminium conductors [kW/km] & \Pcbase & \IecPc\ (IEC 60287)\\
+Joule losses, copper screens [kW/km] & \Psbase & \IecPs\ (IEC 60287)\\
+Joule losses, armour / pipe / soil [kW/km] & 0 & no armour or pipe; soil $\sigma=0$\\
+Joule losses, total [kW/km] & \Ptbase & \IecPt\ (IEC 60287)\\
+DC resistance (FE at 0.01 Hz) [$\Omega$/km] & \Racfdc & 0.164 (NKT, max.\ at 20\,$^\circ$C)\\
+AC resistance $P/(3I^2)$ [$\Omega$/km] & \Racbase & \IecRac\ (IEC 60287)\\
+Inductance, 0.5 mm gap [mH/km] & \Lbase & \AnaLgap\ (analytical, no screen currents)\\
+Inductance, touching trefoil [mH/km] & \Ltouching & \NktL\ (NKT, $X=0.12$ $\Omega$/km)\\\bottomrule
+\end{tabular}
+\end{dpage}
+
+% ---- 3. Coupled magneto-thermal analysis ------------------------------------------------
+\begin{dpage}{Convergence history of the nonlinear (staggered) iterations}
+\plot{12cm}{7cm}{nl_history}\par\smallskip
+\small Criterion: $\|T_k-T_{k-1}\|_2/\|T_k\|_2<10^{-6}$ over all nodal temperatures; \Nitnl\ iterations on every mesh.
+\end{dpage}
+
+\begin{dpage}{Linear model ($\sigma$ at 20\,$^\circ$C) compared with $\sigma(T)$, 350 A}
+\begin{tabular}{@{}lrrr@{}}\toprule
+Quantity & linear & $\sigma(T)$ & change\\\midrule
+Joule losses, conductors [kW/km] & \Pclin & \Pcnl & \dPcNL\,\%\\
+Joule losses, screens [kW/km] & \Pslin & \Psnl & \dPsNL\,\%\\
+Joule losses, total [kW/km] & \Ptlin & \Ptnl & \dPtNL\,\%\\
+AC resistance [$\Omega$/km] & \Raclin & \Racnl & \dRacNL\,\%\\
+Inductance [mH/km] & \Llin & \Lnl & \dLNL\,\%\\
+Max.\ conductor temperature [$^\circ$C] & \Tclin & \Tcnl & \dTcNL\ K\\
+Max.\ ground-surface temperature [$^\circ$C] & \Tslin & \Tsnl & \\
+Nonlinear iterations & \Nitlin & \Nitnl & \\\bottomrule
+\end{tabular}
+\end{dpage}
+
+\begin{dpage}{Change from the linear to the $\sigma(T)$ model}
+\plot{12cm}{6cm}{nl_change}
+\end{dpage}
+
+\end{document}

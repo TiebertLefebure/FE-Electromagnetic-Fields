@@ -1,5 +1,5 @@
 #!/bin/sh
-# Reproduces EVERY number in the reports and slides (about 50 min on a laptop).
+# Reproduces EVERY number in the reports and slides (about 25 min on a laptop).
 # Each line is one case: the same options go to Gmsh (mesh) and GetDP (solve).
 # Results land in Source-code/<analysis>/results/<case>/ ; then run
 #   python3 Reports/collect_values.py && ./Reports/build.sh   (reports)

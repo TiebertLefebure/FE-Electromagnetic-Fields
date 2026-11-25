@@ -23,7 +23,10 @@ Source-code/
 run_all.sh              every case in the reports and slides (exact commands)
 Reports/                Section 1-5 PDFs, LaTeX sources, collect_values.py (results -> numbers)
 Slides/                 slides.tex -> slides.pdf; export_maps.sh renders the field maps;
-                        speaker_notes.tex -> speaker_notes.pdf (timing + notes per main slide)
+                        speaker_notes.tex -> speaker_notes.pdf (timing + notes per main slide);
+                        make_deliverables.sh + deliverables.tex -> Deliverables/
+Deliverables/           the maps and values of the assignment's deliverables list, one folder per
+                        analysis, with an index (README.md); also zipped as Deliverables.zip
 ```
 
 Search a question tag (`Q2.5`, `Q4.7`, ...) in the `.pro`/`.geo` files to find the code that
@@ -57,10 +60,11 @@ Set **Output > Directory** = `results/<name>` to keep a run (otherwise `res/` is
 
 ```sh
 export PATH="$PWD/../ONELAB Software/Gmsh.app/Contents/MacOS:$PATH"   # gmsh + getdp
-./run_all.sh                        # all meshes and cases, about 50 min
+./run_all.sh                        # all meshes and cases, about 25 min
 python3 Reports/collect_values.py   # results + analytical/IEC references -> values.tex + CSV
 ./Reports/build.sh                  # Section 1-5 PDFs
 ./Slides/export_maps.sh             # field maps (needs a display)
+./Slides/make_deliverables.sh       # Deliverables/ and Deliverables.zip
 cd Slides && pdflatex slides.tex && pdflatex slides.tex          # notes: speaker_notes.tex
 ```
 
