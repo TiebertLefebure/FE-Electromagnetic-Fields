@@ -11,12 +11,7 @@ as such. Every case is one line of \runall; every number comes from \texttt{valu
 
 \section*{Q2.1 Domain, equations and boundary conditions}
 \assignmentquestion{\QuestionTwoOne}
-\answer{We solve \(-\nabla\cdot\big((\sigma+j\omega\varepsilon)\nabla\hat v\big)=0\) for the complex potential in
-the three XLPE annuli only, with linear triangles. The boundary conditions are \(\hat v=\hat V_k\) on each conductor
-screen and \(\hat v=0\) on each core screen; every screen is one electrode with a global voltage \(U\) and current
-\(I\). We truncate the domain at the core screens because a continuous grounded screen fixes the potential outside
-it to zero. Only the XLPE (its radii and permittivity) and the two screen potentials influence the insulation
-field; the conductor, the copper screen, the fillers, the sheath, the soil and the other two cables do not.}
+\answer{\AnsTwoOne}
 \textbf{Equation.} With \(\hat{\mathbf E}=-\nabla\hat v\) and \(e^{j\omega t}\) phasors,
 \[
  -\nabla\cdot\big[(\sigma+j\omega\varepsilon)\nabla\hat v\big]=0,\qquad
@@ -52,11 +47,7 @@ ends (terminations), would need a different model.
 
 \section*{Q2.2 Geometric simplifications}
 \assignmentquestion{\QuestionTwoTwo}
-\answer{Yes. Leaving out everything outside the grounded screens is exact. Treating the semiconducting
-layers as ideal electrodes costs a voltage drop of about \AnaDrop\ mV, a fraction \(3\cdot10^{-7}\) of the applied
-voltage. Replacing touching jackets by a 0.5 mm gap changes the maximum field by \dEtouch\,\% and the capacitance
-by less than \dCtouch\,\%. The one detail that must be kept is the semiconductor thickness: putting the voltage on
-the aluminium surface instead of on the semicon would change the capacitance by \dCbare\,\%.}
+\answer{\AnsTwoTwo}
 \begin{center}\input{figures/electric_domain.tex}
 \figcap{The grounded core screen confines the field: only the XLPE annulus between two electrodes is
 solved (one per phase); everything outside it is left out exactly.}\end{center}
@@ -83,11 +74,7 @@ screens decouple the three annuli, so moving a cable does not change its insulat
 
 \section*{Q2.3 Mesh convergence}
 \assignmentquestion{\QuestionTwoThree}
-\answer{The capacitance is converged already on the coarsest mesh (changes of order \(10^{-5}\)). The maximum
-field converges from below: it is \dEgap\,\% from the analytical value on the default mesh and \dEfine\,\% on the
-fine one (\Dofsgapfine\ complex unknowns). With linear elements the field is constant per triangle, so the error is
-concentrated at the conductor screen, where \(E\propto1/r\) is steepest: local refinement is needed there (and
-around a defect), not in the bulk of the insulation.}
+\answer{\AnsTwoThree}
 \begin{center}\small
 \begin{tabular}{@{}rrrr@{}}\toprule
 Target \(h\) near the cables [mm] & Complex DoFs & \(E_{\max}\) [kV/mm] & \(C'\) [\(\mu\)F/km]\\\midrule
@@ -112,9 +99,7 @@ needed} at the conductor-screen interface (and around a defect, where Q2.5 uses
 
 \section*{Q2.4 Admissible field strength}
 \assignmentquestion{\QuestionTwoFour}
-\answer{The datasheet gives no admissible field, so we use the design limits of the Eskom XLPE cable
-specification: 8 kV/mm RMS at the conductor screen and 4 kV/mm RMS at the core screen. The healthy cable has
-\AnaEirms\ kV/mm and \AnaEorms\ kV/mm RMS at these two screens, 43\,\% of each limit, so it is well within them.}
+\answer{\AnsTwoFour}
 NKT gives no admissible local field. We use the design limits of 8 kV/mm RMS at the conductor
 screen and 4 kV/mm RMS at the core screen of Eskom specification 240-56030625 [Eskom]. It
 covers 44--132 kV XLPE cables, so for a 33 kV cable it is a conservative engineering benchmark,
@@ -138,13 +123,7 @@ well within them. This checks the stress design only; it does not establish life
 
 \section*{Q2.5 Insulation defect}
 \assignmentquestion{\QuestionTwoFive}
-\answer{We add an air-filled void (a gas cavity) of radius 0.25 mm, centred 0.75 mm from the conductor screen
-where the stress is highest, with \(\varepsilon_r=1\). In a 2D cross-section the void is an infinitely long channel
-along the cable; its field enhancement (\(1.43E_0\)) is larger than that of a real spherical void (\(1.25E_0\)), so
-the 2D result is conservative. Along the radial cut the field inside the void rises to \Vmeandefectfine\ kV/mm
-(\(\VoidRatio E_0\)), while the field in the surrounding XLPE stays close to the healthy one. The cable does not
-withstand this defect in the long run: the void field exceeds the breakdown strength of air (about \AnaEb\ kV/mm),
-so partial discharges start at rated voltage and slowly erode the insulation until it breaks down.}
+\answer{\AnsTwoFive}
 \textbf{Defect (assumption).} An air-filled void, e.g.\ a cavity from cross-linking by-products
 or a contaminant: radius 0.25 mm, centred at \(r=8.8\) mm on phase A's \(+x\) radius, 0.75 mm from
 the conductor screen where the stress is highest. Air at 1 bar: \(\varepsilon_r=1\),
@@ -190,13 +169,7 @@ partial-discharge test would reject this cable.
 
 \section*{Q2.6 Conduction and displacement currents; conservation}
 \assignmentquestion{\QuestionTwoSix}
-\answer{At the conductor screen the displacement current density \(\omega\varepsilon|\hat E|\) is
-\AnaJd\ A/m\textsuperscript2 and the conduction current density \(\sigma|\hat E|\) is \AnaJc\ A/m\textsuperscript2;
-their ratio \(\sigma/(\omega\varepsilon)=\AnaRatio\) is the same everywhere in the XLPE. Current conservation is
-satisfied: per phase, the current entering at the conductor screen leaves at the core screen to within \Ibalance,
-which is round-off. Displacement current dominates in the insulators (XLPE, PE and air), where
-\(\sigma\ll\omega\varepsilon\); conduction current dominates in the semicons, the metals and the soil, where
-\(\sigma\gg\omega\varepsilon\).}
+\answer{\AnsTwoSix}
 \(\hat{\mathbf J}_c=\sigma\hat{\mathbf E}\) and \(\hat{\mathbf J}_d=j\omega\varepsilon\hat{\mathbf E}\), both radial.
 At the conductor screen: analytical \(|\hat J_d|=\)\,\AnaJd\ A/m\textsuperscript2 (FE map maximum \JdFE),
 \(|\hat J_c|=\)\,\AnaJc\ A/m\textsuperscript2 (FE \JcFE). Their ratio is
@@ -228,13 +201,7 @@ densities along the phase-A radius; displacement exceeds conduction by ten order
 
 \section*{Q2.7 Capacitance and frequency}
 \assignmentquestion{\QuestionTwoSeven}
-\answer{The FE capacitance is \Cgap\ \(\mu\)F/km per phase. It equals the analytical value
-\(2\pi\varepsilon/\ln(r_o/r_i)=\AnaC\) \(\mu\)F/km to \dCana\,\% and lies below the NKT maximum of 0.22
-\(\mu\)F/km. The analytical formula assumes concentric, homogeneous and linear insulation and treats the
-semiconducting layers as perfect electrodes, so \(r_i\) and \(r_o\) are the radii of the XLPE interfaces (7.8 and
-15.8 mm), not of the aluminium or the copper. The capacitance does not vary with frequency: from 5 Hz to 5 kHz it
-stays at \Cgap\ \(\mu\)F/km, because in a homogeneous annulus the factor \(\sigma+j\omega\varepsilon\) cancels from
-the equation.}
+\answer{\AnsTwoSeven}
 \(C'=2\pi\varepsilon_0\varepsilon_r/\ln(r_o/r_i)=\)\,\AnaC\ \(\mu\)F/km per phase. Assumptions: concentric
 circular interfaces, homogeneous linear XLPE, infinitely long cable, and the semicons treated as
 ideal electrodes, so \(r_i,r_o\) are the \emph{XLPE interfaces} (7.8, 15.8 mm), not the Al or Cu radii.
@@ -262,9 +229,7 @@ constant properties \(C\) cannot depend on \(f\). Real XLPE has a slightly frequ
 
 \section*{Q2.8 Design improvement: thicker insulation}
 \assignmentquestion{\QuestionTwoEight}
-\answer{We propose a thicker insulation: 9 mm instead of 8 mm of XLPE at the same outer diameter. This
-changes the peak stress at the conductor screen by \dEthick\,\% (from \Egap\ to \Ethick\ kV/mm peak) and the
-capacitance and charging current by \dCthick\,\%, which gives more margin against defects such as the void of Q2.5.}
+\answer{\AnsTwoEight}
 XLPE 8 \(\to\) 9 mm at the same outer diameter (the outer semicon moves out 1 mm into the assumed
 inner filler; Cu ring and jacket unchanged).
 \begin{center}\small

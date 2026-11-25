@@ -3,7 +3,8 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern,tgheros,microtype}
+\usepackage{lmodern,microtype}
+\renewcommand{\familydefault}{\sfdefault}   % Latin Modern Sans, as the slides (Computer Modern Sans)
 \usepackage[a4paper,left=21mm,right=21mm,top=24mm,bottom=22mm,
   headheight=14pt,headsep=7mm,footskip=10mm]{geometry}
 \usepackage{booktabs,tabularx,array,amsmath,amssymb,graphicx,float,caption,tikz,pgfplots}
@@ -14,6 +15,7 @@
 \colorlet{accent}{KULBlue}\definecolor{cA}{HTML}{00407A}\definecolor{cB}{HTML}{D1495B}\definecolor{cC}{HTML}{EDAE49}
 \usepackage[colorlinks=true,linkcolor=KULBlue,urlcolor=KULBlue,citecolor=KULBlue]{hyperref}
 \input{questions.tex}
+\input{answers.tex}
 \titleformat{\section}{\Needspace{12\baselineskip}\sffamily\Large\bfseries\color{KULBlue}}{}{0pt}{}
 \titleformat*{\subsection}{\sffamily\large\bfseries\color{KULBlue}}
 \titlespacing*{\section}{0pt}{12pt}{6pt}

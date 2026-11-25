@@ -12,12 +12,7 @@ model (default). Every case is one line of \runall.
 
 \section*{Q4.1 Equations and heat source}
 \assignmentquestion{\QuestionFourOne}
-\answer{We solve steady-state heat conduction, \(-\nabla\cdot(\kappa\nabla T)=p\), with the Joule loss
-density \(p=|\hat{\mathbf j}|^2/(2\sigma)=\tfrac12\sigma(T)|j\omega\hat{\mathbf a}+\hat{\mathbf u}_r|^2\) as heat
-source in the aluminium and copper. The factor \(\tfrac12\) turns the complex peak phasors into a real,
-time-averaged loss density; in GetDP the expression is evaluated on the complex magnetic solution with
-\texttt{<a>[...]} and \texttt{SquNorm}, which returns a real number. In the coupled model the conductivity depends
-on temperature, \(\sigma=\sigma_{20}/(1+\alpha(T-20))\).}
+\answer{\AnsFourOne}
 Steady-state heat conduction with temperature \(T\) in \(^\circ\)C:
 \[
  -\nabla\cdot(\kappa\nabla T)=p\quad\text{in }\Omega_{\rm th},\qquad
@@ -47,13 +42,7 @@ soil and semiconductors are zero in the magnetic model (Section 3).
 
 \section*{Q4.2 Thermal domain, boundary conditions, one mesh}
 \assignmentquestion{\QuestionFourTwo}
-\answer{The cables are cooled by conduction through the soil to the ground surface, where the heat leaves
-by convection and radiation; we model this with \(-\kappa\,\partial_nT=h(T-T_{\rm amb})\) and
-\(h=10\) W/(m\(^2\)K) (natural convection about 2, linearised radiation \Hrad, plus some wind). We truncate the
-domain 20 m to each side, with zero heat flux, and 20 m deep, with \(T=15\,^\circ\)C. The thermal domain must be
-much larger than the electromagnetic one because the three cables form a net heat source whose temperature field
-decays only like \(\ln r\), while the field of the balanced currents decays like \(1/r^2\). We use one mesh: the
-0.6 m electromagnetic box is a sub-domain of the thermal domain, so no interpolation is needed.}
+\answer{\AnsFourTwo}
 \textbf{Cooling path.} The cables are cooled only by conduction through the soil to the ground
 surface, where heat leaves by natural convection and long-wave radiation to the air.
 
@@ -96,10 +85,7 @@ elements where \(T\) is solved: no interpolation between meshes. Outside the box
 
 \section*{Q4.3 Ambient temperature, mesh and domain size}
 \assignmentquestion{\QuestionFourThree}
-\answer{The ambient temperature is 15\,\(^\circ\)C for the air and the deep soil, as in the NKT rating.
-Refining the mesh from MeshFactor 1 to 0.5 changes the hot spot by \dTcFine\ K, and enlarging the domain from 20 to
-40 m changes it by \dTcDom\ K, so the default mesh and domain are adequate. A 10 m domain changes the hot spot by
-\dTcDomten\ K, because its 15\,\(^\circ\)C bottom then acts as an extra heat sink.}
+\answer{\AnsFourThree}
 \begin{center}\small
 \begin{tabular}{@{}lrrr@{}}\toprule
 \(\sigma(T)\) model & \(T_{\max}\) [\(^\circ\)C] & surface \(T_{\max}\) [\(^\circ\)C] & iterations\\\midrule
@@ -125,11 +111,7 @@ hot spot changes by \dTcDom\ K, so the default domain is adequate.
 
 \section*{Q4.4 Temperature in the cable and hot spot}
 \assignmentquestion{\QuestionFourFour}
-\answer{The hot spot is \Tcnl\,\(^\circ\)C, in the aluminium of the two lower cables (B and C); the top cable
-is \dTcAlow\ K cooler because it is closer to the ground surface. The aluminium is nearly isothermal, and most of
-the temperature drop is across the XLPE and the soil. At the rated 350 A the hot spot is \dTcNkt\ K from the
-90\,\(^\circ\)C limit for XLPE given by NKT: the cable is at its thermal limit, within the uncertainty of our
-assumptions.}
+\answer{\AnsFourFour}
 \begin{center}
 \includegraphics[width=0.47\linewidth,trim=150 0 150 0,clip]{t_cables_nl.png}\hfill
 \includegraphics[width=0.47\linewidth,trim=150 0 150 0,clip]{t_cables_lin.png}\\
@@ -150,10 +132,7 @@ The linear model gives \Tclin\,\(^\circ\)C (Q4.8).
 
 \section*{Q4.5 Temperature around the cable and at the ground surface}
 \assignmentquestion{\QuestionFourFive}
-\answer{The ground above the trefoil is warmed by \dTsurf\ K, to a maximum of \Tsnl\,\(^\circ\)C at the
-ground/air interface, and this warming spreads over a few metres. With a Dirichlet condition \(T=15\,^\circ\)C at
-the surface, the hot spot drops by \dTcIso\ K to \Tcnliso\,\(^\circ\)C: the isothermal surface is slightly
-non-conservative, because it removes the small thermal resistance \(1/h\) of the surface.}
+\answer{\AnsFourFive}
 \begin{center}
 \includegraphics[width=0.38\linewidth,trim=150 0 150 0,clip]{t_soil_nl.png}\hfill
 \begin{minipage}[b]{0.58\linewidth}\def\figw{\linewidth}\def\figh{5cm}
@@ -178,12 +157,7 @@ small compared with the soil resistance between cable and surface.
 
 \section*{Q4.6 Validation against IEC 60287 and the datasheet}
 \assignmentquestion{\QuestionFourSix}
-\answer{The IEC 60287 calculation gives \IecTheta\,\(^\circ\)C at 350 A and an ampacity of \IecAmp\ A, which
-confirms the NKT rating with our material data. Our FE model gives \Tcnl\,\(^\circ\)C (\Tcnliso\,\(^\circ\)C with an
-isothermal surface) and an ampacity of \Amptrefoil\ A, so it predicts the admissible conductor temperature within a
-few kelvin. The differences come from the convective ground surface (IEC assumes an isothermal one), the empirical
-IEC formula for the soil resistance of a trefoil against our full 2D conduction with mutual heating, the eddy losses
-included in our screens, and the 0.5 mm gap.}
+\answer{\AnsFourSix}
 IEC 60287 thermal ladder for one cable of the trefoil (no armour, no dielectric loss):
 \[
  \theta_c-\theta_{\rm amb}=W_c\big[T_1+(1+\lambda_1)(T_3+T_4)\big],\qquad W_c=I^2R_{AC}(\theta_c).
@@ -226,10 +200,7 @@ actual 2D conduction with mutual heating; (iii) the FE screen loss includes eddy
 
 \section*{Q4.7 Nonlinear coupling and convergence}
 \assignmentquestion{\QuestionFourSeven}
-\answer{Our criterion is the relative increment of the vector of all nodal temperatures in the Euclidean
-norm, \(\|T_k-T_{k-1}\|_2/\|T_k\|_2<10^{-6}\). The staggered iteration needs \Nitnl\ iterations, the same number on
-the coarse, default and fine meshes, so the convergence does not depend on the mesh density. The convergence
-history below is a straight line on the logarithmic scale.}
+\answer{\AnsFourSeven}
 \textbf{Algorithm} (staggered fixed point, resolution \texttt{MagnetoThermal}): start with
 \(T_0=20\,^\circ\)C everywhere; for \(k=1,2,\dots\): solve the magnetic problem with
 \(\sigma(T_{k-1})\), compute \(p_k\), solve the thermal problem for \(T_k\).
@@ -257,12 +228,7 @@ It would approach 1 (divergence: thermal runaway) only for a much larger tempera
 
 \section*{Q4.8 Linear versus \texorpdfstring{\(\sigma(T)\)}{sigma(T)}}
 \assignmentquestion{\QuestionFourEight}
-\answer{Compared with the linear model (\(\sigma\) at 20\,\(^\circ\)C), the temperature-dependent
-conductivity raises the conductor losses by \dPcNL\,\%, the total losses and \(R_{AC}\) by \dPtNL\,\%, and the hot
-spot by \dTcNL\ K, because aluminium near 90\,\(^\circ\)C is about \RhoHot\,\% more resistive while the current is
-imposed. The screen losses decrease (\dPsNL\,\%), because a more resistive screen carries less circulating
-current. The flux density, the inductance (\dLNL\,\%) and the current density barely change, because the currents
-are imposed and the materials are non-magnetic.}
+\answer{\AnsFourEight}
 \begin{center}\small
 \begin{tabular}{@{}lrrr@{}}\toprule
 Quantity & linear (20\,\(^\circ\)C) & \(\sigma(T)\) & change\\\midrule
@@ -298,10 +264,7 @@ Temperature maps: Q4.4.}\end{center}
 
 \section*{Q4.9 Is the linear model conservative?}
 \assignmentquestion{\QuestionFourNine}
-\answer{No, the linear model is not conservative: it underestimates the losses and the hot spot (by
-\dTcNL\ K). Used for rating, it would allow about \AmpLin\ A instead of \Amptrefoil\ A, so the conductor would run
-above 90\,\(^\circ\)C and the insulation would age faster. A linear model is only acceptable with \(\sigma\)
-evaluated at the maximum operating temperature, which is what IEC 60287 does.}
+\answer{\AnsFourNine}
 \textbf{No.} With \(\sigma\) at 20\,\(^\circ\)C it underestimates the losses (\(\sigma(T)\) gives
 \dPtNL\,\% more) and the hot spot (\dTcNL\ K). Used for rating, it would allow
 \(350\sqrt{75/(T_{\rm lin}-15)}\approx\)\,\AmpLin\ A instead of the \Amptrefoil\ A found with

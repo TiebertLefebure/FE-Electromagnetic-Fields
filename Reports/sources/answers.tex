@@ -1,0 +1,202 @@
+% Written answer to every assignment question, in sentences. Used by the section reports
+% (\answer{\Ans...} under each question box) and by the appendix slides (one per question).
+% Numbers are macros from data/values.tex (Reports/collect_values.py).
+\newcommand{\AnsOneOne}{%
+Our cable is the NKT 33 kV single-core XLPE-AL cable \(1\times185/50\) mm\textsuperscript2: a solid
+aluminium conductor (radius 7.4 mm), a 0.4 mm semiconducting conductor screen, 8 mm of XLPE, a 0.4 mm
+semiconducting insulation screen, a 50 mm\textsuperscript2 copper wire screen with a copper tape, and a PE sheath with
+an outer diameter of 43 mm. It is rated 33 kV between phases (19 kV to ground) and 350 A continuously at a conductor
+temperature of 90\,\(^\circ\)C, for three cables in touching trefoil laid directly in ground 1.0 m deep, in soil
+of 1.2 K\,m/W at 15\,\(^\circ\)C, with the screens bonded at both ends. The tables give the radius of every layer
+with its basis, and the electromagnetic and thermal properties of every material with its source.}
+\newcommand{\AnsOneTwo}{%
+We take the environment of the datasheet rating: homogeneous soil with a thermal resistivity of
+1.2 K\,m/W at 15\,\(^\circ\)C, the trefoil centre 1.0 m below the ground surface, and air at 15\,\(^\circ\)C above
+it. The electrical soil properties (\(\varepsilon_r=10\), \(\sigma=0.01\) S/m, from the course) hardly matter:
+the grounded screens shield the electric field from the soil, and the soil skin depth of about 700 m makes its eddy
+currents negligible. Like the datasheet rating, we neglect soil drying and layering.}
+\newcommand{\AnsOneThree}{%
+We assume both-end (solid) bonding with ideal earth connections, because that is the bonding of the
+NKT 350 A rating: circulating screen currents are allowed. Single-point bonding, with no net screen current, is
+studied as a loss-reducing alternative in Q3.11 and Section~5. The cable has no armour and no pipe.}
+\newcommand{\AnsOneFour}{%
+We impose the phase-to-ground voltage \(\hat V=\sqrt2\cdot33/\sqrt3=26.944\) kV and the phase current
+\(\hat I=\sqrt2\cdot350=494.97\) A as peak phasors at 50 Hz, in positive sequence: phase A at \(0^\circ\), B at
+\(-120^\circ\) and C at \(+120^\circ\). The voltages drive the electric model of Section~2 and the currents the
+magnetic model of Section~3.}
+\newcommand{\AnsTwoOne}{%
+We solve \(-\nabla\cdot\big((\sigma+j\omega\varepsilon)\nabla\hat v\big)=0\) for the complex potential in
+the three XLPE annuli only, with linear triangles. The boundary conditions are \(\hat v=\hat V_k\) on each conductor
+screen and \(\hat v=0\) on each core screen; every screen is one electrode with a global voltage \(U\) and current
+\(I\). We truncate the domain at the core screens because a continuous grounded screen fixes the potential outside
+it to zero. Only the XLPE (its radii and permittivity) and the two screen potentials influence the insulation
+field; the conductor, the copper screen, the fillers, the sheath, the soil and the other two cables do not.}
+\newcommand{\AnsTwoTwo}{%
+Yes. Leaving out everything outside the grounded screens is exact. Treating the semiconducting
+layers as ideal electrodes costs a voltage drop of about \AnaDrop\ mV, a fraction \(3\cdot10^{-7}\) of the applied
+voltage. Replacing touching jackets by a 0.5 mm gap changes the maximum field by \dEtouch\,\% and the capacitance
+by less than \dCtouch\,\%. The one detail that must be kept is the semiconductor thickness: putting the voltage on
+the aluminium surface instead of on the semicon would change the capacitance by \dCbare\,\%.}
+\newcommand{\AnsTwoThree}{%
+The capacitance is converged already on the coarsest mesh (changes of order \(10^{-5}\)). The maximum
+field converges from below: it is \dEgap\,\% from the analytical value on the default mesh and \dEfine\,\% on the
+fine one (\Dofsgapfine\ complex unknowns). With linear elements the field is constant per triangle, so the error is
+concentrated at the conductor screen, where \(E\propto1/r\) is steepest: local refinement is needed there (and
+around a defect), not in the bulk of the insulation.}
+\newcommand{\AnsTwoFour}{%
+The datasheet gives no admissible field, so we use the design limits of the Eskom XLPE cable
+specification: 8 kV/mm RMS at the conductor screen and 4 kV/mm RMS at the core screen. The healthy cable has
+\AnaEirms\ kV/mm and \AnaEorms\ kV/mm RMS at these two screens, 43\,\% of each limit, so it is well within them.}
+\newcommand{\AnsTwoFive}{%
+We add an air-filled void (a gas cavity) of radius 0.25 mm, centred 0.75 mm from the conductor screen
+where the stress is highest, with \(\varepsilon_r=1\). In a 2D cross-section the void is an infinitely long channel
+along the cable; its field enhancement (\(1.43E_0\)) is larger than that of a real spherical void (\(1.25E_0\)), so
+the 2D result is conservative. Along the radial cut the field inside the void rises to \Vmeandefectfine\ kV/mm
+(\(\VoidRatio E_0\)), while the field in the surrounding XLPE stays close to the healthy one. The cable does not
+withstand this defect in the long run: the void field exceeds the breakdown strength of air (about \AnaEb\ kV/mm),
+so partial discharges start at rated voltage and slowly erode the insulation until it breaks down.}
+\newcommand{\AnsTwoSix}{%
+At the conductor screen the displacement current density \(\omega\varepsilon|\hat E|\) is
+\AnaJd\ A/m\textsuperscript2 and the conduction current density \(\sigma|\hat E|\) is \AnaJc\ A/m\textsuperscript2;
+their ratio \(\sigma/(\omega\varepsilon)=\AnaRatio\) is the same everywhere in the XLPE. Current conservation is
+satisfied: per phase, the current entering at the conductor screen leaves at the core screen to within \Ibalance,
+which is round-off. Displacement current dominates in the insulators (XLPE, PE and air), where
+\(\sigma\ll\omega\varepsilon\); conduction current dominates in the semicons, the metals and the soil, where
+\(\sigma\gg\omega\varepsilon\).}
+\newcommand{\AnsTwoSeven}{%
+The FE capacitance is \Cgap\ \(\mu\)F/km per phase. It equals the analytical value
+\(2\pi\varepsilon/\ln(r_o/r_i)=\AnaC\) \(\mu\)F/km to \dCana\,\% and lies below the NKT maximum of 0.22
+\(\mu\)F/km. The analytical formula assumes concentric, homogeneous and linear insulation and treats the
+semiconducting layers as perfect electrodes, so \(r_i\) and \(r_o\) are the radii of the XLPE interfaces (7.8 and
+15.8 mm), not of the aluminium or the copper. The capacitance does not vary with frequency: from 5 Hz to 5 kHz it
+stays at \Cgap\ \(\mu\)F/km, because in a homogeneous annulus the factor \(\sigma+j\omega\varepsilon\) cancels from
+the equation.}
+\newcommand{\AnsTwoEight}{%
+We propose a thicker insulation: 9 mm instead of 8 mm of XLPE at the same outer diameter. This
+changes the peak stress at the conductor screen by \dEthick\,\% (from \Egap\ to \Ethick\ kV/mm peak) and the
+capacitance and charging current by \dCthick\,\%, which gives more margin against defects such as the void of Q2.5.}
+\newcommand{\AnsThreeOne}{%
+We solve \(\nabla\times(\nu\nabla\times\mathbf a)=\mathbf j\) for \(\mathbf a=a_z\mathbf e_z\) in a
+\(0.6\times0.6\) m box that contains the three cables and the soil between and around them, with \(a_z=0\) on the
+box edge. All cables must be in the domain because the screens do not shield the magnetic field. We truncate at
+0.3 m because the balanced phase currents make the field decay like \(1/r^2\): at the box edge it is below 1\,\%
+of its peak. The aluminium and the copper are massive regions with \(\mathbf j=-\sigma(j\omega\mathbf a+\mathbf
+u_r)\); each phase current is imposed as the net current of its aluminium region (\texttt{Current\_2D}), so that
+skin and proximity effects are free.}
+\newcommand{\AnsThreeTwo}{%
+The skin depth in aluminium at 50 Hz is \AnaDeltaAl\ mm, larger than the 7.4 mm conductor radius,
+so skin effect is weak. The massive model is the realistic one, because NKT specifies a solid aluminium conductor in
+which eddy currents flow freely. At 50 Hz the two models differ little (conductor resistance \dRcstr\,\%,
+inductance \dLstr\,\%), but only the massive model shows the current crowding towards the other phases and the
+skin and proximity increase of the resistance (\SkinFE\,\%).}
+\newcommand{\AnsThreeThree}{%
+Each copper screen is a massive region with its own voltage per unit length \(U\) and net current
+\(I\). Both-end bonding imposes \(U=0\) and the circulating current follows from the solution; single-point bonding
+imposes \(I=0\) and a standing voltage follows. Using only \(\mathbf j=-j\omega\sigma\mathbf a\) in the screens
+silently sets \(U=0\) relative to the arbitrary reference \(a_z=0\) on the truncation boundary, so the net screen
+current would depend on the size and shape of the box instead of on a real earthing, and \(I=0\) could not be
+imposed at all.}
+\newcommand{\AnsThreeFour}{%
+Yes, within limits. Replacing touching jackets by a 0.5 mm gap changes the inductance by
+\dLtouch\,\% and \(R_{AC}\) by \dRactouch\,\%, and modelling the copper wires and tape as one ring of the same
+area keeps the DC resistance and the screen loop. The main simplification of Section~2 is no longer valid: the
+screens do not confine the magnetic field, so all metals, all three cables, their spacing and the soil must be
+kept. Only the simplifications of the semicons and fillers remain valid.}
+\newcommand{\AnsThreeFive}{%
+Elements are at most 0.25 mm around the cables, below 5\,\% of the skin depth in aluminium and
+copper, so the mesh is limited by the geometry, not by the skin depth. Refining from MeshFactor 1 to 0.5 changes
+\(R_{AC}\) by \dRacfine\,\%, the inductance by \dLfine\,\% and the screen losses by \dPsfine\,\%. The screen
+losses converge slowest because the current varies across the thin copper ring, so that is where to refine.}
+\newcommand{\AnsThreeSix}{%
+The flux density peaks at \Bmax\ mT on the conductor surfaces that face the centre of the trefoil.
+It grows linearly inside each conductor, decreases like \(1/r\) across the insulation, and the field of the
+balanced trefoil decays quickly in the soil, to below 1\,\% of its peak at the box edge.}
+\newcommand{\AnsThreeSeven}{%
+In the aluminium the mean current density is \Javg\ A/mm\textsuperscript2 and the maximum is
+\Jmax\ A/mm\textsuperscript2, at the surface facing the other phases (proximity effect). With both ends bonded the
+screens carry a circulating current of about \Jscreen\ A/mm\textsuperscript2 on average; with single-point bonding
+only local eddy currents remain, with zero net current.}
+\newcommand{\AnsThreeEight}{%
+With both ends bonded, the aluminium conductors dissipate \Pcbase\ kW/km and the copper screens
+\Psbase\ kW/km, \Ptbase\ kW/km in total for the three phases. With single-point bonding the screen losses drop to
+\Pssingle\ kW/km. There is no armour or pipe, and the soil has no losses because its conductivity is neglected.}
+\newcommand{\AnsThreeNine}{%
+The AC resistance defined from the total losses, \(R_{AC}=P/(3I^2)\), is \Racbase\ \(\Omega\)/km
+at 20\,\(^\circ\)C, against a DC resistance of \Racfdc\ \(\Omega\)/km (NKT: at most 0.164 \(\Omega\)/km). Skin and
+proximity effect add \SkinFE\,\% (IEC 60287: \IecYsp\,\%) and the screen losses add \ScreenFE\,\%; IEC 60287 gives
+\IecRac\ \(\Omega\)/km in total. The datasheet does not list an AC resistance.}
+\newcommand{\AnsThreeTen}{%
+For a balanced, symmetric three-phase system we define the positive-sequence inductance per phase
+from the stored magnetic energy, \(L=\int\nu|\hat{\mathbf b}|^2dA/(3\hat I^2)\); it includes the internal
+inductance and the reaction of the screen currents. It is \Lbase\ mH/km at 50 Hz and it does vary with frequency
+(\Lfdc\ mH/km at DC, \Lfhund\ mH/km at 500 Hz), because the induced screen and eddy currents oppose the flux more
+at higher frequency. For touching cables the FE gives \Ltouching\ mH/km, against \NktL\ mH/km from the NKT
+reactance of 0.12 \(\Omega\)/km (\dLnkt\,\%).}
+\newcommand{\AnsThreeEleven}{%
+We propose single-point (or cross-) bonding of the screens. It removes the circulating screen
+current, so the total losses fall from \Ptbase\ to \Ptsingle\ kW/km (\dPtSingle\,\%) and \(R_{AC}\) from
+\Racbase\ to \Racsingle\ \(\Omega\)/km. The price is a standing voltage of \Usingle\ V/km on the open screen end,
+which limits the section length and requires sheath voltage limiters.}
+\newcommand{\AnsFourOne}{%
+We solve steady-state heat conduction, \(-\nabla\cdot(\kappa\nabla T)=p\), with the Joule loss
+density \(p=|\hat{\mathbf j}|^2/(2\sigma)=\tfrac12\sigma(T)|j\omega\hat{\mathbf a}+\hat{\mathbf u}_r|^2\) as heat
+source in the aluminium and copper. The factor \(\tfrac12\) turns the complex peak phasors into a real,
+time-averaged loss density; in GetDP the expression is evaluated on the complex magnetic solution with
+\texttt{<a>[...]} and \texttt{SquNorm}, which returns a real number. In the coupled model the conductivity depends
+on temperature, \(\sigma=\sigma_{20}/(1+\alpha(T-20))\).}
+\newcommand{\AnsFourTwo}{%
+The cables are cooled by conduction through the soil to the ground surface, where the heat leaves
+by convection and radiation; we model this with \(-\kappa\,\partial_nT=h(T-T_{\rm amb})\) and
+\(h=10\) W/(m\(^2\)K) (natural convection about 2, linearised radiation \Hrad, plus some wind). We truncate the
+domain 20 m to each side, with zero heat flux, and 20 m deep, with \(T=15\,^\circ\)C. The thermal domain must be
+much larger than the electromagnetic one because the three cables form a net heat source whose temperature field
+decays only like \(\ln r\), while the field of the balanced currents decays like \(1/r^2\). We use one mesh: the
+0.6 m electromagnetic box is a sub-domain of the thermal domain, so no interpolation is needed.}
+\newcommand{\AnsFourThree}{%
+The ambient temperature is 15\,\(^\circ\)C for the air and the deep soil, as in the NKT rating.
+Refining the mesh from MeshFactor 1 to 0.5 changes the hot spot by \dTcFine\ K, and enlarging the domain from 20 to
+40 m changes it by \dTcDom\ K, so the default mesh and domain are adequate. A 10 m domain changes the hot spot by
+\dTcDomten\ K, because its 15\,\(^\circ\)C bottom then acts as an extra heat sink.}
+\newcommand{\AnsFourFour}{%
+The hot spot is \Tcnl\,\(^\circ\)C, in the aluminium of the two lower cables (B and C); the top cable
+is \dTcAlow\ K cooler because it is closer to the ground surface. The aluminium is nearly isothermal, and most of
+the temperature drop is across the XLPE and the soil. At the rated 350 A the hot spot is \dTcNkt\ K from the
+90\,\(^\circ\)C limit for XLPE given by NKT: the cable is at its thermal limit, within the uncertainty of our
+assumptions.}
+\newcommand{\AnsFourFive}{%
+The ground above the trefoil is warmed by \dTsurf\ K, to a maximum of \Tsnl\,\(^\circ\)C at the
+ground/air interface, and this warming spreads over a few metres. With a Dirichlet condition \(T=15\,^\circ\)C at
+the surface, the hot spot drops by \dTcIso\ K to \Tcnliso\,\(^\circ\)C: the isothermal surface is slightly
+non-conservative, because it removes the small thermal resistance \(1/h\) of the surface.}
+\newcommand{\AnsFourSix}{%
+The IEC 60287 calculation gives \IecTheta\,\(^\circ\)C at 350 A and an ampacity of \IecAmp\ A, which
+confirms the NKT rating with our material data. Our FE model gives \Tcnl\,\(^\circ\)C (\Tcnliso\,\(^\circ\)C with an
+isothermal surface) and an ampacity of \Amptrefoil\ A, so it predicts the admissible conductor temperature within a
+few kelvin. The differences come from the convective ground surface (IEC assumes an isothermal one), the empirical
+IEC formula for the soil resistance of a trefoil against our full 2D conduction with mutual heating, the eddy losses
+included in our screens, and the 0.5 mm gap.}
+\newcommand{\AnsFourSeven}{%
+Our criterion is the relative increment of the vector of all nodal temperatures in the Euclidean
+norm, \(\|T_k-T_{k-1}\|_2/\|T_k\|_2<10^{-6}\). The staggered iteration needs \Nitnl\ iterations, the same number on
+the coarse, default and fine meshes, so the convergence does not depend on the mesh density. The convergence
+history is a straight line on the logarithmic scale.}
+\newcommand{\AnsFourEight}{%
+Compared with the linear model (\(\sigma\) at 20\,\(^\circ\)C), the temperature-dependent
+conductivity raises the conductor losses by \dPcNL\,\%, the total losses and \(R_{AC}\) by \dPtNL\,\%, and the hot
+spot by \dTcNL\ K, because aluminium near 90\,\(^\circ\)C is about \RhoHot\,\% more resistive while the current is
+imposed. The screen losses decrease (\dPsNL\,\%), because a more resistive screen carries less circulating
+current. The flux density, the inductance (\dLNL\,\%) and the current density barely change, because the currents
+are imposed and the materials are non-magnetic.}
+\newcommand{\AnsFourNine}{%
+No, the linear model is not conservative: it underestimates the losses and the hot spot (by
+\dTcNL\ K). Used for rating, it would allow about \AmpLin\ A instead of \Amptrefoil\ A, so the conductor would run
+above 90\,\(^\circ\)C and the insulation would age faster. A linear model is only acceptable with \(\sigma\)
+evaluated at the maximum operating temperature, which is what IEC 60287 does.}
+\newcommand{\AnsFive}{%
+For the specified 350 A the best arrangement is the datasheet's touching trefoil: it is the most
+compact, it has the lowest inductance and external magnetic field, and it reaches \Tctrefoil\,\(^\circ\)C with both
+ends bonded (at its limit) or \Tctrefoilsp\,\(^\circ\)C with single-point bonding. If more current is needed, a
+flat formation with 70 mm free distance and single-point (or cross-) bonded screens gives the largest ampacity,
+\Ampflatsevsp\ A against \Amptrefoil\ A for the trefoil, at the price of a trench about three times wider and a
+higher inductance. With both ends bonded, spacing helps much less (\Ampflatsev\ A), because the larger screen loops
+carry more circulating current.}
