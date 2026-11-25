@@ -9,7 +9,7 @@
   headheight=14pt,headsep=7mm,footskip=10mm]{geometry}
 \usepackage{booktabs,tabularx,array,amsmath,amssymb,graphicx,float,caption,tikz,pgfplots}
 \usepackage{xcolor,fancyhdr,lastpage,listings,titlesec,needspace}
-\usetikzlibrary{arrows.meta,calc,positioning}
+\usetikzlibrary{arrows.meta,calc,positioning,spy}
 \pgfplotsset{compat=1.18}
 \definecolor{KULBlue}{HTML}{00407A}\definecolor{KULLight}{HTML}{52BDEC}\definecolor{KULMid}{HTML}{1D8DB0}
 \colorlet{accent}{KULBlue}\definecolor{cA}{HTML}{00407A}\definecolor{cB}{HTML}{D1495B}\definecolor{cC}{HTML}{EDAE49}
@@ -34,11 +34,11 @@
 \newcommand{\answer}[1]{\par{\sffamily\bfseries\color{KULBlue}Answer.}\enspace #1\par\medskip}
 % A figure caption under a centred figure (no float numbering).
 \newcommand{\figcap}[1]{\par\nopagebreak[4]\vspace{2pt}{\small #1}}
-\newcommand{\file}[1]{\href{../Source-code/#1}{\nolinkurl{#1}}}
+\newcommand{\file}[1]{\href{../Source-Code/#1}{\nolinkurl{#1}}}
 \newcommand{\setupfile}[1]{\file{Cable-selection-and-model-setup/#1}}
 \newcommand{\efile}{\file{Electrodynamic-analysis/cable.pro}}
 \newcommand{\mfile}{\file{Magnetothermal-analysis/cable.pro}}
-\newcommand{\runall}{\href{../run_all.sh}{\nolinkurl{run_all.sh}}}
+\newcommand{\runall}{\href{../Source-Code/run_all.sh}{\nolinkurl{run_all.sh}}}
 \newcommand{\codeguide}[3]{\par\smallskip
  {\sffamily\small\bfseries\color{accent}Code guide}\par\nobreak
  \begingroup\small\setlength{\tabcolsep}{0pt}

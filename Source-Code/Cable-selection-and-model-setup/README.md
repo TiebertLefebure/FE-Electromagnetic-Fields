@@ -3,6 +3,7 @@
 - `parameters.pro`: **all** cable, material, excitation, thermal and arrangement data, as
   ONELAB parameters, each tagged with its basis ([NKT], [IEC], [ASSUMPTION], ...).
 - `cable.geo`: the only geometry and mesh, used by every analysis.
+- `Jacobian_Integration.pro`: course file, unchanged (Jacobians and Gauss rules), included by both models.
 
 Open `cable.geo` in Gmsh to inspect it, or build a mesh from this folder:
 
@@ -10,7 +11,7 @@ Open `cable.geo` in Gmsh to inspect it, or build a mesh from this folder:
 mkdir -p meshes && gmsh cable.geo -2 -o meshes/gap.msh
 ```
 Pass the same `-setnumber` options as the solver (e.g. `-setnumber JacketGap 0`);
-`../../run_all.sh` builds every mesh used in the reports.
+`../run_all.sh` builds every mesh used in the slides.
 
 ## Radial construction (one cable)
 

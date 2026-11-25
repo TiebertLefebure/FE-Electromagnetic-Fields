@@ -1,6 +1,9 @@
 // Sections 3-5: magnetoquasistatic a-v model and coupled heat conduction, one mesh.
-// Resolutions: Magnetodynamics = magnetic only, sigma at 20 C (Section 3);
-//              MagnetoThermal  = losses -> T, with the sigma(T) loop (Sections 4-5).
+// Course files, included unchanged: Jacobian_Integration.pro (Jacobians, Gauss rules) and
+// magnetodynamic_formulation.pro (function spaces, weak form Magnetodynamic_a_2D, post-processing
+// quantities). This file adds the cable problem, the heat equation and the sigma(T) coupling.
+// Resolutions: Magnetodynamics_cable = magnetic only, sigma at 20 C (Section 3);
+//              MagnetoThermal        = losses -> T, with the sigma(T) loop (Sections 4-5).
 // Search a question tag (Q3.x, Q4.x) to find the block that answers it.
 Include "../Cable-selection-and-model-setup/parameters.pro";
 SetString["GetDP/1ResolutionChoices", "MagnetoThermal"];
@@ -30,17 +33,18 @@ Group {
   ScreenA = Region[71]; ScreenB = Region[72]; ScreenC = Region[73];
   Conductors = Region[{CondA, CondB, CondC}];
   Screens = Region[{ScreenA, ScreenB, ScreenC}];
+  Metals = Region[{Conductors, Screens}];
   // Semicons (2e-3 S/m), XLPE, void, fillers, PE: no eddy currents, polymer kappa.
   Insulation = Region[{31,32,33, 41,42,43,44, 51,52,53, 61,62,63, 81,82,83, 91,92,93}];
   SoilNear = Region[99];  // soil delta ~ 700 m at 50 Hz: sigma = 0 in the magnetic model
   SoilFar = Region[98];
-  Domain_Mag = Region[{Conductors, Screens, Insulation, SoilNear}];
+  Domain_Mag = Region[{Metals, Insulation, SoilNear}];
   If (Flag_Conductor == 0)
-    DomainC_Mag = Region[{Conductors, Screens}];  // massive: j = -sigma(j w a + ur)
+    DomainC_Mag = Region[{Metals}];       // massive: j = -sigma(j w a + ur)
     DomainS0_Mag = Region[{}];
   Else
     DomainC_Mag = Region[{Screens}];
-    DomainS0_Mag = Region[{Conductors}];          // stranded: j = js0
+    DomainS0_Mag = Region[{Conductors}];  // stranded: j = js0 imposed
   EndIf
   Domain_The = Region[{Domain_Mag, SoilFar}];
   EMBoxEdge = Region[120]; GroundSurface = Region[130]; Bottom = Region[132];
@@ -48,10 +52,16 @@ Group {
 
 Function {
   nu[] = 1/(muR*mu0);
-  // [Q4.7, course eq. 12] sigma(T) with T in deg C ($1 = {T}); Flag_NL = 0 freezes it at 20 C.
-  // T comes from the real thermal system: <T>[{T}] reads it in that system's context.
-  sigma[Conductors] = sigmaAl/(1 + Flag_NL*alphaAl*($1 - 20));
-  sigma[Screens]    = sigmaCu/(1 + Flag_NL*alphaCu*($1 - 20));
+  // [Q4.7, course eq. 12] sigma(T) = sigma_20 / (1 + alpha (T - 20)), T in deg C. The course
+  // formulation calls sigma[] without arguments, so T is read from field 1: the temperature of
+  // the previous thermal solve, stored by PostOperation Store_T (20 C before the first pass).
+  If (Flag_NL == 1)
+    sigma[Conductors] = sigmaAl/(1 + alphaAl*(ScalarField[XYZ[]]{1} - 20));
+    sigma[Screens]    = sigmaCu/(1 + alphaCu*(ScalarField[XYZ[]]{1} - 20));
+  Else
+    sigma[Conductors] = sigmaAl;
+    sigma[Screens]    = sigmaCu;
+  EndIf
   // [Q3.2] Stranded model: js = I_k/A_k along z with the ABC phase angles.
   AreaCon = Pi*rCon^2;
   js0[CondA] = Vector[0,0,1] * Ipeak/AreaCon * Complex[1, 0];
@@ -95,38 +105,21 @@ Constraint {
   } }
 }
 
-Jacobian {
-  { Name Vol; Case { { Region All; Jacobian Vol; } } }
-  { Name Sur; Case { { Region All; Jacobian Sur; } } }
+// Names the course file needs. Every massive region has a global current I; there are no
+// stranded regions with turns (DomainS_Mag, Ns, Sc) and no steel. Its own resolution
+// (Magnetodynamics) and post-operations (Mag_Maps, Mag_Global) are written for the course
+// example cable and are not used here: its JouleLosses leaves out ur.
+Flag_Degree_a = 1;                       // first-order nodal elements
+Group {
+  DomainCWithI_Mag = Region[{DomainC_Mag}]; DomainS_Mag = Region[{}];
+  Inds = Region[{Conductors}]; APLSheath = Region[{Screens}]; Steel = Region[{}]; Ind_1 = Region[{CondA}];
 }
-Integration {
-  { Name I1; Case { { Type Gauss; Case {
-      { GeoElement Line; NumberOfPoints 4; }
-      { GeoElement Triangle; NumberOfPoints 4; } } } } }
-}
+Function { DefineFunction[ Ns, Sc ]; }
+
+Include "../Cable-selection-and-model-setup/Jacobian_Integration.pro";
+Include "magnetodynamic_formulation.pro";
 
 FunctionSpace {
-  // [Q3.1] a = az(x,y) ez, first-order nodal functions.
-  { Name Hcurl_a_Mag_2D; Type Form1P;
-    BasisFunction {
-      { Name se; NameOfCoef ae; Function BF_PerpendicularEdge;
-        Support Domain_Mag; Entity NodesOf[All]; } }
-    Constraint {
-      { NameOfCoef ae; EntityType NodesOf; NameOfConstraint MagneticVectorPotential_2D; } }
-  }
-  // [Q3.2, Q3.3] One ur (uniform axial voltage gradient) per massive region,
-  // with global voltage U and net current I; one of the two is imposed per region.
-  { Name Hregion_u_Mag_2D; Type Form1P;
-    BasisFunction {
-      { Name sr; NameOfCoef ur; Function BF_RegionZ;
-        Support DomainC_Mag; Entity DomainC_Mag; } }
-    GlobalQuantity {
-      { Name U; Type AliasOf;        NameOfCoef ur; }
-      { Name I; Type AssociatedWith; NameOfCoef ur; } }
-    Constraint {
-      { NameOfCoef U; EntityType Region; NameOfConstraint Voltage_2D; }
-      { NameOfCoef I; EntityType Region; NameOfConstraint Current_2D; } }
-  }
   // [Q4.1] Temperature (deg C), first-order nodal functions on the thermal domain.
   { Name Hgrad_T; Type Form0;
     BasisFunction {
@@ -138,32 +131,6 @@ FunctionSpace {
 }
 
 Formulation {
-  // [Q3.1] curl(nu curl a) = j; j = -sigma(T)(j w a + ur) (massive) or js0 (stranded).
-  // The ur-equation imposes int jz dA = I in every massive region.
-  { Name Magnetodynamics_a; Type FemEquation;
-    Quantity {
-      { Name a;  Type Local;  NameOfSpace Hcurl_a_Mag_2D; }
-      { Name ur; Type Local;  NameOfSpace Hregion_u_Mag_2D; }
-      { Name I;  Type Global; NameOfSpace Hregion_u_Mag_2D [I]; }
-      { Name U;  Type Global; NameOfSpace Hregion_u_Mag_2D [U]; }
-      { Name T;  Type Local;  NameOfSpace Hgrad_T; }   // only read, for sigma(T)
-    }
-    Equation {
-      Galerkin { [ nu[] * Dof{d a}, {d a} ];
-        In Domain_Mag; Jacobian Vol; Integration I1; }
-      Galerkin { DtDof[ sigma[<T>[{T}]] * Dof{a}, {a} ];
-        In DomainC_Mag; Jacobian Vol; Integration I1; }
-      Galerkin { [ sigma[<T>[{T}]] * Dof{ur}, {a} ];
-        In DomainC_Mag; Jacobian Vol; Integration I1; }
-      Galerkin { DtDof[ sigma[<T>[{T}]] * Dof{a}, {ur} ];
-        In DomainC_Mag; Jacobian Vol; Integration I1; }
-      Galerkin { [ sigma[<T>[{T}]] * Dof{ur}, {ur} ];
-        In DomainC_Mag; Jacobian Vol; Integration I1; }
-      GlobalTerm { [ Dof{I}, {U} ]; In DomainC_Mag; }
-      Galerkin { [ -js0[], {a} ];
-        In DomainS0_Mag; Jacobian Vol; Integration I1; }
-    }
-  }
   // [Q4.1] -div(kappa grad T) = p, with p = |j|^2/(2 sigma) the time-averaged Joule loss
   // density of the complex magnetic solution (<a>[...] evaluates it in that system: a real
   // number). [Q4.2] Convection -kappa dT/dn = h (T - T_amb) on the ground surface.
@@ -176,9 +143,9 @@ Formulation {
     Equation {
       Galerkin { [ kappa[] * Dof{d T}, {d T} ];
         In Domain_The; Jacobian Vol; Integration I1; }
-      Galerkin { [ -<a>[ 0.5*sigma[<T>[{T}]]*SquNorm[Dt[{a}] + {ur}] ], {T} ];
+      Galerkin { [ -<a>[ 0.5*sigma[]*SquNorm[Dt[{a}] + {ur}] ], {T} ];
         In DomainC_Mag; Jacobian Vol; Integration I1; }
-      Galerkin { [ -<a>[ 0.5/sigma[<T>[{T}]]*SquNorm[js0[]] ], {T} ];
+      Galerkin { [ -<a>[ 0.5/sigma[]*SquNorm[js0[]] ], {T} ];
         In DomainS0_Mag; Jacobian Vol; Integration I1; }
       If (Flag_SurfaceBC == 0)
         Galerkin { [ hConv * Dof{T}, {T} ];
@@ -192,16 +159,16 @@ Formulation {
 
 Resolution {
   // [Section 3] Magnetic problem only; T stays at its initial 20 C, so sigma = sigma(20 C).
-  { Name Magnetodynamics;
+  { Name Magnetodynamics_cable;
     System {
-      { Name Sys_Mag; NameOfFormulation Magnetodynamics_a; Type Complex; Frequency Freq; }
+      { Name Sys_Mag; NameOfFormulation Magnetodynamic_a_2D; Type Complex; Frequency Freq; }
       { Name Sys_The; NameOfFormulation Thermal_T; }
     }
     Operation {
       CreateDir[ResultDir];
-      InitSolution[Sys_The];
+      InitSolution[Sys_The]; PostOperation[Store_T];
       Generate[Sys_Mag]; Solve[Sys_Mag]; SaveSolution[Sys_Mag];
-      PostOperation[Mag_Global]; PostOperation[Mag_Maps];
+      PostOperation[Mag_Values]; PostOperation[Mag_Fields];
     }
   }
   // [Section 4] Staggered coupling: magnetic solve with sigma(T_k) -> losses ->
@@ -209,7 +176,7 @@ Resolution {
   // Pass 1 uses T = 20 C everywhere: it is the linear model (Flag_NL = 0 stops there).
   { Name MagnetoThermal;
     System {
-      { Name Sys_Mag; NameOfFormulation Magnetodynamics_a; Type Complex; Frequency Freq; }
+      { Name Sys_Mag; NameOfFormulation Magnetodynamic_a_2D; Type Complex; Frequency Freq; }
       { Name Sys_The; NameOfFormulation Thermal_T; }
     }
     Operation {
@@ -219,6 +186,7 @@ Resolution {
       Evaluate[$it = 0, $rel = 1];
       While[$rel > NL_tol && $it < NL_maxit] {
         Evaluate[$it = $it + 1];
+        PostOperation[Store_T];
         Generate[Sys_Mag]; Solve[Sys_Mag];
         Generate[Sys_The]; Solve[Sys_The];
         GetNormIncrement[Sys_The, $dT]; GetNormSolution[Sys_The, $nT];
@@ -230,32 +198,29 @@ Resolution {
         PostOperation[Conv_Hist];
       }
       SaveSolution[Sys_Mag]; SaveSolution[Sys_The];
-      PostOperation[Mag_Global]; PostOperation[The_Global];
-      PostOperation[Mag_Maps]; PostOperation[The_Maps];
+      PostOperation[Mag_Values]; PostOperation[The_Values];
+      PostOperation[Mag_Fields]; PostOperation[The_Fields];
     }
   }
 }
 
+// Quantities the course post-processing does not have or computes differently
+// (|B| and |J| maps come from its post-processing Magnetodynamic_a_2D).
 PostProcessing {
-  { Name Mag; NameOfFormulation Magnetodynamics_a;
+  { Name Mag; NameOfFormulation Magnetodynamic_a_2D;
     Quantity {
-      // [Q3.6] Flux density norm (T, peak phasor).
-      { Name bm; Value { Term { [ Norm[{d a}] ]; In Domain_Mag; Jacobian Vol; } } }
-      // [Q3.7] TOTAL current density norm (A/m2, peak), including ur in massive regions.
-      { Name jm; Value {
-          Term { [ Norm[-sigma[<T>[{T}]]*(Dt[{a}] + {ur})] ]; In DomainC_Mag; Jacobian Vol; }
-          Term { [ Norm[js0[]] ]; In DomainS0_Mag; Jacobian Vol; } } }
-      // [Q3.8] Time-averaged Joule losses |j|^2/(2 sigma) per unit length (W/m = kW/km).
+      // [Q3.8] Time-averaged Joule losses |j|^2/(2 sigma) per unit length (W/m = kW/km),
+      // with the TOTAL current density j = -sigma(j w a + ur) (course eq. 9).
       { Name Losses; Value {
-          Integral { [ 0.5*sigma[<T>[{T}]]*SquNorm[Dt[{a}] + {ur}] ];
+          Integral { [ 0.5*sigma[]*SquNorm[Dt[{a}] + {ur}] ];
             In DomainC_Mag; Jacobian Vol; Integration I1; }
-          Integral { [ 0.5/sigma[<T>[{T}]]*SquNorm[js0[]] ];
+          Integral { [ 0.5/sigma[]*SquNorm[js0[]] ];
             In DomainS0_Mag; Jacobian Vol; Integration I1; } } }
       // [Q3.9] R = P/(3 I_rms^2) in ohm/km (conductors only: skin+proximity; all: R_AC).
       { Name R_ohm_km; Value {
-          Integral { [ 0.5*sigma[<T>[{T}]]*SquNorm[Dt[{a}] + {ur}]/(3*I_RMS^2)*1e3 ];
+          Integral { [ 0.5*sigma[]*SquNorm[Dt[{a}] + {ur}]/(3*I_RMS^2)*1e3 ];
             In DomainC_Mag; Jacobian Vol; Integration I1; }
-          Integral { [ 0.5/sigma[<T>[{T}]]*SquNorm[js0[]]/(3*I_RMS^2)*1e3 ];
+          Integral { [ 0.5/sigma[]*SquNorm[js0[]]/(3*I_RMS^2)*1e3 ];
             In DomainS0_Mag; Jacobian Vol; Integration I1; } } }
       // [Q3.10] Positive-sequence inductance: W = 1/4 int nu|b|^2 = 3/4 L Ipeak^2.
       { Name L_mH_km; Value {
@@ -272,7 +237,7 @@ PostProcessing {
       { Name T; Value { Term { [ {T} ]; In Region[{Domain_The, GroundSurface}]; Jacobian Vol; } } }
       // [Q4.7] Convergence history: iteration number and relative T increment.
       { Name ConvHist; Value { Term { Type Global; [ Vector[$it, $rel, 0] ]; In GroundSurface; } } }
-      // [Q4.4, Q4.5] Maxima stored in registers 1 and 2 by the prints in The_Global.
+      // [Q4.4, Q4.5] Maxima stored in registers 1 and 2 by the prints in The_Values.
       { Name Tmax_cond; Value { Term { Type Global; [ #1 ]; In GroundSurface; } } }
       { Name Tmax_surf; Value { Term { Type Global; [ #2 ]; In GroundSurface; } } }
       // [Q4.2] Heat leaving through the ground surface (W/m): equals the total losses.
@@ -283,7 +248,13 @@ PostProcessing {
 }
 
 PostOperation {
-  { Name Mag_Global; NameOfPostProcessing Mag;
+  // [Q4.7] Field 1 = temperature of the metals, read by sigma[] (StoreInField replaces it).
+  { Name Store_T; NameOfPostProcessing The;
+    Operation {
+      Print[T, OnElementsOf Metals, StoreInField 1, File StrCat[ResultDir,"/T_metals.pos"]];
+    }
+  }
+  { Name Mag_Values; NameOfPostProcessing Mag;
     Operation {
       Print[Losses[Conductors], OnGlobal, Format Table,
         SendToServer "Output/1Losses conductors [W per m]", File StrCat[ResultDir,"/losses_conductors.dat"]];
@@ -294,7 +265,7 @@ PostOperation {
       Print[Losses[CondC], OnGlobal, Format Table, File StrCat[ResultDir,"/losses_condC.dat"]];
       Print[R_ohm_km[Conductors], OnGlobal, Format Table,
         SendToServer "Output/3R conductors only [ohm per km]", File StrCat[ResultDir,"/R_conductors_ohm_km.dat"]];
-      Print[R_ohm_km[Region[{Conductors, Screens}]], OnGlobal, Format Table,
+      Print[R_ohm_km[Metals], OnGlobal, Format Table,
         SendToServer "Output/4R AC total [ohm per km]", File StrCat[ResultDir,"/R_ac_ohm_km.dat"]];
       Print[L_mH_km[Domain_Mag], OnGlobal, Format Table,
         SendToServer "Output/5L [mH per km]", File StrCat[ResultDir,"/L_mH_km.dat"]];
@@ -305,8 +276,9 @@ PostOperation {
       EndIf
     }
   }
-  { Name Mag_Maps; NameOfPostProcessing Mag;
+  { Name Mag_Fields; NameOfPostProcessing Magnetodynamic_a_2D;   // course quantities
     Operation {
+      // [Q3.7] TOTAL current density norm (A/m2, peak). [Q3.6] Flux density norm (T, peak).
       Print[jm, OnElementsOf Region[{DomainC_Mag, DomainS0_Mag}], Name "|J| [A/m2]",
         File StrCat[ResultDir,"/j_norm.pos"]];
       Print[bm, OnElementsOf Domain_Mag, Name "|B| [T]", File StrCat[ResultDir,"/b_norm.pos"]];
@@ -315,7 +287,7 @@ PostOperation {
         Format SimpleTable, File StrCat[ResultDir,"/j_line_A.txt"]];
     }
   }
-  { Name The_Global; NameOfPostProcessing The;
+  { Name The_Values; NameOfPostProcessing The;
     Operation {
       // [Q4.4] Hot spot: maximum conductor temperature (register 1).
       Print[T, OnElementsOf Conductors, StoreMaxInRegister 1, File StrCat[ResultDir,"/T_conductors.pos"]];
@@ -335,7 +307,7 @@ PostOperation {
       Print[ConvHist, OnRegion GroundSurface, Format Table, File > StrCat[ResultDir,"/convergence.txt"]];
     }
   }
-  { Name The_Maps; NameOfPostProcessing The;
+  { Name The_Fields; NameOfPostProcessing The;
     Operation {
       Print[T, OnElementsOf Region[{Domain_Mag}], Name "T [deg C] (cables)", File StrCat[ResultDir,"/T_cables.pos"]];
       Print[T, OnElementsOf Domain_The, Name "T [deg C]", File StrCat[ResultDir,"/T.pos"]];

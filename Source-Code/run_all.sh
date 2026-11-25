@@ -1,13 +1,11 @@
 #!/bin/sh
-# Reproduces EVERY number in the reports and slides (about 25 min on a laptop).
+# Reproduces EVERY result in the slides (about 25 min on a laptop): all meshes and cases.
 # Each line is one case: the same options go to Gmsh (mesh) and GetDP (solve).
-# Results land in Source-code/<analysis>/results/<case>/ ; then run
-#   python3 Reports/collect_values.py && ./Reports/build.sh   (reports)
-#   ./Slides/export_maps.sh && (cd Slides && pdflatex slides.tex)   (slides)
-# Needs gmsh and getdp on PATH, e.g. from the repository root:
-#   export PATH="$PWD/../ONELAB Software/Gmsh.app/Contents/MacOS:$PATH"
+# Results land in <analysis>/results/<case>/ (next to this script).
+# Needs gmsh and getdp on PATH, e.g. the ONELAB bundle:
+#   export PATH="/path/to/ONELAB/Gmsh.app/Contents/MacOS:$PATH"
 set -eu
-ROOT=$(cd "$(dirname "$0")" && pwd)/Source-code
+ROOT=$(cd "$(dirname "$0")" && pwd)
 MESH=$ROOT/Cable-selection-and-model-setup/meshes
 mkdir -p "$MESH"
 
@@ -26,8 +24,8 @@ solve() { # solve <folder> <resolution> <case> <mesh> [options]
   esac
   echo "$dir/$name done"
 }
-E() { solve Electrodynamic-analysis Electrodynamics "$@"; }
-M() { solve Magnetothermal-analysis Magnetodynamics "$@"; }
+E() { solve Electrodynamic-analysis Electrodynamics_cable "$@"; }
+M() { solve Magnetothermal-analysis Magnetodynamics_cable "$@"; }
 T() { solve Magnetothermal-analysis MagnetoThermal "$@"; }
 
 # ---- Meshes ------------------------------------------------------------------------------

@@ -22,10 +22,12 @@ Steady-state heat conduction with temperature \(T\) in \(^\circ\)C:
 with \(\hat{\mathbf a},\hat{\mathbf u}_r\) the complex peak phasors of the magnetic problem
 (Section 3). The factor \(\tfrac12\) turns peak phasors into a time average, so \(p\) is a real,
 non-negative loss density (W/m\textsuperscript3). In GetDP the source term is
-\verb|<a>[ 0.5*sigma[..]*SquNorm[Dt[{a}]+{ur}] ]|: the operator \verb|<a>[...]| evaluates the
+\verb|<a>[ 0.5*sigma[]*SquNorm[Dt[{a}]+{ur}] ]|: the operator \verb|<a>[...]| evaluates the
 expression in the complex magnetic system, and \texttt{SquNorm} returns the real
-\(|\cdot|^2\). The magnetic problem in turn reads \(T\) from the real thermal system
-(\verb|sigma[<T>[{T}]]|). Coupling (Q4.7):
+\(|\cdot|^2\). The magnetic problem in turn needs \(\sigma(T)\): the course formulation calls \verb|sigma[]| without
+arguments, so after each thermal solve the metal temperature is stored as field 1
+(\verb|StoreInField|) and \verb|sigma[]| reads it at each integration point (\verb|ScalarField[XYZ[]]{1}|).
+Coupling (Q4.7):
 \(\sigma(T)=\sigma_0/(1+\alpha(T-20))\), \(\alpha_{\rm Al}=0.0039\), \(\alpha_{\rm Cu}=0.00386\) K\(^{-1}\).
 
 \begin{center}\input{figures/coupling.tex}
@@ -36,7 +38,7 @@ temperature updates \(\sigma\); the loop repeats until the temperature stops cha
 below \(U_0=127\) kV [IEC-1]. Eddy currents in
 soil and semiconductors are zero in the magnetic model (Section 3).
 
-\codeguide{\mfile: \texttt{Hgrad\_T}, \texttt{Thermal\_T}, functions \texttt{kappa}, \texttt{sigma}.}
+\codeguide{\mfile: \texttt{Hgrad\_T}, \texttt{Thermal\_T}, functions \texttt{kappa}, \texttt{sigma}, \texttt{Store\_T}.}
 {Gmsh: open \mfile, resolution \texttt{MagnetoThermal}, \textbf{Run}.}
 {\texttt{res/T.pos}, \texttt{res/loss\_density.pos} (W/m\textsuperscript3).}
 
@@ -127,7 +129,7 @@ limit, as a rating should be, and the difference is within the uncertainty of th
 \(h\) (Q4.5: \(\pm1\) K), the filler conductivity (halving it adds \dTfiller\ K) and the soil.
 The linear model gives \Tclin\,\(^\circ\)C (Q4.8).
 
-\codeguide{\mfile: \texttt{The\_Global} (register 1).}{\textbf{Run}.}
+\codeguide{\mfile: \texttt{The\_Values} (register 1).}{\textbf{Run}.}
 {\texttt{res/Tmax\_conductor.dat}, \texttt{res/T\_cables.pos}.}
 
 \section*{Q4.5 Temperature around the cable and at the ground surface}

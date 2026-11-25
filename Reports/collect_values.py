@@ -1,16 +1,16 @@
 """Turn the GetDP results of run_all.sh into the numbers quoted in the reports and slides.
 
-Reads   Source-code/*/results/<case>/*.dat (written by the .pro files) and the two base meshes.
+Reads   Source-Code/*/results/<case>/*.dat (written by the .pro files) and the two base meshes.
 Writes  Reports/sources/data/values.tex  -- one \\newcommand per number (no number is typed by hand)
         Reports/sources/data/*.csv        -- data of the pgfplots figures
 Also computes the analytical references (course Appendix B, IEC 60287) from the same inputs
-as Source-code/Cable-selection-and-model-setup/parameters.pro.
+as Source-Code/Cable-selection-and-model-setup/parameters.pro.
 """
 import math
 import os
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
-SRC = os.path.join(ROOT, 'Source-code')
+SRC = os.path.join(ROOT, 'Source-Code')
 E = os.path.join(SRC, 'Electrodynamic-analysis/results')
 M = os.path.join(SRC, 'Magnetothermal-analysis/results')
 OUT = os.path.join(ROOT, 'Reports/sources/data')
@@ -210,11 +210,10 @@ put('dEthick', pct(ev['thick']['E'], ev['gap']['E']), '{:.1f}')
 put('dCthick', pct(ev['thick']['C'], ev['gap']['C']), '{:.1f}')
 vmean = float(macros['Vmeandefectfine'])
 put('VoidRatio', vmean / E0, '{:.2f}'); put('PdInception', U0 / 1e3 * Eb / 0.5 / vmean, '{:.0f}')
-cur = nums(os.path.join(E, 'gap'), 'electrode_currents.dat')
-pairs = [(complex(cur[2 * k], cur[2 * k + 1]), complex(cur[6 + 2 * k], cur[7 + 2 * k])) for k in range(3)]
-put('Ibalance', max(abs(a + b_) / abs(a) for a, b_ in pairs), '{:.0e}')
-put('IchFE', abs(pairs[0][0]) / math.sqrt(2) * 1e3, '{:.3f}')                    # A/km RMS
-put('IratioFE', pairs[0][0].real / pairs[0][0].imag, '{:.2e}')
+cur = nums(os.path.join(E, 'gap'), 'electrode_current_A.dat')
+ia = complex(cur[0], cur[1])                    # current into phase A's insulation (A/m, peak)
+put('IchFE', abs(ia) / math.sqrt(2) * 1e3, '{:.3f}')                              # A/km RMS
+put('IratioFE', ia.real / ia.imag, '{:.2e}')
 
 # ===================================================================== Sections 3, 4, 5
 magnetic = {'base': 'base', 'stranded': 'stranded', 'stranded-f500': 'strandedfhund',

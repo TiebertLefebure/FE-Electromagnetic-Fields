@@ -27,8 +27,7 @@ magnetic model of Section~3.}
 \newcommand{\AnsTwoOne}{%
 We solve \(-\nabla\cdot\big((\sigma+j\omega\varepsilon)\nabla\hat v\big)=0\) for the complex potential in
 the three XLPE annuli only, with linear triangles. The boundary conditions are \(\hat v=\hat V_k\) on each conductor
-screen and \(\hat v=0\) on each core screen; every screen is one electrode with a global voltage \(U\) and current
-\(I\). We truncate the domain at the core screens because a continuous grounded screen fixes the potential outside
+screen and \(\hat v=0\) on each core screen (Dirichlet conditions of the course function space). We truncate the domain at the core screens because a continuous grounded screen fixes the potential outside
 it to zero. Only the XLPE (its radii and permittivity) and the two screen potentials influence the insulation
 field; the conductor, the copper screen, the fillers, the sheath, the soil and the other two cables do not.}
 \newcommand{\AnsTwoTwo}{%
@@ -59,8 +58,9 @@ so partial discharges start at rated voltage and slowly erode the insulation unt
 At the conductor screen the displacement current density \(\omega\varepsilon|\hat E|\) is
 \AnaJd\ A/m\textsuperscript2 and the conduction current density \(\sigma|\hat E|\) is \AnaJc\ A/m\textsuperscript2;
 their ratio \(\sigma/(\omega\varepsilon)=\AnaRatio\) is the same everywhere in the XLPE. Current conservation is
-satisfied: per phase, the current entering at the conductor screen leaves at the core screen to within \Ibalance,
-which is round-off. Displacement current dominates in the insulators (XLPE, PE and air), where
+satisfied: the FE equations are the weak form of \(\nabla\cdot(\hat{\mathbf J}+j\omega\hat{\mathbf D})=0\), one current
+balance per node, so the current entering at the conductor screen, \IchFE\ A/km per phase (\(\omega CV\)), leaves
+at the core screen. Displacement current dominates in the insulators (XLPE, PE and air), where
 \(\sigma\ll\omega\varepsilon\); conduction current dominates in the semicons, the metals and the soil, where
 \(\sigma\gg\omega\varepsilon\).}
 \newcommand{\AnsTwoSeven}{%

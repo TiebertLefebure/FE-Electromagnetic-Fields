@@ -1,12 +1,15 @@
 # Magneto-thermal analysis (Sections 3, 4 and 5)
 
-`cable.pro` holds the magnetic a-v model and the thermal model in one file, on the shared mesh.
-The magnetic part is built from the course starter `magnetodynamic_formulation.pro` (see git
-history). The one-line `cable.geo` includes the shared geometry so the Gmsh **Run** button works.
+`cable.pro` holds the magnetic a-v problem and the thermal model on the shared mesh. It includes two
+course files unchanged: `../Cable-selection-and-model-setup/Jacobian_Integration.pro` and
+`magnetodynamic_formulation.pro` (function spaces `Hcurl_a_Mag_2D` and `Hregion_u_Mag_2D`, weak form
+`Magnetodynamic_a_2D`, post-processing quantities). `cable.pro` adds the cable problem, the heat
+equation and the σ(T) coupling. The one-line `cable.geo` includes the shared geometry so the Gmsh
+**Run** button works.
 
 | Resolution | Section | What it does |
 |---|---|---|
-| `Magnetodynamics` | 3 | a-v problem in the 0.6 m EM box, conductivities at 20 °C |
+| `Magnetodynamics_cable` | 3 | a-v problem in the 0.6 m EM box, conductivities at 20 °C |
 | `MagnetoThermal` (default) | 4, 5 | magnetic solve → Joule losses → heat conduction up to the ground surface; with `Flag_NL = 1` repeated with σ(T) until the relative temperature increment is below 1e-6 |
 
 ## Run in Gmsh (ONELAB)
@@ -24,15 +27,19 @@ The **Output** panel shows losses, R, L, the hot-spot and the ground-surface tem
 
 ## Model
 
-- **Magnetic** (Q3.1): `curl(nu curl a) = j` in the EM box, `a = 0` on its edge (group 120).
-  Massive regions (Al, Cu) carry `j = -sigma(T)(j omega a + ur)` with one global pair (U, I)
-  each: imposed I in the conductors; U = 0 (both ends) or I = 0 (single point) in the screens.
+- **Magnetic** (Q3.1, course weak form): `curl(nu curl a) = j` in the EM box, `a = 0` on its edge
+  (group 120). Massive regions (Al, Cu) carry `j = -sigma(j omega a + ur)` with one global pair
+  (U, I) each: imposed I in the conductors; U = 0 (both ends) or I = 0 (single point) in the screens.
 - **Thermal** (Q4.1-Q4.2): `-div(kappa grad T) = p`, `p = |j|²/(2 sigma)` from the complex
   solution, evaluated with `<a>[...]` (a real number). Ground surface 1 m above the trefoil
   centre: convection h = 10 W/(m² K) to 15 °C air. Sides 20 m away: zero flux. Bottom 20 m
   deep: T = 15 °C.
-- **Coupling** (Q4.7): staggered. T starts at 20 °C everywhere, so pass 1 is the linear model.
-  Then σ(T) → magnetic → thermal until ‖T_k − T_k−1‖₂ / ‖T_k‖₂ < 1e-6.
+- **Coupling** (Q4.7): staggered. The course formulation calls `sigma[]` without arguments, so
+  the metal temperature is stored as field 1 before each magnetic solve (`StoreInField`) and
+  `sigma[]` reads it with `ScalarField[XYZ[]]{1}`. T starts at 20 °C everywhere, so pass 1 is the
+  linear model. Then σ(T) → magnetic → thermal until ‖T_k − T_k−1‖₂ / ‖T_k‖₂ < 1e-6.
+- The losses use the **total** current density, `p = sigma |j omega a + ur|² / 2` (course eq. 9);
+  the course quantity `JouleLosses` leaves out `ur`, so our post-processing `Mag` computes them.
 
 ## Outputs (`res/` or `results/<case>/`)
 
@@ -48,5 +55,6 @@ The **Output** panel shows losses, R, L, the hot-spot and the ground-surface tem
 | `j_line_A.txt` | \|J\| along phase A's vertical diameter (x, y, z, value) |
 | `surface_heat_W_m.dat` | heat leaving through the ground surface |
 | `b_norm.pos`, `j_norm.pos`, `T.pos`, `T_cables.pos` | maps (peak phasor norms; T in deg C) |
+| `T_metals.pos` | metal temperature used for σ(T) in the last pass |
 
 `.dat` columns: index, real part (and imaginary part for complex quantities).

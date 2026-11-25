@@ -1,9 +1,9 @@
 #!/bin/sh
-# Builds Deliverables/ and Deliverables.zip: one picture per item of the assignment's list of
+# Builds Deliverables/: one picture per item of the assignment's list of
 # deliverables (Section 6), in one folder per analysis. Nothing is computed here:
 #   field maps   = Slides/figures/*.png (Slides/export_maps.sh, Gmsh)
 #   plots/tables = Slides/deliverables.tex (same figure sources and generated numbers as the slides)
-# Run after run_all.sh, Reports/collect_values.py and Slides/export_maps.sh:  ./Slides/make_deliverables.sh
+# Run after Source-Code/run_all.sh, Reports/collect_values.py and Slides/export_maps.sh:  ./Slides/make_deliverables.sh
 set -eu
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 FIG=$ROOT/Slides/figures
@@ -11,7 +11,7 @@ OUT=$ROOT/Deliverables
 E=$OUT/1_Electrodynamic_analysis
 M=$OUT/2_Magnetoquasistatic_analysis
 T=$OUT/3_Magnetothermal_analysis
-rm -rf "$E" "$M" "$T" "$ROOT/Deliverables.zip"
+rm -rf "$E" "$M" "$T"
 mkdir -p "$E" "$M" "$T"
 
 # Plots and value tables: one PDF page each, rendered at 300 dpi.
@@ -68,5 +68,4 @@ map m_j_nl                "$T/5b_J_norm_map_sigmaT.png"
 page 9                    "$T/6a_values_linear_vs_sigmaT.png"
 page 10                   "$T/6b_change_linear_to_sigmaT.png"
 
-(cd "$ROOT" && zip -qr Deliverables.zip Deliverables -x '*.DS_Store')
-echo "Deliverables/ and Deliverables.zip written"
+echo "Deliverables/ written"

@@ -4,7 +4,7 @@
 # Each map: gmsh <result .pos> + a few view options + Print. Nothing is computed here.
 set -eu
 GMSH=${GMSH:-gmsh}
-SRC="$(cd "$(dirname "$0")/.." && pwd)/Source-code"
+SRC="$(cd "$(dirname "$0")/.." && pwd)/Source-Code"
 OUT="$(cd "$(dirname "$0")" && pwd)/figures"
 map() { # map <pos file> <png> <zoom> <dx> <dy> [extra options]; (dx,dy) = target minus data-box centre
   pos=$1; png=$2; zoom=$3; xc=$4; yc=$5; shift 5

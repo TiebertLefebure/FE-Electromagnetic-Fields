@@ -4,9 +4,8 @@ One picture per item of the assignment's list, in one folder per analysis. NKT 3
 1×185/50 mm² XLPE-AL, three cables in touching trefoil (0.5 mm gap), buried 1 m, 350 A, 50 Hz,
 screens bonded at both ends. Field quantities are peak amplitudes; voltages and currents RMS.
 
-Generated, not drawn by hand: `./run_all.sh`, `python3 Reports/collect_values.py`,
-`./Slides/export_maps.sh` (maps), then `./Slides/make_deliverables.sh` (this folder and
-`Deliverables.zip`). The case names below are the lines of `run_all.sh`.
+Generated, not drawn by hand: `./Source-Code/run_all.sh`, `python3 Reports/collect_values.py`,
+`./Slides/export_maps.sh` (maps), then `./Slides/make_deliverables.sh` (this folder). The case names below are the lines of `Source-Code/run_all.sh`.
 
 ## 1_Electrodynamic_analysis (Section 2, `Electrodynamic-analysis/cable.pro`)
 
@@ -21,7 +20,7 @@ Generated, not drawn by hand: `./run_all.sh`, `python3 Reports/collect_values.py
 The void is an air cavity of radius 0.25 mm centred at r = 8.8 mm in phase A (its edge 0.75 mm
 from the conductor screen). In the full maps it is too small to see: use the zooms.
 
-## 2_Magnetoquasistatic_analysis (Section 3, `Magnetothermal-analysis/cable.pro`, resolution `Magnetodynamics`)
+## 2_Magnetoquasistatic_analysis (Section 3, `Magnetothermal-analysis/cable.pro`, resolution `Magnetodynamics_cable`)
 
 | Assignment item | File | Case |
 |---|---|---|

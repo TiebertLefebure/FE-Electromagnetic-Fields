@@ -132,7 +132,7 @@ $\rightarrow$ \MeshQminGap, effect on results below 1\,\%); $\sigma_{\rm Al}$ fi
 \begin{itemize}\small
 \item Semicons ideal: $v=\hat V_k$ / $v=0$ on the XLPE interfaces (drop across them $\approx$\AnaDrop\ mV)
 \item Grounded screens shield everything outside $\Rightarrow$ domain = 3 annuli
-\item Each interface is one \emph{electrode}: unknown $U$, dual current $I$
+\item Course formulation, unchanged: $v$ imposed on the screens (Dirichlet)
 \end{itemize}
 \begin{tabular}{@{}lrr@{}}\toprule
 $E_{\max}$ RMS [kV/mm] & cond.\ screen & core screen\\\midrule
@@ -147,8 +147,8 @@ Healthy insulation at $\le$43\% of the admissible stress.
 \begin{itemize}
 \item We solve $-\nabla\cdot((\sigma+j\omega\varepsilon)\nabla v)=0$ only in the XLPE: the semicons are ideal
 equipotentials (only \AnaDrop\ mV across them), and the grounded screens shield everything outside.
-\item Each interface is one electrode with a voltage $U$ and a current $I$: that gives us the current
-balance and a second capacitance for free.
+\item We use the course formulation unchanged; the screen voltages are Dirichlet conditions. Testing the
+weak form with $v/V$ gives the charging current and a second capacitance.
 \item Result: \AnaEi\ kV/mm peak at the conductor screen, \AnaEirms\ kV/mm RMS, against a limit of 8.
 The healthy cable uses 43\,\% of the admissible stress.
 \end{itemize}
@@ -170,7 +170,7 @@ NKT (max.) & 0.22\\\bottomrule
 \end{tabular}\\[3pt]
 Same $C$ from 5 to 5000 Hz.\\[3pt]
 $|J_c/J_d|=\sigma/\omega\varepsilon=\AnaRatio$ in XLPE.\\
-Electrode currents: $|I_{\rm in}+I_{\rm out}|/|I|=\Ibalance$; $|I|=\omega CV$ (\IchFE\ A/km).
+Charging current (weak form tested with $v/V$): $|I|=\omega CV$, \IchFE\ A/km.
 \end{columns}
 \note{\textbf{[0:50 \,|\, clock 2:55]}\par\smallskip 
 \begin{itemize}
@@ -179,7 +179,7 @@ first element reports the field slightly inside the $1/r$ peak. Fine mesh: \dEfi
 Refinement is needed at the conductor screen.
 \item The capacitance matches the analytical value to \dCana\,\%, from energy and from charge, and it is
 10\,\% below NKT's maximum, which is consistent. It is independent of frequency, because $\sigma+j\omega\varepsilon$ cancels.
-\item The current in equals the current out to \Ibalance: \IchFE\ A/km charging current.
+\item Current is conserved: the weak form is one current balance per node. The charging current is \IchFE\ A/km, equal to $\omega CV$.
 \end{itemize}}
 \end{frame}
 
@@ -445,7 +445,7 @@ single-point bonding brings it to \Tctrefoilsp\,$^\circ$C. For more current, use
 \small
 \begin{itemize}
 \item \textbf{One geometry, two models} (electric; magneto-thermal), all inputs ONELAB parameters, \textbf{Run} reproduces every slide
-\item \textbf{Verified}: $E_{\max}$ \dEfine\%, $C$ \dCana\% (analytical); $R_{\rm cond}$ vs IEC $y_s+y_p$; current balance \Ibalance; mesh, domain, frequency studies
+\item \textbf{Verified}: $E_{\max}$ \dEfine\%, $C$ \dCana\% (analytical); $R_{\rm cond}$ vs IEC $y_s+y_p$; charging current $=\omega CV$; mesh, domain, frequency studies
 \item \textbf{Validated}: $C$ $<$ NKT max; $R_{DC}$ 0.164; $L$ within NKT rounding; \textbf{350 A $\rightarrow$ \Tcnl\,$^\circ$C} vs NKT 90\,$^\circ$C and IEC \IecTheta\,$^\circ$C
 \item Healthy insulation at 43\% of its limit; a 0.5 mm void discharges at rated voltage
 \item $\sigma(T)$ adds \dPtNL\% losses and \dTcNL\ K: the linear model is unsafe for rating
@@ -570,8 +570,10 @@ changes visibly (\dTcNL\ K); $J$ and $B$ barely move because the currents are im
 \begin{itemize}
 \item Group: Kutikuppala Jaswanth, Lefebure Tiebert, Miseur Torre
 \item Gmsh 4.15.2, GetDP 4.0.0-git-259f4c38; git tag \texttt{final}
+\item Course files included unchanged: \texttt{Jacobian\_Integration.pro}, \texttt{electrodynamic\_formulation.pro},
+\texttt{magnetodynamic\_formulation.pro}
 \item \textbf{File $>$ Open} \texttt{Electrodynamic-analysis/cable.pro} or \texttt{Magnetothermal-analysis/cable.pro}, \textbf{Run}
-\item \texttt{run\_all.sh}: every case (one line each, with its question)
+\item \texttt{Source-Code/run\_all.sh}: every case (one line each, with its question)
 \item Numbers: \texttt{Reports/collect\_values.py} $\rightarrow$ \texttt{values.tex}; nothing typed by hand
 \end{itemize}
 \end{frame}

@@ -39,6 +39,11 @@ PE sheath & 21.50 & NKT: nominal outer diameter 43.0 mm (2.3 mm vs nominal 2.2 m
 The copper wires and tape are one ring of equal area: same DC resistance, no lay. The ring
 position only affects the screen loop (Section 3, Q3.4).
 
+\begin{center}\input{figures/trefoil.tex}
+\figcap{The three cables in trefoil, to scale, with the layer colours of the single cable above: phase A on
+top, B lower left, C lower right. The jackets are 0.5 mm apart (zoom; Q1.2 explains why). The cross marks
+the trefoil centre, the origin of the model, 1.0 m below the ground surface.}\end{center}
+
 \begin{table}[H]\centering\small
 \caption{Material properties (all are ONELAB parameters in \texttt{parameters.pro}).}
 \begin{tabularx}{\linewidth}{@{}l c c c Y@{}}
@@ -77,7 +82,7 @@ a soil rectangle up to the ground surface, \(\pm20\) m wide and 20 m deep (Secti
 \figcap{Environment and computational domains (not to scale): the electromagnetic box (Sections 2--3) is a
 sub-domain of the thermal soil domain (Section 4) in one mesh.}\end{center}
 \textbf{Spacing (TA advice).} Exactly touching jackets create zero-angle soil wedges that ruin
-the triangles. We leave a 0.5 mm soil gap (centre spacing 43.5 mm instead of 43.0 mm):
+the triangles. We leave a 0.5 mm soil gap (centre spacing 43.5 mm instead of 43.0 mm; zoom in the trefoil figure of Q1.1):
 \begin{center}\small
 \begin{tabular}{@{}lrr@{}}\toprule
 Default mesh & Touching & 0.5 mm gap\\\midrule

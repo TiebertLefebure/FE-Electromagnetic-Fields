@@ -6,7 +6,7 @@
 \input{data/values.tex}
 \begin{document}
 All results: 33 kV, 50 Hz, trefoil with 0.5 mm gap, default mesh (\texttt{MeshFactor} 1),
-resolution \texttt{Electrodynamics} of \efile. Fields are peak phasors; RMS values are stated
+resolution \texttt{Electrodynamics\_cable} of \efile. Fields are peak phasors; RMS values are stated
 as such. Every case is one line of \runall; every number comes from \texttt{values.tex}.
 
 \section*{Q2.1 Domain, equations and boundary conditions}
@@ -23,11 +23,10 @@ temperature-independent), linear nodal triangles, and an infinitely long straigh
 \textbf{Domain and boundary conditions.} Only the three XLPE annuli
 (\(r_i=7.8\) to \(r_o=15.8\) mm; plus the air void 44 in Q2.5). The semiconducting screens are
 ideal equipotentials (justified in Q2.2): \(\hat v=26.944\angle(0,-120^\circ,+120^\circ)\) kV on the
-conductor-screen interfaces 101--103, \(\hat v=0\) on the core-screen interfaces 111--113. Each
-interface is one \emph{electrode}: all its nodes share one unknown (\texttt{BF\_GroupOfNodes})
-whose value is the voltage \(U\) and whose dual is the current \(I\) injected into the XLPE.
-In the weak form, \texttt{GlobalTerm [-Dof\{I\},\{U\}]} is the boundary term
-\(\oint\hat{\mathbf J}\cdot\mathbf n\,w\,ds\) with \(w=1\) on the electrode.
+conductor-screen interfaces 101--103, \(\hat v=0\) on the core-screen interfaces 111--113: Dirichlet
+conditions (constraint \texttt{ElectricScalarPotential}) on the nodal function space
+\texttt{Hgrad\_v\_Ele} of the course file \file{Electrodynamic-analysis/electrodynamic_formulation.pro},
+whose weak form \texttt{Electrodynamics\_v} we use unchanged.
 
 \textbf{Truncation and the role of the screens.} The domain ends at the grounded core screens.
 With a continuous grounded screen, the potential outside is zero whatever lies there: the
@@ -40,9 +39,10 @@ ends (terminations), would need a different model.
 \includegraphics[width=0.42\linewidth,trim=150 0 150 0,clip]{e_field.png}\\
 {\small \(\Re(\hat v)\) [V] at phase A's zero angle (left) and \(|\hat{\mathbf E}|\) [V/m] (right).}\end{center}
 
-\codeguide{\efile: \texttt{Group}, \texttt{Constraint}, \texttt{FunctionSpace},
-\texttt{Formulation}. \setupfile{cable.geo}: physical groups 41--44, 101--113.}
-{Gmsh: \textbf{File > Open} \efile, \textbf{Run} (resolution \texttt{Electrodynamics}).}
+\codeguide{\efile: \texttt{Group}, \texttt{Function}, \texttt{Constraint}; function space and
+formulation from \file{Electrodynamic-analysis/electrodynamic_formulation.pro}. \setupfile{cable.geo}:
+physical groups 41--44, 101--113.}
+{Gmsh: \textbf{File > Open} \efile, \textbf{Run} (resolution \texttt{Electrodynamics\_cable}).}
 {\texttt{res/potential.pos}, \texttt{res/field\_norm.pos}; only the XLPE carries a field.}
 
 \section*{Q2.2 Geometric simplifications}
@@ -179,11 +179,12 @@ At the conductor screen: analytical \(|\hat J_d|=\)\,\AnaJd\ A/m\textsuperscript
 XLPE, PE and air \(10^{-10}\)--\(10^{-9}\): displacement; semicons
 \(2\,10^{-3}/6\,10^{-9}\approx3\,10^{5}\), metals \(\approx10^{17}\), soil (\(10^{-2}\) vs \(2.8\,10^{-8}\)): conduction.
 
-\textbf{Conservation.} Per phase, the current entering at the conductor screen must leave at the
-core screen. The electrode currents give
-\(\max_k|I_{{\rm in},k}+I_{{\rm out},k}|/|I_{{\rm in},k}|=\)\,\Ibalance: exact to round-off. This
-global balance holds by construction (the nodal test functions of a phase sum to one); locally,
-linear elements leave a jump in the normal current across element edges that shrinks with \(h\).
+\textbf{Conservation.} The FE equations are the weak form of \(\nabla\cdot(\hat{\mathbf J}+j\omega\hat{\mathbf D})=0\):
+one current balance per node, so per phase the current entering at the conductor screen leaves at
+the core screen. Testing the weak form with the FE function \(\hat v/\hat V\) (1 on the conductor
+screen, 0 on the core screen) gives that current,
+\(I=\frac1{\hat V}\int(\sigma+j\omega\varepsilon)\nabla\hat v\cdot\nabla\hat v\,dA\). Locally, linear elements
+leave a jump in the normal current across element edges that shrinks with \(h\).
 The magnitude \(|I|\) equals \(\omega C'V\): \IchFE\ A/km RMS charging current per phase (analytical
 \AnaIch), with \(\Re I/\Im I=\)\,\IratioFE\(\,=\sigma/(\omega\varepsilon)\). It is a radial current,
 not the 350 A load current.
@@ -195,9 +196,9 @@ not the 350 A load current.
 \figcap{Left: \(|\hat{\mathbf J}_d|\) [A/m\textsuperscript2] in the healthy XLPE (with void: Q2.5). Right: both
 densities along the phase-A radius; displacement exceeds conduction by ten orders of magnitude.}\end{center}
 
-\codeguide{\efile: \texttt{jc}, \texttt{jd}, \texttt{I}, \texttt{GlobalTerm}.}{\textbf{Run}.}
+\codeguide{\efile: \texttt{jd}, \texttt{I}; \texttt{jm} of the course post-processing.}{\textbf{Run}.}
 {\texttt{res/displacement\_current.pos}, \texttt{res/conduction\_current.pos},
-\texttt{res/electrode\_currents.dat} (regions 101--103 then 111--113; re, im).}
+\texttt{res/electrode\_current\_A.dat} (phase A; re, im).}
 
 \section*{Q2.7 Capacitance and frequency}
 \assignmentquestion{\QuestionTwoSeven}

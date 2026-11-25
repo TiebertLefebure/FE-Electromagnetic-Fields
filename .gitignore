@@ -12,13 +12,13 @@
 __pycache__/
 
 # Generated Gmsh, ONELAB and GetDP data.
-Source-code/**/*.msh
-Source-code/**/*.pre
-Source-code/**/*.res
-Source-code/**/*.db
-Source-code/**/*.db.json
-Source-code/**/res/
-Source-code/**/results/
+Source-Code/**/*.msh
+Source-Code/**/*.pre
+Source-Code/**/*.res
+Source-Code/**/*.db
+Source-Code/**/*.db.json
+Source-Code/**/res/
+Source-Code/**/results/
 
 # LaTeX/Beamer by-products
 *.nav
