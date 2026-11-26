@@ -193,18 +193,18 @@ Refinement is needed at the conductor screen.
 \column{0.66\textwidth}
 \plot{\linewidth}{3.9cm}{radial_defect}\\[-3pt]\small
 \begin{itemize}\small
-\item Field in the void: \alert{\Vmeandefectfine--\Edefectfine\ kV/mm}, $\VoidRatio\times$ the healthy field (theory 1.43$\times$)
+\item Field in the void: \alert{\Vmeandefectfine--\Edefectfine\ kV/mm}, $\VoidRatio\times$ the healthy field (theory \AnaVoidFactor$\times$)
 \item Above air breakdown (\AnaEb--\AnaEbPaschen\ kV/mm): \alert{partial discharges at rated voltage}, so \alert{not withstood}
 \item \textbf{Design:} 9 mm XLPE (same outer diameter): max.\ field \Egap\ $\rightarrow$ \Ethick\ kV/mm ($-$8\,\%)
 \end{itemize}
 \end{columns}
-\src{2D void = infinitely long channel; a real spherical void gives 1.25$\times$ instead of 1.43$\times$, so 2D is conservative. Air breakdown: VSSUT HV notes; Bean et al.\ 2020.}
+\src{2D void = infinitely long channel; a real spherical void gives \AnaSphereFactor$\times$ instead of \AnaVoidFactor$\times$, so 2D is conservative. Air breakdown: VSSUT HV notes; Bean et al.\ 2020.}
 \note{\textbf{[1:10 \,|\, clock 4:05]}\par\smallskip 
 \begin{itemize}
 \item Defect: a 0.5 mm air void centred at $r=8.8$ mm, its edge 0.75 mm from the conductor screen, where the stress is highest.
-\item In 2D this is an infinite channel along the cable. A sphere would see $1.25E_0$ instead of
-$1.43E_0$, so our 2D estimate is conservative.
-\item The field in the void is \Vmeandefectfine\ kV/mm ($\VoidRatio E_0$, theory 1.43). Air breaks down at about
+\item In 2D this is an infinite channel along the cable. A sphere would see $\AnaSphereFactor\,E_0$ instead of
+$\AnaVoidFactor\,E_0$, so our 2D estimate is conservative.
+\item The field in the void is \Vmeandefectfine\ kV/mm ($\VoidRatio E_0$, theory \AnaVoidFactor). Air breaks down at about
 \AnaEb\ kV/mm across 0.5 mm, so partial discharges start at rated voltage (inception $\approx$\PdInception\ kV, below 19 kV).
 The bulk XLPE survives, but repeated discharges erode the cavity and grow trees: \textbf{not withstood}.
 \item Design: 9 mm XLPE lowers the peak stress by 8\,\%.
@@ -285,7 +285,7 @@ Single-point bonding: no circulating screen current, losses \alert{\dPtSingle\,\
 \end{columns}
 \note{\textbf{[0:50 \,|\, clock 7:00]}\par\smallskip 
 \begin{itemize}
-\item The longest element edge in the metals is \MeshHmetalGap\ mm, below 5\,\% of the skin depth. Halving the mesh changes $R_{AC}$ by \dRacfine\,\% and $L$ by \dLfine\,\%. The screen loss is slowest
+\item The element size in the metals is at most \MeshHmetalGap\ mm, below 5\,\% of the skin depth. Halving the mesh changes $R_{AC}$ by \dRacfine\,\% and $L$ by \dLfine\,\%. The screen loss is slowest
 (\dPsfine\,\%) because the ring is thin: that is where to refine.
 \item Single-point bonding cuts the total losses by \dPtSingle\,\%. The price is a standing voltage of \Usingle\ V/km
 (section length, sheath voltage limiters). The gain is small because \CondShare\,\% of the loss is in the
@@ -430,11 +430,11 @@ flat +70 mm, single point & \Psflatsevsp & \Lflatsevsp & \Tcflatsevsp\\\bottomru
 \item All six FE ampacities within \dNktMin\ to \dNktMax\,\% of NKT
 \end{itemize}
 \end{columns}
-\src{Topic: our own choice. Ampacity: two coupled runs per case, interpolated to 90\,$^\circ$C.}
+\src{Topic: our own choice. Ampacity: found by GetDP, secant search on $I^2$ until $T_{\max}=90\,^\circ$C.}
 \note{\textbf{[1:10 \,|\, clock 12:20]}\par\smallskip 
 \begin{itemize}
 \item The topic was free, so we chose arrangement times bonding: NKT gives six rating rows to validate against.
-\item Ampacity: two coupled runs per case, interpolated in $I^2$ to 90\,$^\circ$C.
+\item Ampacity: GetDP repeats the coupled solve, with a secant search on $I^2$, until the hot spot is within 0.01 K of 90\,$^\circ$C.
 \item All six are within \dNktMin\ to \dNktMax\,\% of NKT, and the trends are reproduced. Close trefoil and close flat are
 equivalent. Spacing by 70 mm helps little with both ends bonded: the screen loss rises from \Pstrefoil\ to \Psflatsev\ kW/km.
 With single-point bonding it helps a lot: \Ampflatsevsp\ A against NKT 380.
@@ -486,7 +486,7 @@ Limits: 2D (no lay, no cable ends), constant soil without drying, steady state.}
 \begin{tabularx}{\linewidth}{@{}lrrY@{}}\toprule
 Quantity & FE (linear) & FE ($\sigma(T)$) & Reference$^*$\\\midrule
 Max.\ field, conductor screen (kV/mm pk, fine mesh) & \Egapfine & -- & \AnaEi\ (analytical)\\
-Max.\ field with defect (kV/mm pk, void, fine mesh) & \Edefectfine & -- & \AnaEvoid\ (analytical, $1.43E_0$)\\
+Max.\ field with defect (kV/mm pk, void, fine mesh) & \Edefectfine & -- & \AnaEvoid\ (analytical, $\AnaVoidFactor\,E_0$)\\
 Capacitance ($\mu$F/km) & 0.19703 & -- & 0.19703 (analytical); $\le$0.22 (NKT)\\
 DC resistance ($\Omega$/km) & \Racfdc & -- & 0.164 (NKT max., 20\,$^\circ$C)\\
 AC resistance ($\Omega$/km) & \Raclin & \Racnl & \IecRac\ at 20\,$^\circ$C; \IecRacHot\ at \IecTheta\,$^\circ$C (IEC)\\
@@ -546,7 +546,7 @@ PE sheath & 21.50 & NKT $\varnothing$43 & & & & & \\\bottomrule
 \end{columns}\medskip
 \footnotesize Peak amplitudes. The field and the displacement current $\omega\varepsilon|\hat E|$ are highest at the conductor
 screens and fall like $1/r$. In the void ($\varepsilon_r=1$) the field rises to \Vmeandefectfine--\Edefectfine\ kV/mm, but the
-displacement current density drops to about $1.43/2.5\approx0.57$ of its XLPE value, because $\varepsilon$ is 2.5 times lower.
+displacement current density drops to about $\AnaVoidFactor/2.5\approx\AnaJdVoidFactor$ of its XLPE value, because $\varepsilon$ is 2.5 times lower.
 \end{frame}
 \qslide{Q2.7 Capacitance}{\QuestionTwoSeven}{\AnsTwoSeven}{\plot{\linewidth}{4.6cm}{cap_freq}}
 \qslide{Q2.8 Electric design}{\QuestionTwoEight}{\AnsTwoEight}{\plot{\linewidth}{4.8cm}{radial_thick}}
@@ -574,14 +574,16 @@ displacement current density drops to about $1.43/2.5\approx0.57$ of its XLPE va
 \qslide{Q4.8 Linear vs $\sigma(T)$}{\QuestionFourEight}{\AnsFourEight}{\plot{\linewidth}{4.8cm}{nl_change}}
 \begin{frame}{Q4.8 Field maps: linear vs $\sigma(T)$}
 \begin{columns}[T]
-\column{0.32\textwidth}\centering\map{0.54\linewidth}{t_cables_lin}\\{\scriptsize $T$ [$^\circ$C], linear: \Tclin}\\[2pt]
-  \map{0.54\linewidth}{t_cables_nl}\\{\scriptsize $T$ [$^\circ$C], $\sigma(T)$: \Tcnl}
-\column{0.32\textwidth}\centering\map{0.54\linewidth}{m_j}\\{\scriptsize $|\hat J|$ [A/m$^2$], linear}\\[2pt]
-  \map{0.54\linewidth}{m_j_nl}\\{\scriptsize $|\hat J|$ [A/m$^2$], $\sigma(T)$}
-\column{0.32\textwidth}\centering\map{0.54\linewidth}{m_b}\\{\scriptsize $|\hat B|$ [T], linear}\\[2pt]
-  \map{0.54\linewidth}{m_b_nl}\\{\scriptsize $|\hat B|$ [T], $\sigma(T)$}
+\column{0.24\textwidth}\centering\map{0.72\linewidth}{t_cables_lin}\\{\scriptsize $T$ [$^\circ$C], linear: \Tclin}\\[2pt]
+  \map{0.72\linewidth}{t_cables_nl}\\{\scriptsize $T$ [$^\circ$C], $\sigma(T)$: \Tcnl}
+\column{0.24\textwidth}\centering\map{0.72\linewidth}{t_soil_lin}\\{\scriptsize $T$ [$^\circ$C] in the soil, linear}\\[2pt]
+  \map{0.72\linewidth}{t_soil_nl}\\{\scriptsize $T$ [$^\circ$C] in the soil, $\sigma(T)$}
+\column{0.24\textwidth}\centering\map{0.72\linewidth}{m_j}\\{\scriptsize $|\hat J|$ [A/m$^2$], linear}\\[2pt]
+  \map{0.72\linewidth}{m_j_nl}\\{\scriptsize $|\hat J|$ [A/m$^2$], $\sigma(T)$}
+\column{0.24\textwidth}\centering\map{0.72\linewidth}{m_b}\\{\scriptsize $|\hat B|$ [T], linear}\\[2pt]
+  \map{0.72\linewidth}{m_b_nl}\\{\scriptsize $|\hat B|$ [T], $\sigma(T)$}
 \end{columns}\smallskip
-\footnotesize Each pair shares one colour scale ($T$: 30--95\,$^\circ$C). Only the temperature
+\footnotesize Each pair shares one colour scale ($T$: 30--95\,$^\circ$C in the cable, 15--50\,$^\circ$C in the soil). Only the temperature
 changes visibly (\dTcNL\ K); $J$ and $B$ barely move because the currents are imposed and $\mu_r=1$.
 \end{frame}
 \qslide{Q4.9 Is the linear model conservative?}{\QuestionFourNine}{\AnsFourNine}{\plot{\linewidth}{4.8cm}{rating_curve}}
@@ -594,9 +596,10 @@ changes visibly (\dTcNL\ K); $J$ and $B$ barely move because the currents are im
 \item Gmsh 4.15.2, GetDP 4.0.0-git-259f4c38; git tag \texttt{final}
 \item Course files included unchanged: \texttt{Jacobian\_Integration.pro}, \texttt{electrodynamic\_formulation.pro},
 \texttt{magnetodynamic\_formulation.pro}
-\item \textbf{File $>$ Open} \texttt{Electrodynamic-analysis/cable.pro} or \texttt{Magnetothermal-analysis/cable.pro}, \textbf{Run}
+\item One folder per section (\texttt{1-} to \texttt{5-}): \textbf{File $>$ Open} its \texttt{cable.pro}, \textbf{Run}
 \item \texttt{Source-Code/run\_all.sh}: every case (one line each, with its question)
-\item Numbers: \texttt{Reports/collect\_values.py} $\rightarrow$ \texttt{values.tex}; nothing typed by hand
+\item Every number and map is printed by the code: \texttt{results/<case>/}\,(\texttt{*.dat}, \texttt{references.txt}, \texttt{*.pos});
+the comparisons between two runs are listed in \texttt{README.md}
 \end{itemize}
 \end{frame}
 \end{document}

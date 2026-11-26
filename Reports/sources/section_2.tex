@@ -25,7 +25,7 @@ temperature-independent), linear nodal triangles, and an infinitely long straigh
 ideal equipotentials (justified in Q2.2): \(\hat v=26.944\angle(0,-120^\circ,+120^\circ)\) kV on the
 conductor-screen interfaces 101--103, \(\hat v=0\) on the core-screen interfaces 111--113: Dirichlet
 conditions (constraint \texttt{ElectricScalarPotential}) on the nodal function space
-\texttt{Hgrad\_v\_Ele} of the course file \file{Electrodynamic-analysis/electrodynamic_formulation.pro},
+\texttt{Hgrad\_v\_Ele} of the course file \file{2-Electrodynamic-analysis/electrodynamic_formulation.pro},
 whose weak form \texttt{Electrodynamics\_v} we use unchanged.
 
 \textbf{Truncation and the role of the screens.} The domain ends at the grounded core screens.
@@ -40,7 +40,7 @@ ends (terminations), would need a different model.
 {\small \(\Re(\hat v)\) [V] at phase A's zero angle (left) and \(|\hat{\mathbf E}|\) [V/m] (right).}\end{center}
 
 \codeguide{\efile: \texttt{Group}, \texttt{Function}, \texttt{Constraint}; function space and
-formulation from \file{Electrodynamic-analysis/electrodynamic_formulation.pro}. \setupfile{cable.geo}:
+formulation from \file{2-Electrodynamic-analysis/electrodynamic_formulation.pro}. \setupfile{cable.geo}:
 physical groups 41--44, 101--113.}
 {Gmsh: \textbf{File > Open} \efile, \textbf{Run} (resolution \texttt{Electrodynamics\_cable}).}
 {\texttt{res/potential.pos}, \texttt{res/field\_norm.pos}; only the XLPE carries a field.}
@@ -131,7 +131,7 @@ from the conductor screen where the stress is highest. Air at 1 bar: \(\varepsil
 
 \textbf{What 2D means in 3D.} A circle in the cross-section is an infinitely long cylindrical
 channel along the cable. For a small inclusion in a uniform field \(E_0\), the internal field is
-\(2\varepsilon_X/(\varepsilon_X+1)E_0=1.43E_0\) for a cylinder and \(3\varepsilon_X/(2\varepsilon_X+1)E_0=1.25E_0\)
+\(2\varepsilon_X/(\varepsilon_X+1)E_0=\AnaVoidFactor\,E_0\) for a cylinder and \(3\varepsilon_X/(2\varepsilon_X+1)E_0=\AnaSphereFactor\,E_0\)
 for a sphere: the 2D model overestimates the enhancement of a real, roughly spherical void, which
 is conservative. A spherical void needs a 3D or axisymmetric model.
 
@@ -139,8 +139,8 @@ is conservative. A spherical void needs a 3D or axisymmetric model.
 \begin{tabular}{@{}lr@{}}\toprule
 Quantity (peak) & Value\\\midrule
 Healthy field at \(r=8.8\) mm, analytical \(E_0\) [kV/mm] & \AnaEzero\\
-Uniform-field estimate in the void, \(1.43E_0\) [kV/mm] & \AnaEvoid\\
-FE mean field in the void along the cut, fine mesh [kV/mm] & \Vmeandefectfine\ (\(\VoidRatio E_0\))\\
+Uniform-field estimate in the void, \(\AnaVoidFactor\,E_0\) [kV/mm] & \AnaEvoid\\
+FE mean field over the void area, fine mesh [kV/mm] & \Vmeandefectfine\ (\(\VoidRatio E_0\))\\
 FE maximum element field, default / fine mesh [kV/mm] & \Edefect\ / \Edefectfine\\
 Phase-A capacitance with void, fine mesh [\(\mu\)F/km] & \Cqdefectfine\ (healthy \Cqgap)\\\bottomrule
 \end{tabular}
@@ -152,7 +152,7 @@ Phase-A capacitance with void, fine mesh [\(\mu\)F/km] & \Cqdefectfine\ (healthy
 \includegraphics[width=0.3\linewidth,trim=150 0 150 0,clip]{e_jdisp_defect_zoom.png}\\
 {\small With void: \(|\hat{\mathbf E}|\) (left, zoom centre) and \(|\hat{\mathbf J}_d|\) (right), V/m and A/m\textsuperscript2.}\end{center}
 On the radial line the XLPE field \emph{drops} at the void poles (normal \(D\) continuous:
-\(E_{\rm XLPE}=E_{\rm void}/2.5\)); at the flanks it rises to about \(1.43E_0\), still far below the
+\(E_{\rm XLPE}=E_{\rm void}/2.5\)); at the flanks it rises to about \(\AnaVoidFactor\,E_0\), still far below the
 8 kV/mm RMS limit, so the bulk XLPE does not fail.
 
 \textbf{Does the cable withstand it? Not in the long term.} The gas breaks down first. For air at

@@ -6,8 +6,7 @@
 \input{data/values.tex}
 \begin{document}
 All results: three phases at 350 A RMS, 50 Hz, conductivities at 20\,\(^\circ\)C, 0.5 mm gap, default
-mesh, massive aluminium, screens bonded at both ends, resolution \texttt{Magnetodynamics\_cable} of \mfile\
-(select it in the GetDP panel; the default \texttt{MagnetoThermal} is Section 4). Peak phasors
+mesh, massive aluminium, screens bonded at both ends, resolution \texttt{Magnetodynamics\_cable} of \mfile. Peak phasors
 inside GetDP; currents reported RMS, losses time-averaged. Every case is one line of \runall.
 
 \section*{Q3.1 Domain, equations, boundary conditions, sources}
@@ -43,7 +42,7 @@ inside (skin, proximity) is free. Stranded option: \(\hat{\mathbf j}=\hat I_k/A_
 \figcap{Magnetic model: the whole EM box is solved, because the screens do not shield \(\mathbf B\);
 each massive region carries one global pair \((U,I)\).}\end{center}
 \codeguide{\mfile: \texttt{Group}, \texttt{Function}, \texttt{Constraint}; function spaces and formulation
-\texttt{Magnetodynamic\_a\_2D} from \file{Magnetothermal-analysis/magnetodynamic_formulation.pro}.}
+\texttt{Magnetodynamic\_a\_2D} from \file{3-Magnetoquasistatic-analysis/magnetodynamic_formulation.pro}.}
 {Gmsh: open \mfile, resolution \texttt{Magnetodynamics\_cable}, \textbf{Run}.}
 {\texttt{res/currents\_A.dat}: three phase currents, then the three screen currents (re, im).}
 
@@ -136,8 +135,8 @@ induction). The semicon/filler simplifications remain valid.
 \section*{Q3.5 Mesh quality and convergence}
 \assignmentquestion{\QuestionThreeFive}
 \answer{\AnsThreeFive}
-The target element size is 0.25 mm around the cables; the longest edge in the Al and Cu is
-\MeshHmetalGap\ mm, i.e.\ \(h/\delta<0.05\) in both (the usual rule is \(h\lesssim\delta/3\)). Resolution is limited by
+The target element size is 0.25 mm around the cables; in the Al and Cu the element size is at most
+\MeshHmetalGap\ mm (edge of the equilateral triangle with the area of the largest element), i.e.\ \(h/\delta<0.05\) in both (the usual rule is \(h\lesssim\delta/3\)). Resolution is limited by
 geometry (the 0.45 mm screen has one or two elements across), not by \(\delta\). Minimum triangle
 quality \MeshQminGap\ (Section 1).
 \begin{center}\small

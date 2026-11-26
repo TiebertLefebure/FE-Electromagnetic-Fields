@@ -49,8 +49,8 @@ specification: 8 kV/mm RMS at the conductor screen and 4 kV/mm RMS at the core s
 \newcommand{\AnsTwoFive}{%
 We add an air-filled void (a gas cavity) of radius 0.25 mm with \(\varepsilon_r=1\), centred at
 \(r=8.8\) mm so that its edge is 0.75 mm from the conductor screen, where the stress is highest. In a 2D cross-section the void is an infinitely long channel
-along the cable; its field enhancement (\(1.43E_0\)) is larger than that of a real spherical void (\(1.25E_0\)), so
-the 2D result is conservative. Along the radial cut the field inside the void rises to \Vmeandefectfine\ kV/mm
+along the cable; its field enhancement (\(\AnaVoidFactor\,E_0\)) is larger than that of a real spherical void (\(\AnaSphereFactor\,E_0\)), so
+the 2D result is conservative. Averaged over the void, the field rises to \Vmeandefectfine\ kV/mm
 (\(\VoidRatio E_0\)), while the field in the surrounding XLPE stays close to the healthy one. The cable does not
 withstand this defect in the long run: the void field exceeds the breakdown strength of air (about \AnaEb\ kV/mm),
 so partial discharges start at rated voltage and slowly erode the insulation until it breaks down.}
@@ -103,8 +103,8 @@ area keeps the DC resistance and the screen loop. The main simplification of Sec
 screens do not confine the magnetic field, so all metals, all three cables, their spacing and the soil must be
 kept. Only the simplifications of the semicons and fillers remain valid.}
 \newcommand{\AnsThreeFive}{%
-The mesh targets 0.25 mm around the cables; the longest element edge in the aluminium and copper
-is \MeshHmetalGap\ mm, below 5\,\% of the skin depth (\AnaDeltaCu\ mm in copper, \AnaDeltaAl\ mm in aluminium), so
+The mesh targets 0.25 mm around the cables; the element size in the aluminium and copper
+is at most \MeshHmetalGap\ mm, below 5\,\% of the skin depth (\AnaDeltaCu\ mm in copper, \AnaDeltaAl\ mm in aluminium), so
 the mesh is limited by the geometry, not by the skin depth. Refining from MeshFactor 1 to 0.5 changes
 \(R_{AC}\) by \dRacfine\,\%, the inductance by \dLfine\,\% and the screen losses by \dPsfine\,\%. The screen
 losses converge slowest because the current varies across the thin copper ring, so that is where to refine.}

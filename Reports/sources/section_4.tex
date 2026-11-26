@@ -6,7 +6,8 @@
 \input{data/values.tex}
 \begin{document}
 All results: 350 A RMS, 50 Hz, trefoil with 0.5 mm gap, massive aluminium, screens bonded
-at both ends, default mesh, resolution \texttt{MagnetoThermal} of \mfile. ``Linear'' means
+at both ends, default mesh, resolution \texttt{MagnetoThermal} of \tfile
+(which includes the magnetic model \mfile). ``Linear'' means
 \(\sigma\) at 20\,\(^\circ\)C (\texttt{Flag\_NL}~=~0); ``\(\sigma(T)\)'' is the coupled nonlinear
 model (default). Every case is one line of \runall.
 
@@ -38,8 +39,9 @@ temperature updates \(\sigma\); the loop repeats until the temperature stops cha
 below \(U_0=127\) kV [Jicable]. Eddy currents in
 soil and semiconductors are zero in the magnetic model (Section 3).
 
-\codeguide{\mfile: \texttt{Hgrad\_T}, \texttt{Thermal\_T}, functions \texttt{kappa}, \texttt{sigma}, \texttt{Store\_T}.}
-{Gmsh: open \mfile, resolution \texttt{MagnetoThermal}, \textbf{Run}.}
+\codeguide{\tfile: \texttt{Hgrad\_T}, \texttt{Thermal\_T}, functions \texttt{kappa}, \texttt{Tmetal}, \texttt{Store\_T};
+\mfile: \texttt{sigma}.}
+{Gmsh: open \tfile, resolution \texttt{MagnetoThermal}, \textbf{Run}.}
 {\texttt{res/T.pos}, \texttt{res/loss\_density.pos} (W/m\textsuperscript3).}
 
 \section*{Q4.2 Thermal domain, boundary conditions, one mesh}
@@ -129,7 +131,7 @@ limit, as a rating should be, and the difference is within the uncertainty of th
 \(h\) (Q4.5: \(\pm1\) K), the filler conductivity (halving it adds \dTfiller\ K) and the soil.
 The linear model gives \Tclin\,\(^\circ\)C (Q4.8).
 
-\codeguide{\mfile: \texttt{The\_Values} (register 1).}{\textbf{Run}.}
+\codeguide{\tfile: \texttt{The\_Values} (registers 4, 6--8).}{\textbf{Run}.}
 {\texttt{res/Tmax\_conductor.dat}, \texttt{res/T\_cables.pos}.}
 
 \section*{Q4.5 Temperature around the cable and at the ground surface}
@@ -153,7 +155,7 @@ The ground above the trefoil is warmed by \dTsurf\ K (\Tsnl\,\(^\circ\)C), sprea
 it is non-conservative, but by little, because the surface resistance \(1/h=0.1\) m\(^2\)K/W is
 small compared with the soil resistance between cable and surface.
 
-\codeguide{\mfile: \texttt{Flag\_SurfaceBC}, \texttt{hConv}.}
+\codeguide{\tfile: \texttt{Flag\_SurfaceBC}, \texttt{hConv}.}
 {\textbf{Thermal > Ground surface condition}; \texttt{-setnumber hConv 5/20}.}
 {\texttt{res/Tmax\_surface.dat}, \texttt{res/T\_surface\_profile.txt} (x, y, z, T).}
 
@@ -197,8 +199,8 @@ conductor temperature to within a few kelvin. Differences: (i) the surface condi
 actual 2D conduction with mutual heating; (iii) the FE screen loss includes eddy currents
 (\(\lambda_1\) FE \(\approx\) \(\Psnl/\Pcnl\)) and the 0.5 mm gap; (iv) the FE domain is finite.
 
-\codeguide{IEC values: hand calculation above (inputs from \setupfile{parameters.pro}).}
-{\runall: cases \texttt{nl}, \texttt{nl-iso}.}{\texttt{Tmax\_conductor.dat}.}
+\codeguide{IEC values: computed and printed by \tfile\ (macro \texttt{IecAt}, the ladder loops).}
+{\runall: cases \texttt{nl}, \texttt{nl-iso}.}{\texttt{Tmax\_conductor.dat}, \texttt{references.txt}.}
 
 \section*{Q4.7 Nonlinear coupling and convergence}
 \assignmentquestion{\QuestionFourSeven}
@@ -224,7 +226,7 @@ convergence does not depend on the mesh. It is linear, the increment dropping by
 \(\partial T/\partial T_{\rm prev}\approx\alpha\,\Delta T\,/(1+\alpha(T-20))\approx0.0039\times75/1.3\approx0.22\).
 It would approach 1 (divergence: thermal runaway) only for a much larger temperature rise.
 
-\codeguide{\mfile: \texttt{Resolution MagnetoThermal} (\texttt{While}, \texttt{GetNormIncrement}),
+\codeguide{\tfile: macro \texttt{CoupledSolve} (\texttt{While}, \texttt{GetNormIncrement}),
 \texttt{Flag\_NL}, \texttt{NL\_tol}, constraint \texttt{Temperature} (\texttt{Type Init}).}
 {\textbf{Run}; the log prints every iteration.}{\texttt{res/convergence.txt} (iteration, increment).}
 
@@ -277,7 +279,8 @@ the screen losses (Q4.8).
 
 \begin{center}\def\figw{0.75\linewidth}\def\figh{5.2cm}\input{figures/style.tex}\input{figures/rating_curve.tex}
 \figcap{Hot spot versus current. The linear model reaches 90\,\(^\circ\)C only at \AmpLin\ A; with \(\sigma(T)\)
-the limit is reached at \Amptrefoil\ A (curve interpolated in \(I^2\) through the two coupled runs).}\end{center}
+the limit is reached at \Amptrefoil\ A (straight line in \(I^2\) through the coupled solutions at 350 A and at
+the FE ampacity of Section 5).}\end{center}
 \subsection*{Sources}
 \small \textbf{[Lienhard]} J.H.~Lienhard~V, J.H.~Lienhard~IV, \refurl{https://ahtt.mit.edu/}{\emph{A Heat Transfer Textbook}}, 6th ed., v6.00 (2024), free PDF: eq.~(8.35), p.~435 (hot horizontal plate facing up, \(\mathrm{Nu}=0.14\,\mathrm{Ra}^{1/3}\)) and eq.~(2.31), p.~72 (\(h_{\rm rad}=4\sigma T_m^3\varepsilon\)).
 \textbf{[KTH]} L.~Lindstr\"om, \refurl{https://www.diva-portal.org/smash/get/diva2:511556/fulltext01.pdf}{\emph{Evaluating impact on ampacity according to IEC-60287 regarding thermally unfavourable placement of power cables}}, MSc thesis, KTH Stockholm (2011): IEC 60287 equations, eqs.~(4.1)--(4.2) (ladder, ampacity), (4.6)--(4.14) (\(y_s,y_p,\lambda_1\), \(W_d\)), (4.17) (\(T_3\)).

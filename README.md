@@ -13,13 +13,15 @@ Versions: **Gmsh 4.15.2**, **GetDP 4.0.0-git-259f4c38** (ONELAB bundle).
 ## Repository
 
 ```text
-Source-Code/            the Gmsh/GetDP models (with the course files, unchanged) and run_all.sh
+Source-Code/            one folder per section with its Gmsh/GetDP files (course files included
+                        unchanged), run_all.sh and README.md
 Slides/                 slides.tex -> slides.pdf; speaker_notes.tex -> speaker_notes.pdf;
                         export_maps.sh renders the field maps (Slides/figures);
                         make_deliverables.sh + deliverables.tex -> Deliverables/
 Deliverables/           the maps and values of the assignment's deliverables list, one folder per
                         analysis, with an index (README.md)
-Reports/                study notes per section (PDFs), LaTeX sources, collect_values.py
+Reports/                study notes per section (PDFs), LaTeX sources, collect_values.py (copies the
+                        printed values into LaTeX macros)
 ```
 
 ## Reproduce every number and picture (terminal, from this folder)
@@ -27,13 +29,16 @@ Reports/                study notes per section (PDFs), LaTeX sources, collect_v
 ```sh
 export PATH="$PWD/../ONELAB Software/Gmsh.app/Contents/MacOS:$PATH"   # gmsh + getdp
 ./Source-Code/run_all.sh            # all meshes and cases, about 25 min
-python3 Reports/collect_values.py   # results + analytical/IEC references -> values.tex + CSV
+python3 Reports/collect_values.py   # printed values -> values.tex + CSV
 ./Reports/build.sh                  # Section 1-5 PDFs
 ./Slides/export_maps.sh             # field maps (needs a display)
 ./Slides/make_deliverables.sh       # Deliverables/
 cd Slides && pdflatex slides.tex && pdflatex slides.tex          # notes: speaker_notes.tex
 ```
 
-No number in the slides or reports is typed by hand: `collect_values.py` reads the result files
-into LaTeX macros (`Reports/sources/data/values.tex`) and computes only the analytical and
-IEC 60287 references.
+No number in the slides or reports is typed by hand, and every number is printed by the code in
+`Source-Code`: FE values in `results/<case>/*.dat`, the analytical and IEC 60287 references and the
+comparisons within a run in `results/<case>/references.txt`, mesh size and quality by
+`mesh_quality.geo`. `collect_values.py` only copies them into LaTeX macros
+(`Reports/sources/data/values.tex`) and takes the ratio of two printed values for the comparisons
+between runs (listed in `Source-Code/README.md`).

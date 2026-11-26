@@ -37,13 +37,15 @@ GEO
   "$GMSH" "$1" "$OUT/.print.geo" -v 1
   echo "wrote $2"
 }
-G="$SRC/Cable-selection-and-model-setup/meshes"
+G="$SRC/1-Cable-selection-and-model-setup/meshes"
 # Mesh data box: x in [-20, 20] m, y in [-19, 1] m -> centre (0, -9) m.
 mesh "$G/gap.msh"      mesh_domain.png   1    0 0 1
 mesh "$G/gap.msh"      mesh_gap.png      8000 -0.010875 9.006279 1
 mesh "$G/touching.msh" mesh_touching.png 8000 -0.01075  9.006207 1
-E="$SRC/Electrodynamic-analysis/results"
-B="$SRC/Magnetothermal-analysis/results"
+E="$SRC/2-Electrodynamic-analysis/results"
+B="$SRC/3-Magnetoquasistatic-analysis/results"
+H="$SRC/4-Magnetothermal-analysis/results"
+A="$SRC/5-Cable-arrangement/results"
 # Electric maps: data box centred at (0, 6.28 mm); the void is at (8.8, 25.11) mm.
 map "$E/gap/potential.pos"          e_potential.png 1 0 0 'View[0].Name = "Re(v) [V], phase A at 0 deg";'
 map "$E/gap/field_norm.pos"         e_field.png     1 0 0
@@ -56,13 +58,13 @@ map "$E/defect/displacement_current.pos" e_jdisp_defect_zoom.png 12 0.0088 0.018
 map "$B/base/b_norm.pos"     m_b.png  5 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 0.016; General.Color.Text = White;'
 map "$B/base/j_norm.pos"     m_j.png  1 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 3.2e6;'
 map "$B/single/j_norm.pos"   m_j_single.png 1 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 3.2e6;'
-map "$B/nl/b_norm.pos"       m_b_nl.png  5 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 0.016; General.Color.Text = White;'
-map "$B/nl/j_norm.pos"       m_j_nl.png  1 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 3.2e6;'
+map "$H/nl/b_norm.pos"       m_b_nl.png  5 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 0.016; General.Color.Text = White;'
+map "$H/nl/j_norm.pos"       m_j_nl.png  1 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 3.2e6;'
 # Thermal maps: T in the cables (EM box) and around them (whole domain, centre (0,-9) m);
 # linear and sigma(T) maps share one colour scale per pair.
-map "$B/nl/T_cables.pos"     t_cables_nl.png  6 0 0 'View[0].RangeType = 2; View[0].CustomMin = 30; View[0].CustomMax = 95;'
-map "$B/lin/T_cables.pos"    t_cables_lin.png 6 0 0 'View[0].RangeType = 2; View[0].CustomMin = 30; View[0].CustomMax = 95;'
-map "$B/nl/T.pos"            t_soil_nl.png    8 0 8 'View[0].RangeType = 2; View[0].CustomMin = 15; View[0].CustomMax = 50; General.Color.Text = White;'
-map "$B/lin/T.pos"           t_soil_lin.png   8 0 8 'View[0].RangeType = 2; View[0].CustomMin = 15; View[0].CustomMax = 50; General.Color.Text = White;'
-map "$B/flat70/T_cables.pos" t_cables_flat70.png 2.2 0 0
+map "$H/nl/T_cables.pos"     t_cables_nl.png  6 0 0 'View[0].RangeType = 2; View[0].CustomMin = 30; View[0].CustomMax = 95;'
+map "$H/lin/T_cables.pos"    t_cables_lin.png 6 0 0 'View[0].RangeType = 2; View[0].CustomMin = 30; View[0].CustomMax = 95;'
+map "$H/nl/T.pos"            t_soil_nl.png    8 0 8 'View[0].RangeType = 2; View[0].CustomMin = 15; View[0].CustomMax = 50; General.Color.Text = White;'
+map "$H/lin/T.pos"           t_soil_lin.png   8 0 8 'View[0].RangeType = 2; View[0].CustomMin = 15; View[0].CustomMax = 50; General.Color.Text = White;'
+map "$A/flat70/T_cables.pos" t_cables_flat70.png 2.2 0 0
 rm -f "$OUT/.print.geo"

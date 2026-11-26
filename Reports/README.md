@@ -12,7 +12,7 @@ code guide: the files to read, how to run the case, and the output to check.
 ## Rebuild
 
 ```sh
-python3 Reports/collect_values.py   # after ../run_all.sh: results -> sources/data/
+python3 Reports/collect_values.py   # after Source-Code/run_all.sh: printed values -> sources/data/
 ./Reports/build.sh
 ```
 

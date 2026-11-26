@@ -42,12 +42,25 @@ DefineConstant[
   rScreenOuter = {0.0192, Name "Geometry/16 Over-screen radius [m]"},             // [NKT] 38.4 mm diameter
   rJacket  = {0.0215, Name "Geometry/17 Outer radius [m]"},                       // [NKT] 43 mm diameter
 
+  // ---- Datasheet values, used as references in the printed comparisons [NKT] -------------
+  RdcNKT   = {0.164, Name "Datasheet/1 Max. DC resistance at 20 C [Ohm per km]"},
+  CmaxNKT  = {0.22,  Name "Datasheet/2 Max. capacitance [uF per km]"},
+  XNKT     = {0.12,  Name "Datasheet/3 Reactance, touching trefoil [Ohm per km]"},
+  TadmNKT  = {90,    Name "Datasheet/4 Max. conductor temperature [deg C]"},
+  // Ampacity in ground, 15 C, 1 m, 1.2 K m/W: both ends bonded / single point bonded.
+  IampTrefoil    = {350, Name "Datasheet/5 Ampacity, trefoil touching [A]"},
+  IampTrefoilSP  = {350, Name "Datasheet/6 Ampacity, trefoil touching, single point [A]"},
+  IampFlat       = {350, Name "Datasheet/7 Ampacity, flat touching [A]"},
+  IampFlatSP     = {350, Name "Datasheet/8 Ampacity, flat touching, single point [A]"},
+  IampFlat70     = {365, Name "Datasheet/9 Ampacity, flat 70 mm apart [A]"},
+  IampFlat70SP   = {380, Name "Datasheet/10 Ampacity, flat 70 mm apart, single point [A]"},
+
   // ---- Electromagnetic materials [Q1.1, Q2.1, Q3.1] -----------------------------------
   epsXLPE   = {2.5,   Name "Materials/01 XLPE relative permittivity"},           // [SUCUROVIC, LEE]
   sigmaXLPE = {1e-18, Name "Materials/02 XLPE conductivity", Units "S/m"},        // [COURSE]
   // [DERIVED] Fitted so that 1/(sigma*pi*rCon^2) = 0.164 Ohm/km, the NKT DC maximum at 20 C
   // (3.544e7 S/m; 61 % IACS aluminium [NBS] gives 3.538e7: 0.2 % apart).
-  sigmaAl = {1000/(0.164*Pi*rCon^2), Name "Materials/03 Al conductivity at 20 C", Units "S/m"},
+  sigmaAl = {1000/(RdcNKT*Pi*rCon^2), Name "Materials/03 Al conductivity at 20 C", Units "S/m"},
   // [NBS] Annealed copper (IACS), rho = 1.7241e-8 Ohm m at 20 C (NBS Handbook 100, p. 2).
   sigmaCu = {1/1.7241e-8, Name "Materials/04 Cu conductivity at 20 C", Units "S/m"},
   muR     = {1,      Name "Materials/05 Relative permeability (all regions)"},    // no steel
@@ -56,6 +69,10 @@ DefineConstant[
   // [COURSE eq. 12] sigma(T) = sigma0 / (1 + alpha (T - 20 C)).
   alphaAl = {0.00390, Name "Materials/08 Al temperature coefficient [1/K]"},
   alphaCu = {0.00386, Name "Materials/09 Cu temperature coefficient [1/K]"},
+  tanDelta = {4e-3, Name "Materials/10 XLPE loss tangent"},                     // [SUCUROVIC] 19/33 kV
+  // [OES] insulation-screen resistivity limit 500 Ohm m; only used for the drop across the
+  // semicons (Q2.2), which are ideal electrodes in the electric model.
+  sigmaSemi = {2e-3, Name "Materials/11 Semicon conductivity", Units "S/m"},
 
   // ---- Thermal data [Q1.1, Q1.2, Q4.2] -------------------------------------------------
   T_amb = {15, Name "Thermal/01 Ambient (air and deep soil) temperature [deg C]"}, // [NKT]
@@ -100,5 +117,5 @@ Vpeak = Sqrt[2]*U_LL/Sqrt[3];   // 26944 V phase-to-ground
 Ipeak = Sqrt[2]*I_RMS;          // 494.97 A
 eps0 = 8.854187817e-12;
 mu0 = 4*Pi*1e-7;
-// [Q1.3] Screens bonded at both ends (rating row): Magnetothermal-analysis/cable.pro,
+// [Q1.3] Screens bonded at both ends (rating row): 3-Magnetoquasistatic-analysis/cable.pro,
 // Flag_Bonding = 0 (U = 0 per screen); single-point bonding is Flag_Bonding = 1 (I = 0).

@@ -29,23 +29,25 @@ Flat +70 mm & horizontal line, 70 mm free distance & 113 mm & flat, \(S=D+70\) m
 each with both-end bonding (\(U=0\) per screen) and single-point bonding (\(I=0\)). All cables are
 1 m below the surface (arrangement centre). Phase B is the middle cable of the flat formations.
 
-\textbf{FE ampacity.} For each case: (1) coupled run at 350 A gives \(T_0\); (2) a second run at
-\(I_1=350\sqrt{75/(T_0-15)}\) gives \(T_1\approx90\,^\circ\)C; (3) since the temperature rise is
-nearly proportional to \(I^2\) (\(R\) varies only by \(\alpha\Delta T\) between the two runs),
-\(I_{90}^2=350^2+(90-T_0)(I_1^2-350^2)/(T_1-T_0)\). The second run lands within \dTIone\ K of
-90\,\(^\circ\)C, so the remaining interpolation error is a few amperes at most.
+\textbf{FE ampacity} (resolution \texttt{Ampacity} of \afile). For each case GetDP (1) solves the
+coupled problem at 350 A, which gives all values of the table and the maps; (2) searches the current
+for which the hot spot is 90\,\(^\circ\)C with the secant method on \(I^2\), starting from
+\(I_1=350\sqrt{75/(T_0-15)}\) (temperature rise proportional to \(I^2\)). Each step is a full
+coupled \(\sigma(T)\) solve; at most \AmpStepsMax\ steps bring the hot spot within 0.01 K of 90\,\(^\circ\)C.
+Changing the current only scales the loss density by \((I/350)^2\): for a given \(\sigma\) the magnetic
+problem is linear in \(I\).
 
 \section*{Results}
 \begin{center}\small
-\setlength{\tabcolsep}{3.5pt}\begin{tabular}{@{}lrrrrrrr@{}}\toprule
-Case, bonding & \(P_c\) & \(P_s\) & \(L\) & \(T_{\max}\) at 350 A & \(I_1\) / \(T_1\) & FE ampacity & NKT\\
-& [kW/km] & [kW/km] & [mH/km] & [\(^\circ\)C] & [A] / [\(^\circ\)C] & [A] & [A]\\\midrule
-Trefoil, both ends & \Pctrefoil & \Pstrefoil & \Ltrefoil & \Tctrefoil & \Ionetrefoil\ / \TctrefoilIone & \Amptrefoil & 350\\
-Trefoil, single point & \Pctrefoilsp & \Pstrefoilsp & \Ltrefoilsp & \Tctrefoilsp & \Ionetrefoilsp\ / \TctrefoilspIone & \Amptrefoilsp & 350\\
-Flat, both ends & \Pcflat & \Psflat & \Lflat & \Tcflat & \Ioneflat\ / \TcflatIone & \Ampflat & 350\\
-Flat, single point & \Pcflatsp & \Psflatsp & \Lflatsp & \Tcflatsp & \Ioneflatsp\ / \TcflatspIone & \Ampflatsp & 350\\
-Flat +70 mm, both ends & \Pcflatsev & \Psflatsev & \Lflatsev & \Tcflatsev & \Ioneflatsev\ / \TcflatsevIone & \Ampflatsev & 365\\
-Flat +70 mm, single point & \Pcflatsevsp & \Psflatsevsp & \Lflatsevsp & \Tcflatsevsp & \Ioneflatsevsp\ / \TcflatsevspIone & \Ampflatsevsp & 380\\\bottomrule
+\setlength{\tabcolsep}{3.5pt}\begin{tabular}{@{}lrrrrrr@{}}\toprule
+Case, bonding & \(P_c\) & \(P_s\) & \(L\) & \(T_{\max}\) at 350 A & FE ampacity & NKT\\
+& [kW/km] & [kW/km] & [mH/km] & [\(^\circ\)C] & [A] & [A]\\\midrule
+Trefoil, both ends & \Pctrefoil & \Pstrefoil & \Ltrefoil & \Tctrefoil & \Amptrefoil & 350\\
+Trefoil, single point & \Pctrefoilsp & \Pstrefoilsp & \Ltrefoilsp & \Tctrefoilsp & \Amptrefoilsp & 350\\
+Flat, both ends & \Pcflat & \Psflat & \Lflat & \Tcflat & \Ampflat & 350\\
+Flat, single point & \Pcflatsp & \Psflatsp & \Lflatsp & \Tcflatsp & \Ampflatsp & 350\\
+Flat +70 mm, both ends & \Pcflatsev & \Psflatsev & \Lflatsev & \Tcflatsev & \Ampflatsev & 365\\
+Flat +70 mm, single point & \Pcflatsevsp & \Psflatsevsp & \Lflatsevsp & \Tcflatsevsp & \Ampflatsevsp & 380\\\bottomrule
 \end{tabular}
 \end{center}
 \begin{center}\def\figw{0.8\linewidth}\def\figh{5.5cm}
@@ -79,8 +81,9 @@ brings it to \Tctrefoilsp\,\(^\circ\)C at no space cost. If more current is need
 single-point or cross-bonded screens gives the largest ampacity (\Ampflatsevsp\ A).
 
 \codeguide{\setupfile{parameters.pro}: \texttt{Formation}, \texttt{JacketGap}.
-\setupfile{cable.geo}: centres and mesh box follow the formation. \mfile: unchanged.}
-{\runall: section ``Section 5'' (function \texttt{amp}); Gmsh: \textbf{Geometry > Formation} = Flat,
-\textbf{Jacket gap} = 70, \textbf{Magnetic > Screen bonding}.}
-{\texttt{results/<case>/Tmax\_conductor.dat}; \texttt{Reports/collect\_values.py} does the interpolation.}
+\setupfile{cable.geo}: centres and mesh box follow the formation. \afile: resolution \texttt{Ampacity}
+(the model of Sections 3 and 4 is included unchanged).}
+{\runall: section ``Section 5''; Gmsh: open \afile, \textbf{Geometry > Formation} = Flat,
+\textbf{Jacket gap} = 70, \textbf{Magnetic > Screen bonding}, \textbf{Run}.}
+{\texttt{results/<case>/Tmax\_conductor.dat} (350 A); ampacity and deviation from NKT in \texttt{references.txt}.}
 \end{document}

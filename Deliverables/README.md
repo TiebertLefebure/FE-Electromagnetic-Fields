@@ -4,10 +4,12 @@ One picture per item of the assignment's list, in one folder per analysis. NKT 3
 1×185/50 mm² XLPE-AL, three cables in touching trefoil (0.5 mm gap), buried 1 m, 350 A, 50 Hz,
 screens bonded at both ends. Field quantities are peak amplitudes; voltages and currents RMS.
 
-Generated, not drawn by hand: `./Source-Code/run_all.sh`, `python3 Reports/collect_values.py`,
-`./Slides/export_maps.sh` (maps), then `./Slides/make_deliverables.sh` (this folder). The case names below are the lines of `Source-Code/run_all.sh`.
+Generated, not drawn by hand: every map and value is printed by the code in `Source-Code` (run all
+cases with `./Source-Code/run_all.sh`; outputs in `Source-Code/<section folder>/results/<case>/`). The case
+names below are the lines of `Source-Code/run_all.sh`; `Source-Code/README.md` says which output file
+holds each value.
 
-## 1_Electrodynamic_analysis (Section 2, `Electrodynamic-analysis/cable.pro`)
+## 1_Electrodynamic_analysis (Section 2, `2-Electrodynamic-analysis/cable.pro`)
 
 | Assignment item | File | Case |
 |---|---|---|
@@ -20,7 +22,7 @@ Generated, not drawn by hand: `./Source-Code/run_all.sh`, `python3 Reports/colle
 The void is an air cavity of radius 0.25 mm centred at r = 8.8 mm in phase A (its edge 0.75 mm
 from the conductor screen). In the full maps it is too small to see: use the zooms.
 
-## 2_Magnetoquasistatic_analysis (Section 3, `Magnetothermal-analysis/cable.pro`, resolution `Magnetodynamics_cable`)
+## 2_Magnetoquasistatic_analysis (Section 3, `3-Magnetoquasistatic-analysis/cable.pro`, resolution `Magnetodynamics_cable`)
 
 | Assignment item | File | Case |
 |---|---|---|
@@ -32,7 +34,7 @@ from the conductor screen). In the full maps it is too small to see: use the zoo
 
 Conductivities at 20 °C. No armour or pipe; the soil is non-conducting in the magnetic model.
 
-## 3_Magnetothermal_analysis (Section 4, `Magnetothermal-analysis/cable.pro`, resolution `MagnetoThermal`)
+## 3_Magnetothermal_analysis (Section 4, `4-Magnetothermal-analysis/cable.pro`, resolution `MagnetoThermal`)
 
 | Assignment item | File | Case |
 |---|---|---|
