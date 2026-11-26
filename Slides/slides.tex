@@ -119,7 +119,7 @@ over insulation), a 50 mm$^2$ copper wire screen modelled as a ring of equal are
 1.2 K\,m/W, screens bonded at both ends.
 \item Three choices to remember: a 0.5 mm soil gap (TA advice: minimum triangle quality \MeshQminTouch\
 $\rightarrow$ \MeshQminGap, effect on results below 1\,\%); $\sigma_{\rm Al}$ fitted to NKT's DC resistance, within
-0.2\,\% of IEC; IEC thermal data for all polymers, so our IEC check uses the same inputs.
+0.2\,\% of the 61\,\% IACS value (NBS); the IEC 60287 polymer value 3.5 K\,m/W (Enescu et al.) for all polymers, so our IEC check uses the same inputs.
 \item One mesh: the electromagnetic box sits inside the large thermal soil domain.
 \end{itemize}}
 \end{frame}
@@ -194,11 +194,11 @@ Refinement is needed at the conductor screen.
 \plot{\linewidth}{3.9cm}{radial_defect}\\[-3pt]\small
 \begin{itemize}\small
 \item Field in the void: \alert{\Vmeandefectfine--\Edefectfine\ kV/mm}, $\VoidRatio\times$ the healthy field (theory 1.43$\times$)
-\item Above air breakdown (\AnaEb--5.8 kV/mm): \alert{partial discharges at rated voltage}, so \alert{not withstood}
+\item Above air breakdown (\AnaEb--\AnaEbPaschen\ kV/mm): \alert{partial discharges at rated voltage}, so \alert{not withstood}
 \item \textbf{Design:} 9 mm XLPE (same outer diameter): max.\ field \Egap\ $\rightarrow$ \Ethick\ kV/mm ($-$8\,\%)
 \end{itemize}
 \end{columns}
-\src{2D void = infinitely long channel; a real spherical void gives 1.25$\times$ instead of 1.43$\times$, so 2D is conservative. Air breakdown: Paschen/Schumann (Kuffel et al., ch.~5).}
+\src{2D void = infinitely long channel; a real spherical void gives 1.25$\times$ instead of 1.43$\times$, so 2D is conservative. Air breakdown: VSSUT HV notes; Bean et al.\ 2020.}
 \note{\textbf{[1:10 \,|\, clock 4:05]}\par\smallskip 
 \begin{itemize}
 \item Defect: a 0.5 mm air void centred at $r=8.8$ mm, its edge 0.75 mm from the conductor screen, where the stress is highest.
@@ -517,10 +517,10 @@ folder. Spare time: about one minute.}
 \begin{tabular}{@{}lrl@{\hskip 10pt}lrrrl@{}}\toprule
 Region & $r_o$ [mm] & basis & Material & $\varepsilon_r$ & $\sigma$ [S/m] & $\kappa$ [W/mK] & source\\\midrule
 Al conductor & 7.40 & NKT & Al & -- & $3.544\cdot10^7$, $\alpha$ 0.0039 & 237 & fitted; Lee; course\\
-Inner semicon & 7.80 & assumed & Cu & -- & $5.80\cdot10^7$, $\alpha$ 0.00386 & 402 & IEC; course\\
-XLPE & 15.80 & NKT 8 mm & semicon & 2.25 & $2\cdot10^{-3}$ & 0.286 & Lee, OES; IEC\\
-Outer semicon & 16.20 & assumed & XLPE & 2.5 & $10^{-18}$ & 0.286 & IEC; course\\
-Inner filler & 17.40 & assumed & PE, fillers & 2.25 & $10^{-18}$ / 0 & 0.286 & IEC; assumption\\
+Inner semicon & 7.80 & assumed & Cu & -- & $5.80\cdot10^7$, $\alpha$ 0.00386 & 402 & NBS; course; Lee\\
+XLPE & 15.80 & NKT 8 mm & semicon & 2.25 & $2\cdot10^{-3}$ & 0.286 & OES, Lee; as XLPE\\
+Outer semicon & 16.20 & assumed & XLPE & 2.5 & $10^{-18}$ & 0.286 & \v{S}u\'{c}urovi\'{c}, Lee; course, COMSOL; Enescu\\
+Inner filler & 17.40 & assumed & PE, fillers & 2.25 & $10^{-18}$ / 0 & 0.286 & course, COMSOL; Enescu; assumption\\
 Cu ring 50 mm$^2$ & 17.85 & area kept & soil & 10 & $10^{-2}$ & 0.833 & course; NKT 1.2 K\,m/W\\
 Outer filler & 19.20 & NKT $\varnothing$38.4 & air (void) & 1 & $10^{-15}$ & -- & assumption\\
 PE sheath & 21.50 & NKT $\varnothing$43 & & & & & \\\bottomrule

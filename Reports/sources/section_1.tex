@@ -48,21 +48,21 @@ the ground surface.}\end{center}
 \caption{Material properties (all are ONELAB parameters in \texttt{parameters.pro}).}
 \begin{tabularx}{\linewidth}{@{}l c c c Y@{}}
 \toprule Material & \(\varepsilon_r\) & \(\sigma\) at 20\,\(^\circ\)C [S/m] & \(\kappa\) [W/(m K)] & Basis\\\midrule
-Aluminium & -- & \(3.544\,10^7\), \(\alpha=0.0039\) & 237 & \(\sigma\) fitted to NKT \(R_{DC}\) (IEC: \(3.538\,10^7\), 0.2\,\% apart); \(\alpha\) [Course]; \(\kappa\) [Lee]\\
-Copper (screen) & -- & \(5.80\,10^7\), \(\alpha=0.00386\) & 402 & annealed Cu, \(\rho=1.7241\,10^{-8}\) [IEC]; \(\alpha\) [Course]; \(\kappa\) [Lee]\\
-XLPE & 2.5 & \(10^{-18}\) & 0.286 & \(\varepsilon_r\) [IEC, Chipp]; \(\sigma\) [Course, COMSOL]; \(\rho_T=3.5\) K\,m/W [IEC]\\
-Semicons & -- & \(2\,10^{-3}\) & 0.286 & \(\sigma\): OES limit 500 \(\Omega\)m [OES]; \(\kappa\) as XLPE (assumption)\\
-PE sheath & 2.25 & \(10^{-18}\) & 0.286 & [Course]; \(\rho_T=3.5\) K\,m/W [IEC]\\
+Aluminium & -- & \(3.544\cdot10^7\), \(\alpha=0.0039\) & 237 & \(\sigma\) fitted to NKT \(R_{DC}\) (61\,\% IACS: \(3.538\cdot10^7\) [NBS], 0.2\,\% apart); \(\alpha\) [Course]; \(\kappa\) [Lee]\\
+Copper (screen) & -- & \(5.80\cdot10^7\), \(\alpha=0.00386\) & 402 & annealed Cu, \(\rho=1.7241\cdot10^{-8}\) [NBS]; \(\alpha\) [Course]; \(\kappa\) [Lee]\\
+XLPE & 2.5 & \(10^{-18}\) & 0.286 & \(\varepsilon_r\) [\v{S}u\'{c}urovi\'{c}, Lee]; \(\sigma\) [Course, COMSOL]; \(\rho_T=3.5\) K\,m/W [Enescu]\\
+Semicons & -- & \(2\cdot10^{-3}\) & 0.286 & \(\sigma\): limit 500 \(\Omega\)m [OES], same value in [Lee]; \(\kappa\) as XLPE (assumption)\\
+PE sheath & 2.25 & \(10^{-18}\) & 0.286 & [Course, COMSOL]; \(\rho_T=3.5\) K\,m/W [Enescu]\\
 Fillers (tapes) & -- & 0 & 0.286 & assumption: polymer, as XLPE\\
 Soil & 10 & \(10^{-2}\) & 0.833 & \(\varepsilon_r,\sigma\) [Course App.~C]; \(\rho_T=1.2\) K\,m/W [NKT]\\
 Air (void, Q2.5) & 1 & \(10^{-15}\) & -- & assumption\\
 \bottomrule
 \end{tabularx}
 \end{table}
-All materials are non-magnetic (\(\mu_r=1\)): there is no steel. Using the IEC thermal resistivity
-3.5 K\,m/W for all polymers makes the FE model and the IEC 60287 check of Section 4 use the same data.
+All materials are non-magnetic (\(\mu_r=1\)): there is no steel. Using 3.5 K\,m/W, the IEC 60287 value for
+XLPE and PE [Enescu], for all polymers makes the FE model and the IEC 60287 check of Section 4 use the same data.
 
-\codeguide{\setupfile{parameters.pro}: every value with its basis tag ([NKT], [IEC], [COURSE],
+\codeguide{\setupfile{parameters.pro}: every value with its basis tag (the sources below,
 [DERIVED], [ASSUMPTION]). \setupfile{cable.geo}: the layer radii \texttt{R[]}.}
 {Open \setupfile{cable.geo} in Gmsh to see the geometry.}{\texttt{sigmaAl} reproduces 0.164 \(\Omega\)/km by construction.}
 
@@ -134,10 +134,11 @@ so the load power factor is irrelevant). Results are reported as RMS values and 
 \small
 \textbf{[NKT]} \href{../Datasheet NKT 33 kV single core cable XLPE-AL.pdf}{NKT 33 kV single-core XLPE-AL datasheet}, pp.~19--20, 185 mm\textsuperscript2 column.
 \textbf{[Course]} \href{../NMES_Assignment_2026.pdf}{NMES assignment 2026}, Appendices A--C.
-\textbf{[IEC]} IEC 60287-1-1, Table 1 (\(\rho_{\rm Cu}=1.7241\,10^{-8}\), \(\rho_{\rm Al}=2.8264\,10^{-8}\) \(\Omega\)m), Table 3 (XLPE \(\varepsilon_r\), \(\tan\delta\));
-IEC 60287-2-1, Table 1 (\(\rho_T=3.5\) K\,m/W for XLPE and PE).
-\textbf{[Lee]} Lee et al., \emph{Energies} 16(1), 167 (2023), Table 3, \refurl{https://doi.org/10.3390/en16010167}{doi:10.3390/en16010167}.
-\textbf{[OES]} Oman OES~2, 4th ed.\ (2024), pp.~20--23, semicon resistivity limit.
-\textbf{[Chipp]} R.~Chippendale, \emph{Parameters for extra large cables} (2016), Tables 3--4.
-\textbf{[COMSOL]} Submarine Cable 8 model, material definitions (XLPE \(\sigma=10^{-18}\) S/m).
+\textbf{[NBS]} National Bureau of Standards, \refurl{https://nvlpubs.nist.gov/nistpubs/Legacy/hb/nbshandbook100.pdf}{\emph{Copper Wire Tables}, Handbook 100} (1966), \S1.1a, pp.~2--3: annealed copper (IACS) \(\rho=1.7241\cdot10^{-8}\) \(\Omega\)m at 20\,\(^\circ\)C;
+\refurl{https://nvlpubs.nist.gov/nistpubs/Legacy/hb/nbshandbook109.pdf}{\emph{Aluminum Wire Tables}, Handbook 109} (1972), Table 1, p.~5: 61\,\% IACS aluminium \(\rho=2.8264\cdot10^{-8}\) \(\Omega\)m.
+\textbf{[Lee]} J.-I.~Lee, W.-H.~Jeong, M.-C.~Dinh, I.-K.~Yu, M.~Park, ``Comparative analysis of XLPE and thermoplastic insulation-based HVDC power cables'', \emph{Energies} 16(1), 167 (2023), \S2.3, Table 3 (\(\kappa\): Al 237, Cu 402; semicon \(\sigma=0.002\) S/m; XLPE \(\varepsilon_r=2.5\)), \refurl{https://doi.org/10.3390/en16010167}{doi:10.3390/en16010167} (open access).
+\textbf{[\v{S}u\'{c}urovi\'{c}]} M.~\v{S}u\'{c}urovi\'{c} et al., ``FEM-based quantification of eddy-current losses for MV cables in trefoil formation with non-magnetic screens'', \emph{IEEE Access} 14 (2026), Table 1, p.~47244 (19/33 kV cables: XLPE \(\kappa=0.286\), i.e.\ \(\rho_T=3.5\) K\,m/W, \(\varepsilon_r=2.5\), \(\tan\delta=0.004\)), \refurl{https://doi.org/10.1109/ACCESS.2026.3678088}{doi:10.1109/ACCESS.2026.3678088} (open access).
+\textbf{[Enescu]} D.~Enescu, P.~Colella, A.~Russo, ``Thermal assessment of power cables and impacts on cable current rating: an overview'', \emph{Energies} 13, 5319 (2020), Table 2, p.~20 (\(\rho_T=3.5\) K\,m/W for XLPE and PE), \refurl{https://doi.org/10.3390/en13205319}{doi:10.3390/en13205319} (open access).
+\textbf{[OES]} APSR Oman, \refurl{https://www.dcrp-oman.com/documents/DCRP\%20Updates/OES2\%204th\%20Edition-Circular.pdf}{\emph{OES~2: Cables and Accessories}, 4th ed.} (2024), \S4.1 (33 kV cables), clauses 3 and 5, pp.~20--21: screen volume resistivity \(\le1000\) \(\Omega\)m (conductor screen) and \(\le500\) \(\Omega\)m (insulation screen) at 90\,\(^\circ\)C.
+\textbf{[COMSOL]} COMSOL, \refurl{https://doc.comsol.com/6.4/doc/com.comsol.help.models.acdc.submarine_cable_01_introduction/models.acdc.submarine_cable_01_introduction.pdf}{``Submarine Cable 1 -- Introduction''}, Application Gallery documentation (v6.4), materials table, p.~28: XLPE and PE \(\sigma=10^{-18}\) S/m.
 \end{document}

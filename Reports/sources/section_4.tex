@@ -34,8 +34,8 @@ Coupling (Q4.7):
 \figcap{One coupled step: the complex magnetic solution gives a real, time-averaged heat source; the
 temperature updates \(\sigma\); the loop repeats until the temperature stops changing (Q4.7).}\end{center}
 \textbf{Neglected heat sources.} Dielectric loss \(\omega C U_0^2\tan\delta=\)\,\AnaWd\ W/m per phase
-(\(\tan\delta=10^{-3}\) [IEC-1]), \AnaWdShare\,\% of the conductor loss; IEC 60287 neglects it for XLPE
-below \(U_0=127\) kV [IEC-1]. Eddy currents in
+(\(\tan\delta=4\cdot10^{-3}\) [\v{S}u\'{c}urovi\'{c}]), \AnaWdShare\,\% of the conductor loss; IEC 60287 neglects it for XLPE
+below \(U_0=127\) kV [Jicable]. Eddy currents in
 soil and semiconductors are zero in the magnetic model (Section 3).
 
 \codeguide{\mfile: \texttt{Hgrad\_T}, \texttt{Thermal\_T}, functions \texttt{kappa}, \texttt{sigma}, \texttt{Store\_T}.}
@@ -60,8 +60,8 @@ Bottom, 20 m deep (132) & \(T=15\,^\circ\)C & deep ground at the NKT ambient\\\b
 \end{tabularx}
 \end{center}
 \(h\) is an assumption: natural convection over a warm horizontal surface with
-\(\Delta T\approx2\) K gives \(h_c\approx1.5\,\Delta T^{1/3}\approx2\) W/(m\(^2\)K), linearised radiation of a surface
-with emissivity 0.95 adds \Hrad\ [Incropera], and wind raises the convective part; 10 is a
+\(\Delta T\approx2\) K gives \(h_c\approx1.7\,\Delta T^{1/3}\approx2\) W/(m\(^2\)K) (\(\mathrm{Nu}=0.14\,\mathrm{Ra}^{1/3}\) [Lienhard, eq.~8.35], air at 15\,\(^\circ\)C), linearised radiation of a surface
+with emissivity 0.95 adds \(4\varepsilon\sigma T^3=\)\,\Hrad\ [Lienhard, eq.~2.31], and wind raises the convective part; 10 is a
 round mid value. Q4.5 varies \(h\) from 5 to 20 and compares
 with \(T=T_{\rm amb}\). Of the \Ptnl\ W/m generated, \QsFrac\,\% leaves through the
 surface, the rest through the bottom.
@@ -167,9 +167,9 @@ IEC 60287 thermal ladder for one cable of the trefoil (no armour, no dielectric 
 \begin{center}\small
 \begin{tabular}{@{}lll@{}}\toprule
 Quantity & Formula & Value\\\midrule
-\(T_1\) insulation incl.\ semicons + inner filler & \(\frac{\rho}{2\pi}\ln(17.4/7.4)\), \(\rho=3.5\) & \IecTone\ K\,m/W\\
-\(T_3\) outer filler + sheath & \(\frac{\rho}{2\pi}\ln(21.5/17.85)\) & \IecTthree\ K\,m/W\\
-\(T_4\) soil, touching trefoil [IEC-2] & \(\frac{1.5}{\pi}\rho_T[\ln(2u)-0.630]\), \(u=2L/D_e=\IecU\) & \IecTfour\ K\,m/W\\
+\(T_1\) insulation incl.\ semicons + inner filler [UNCC] & \(\frac{\rho}{2\pi}\ln(17.4/7.4)\), \(\rho=3.5\) & \IecTone\ K\,m/W\\
+\(T_3\) outer filler + sheath [KTH] & \(\frac{\rho}{2\pi}\ln(21.5/17.85)\) & \IecTthree\ K\,m/W\\
+\(T_4\) soil, touching trefoil [Karlstrand] & \(\frac{1.5}{\pi}\rho_T[\ln(2u)-0.630]\), \(u=2L/D_e=\IecU\) & \IecTfour\ K\,m/W\\
 \(R_{AC}(\theta_c)\) & \(R_{20}(1+\alpha(\theta_c-20))(1+y_s+y_p)\) & \IecRcondHot\ \(\Omega\)/km\\
 \(\lambda_1\) (screen at \IecThetaS\,\(^\circ\)C) & \(\frac{R_s/R}{1+(R_s/X)^2}\) & \IecLamHot\,\%\\\bottomrule
 \end{tabular}
@@ -279,10 +279,12 @@ the screen losses (Q4.8).
 \figcap{Hot spot versus current. The linear model reaches 90\,\(^\circ\)C only at \AmpLin\ A; with \(\sigma(T)\)
 the limit is reached at \Amptrefoil\ A (curve interpolated in \(I^2\) through the two coupled runs).}\end{center}
 \subsection*{Sources}
-\small \textbf{[Incropera]} F.P.~Incropera, D.P.~DeWitt et al., \emph{Fundamentals of Heat and Mass Transfer},
-ch.~9 (natural convection, horizontal plates) and ch.~12 (radiation).
-\textbf{[IEC-1]} IEC 60287-1-1, \S2.2 (dielectric losses), \S2.1 (\(y_s,y_p\)), \S2.3 (\(\lambda_1\)).
-\textbf{[IEC-2]} IEC 60287-2-1, \S4.1--4.2 (\(T_1\), \(T_3\), \(T_4\) for touching trefoil), Table 1 (\(\rho_T=3.5\) K\,m/W).
+\small \textbf{[Lienhard]} J.H.~Lienhard~V, J.H.~Lienhard~IV, \refurl{https://ahtt.mit.edu/}{\emph{A Heat Transfer Textbook}}, 6th ed., v6.00 (2024), free PDF: eq.~(8.35), p.~435 (hot horizontal plate facing up, \(\mathrm{Nu}=0.14\,\mathrm{Ra}^{1/3}\)) and eq.~(2.31), p.~72 (\(h_{\rm rad}=4\sigma T_m^3\varepsilon\)).
+\textbf{[KTH]} L.~Lindstr\"om, \refurl{https://www.diva-portal.org/smash/get/diva2:511556/fulltext01.pdf}{\emph{Evaluating impact on ampacity according to IEC-60287 regarding thermally unfavourable placement of power cables}}, MSc thesis, KTH Stockholm (2011): IEC 60287 equations, eqs.~(4.1)--(4.2) (ladder, ampacity), (4.6)--(4.14) (\(y_s,y_p,\lambda_1\), \(W_d\)), (4.17) (\(T_3\)).
+\textbf{[UNCC]} A.A.~Nche, \refurl{https://ninercommons.charlotte.edu/record/695/files/AkumawahNche_uncc_0694N_11459.pdf}{\emph{Temperature modeling and control algorithm for high voltage underground cables}}, MSc thesis, Univ.\ of North Carolina at Charlotte (2017), eq.~(19), p.~21 (\(T_1=\frac{\rho}{2\pi}\ln(D_{oi}/d_c)\)).
+\textbf{[Karlstrand]} J.~Karlstrand, M.~Hatlo, M.~Hovde, \refurl{https://jicable.org/TOUT_JICABLE_FIRST_PAGE/2023/2023-P3-5_page1.pdf}{``Evaluation of thermal resistances \(T_3\) and \(T_4\) for touching formations in IEC 60287-2-1''}, Jicable'23, paper P3-5, eq.~[2]: \(T_4=\frac{n\rho}{2\pi}[\ln(2u)-\delta]\), touching trefoil \(n=3\), \(\delta=0.630\) (free first page).
+\textbf{[Jicable]} M.~El~Chmouri, \refurl{https://jicable.org/TOUT_JICABLE_FIRST_PAGE/2023/2023-E10-4_page1.pdf}{``Influence of the dielectric losses in EHV cables on the cable temperature during laboratory testing''}, Jicable'23, paper E10-4, Table 1: IEC 60287-1-1 dielectric loss needed for unfilled XLPE only from \(U_0=127\) kV (free first page).
+[\v{S}u\'{c}urovi\'{c}] (\(\tan\delta\)) and [Enescu] (\(\rho_T=3.5\) K\,m/W): Section 1.
 Local \href{../NMES_Assignment_2026.pdf}{assignment} (eqs.\ 10--12, 15) and
 \href{../Datasheet NKT 33 kV single core cable XLPE-AL.pdf}{NKT datasheet} (rating conditions).
 \end{document}

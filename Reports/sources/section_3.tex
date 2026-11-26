@@ -27,7 +27,7 @@ current is \AnaIch\ A/km against 350 A).
 
 \textbf{Domain.} The \(0.6\times0.6\) m EM box with all cable layers. The screens shield \(\mathbf E\),
 not \(\mathbf B\), so all three cables and the soil between them are needed. Conducting regions:
-aluminium (21--23) and copper (71--73). Semicons (\(2\,10^{-3}\) S/m), XLPE, fillers, PE and soil
+aluminium (21--23) and copper (71--73). Semicons (\(2\cdot10^{-3}\) S/m), XLPE, fillers, PE and soil
 (skin depth \(\approx\)700 m) carry negligible eddy current: \(\sigma=0\). Everything has \(\mu_r=1\).
 
 \textbf{Truncation.} \(a_z=0\) on the box edge (group 120), 0.3 m from the centre (\(\approx7\) cable
@@ -67,7 +67,7 @@ other two phases (proximity) and near its surface (skin); the stranded model imp
 \textbf{Massive is the realistic model}: NKT specifies a \emph{solid} conductor, in which eddy
 currents flow freely. At 50 Hz the difference is small: \(R_{\rm cond}\) stranded \dRcstr\,\%, \(L\)
 \dLstr\,\%. The massive skin + proximity increase over the FE DC value is \SkinFE\,\%, against
-\(y_s+y_p=\IecYs+\IecYp=\IecYsp\,\%\) from IEC 60287 [IEC]. At 500 Hz the stranded model underestimates
+\(y_s+y_p=\IecYs+\IecYp=\IecYsp\,\%\) from the IEC 60287 method [KTH, ELEK]. At 500 Hz the stranded model underestimates
 \(R_{\rm cond}\) by \dRcstrhund\,\%: it is not acceptable for a solid conductor at higher frequency.
 (The stranded \(R\) is 0.02\,\% below 0.164 because the 12-arc polygon has 0.02\,\% less area.)
 
@@ -91,7 +91,7 @@ Single point, FE & 0 & \Pssingle & \EddyFE\\\bottomrule
 \end{tabular}
 \end{center}
 IEC: \(\lambda_1'=\frac{R_s/R}{1+(R_s/X)^2}\) with \(R_s=\)\,\IecRs\ \(\Omega\)/km and
-\(X=2\omega10^{-7}\ln(2s/d)=\)\,\IecX\ \(\Omega\)/km [IEC]. The FE screen loss also contains eddy currents
+\(X=2\omega\cdot10^{-7}\ln(2s/d)=\)\,\IecX\ \(\Omega\)/km [KTH]. The FE screen loss also contains eddy currents
 inside each ring (seen alone in the single-point case, \Pssingle\ kW/km), which IEC treats separately.
 The FE circulating part, \PcircFE\ kW/km, is \dPcirc\,\% from IEC, and the FE screen current \dIs\,\%.
 
@@ -251,7 +251,7 @@ touching FE value lies inside the NKT band.}\end{center}
 \(\omega\) and oppose the flux (\dLfreq\,\% from DC to 50 Hz, \dLfreqhund\,\% at 500 Hz).
 \textbf{Comparison:} NKT \(X=0.12\) \(\Omega\)/km (touching trefoil) gives \(L=\)\,\NktL\ mH/km; FE touching
 \Ltouching\ mH/km (\dLnkt\,\%; the two-digit \(X\) means 0.366--0.398 mH/km). Analytical
-\(2\,10^{-7}\ln(s/(r_ce^{-1/4}))=\)\,\AnaLgap\ mH/km without screen currents, vs FE single point
+\(2\cdot10^{-7}\ln(s/(r_ce^{-1/4}))=\)\,\AnaLgap\ mH/km without screen currents, vs FE single point
 \Lsingle\ (\dLana\,\%).
 
 \codeguide{\mfile: \texttt{L\_mH\_km}, \texttt{Zterm\_ohm\_km}.}{\runall: \texttt{f0.01}, \texttt{f5}, \texttt{f500}, \texttt{touching}.}
@@ -272,7 +272,8 @@ modest; NKT indeed rates the trefoil at 350 A for both bondings. Thermal effect:
 \codeguide{\mfile: \texttt{Flag\_Bonding}.}{\runall: \texttt{single}.}{\texttt{losses\_screens.dat}, \texttt{voltages\_V\_m.dat}.}
 
 \subsection*{Sources}
-\small \textbf{[IEC]} IEC 60287-1-1: \(y_s,y_p\) (\S2.1.2--2.1.4), \(\lambda_1'\) for single-core cables in trefoil
-bonded at both ends (\S2.3.1), Table 1 (resistivities). Local \href{../NMES_Assignment_2026.pdf}{assignment}
+\small \textbf{[KTH]} L.~Lindstr\"om, \refurl{https://www.diva-portal.org/smash/get/diva2:511556/fulltext01.pdf}{\emph{Evaluating impact on ampacity according to IEC-60287 regarding thermally unfavourable placement of power cables}}, MSc thesis, KTH Stockholm (2011), eqs.~(4.6)--(4.9) (\(y_s,y_p\)) and (4.12)--(4.14) (\(\lambda_1'\), \(X\)).
+\textbf{[ELEK]} ELEK Software, \refurl{https://elek.com/articles/skin-and-proximity-effects-on-ac-resistance-calculations/}{``Skin and proximity effects on AC resistance calculations''}, Table 3: \(k_s=k_p=1\) for solid round conductors.
+Resistivities: [NBS], Section 1. Local \href{../NMES_Assignment_2026.pdf}{assignment}
 (eqs.~7--9, 14) and \href{../Datasheet NKT 33 kV single core cable XLPE-AL.pdf}{NKT datasheet}.
 \end{document}

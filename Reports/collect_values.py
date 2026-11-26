@@ -60,6 +60,7 @@ pct = lambda a, b: 100 * (a / b - 1)
 f = 50; w = 2 * math.pi * f; eps0 = 8.854187817e-12; mu0 = 4e-7 * math.pi
 I = 350; Vp = math.sqrt(2) * 33000 / math.sqrt(3); U0 = 33000 / math.sqrt(3)
 rc, ri, ro, epsr = 7.4e-3, 7.8e-3, 15.8e-3, 2.5            # conductor, XLPE interfaces
+tand = 4e-3                       # XLPE loss tangent for 19/33 kV cables [Sucurovic, Table 1]
 sAl = 1000 / (0.164 * math.pi * rc**2); sCu = 1 / 1.7241e-8
 aAl, aCu = 0.0039, 0.00386
 rsi = 17.4e-3; rso = math.sqrt(rsi**2 + 50e-6 / math.pi); rj = 21.5e-3
@@ -74,7 +75,7 @@ put('AnaEorms', Vp / math.sqrt(2) / (ro * lnr) / 1e6, '{:.2f}')
 E0 = Vp / (8.8e-3 * lnr) / 1e6
 put('AnaEzero', E0, '{:.2f}'); put('AnaEvoid', 2 * epsr / (epsr + 1) * E0, '{:.2f}')
 put('AnaIch', w * 2 * math.pi * eps0 * epsr / lnr * U0 * 1e3, '{:.3f}')    # A/km RMS
-put('AnaWd', w * 2 * math.pi * eps0 * epsr / lnr * U0**2 * 1e-3, '{:.3f}')  # W/m, tan d = 1e-3
+put('AnaWd', w * 2 * math.pi * eps0 * epsr / lnr * U0**2 * tand, '{:.3f}')  # W/m
 put('AnaJd', w * eps0 * epsr * Vp / (ri * lnr), '{:.4f}')                 # A/m2 peak at r_i
 put('AnaJc', 1e-18 * Vp / (ri * lnr), '{:.2e}')
 put('AnaRatio', 1e-18 / (w * eps0 * epsr), '{:.2e}')                       # sigma/(omega eps)
@@ -92,7 +93,8 @@ X = 2 * w * 1e-7 * math.log(2 * s_gap / (rsi + rso))                       # scr
 
 
 def iec(theta_c, theta_s=None):
-    """IEC 60287-1-1 conductor AC resistance and screen loss factor at given temperatures."""
+    """IEC 60287 method: conductor AC resistance (y_s, y_p) and screen loss factor lambda_1'
+    at given temperatures. Equations as printed in [KTH] Lindstrom (2011), eqs. 4.6-4.14."""
     R = 0.164e-3 * (1 + aAl * (theta_c - 20))
     xs4 = (8 * math.pi * f / R * 1e-7)**2
     F = xs4 / (192 + 0.8 * xs4)
@@ -115,7 +117,7 @@ put('IecPt', 3 * I**2 * Rac20 * (1 + lam20), '{:.2f}'); put('IecUs', X * I * 1e3
 T1 = rhoPoly / (2 * math.pi) * math.log(rsi / rc)          # conductor -> screen
 T3 = rhoPoly / (2 * math.pi) * math.log(rj / rso)          # screen -> jacket surface
 u = 2 * L_bur / (2 * rj)
-T4 = 1.5 / math.pi * rhoSoil * (math.log(2 * u) - 0.630)  # touching trefoil, IEC 60287-2-1
+T4 = 1.5 / math.pi * rhoSoil * (math.log(2 * u) - 0.630)  # touching trefoil: n rho/(2 pi), n = 3 [Karlstrand]
 
 
 def ladder(current, theta_fixed=None):
@@ -137,8 +139,8 @@ th350, _, Rac90, lam90, ths = ladder(I)
 # Q4.2 assumption check: halving the filler conductivity (inner filler in T1, outer in T3).
 dT1f = rhoPoly / (2 * math.pi) * math.log(rsi / 16.2e-3); dT3f = rhoPoly / (2 * math.pi) * math.log(19.2e-3 / rso)
 put('dTfiller', I**2 * Rac90 * (dT1f + (1 + lam90) * dT3f), '{:.1f}')
-put('Hrad', 4 * 0.95 * 5.670e-8 * 288.15**3, '{:.1f}')                    # W/(m2 K), e = 0.95
-put('AnaWdShare', 100 * w * 2 * math.pi * eps0 * epsr / lnr * U0**2 * 1e-3 / (I**2 * Rac90), '{:.2f}')
+put('Hrad', 4 * 0.95 * 5.670e-8 * 288.15**3, '{:.1f}')                    # W/(m2 K), e = 0.95 [Lienhard eq. 2.31]
+put('AnaWdShare', 100 * w * 2 * math.pi * eps0 * epsr / lnr * U0**2 * tand / (I**2 * Rac90), '{:.2f}')
 # Q2.8 trial with the filler kept (real redesign): every radius from the screen out grows 1 mm.
 T1thick = rhoPoly / (2 * math.pi) * math.log((rsi + 1e-3) / rc)
 put('dToneThick', pct(T1thick, T1), '{:.1f}')
@@ -149,8 +151,11 @@ put('IecTheta', th350, '{:.1f}'); put('IecAmp', Iamp, '{:.0f}'); put('IecThetaS'
 put('IecRacHot', Rac90 * (1 + lam90) * 1e3, '{:.4f}'); put('IecRcondHot', Rac90 * 1e3, '{:.4f}')
 put('IecLamHot', 100 * lam90, '{:.1f}')
 put('IecPcHot', 3 * I**2 * Rac90, '{:.1f}'); put('IecPsHot', 3 * I**2 * Rac90 * lam90, '{:.2f}')
-Eb = 24.22 * 0.05 + 6.08 * math.sqrt(0.05)                  # kV, air, 0.5 mm, 1 bar (Schumann)
+Eb = 24.22 * 0.05 + 6.08 * math.sqrt(0.05)                  # kV, air, 0.5 mm, 1 bar (Schumann) [VSSUT]
 put('AnaEb', Eb / 0.5, '{:.2f}')
+pd = 101.325 * 0.05                                          # kPa cm; Paschen, A, B, gamma [Bean]
+Vpaschen = 2737.5 * pd / (math.log(pd) + math.log(112.5 / math.log(1 + 1 / 0.025))) / 1e3   # kV
+put('AnaEbPaschen', Vpaschen / 0.5, '{:.1f}')
 
 # ===================================================================== Section 1: mesh quality
 def mesh_stats(path):

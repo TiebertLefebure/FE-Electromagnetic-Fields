@@ -1,9 +1,11 @@
 // NKT 33 kV 1x185+50 mm2 XLPE-AL, three single cores buried in soil. SI units, T in deg C.
 // ALL cable, material and excitation data are ONELAB parameters (left panel in Gmsh).
 // Basis tags: [NKT] datasheet pp.19-20, 185 mm2 column; [COURSE] assignment App. A-C;
-// [IEC] IEC 60287-1-1 (Tables 1, 3) / 60287-2-1 (Table 1); [LEE] Lee et al., Energies 16(1)
-// 167 (2023), Table 3; [DERIVED] computed from NKT data; [ASSUMPTION] our choice, defended
-// in the reports (Section 1 lists every value with its source).
+// [NBS] NBS Handbooks 100 (copper) and 109 (aluminium); [LEE] Lee et al., Energies 16, 167
+// (2023), Table 3; [SUCUROVIC] Sucurovic et al., IEEE Access 14 (2026), Table 1; [ENESCU]
+// Enescu et al., Energies 13, 5319 (2020), Table 2; [DERIVED] computed from NKT data;
+// [ASSUMPTION] our choice, defended in the reports. All sources are free to open: full
+// references with links in Section 1 of the reports.
 // Search a question tag (Q1.4, Q4.2, ...) to find where a value is used.
 DefineConstant[
   // ---- Excitation [Q1.4] ---------------------------------------------------------
@@ -28,25 +30,25 @@ DefineConstant[
   rVoidPos = {0.0088,  Name "Geometry/06 Void centre distance from phase-A axis [m]"}, // [ASSUMPTION]
 
   // ---- Radial construction [Q1.1] ---------------------------------------------------
-  rCon     = {0.0074, Name "Geometry/10 Conductor radius [m]"},                   // [NKT] 14.8 mm
+  rCon     = {0.0074, Name "Geometry/10 Conductor radius [m]"},                   // [NKT] 14.8 mm diameter
   // [DERIVED] NKT "over insulation" 32.4 mm = 14.8 + 2 x 8.0 + 2 x 0.8: 0.4 mm per semicon,
   // assuming both semicons are included in that diameter.
   tSemiIn  = {0.0004, Name "Geometry/11 Inner semicon thickness [m]"},
-  tXLPE    = {0.0080, Name "Geometry/12 XLPE thickness [m]"},                     // [NKT]; Q2.8: 0.009
+  tXLPE    = {0.0080, Name "Geometry/12 XLPE thickness [m]"},                     // [NKT]; Q2.8: tXLPE = 0.0090 m
   tSemiOut = {0.0004, Name "Geometry/13 Outer semicon thickness [m]"},
   // [ASSUMPTION] Cu ring placed midway in the 3 mm screen layer (16.2 to 19.2 mm).
   rWireIn  = {0.0174, Name "Geometry/14 Cu ring inner radius [m] (ASSUMPTION)"},
   AWire    = {50e-6,  Name "Geometry/15 Cu screen cross-section [m2]"},          // [NKT]
-  rScreenOuter = {0.0192, Name "Geometry/16 Over-screen radius [m]"},             // [NKT] 38.4 mm
-  rJacket  = {0.0215, Name "Geometry/17 Outer radius [m]"},                       // [NKT] 43 mm
+  rScreenOuter = {0.0192, Name "Geometry/16 Over-screen radius [m]"},             // [NKT] 38.4 mm diameter
+  rJacket  = {0.0215, Name "Geometry/17 Outer radius [m]"},                       // [NKT] 43 mm diameter
 
   // ---- Electromagnetic materials [Q1.1, Q2.1, Q3.1] -----------------------------------
-  epsXLPE   = {2.5,   Name "Materials/01 XLPE relative permittivity"},           // [IEC] Table 3
+  epsXLPE   = {2.5,   Name "Materials/01 XLPE relative permittivity"},           // [SUCUROVIC, LEE]
   sigmaXLPE = {1e-18, Name "Materials/02 XLPE conductivity", Units "S/m"},        // [COURSE]
-  // [DERIVED] Fitted so that 1/(sigma*pi*rCon^2) = 0.164 ohm/km, the NKT DC maximum at 20 C
-  // (3.544e7 S/m; IEC 60287 Table 1 gives 3.538e7 for Al: 0.2 % apart).
+  // [DERIVED] Fitted so that 1/(sigma*pi*rCon^2) = 0.164 Ohm/km, the NKT DC maximum at 20 C
+  // (3.544e7 S/m; 61 % IACS aluminium [NBS] gives 3.538e7: 0.2 % apart).
   sigmaAl = {1000/(0.164*Pi*rCon^2), Name "Materials/03 Al conductivity at 20 C", Units "S/m"},
-  // [IEC] Annealed copper, rho = 1.7241e-8 ohm m at 20 C (IEC 60287-1-1 Table 1, IEC 60228).
+  // [NBS] Annealed copper (IACS), rho = 1.7241e-8 Ohm m at 20 C (NBS Handbook 100, p. 2).
   sigmaCu = {1/1.7241e-8, Name "Materials/04 Cu conductivity at 20 C", Units "S/m"},
   muR     = {1,      Name "Materials/05 Relative permeability (all regions)"},    // no steel
   epsVoid   = {1.0,   Name "Materials/06 Void relative permittivity (air)"},
@@ -68,8 +70,8 @@ DefineConstant[
   ThermalDepth     = {20, Name "Thermal/06 Thermal domain depth below surface [m]"},
   kAl  = {237, Name "Thermal/10 Al thermal conductivity", Units "W/(m K)"},          // [LEE]
   kCu  = {402, Name "Thermal/11 Cu thermal conductivity", Units "W/(m K)"},          // [LEE]
-  // [IEC] 60287-2-1 Table 1: rho = 3.5 K m/W for XLPE and PE. Semicons and the equivalent
-  // fillers are polymer compounds/tapes: [ASSUMPTION] same value.
+  // [ENESCU, SUCUROVIC] rho = 3.5 K m/W for XLPE and PE (IEC 60287 value). Semicons and the
+  // equivalent fillers are polymer compounds/tapes: [ASSUMPTION] same value.
   kPoly = {1/3.5, Name "Thermal/12 XLPE, PE, semicon, filler conductivity", Units "W/(m K)"}
 ];
 
