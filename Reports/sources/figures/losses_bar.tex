@@ -6,6 +6,6 @@
   nodes near coords style={font=\scriptsize,/pgf/number format/fixed,/pgf/number format/precision=2},
   every node near coord/.append style={anchor=center}]
 \addplot[fill=cA!80,draw=cA] coordinates {(FE both ends,\Pcbase) (FE single point,\Pcsingle) (IEC 60287,\IecPc)};
-\addplot[fill=cC,draw=cC!70!black] coordinates {(FE both ends,\Psbase) (FE single point,\Pssingle) (IEC 60287,\IecPs)};
+\addplot[fill=cC,draw=cC!70!black,every node near coord/.append style={anchor=south,yshift=4pt}] coordinates {(FE both ends,\Psbase) (FE single point,\Pssingle) (IEC 60287,\IecPs)};
 \legend{aluminium conductors,copper screens}
 \end{axis}\end{tikzpicture}

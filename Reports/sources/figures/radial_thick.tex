@@ -1,6 +1,6 @@
 % Q2.8: |E| along the phase-A radial cut, 8 mm vs 9 mm XLPE (peak, kV/mm).
 \begin{tikzpicture}\begin{axis}[xlabel={Radius from phase-A axis [mm]},ylabel={$|\hat E|$ [kV/mm]},
-  xmin=7.8,xmax=16.8,ymin=0,ymax=5.5,legend pos=north east]
+  xmin=7.8,xmax=16.8,ymin=0,ymax=5.5,legend pos=south west]
 \addplot[cA,thick] table[x=r,y=E,col sep=comma]{\datadir/radial_healthy.csv};
 \addplot[cB,thick] table[x=r,y=E,col sep=comma]{\datadir/radial_thick.csv};
 \addplot[black,dashed,domain=7.8:15.8,samples=50] {26.94439/(x*ln(15.8/7.8))};

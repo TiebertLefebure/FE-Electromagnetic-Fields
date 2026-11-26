@@ -109,6 +109,8 @@ Resolution {
       Print[{100*($Cenergy/CmaxNKT - 1)}, Format "dCnkt %.10g", File StrCat[ResultDir,"/references.txt"]];
       Print[{w*$Ccharge*1e-9*U0*1e3}, Format "IchFE %.10g", File StrCat[ResultDir,"/references.txt"]];
       Print[{$Ire/$Iim}, Format "IratioFE %.10g", File StrCat[ResultDir,"/references.txt"]];
+      // [Q2.6] Current balance: C from the electrode current (charge) vs C from the field energy, %.
+      Print[{100*($Ccharge/$Cenergy - 1)}, Format "dCcharge %.10g", File StrCat[ResultDir,"/references.txt"]];
       If (Flag_Defect)
         Print[{$Evoid}, Format "EvoidMean %.10g", File StrCat[ResultDir,"/references.txt"]];
         Print[{$Evoid/AnaE0}, Format "VoidRatio %.10g", File StrCat[ResultDir,"/references.txt"]];

@@ -60,7 +60,8 @@ At the conductor screen the displacement current density \(\omega\varepsilon|\ha
 their ratio \(\sigma/(\omega\varepsilon)=\AnaRatio\) is the same everywhere in the XLPE. Current conservation is
 satisfied: the FE equations are the weak form of \(\nabla\cdot(\hat{\mathbf J}+j\omega\hat{\mathbf D})=0\), one current
 balance per node, so the current entering at the conductor screen, \IchFE\ A/km per phase (\(\omega CV\)), leaves
-at the core screen. Displacement current dominates in the insulators (XLPE, PE and air), where
+at the core screen. Numerically, the capacitance from this electrode current and the one from the field energy
+differ by only \dCcharge\,\%. Displacement current dominates in the insulators (XLPE, PE and air), where
 \(\sigma\ll\omega\varepsilon\); conduction current dominates in the semicons, the metals and the soil, where
 \(\sigma\gg\omega\varepsilon\).}
 \newcommand{\AnsTwoSeven}{%
@@ -73,7 +74,7 @@ stays at \Cgap\ \(\mu\)F/km, because in a homogeneous annulus the factor \(\sigm
 the equation.}
 \newcommand{\AnsTwoEight}{%
 We propose a thicker insulation: 9 mm instead of 8 mm of XLPE at the same outer diameter. This
-changes the peak stress at the conductor screen by \dEthick\,\% (from \Egap\ to \Ethick\ kV/mm peak) and the
+changes the peak stress at the conductor screen by \dEthick\,\% (from \Egap\ to \Ethick\ kV/mm peak, both on the default mesh) and the
 capacitance and charging current by \dCthick\,\%, which gives more margin against defects such as the void of Q2.5.}
 \newcommand{\AnsThreeOne}{%
 We solve \(\nabla\times(\nu\nabla\times\mathbf a)=\mathbf j\) for \(\mathbf a=a_z\mathbf e_z\) in a
@@ -103,7 +104,8 @@ area keeps the DC resistance and the screen loop. The main simplification of Sec
 screens do not confine the magnetic field, so all metals, all three cables, their spacing and the soil must be
 kept. Only the simplifications of the semicons and fillers remain valid.}
 \newcommand{\AnsThreeFive}{%
-The mesh targets 0.25 mm around the cables; the element size in the aluminium and copper
+The mesh targets 0.25 mm around the cables, and its quality is good: Gmsh's worst element quality
+(ICN) is \MeshQminGap, the average \MeshQavgGap. The element size in the aluminium and copper
 is at most \MeshHmetalGap\ mm, below 5\,\% of the skin depth (\AnaDeltaCu\ mm in copper, \AnaDeltaAl\ mm in aluminium), so
 the mesh is limited by the geometry, not by the skin depth. Refining from MeshFactor 1 to 0.5 changes
 \(R_{AC}\) by \dRacfine\,\%, the inductance by \dLfine\,\% and the screen losses by \dPsfine\,\%. The screen
@@ -121,7 +123,8 @@ only local eddy currents remain, with zero net current.}
 \newcommand{\AnsThreeEight}{%
 With both ends bonded, the aluminium conductors dissipate \Pcbase\ kW/km and the copper screens
 \Psbase\ kW/km, \Ptbase\ kW/km in total for the three phases. With single-point bonding the screen losses drop to
-\Pssingle\ kW/km. There is no armour or pipe, and the soil has no losses because its conductivity is neglected.}
+\Pssingle\ kW/km. There is no armour or pipe. The soil has no losses: with \(\sigma=0.01\) S/m its skin depth is hundreds of
+metres, so the induced current in it is negligible and we set \(\sigma=0\) there.}
 \newcommand{\AnsThreeNine}{%
 The AC resistance defined from the total losses, \(R_{AC}=P/(3I^2)\), is \Racbase\ \(\Omega\)/km
 at 20\,\(^\circ\)C, against a DC resistance of \Racfdc\ \(\Omega\)/km (NKT: at most 0.164 \(\Omega\)/km). Skin and
@@ -156,15 +159,16 @@ decays only like \(\ln r\), while the field of the balanced currents decays like
 0.6 m electromagnetic box is a sub-domain of the thermal domain, so no interpolation is needed.}
 \newcommand{\AnsFourThree}{%
 The ambient temperature is 15\,\(^\circ\)C for the air and the deep soil, as in the NKT rating.
-Refining the mesh from MeshFactor 1 to 0.5 changes the hot spot by \dTcFine\ K, and enlarging the domain from 20 to
+Refining the mesh changes the hot spot by \dTcCoarse\ K from MeshFactor 2 to 1 and by \dTcFine\ K from 1 to
+0.5, so it converges, and enlarging the domain from 20 to
 40 m changes it by \dTcDom\ K, so the default mesh and domain are adequate. A 10 m domain changes the hot spot by
 \dTcDomten\ K, because its 15\,\(^\circ\)C bottom then acts as an extra heat sink.}
 \newcommand{\AnsFourFour}{%
 The hot spot is \Tcnl\,\(^\circ\)C, in the aluminium of the two lower cables (B and C); the top cable
 is \dTcAlow\ K cooler because it is closer to the ground surface. The aluminium is nearly isothermal, and most of
-the temperature drop is across the XLPE and the soil. At the rated 350 A the hot spot is \dTcNkt\ K from the
-90\,\(^\circ\)C limit for XLPE given by NKT: the cable is at its thermal limit, within the uncertainty of our
-assumptions.}
+the temperature drop is across the XLPE and the soil. Is it within the limit? Strictly no: at the rated 350 A the hot spot is \dTcNkt\ K above the
+90\,\(^\circ\)C limit for XLPE given by NKT. The excess is small, within the uncertainty of our assumptions (soil,
+\(h\), filler conductivity), so the cable runs at its thermal limit at 350 A, as NKT's rating implies.}
 \newcommand{\AnsFourFive}{%
 The ground above the trefoil is warmed by \dTsurf\ K, to a maximum of \Tsnl\,\(^\circ\)C at the
 ground/air interface, and this warming spreads over a few metres. With a Dirichlet condition \(T=15\,^\circ\)C at
@@ -187,8 +191,10 @@ Compared with the linear model (\(\sigma\) at 20\,\(^\circ\)C), the temperature-
 conductivity raises the conductor losses by \dPcNL\,\%, the total losses and \(R_{AC}\) by \dPtNL\,\%, and the hot
 spot by \dTcNL\ K, because aluminium near 90\,\(^\circ\)C is about \RhoHot\,\% more resistive while the current is
 imposed. The screen losses decrease (\dPsNL\,\%), because a more resistive screen carries less circulating
-current. The flux density, the inductance (\dLNL\,\%) and the current density barely change, because the currents
-are imposed and the materials are non-magnetic.}
+current. The flux density (peak \BmaxLin\ to \BmaxNL\ mT, \dBNL\,\%) and the inductance (\dLNL\,\%) barely change,
+because the currents are imposed and the materials are non-magnetic. The peak current density drops by \dJNL\,\%
+(\JmaxLin\ to \JmaxNL\ A/mm\textsuperscript2), because a more resistive conductor has less skin and proximity
+crowding. The surface temperature rises from \Tslin\ to \Tsnl\,\(^\circ\)C.}
 \newcommand{\AnsFourNine}{%
 No, the linear model is not conservative: it underestimates the losses and the hot spot (by
 \dTcNL\ K). Used for rating, it would allow about \AmpLin\ A instead of \Amptrefoil\ A, so the conductor would run

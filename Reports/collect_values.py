@@ -72,7 +72,7 @@ for k, fm in [('AnaC', '{:.6f}'), ('AnaEi', '{:.3f}'), ('AnaEirms', '{:.2f}'), (
               ('AnaJdVoidFactor', '{:.2f}'), ('AnaIch', '{:.3f}'), ('AnaJd', '{:.4f}'),
               ('AnaJc', '{:.2e}'), ('AnaRatio', '{:.2e}'), ('AnaDrop', '{:.0f}'), ('AnaCbare', '{:.4f}'),
               ('dCbare', '{:.1f}'), ('AnaEb', '{:.2f}'), ('AnaEbPaschen', '{:.1f}'), ('dCnkt', '{:.1f}'),
-              ('IchFE', '{:.3f}'), ('IratioFE', '{:.2e}')]:
+              ('IchFE', '{:.3f}'), ('IratioFE', '{:.2e}'), ('dCcharge', '{:.0e}')]:
     put(k, r[k], fm)
 put('dCana', abs(r['dCana']), '{:.4f}'); put('dEgap', r['dEana'], '{:+.2f}')
 put('dEfine', refs(os.path.join(E, 'fine'))['dEana'], '{:+.2f}')
@@ -171,6 +171,10 @@ for k, fm in [('IecTone', '{:.3f}'), ('IecTthree', '{:.3f}'), ('IecTfour', '{:.3
               ('ConvRate', '{:.2f}')]:
     put(k, r[k], fm)
 put('AmpLin', refs(os.path.join(T, 'lin'))['AmpLin'], '{:.0f}')
+rl = refs(os.path.join(T, 'lin'))                            # Q4.8: peak |B| and |J|, linear and sigma(T)
+put('BmaxLin', rl['Bmax'], '{:.2f}'); put('BmaxNL', r['Bmax'], '{:.2f}')
+put('JmaxLin', rl['Jmax'], '{:.3f}'); put('JmaxNL', r['Jmax'], '{:.3f}')
+put('dBNL', pct(r['Bmax'], rl['Bmax']), '{:+.2f}'); put('dJNL', pct(r['Jmax'], rl['Jmax']), '{:+.1f}')
 put('TDofsnl', dofs(os.path.join(T, 'nl'), 1), '{:,}')
 n, l = mv['nl'], mv['lin']                                                      # between runs
 put('dPtNL', pct(n['Pt'], l['Pt']), '{:+.1f}'); put('dPcNL', pct(n['Pc'], l['Pc']), '{:+.1f}')

@@ -176,8 +176,11 @@ Resolution {
       Call CoupledSolve;
       SaveSolution[Sys_Mag]; SaveSolution[Sys_The];
       PostOperation[Mag_Values]; PostOperation[The_Values];
-      PostOperation[Mag_Fields]; PostOperation[The_Fields];
+      PostOperation[Mag_Fields]; PostOperation[Mag_Checks]; PostOperation[The_Fields];
       // References and the comparisons of this run (one "name value" per line).
+      // [Q4.8] Peak |B| (mT) and |J| (A/mm2) in phase A, to compare linear and sigma(T).
+      Print[{$Bmax*1e3}, Format "Bmax %.10g", File StrCat[ResultDir,"/references.txt"]];
+      Print[{$Jmax/1e6}, Format "Jmax %.10g", File StrCat[ResultDir,"/references.txt"]];
       Print[{IecT1},  Format "IecTone %.10g", File StrCat[ResultDir,"/references.txt"]];
       Print[{IecT3},  Format "IecTthree %.10g", File StrCat[ResultDir,"/references.txt"]];
       Print[{IecT4},  Format "IecTfour %.10g", File StrCat[ResultDir,"/references.txt"]];

@@ -108,7 +108,7 @@ Excitation & $\hat V=26.94$ kV, $\hat I=495$ A, ABC, 50 Hz (peak)\\\bottomrule
 \item \alert{All cable, material and source data are ONELAB parameters} in one file
 \item Cables 0.5 mm apart instead of touching: no degenerate triangles (min.\ quality \MeshQminTouch\ $\rightarrow$ \MeshQminGap)
 \item $\sigma_{\rm Al}$ fitted to NKT's $R_{DC}=0.164$ $\Omega$/km; polymers $\rho_T=3.5$ K\,m/W (IEC 60287)
-\item \alert{One mesh}: a 0.6 m box for the electromagnetic fields, inside a 40 m $\times$ 21 m soil domain for the heat
+\item \alert{One mesh}: a 0.6 m box for the electromagnetic fields, inside a 40 m $\times$ 20 m soil domain for the heat
 \end{itemize}
 \end{columns}
 \note{\textbf{[0:55 \,|\, clock 1:10]}\par\smallskip 
@@ -195,7 +195,7 @@ Refinement is needed at the conductor screen.
 \begin{itemize}\small
 \item Field in the void: \alert{\Vmeandefectfine--\Edefectfine\ kV/mm}, $\VoidRatio\times$ the healthy field (theory \AnaVoidFactor$\times$)
 \item Above air breakdown (\AnaEb--\AnaEbPaschen\ kV/mm): \alert{partial discharges at rated voltage}, so \alert{not withstood}
-\item \textbf{Design:} 9 mm XLPE (same outer diameter): max.\ field \Egap\ $\rightarrow$ \Ethick\ kV/mm ($-$8\,\%)
+\item \textbf{Design:} 9 mm XLPE (same outer diameter): max.\ field \Egap\ $\rightarrow$ \Ethick\ kV/mm (\dEthick\,\%, default mesh)
 \end{itemize}
 \end{columns}
 \src{2D void = infinitely long channel; a real spherical void gives \AnaSphereFactor$\times$ instead of \AnaVoidFactor$\times$, so 2D is conservative. Air breakdown: VSSUT HV notes; Bean et al.\ 2020.}
@@ -207,7 +207,7 @@ $\AnaVoidFactor\,E_0$, so our 2D estimate is conservative.
 \item The field in the void is \Vmeandefectfine\ kV/mm ($\VoidRatio E_0$, theory \AnaVoidFactor). Air breaks down at about
 \AnaEb\ kV/mm across 0.5 mm, so partial discharges start at rated voltage (inception $\approx$\PdInception\ kV, below 19 kV).
 The bulk XLPE survives, but repeated discharges erode the cavity and grow trees: \textbf{not withstood}.
-\item Design: 9 mm XLPE lowers the peak stress by 8\,\%.
+\item Design: 9 mm XLPE lowers the peak stress by \dEthick\,\%.
 \end{itemize}
 \emph{Possible handover to speaker 2.}}
 \end{frame}
@@ -307,7 +307,7 @@ conductor, which matches NKT's equal 350 A for both bondings.
 \end{itemize}
 \column{0.5\textwidth}\centering
 \includegraphics[width=\linewidth,trim=0 100 0 100,clip]{figures/mesh_domain.png}\\
-{\scriptsize thermal mesh, 40 m $\times$ 21 m: fine near the cables (dark spot at the top), coarse far away}
+{\scriptsize thermal mesh, 40 m $\times$ 20 m: fine near the cables (dark spot at the top), coarse far away}
 \end{columns}
 \note{\textbf{[1:05 \,|\, clock 8:05]}\par\smallskip 
 \begin{itemize}
@@ -390,8 +390,11 @@ $P$ total [kW/km] & \Ptlin & \Ptnl & \dPtNL\%\\
 $P$ screens [kW/km] & \Pslin & \Psnl & \dPsNL\%\\
 $R_{AC}$ [$\Omega$/km] & \Raclin & \Racnl & \dRacNL\%\\
 $L$ [mH/km] & \Llin & \Lnl & \dLNL\%\\
-$T_{\max}$ [$^\circ$C] & \Tclin & \Tcnl & \dTcNL\ K\\\bottomrule
-\end{tabular}\\[4pt]
+$|\hat B|_{\max}$ [mT] & \BmaxLin & \BmaxNL & \dBNL\%\\
+$|\hat J|_{\max}$ [A/mm$^2$] & \JmaxLin & \JmaxNL & \dJNL\%\\
+$T_{\max}$ [$^\circ$C] & \Tclin & \Tcnl & \dTcNL\ K\\
+$T_{\rm surface}$ [$^\circ$C] & \Tslin & \Tsnl & \\\bottomrule
+\end{tabular}\\[0pt]
 \begin{itemize}\small
 \item Hotter Al: lower $\sigma$, so losses \dPtNL\,\%
 \item Screen loss \emph{drops}: more resistive screen, less current ($\lambda_1\approx X^2/(R_sR)$)
@@ -403,7 +406,7 @@ $T_{\max}$ [$^\circ$C] & \Tclin & \Tcnl & \dTcNL\ K\\\bottomrule
 \item Criterion: relative $L_2$ increment of all nodal temperatures below $10^{-6}$. It takes \Nitnl\ iterations on every mesh.
 The rate is \ConvRate\ per iteration, roughly $\alpha\Delta T/(1+\alpha(T-20))$: far from thermal runaway.
 \item Versus linear: losses and $R_{AC}$ \dPtNL\,\%, hot spot \dTcNL\ K. The screen loss \emph{drops} by \dPsNL\,\% ($\lambda_1\approx X^2/(R_sR)$: a more resistive screen carries less current).
-$B$ and $L$ barely move, because the currents are imposed.
+$B$ and $L$ barely move, because the currents are imposed; peak $J$ drops \dJNL\,\% (less skin and proximity crowding).
 \item The linear model is \textbf{not conservative}: it would rate the cable at \AmpLin\ A instead of \Amptrefoil\ A.
 \end{itemize}}
 \end{frame}
@@ -446,7 +449,7 @@ With single-point bonding it helps a lot: \Ampflatsevsp\ A against NKT 380.
 \footnotesize
 \begin{tabular}{@{}p{38mm}p{52mm}p{44mm}@{}}\toprule
 Proposal & Quantified gain & Price\\\midrule
-9 mm XLPE (Q2.8) & max.\ field $-$8\,\%: more margin for voids & conductor $\approx$\dTthick\ K warmer\\
+9 mm XLPE (Q2.8) & max.\ field \dEthick\,\%: more margin for voids & conductor $\approx$\dTthick\ K warmer\\
 Single-point or cross-bonding (Q3.11) & losses \dPtSingle\,\%, ampacity \dAmpSingle\ A (trefoil) & \Usingle\ V/km on the open screen end: voltage limiters\\
 Flat, 70 mm apart, single point (S5) & ampacity \Ampflatsevsp\ A instead of \Amptrefoil\ A & $\approx$3$\times$ wider trench, $L$ +53\,\%\\\bottomrule
 \end{tabular}\\[8pt]
@@ -487,7 +490,7 @@ Limits: 2D (no lay, no cable ends), constant soil without drying, steady state.}
 Quantity & FE (linear) & FE ($\sigma(T)$) & Reference$^*$\\\midrule
 Max.\ field, conductor screen (kV/mm pk, fine mesh) & \Egapfine & -- & \AnaEi\ (analytical)\\
 Max.\ field with defect (kV/mm pk, void, fine mesh) & \Edefectfine & -- & \AnaEvoid\ (analytical, $\AnaVoidFactor\,E_0$)\\
-Capacitance ($\mu$F/km) & 0.19703 & -- & 0.19703 (analytical); $\le$0.22 (NKT)\\
+Capacitance ($\mu$F/km) & \Cgap & -- & \AnaC\ (analytical); $\le$0.22 (NKT)\\
 DC resistance ($\Omega$/km) & \Racfdc & -- & 0.164 (NKT max., 20\,$^\circ$C)\\
 AC resistance ($\Omega$/km) & \Raclin & \Racnl & \IecRac\ at 20\,$^\circ$C; \IecRacHot\ at \IecTheta\,$^\circ$C (IEC)\\
 Inductance (mH/km) & \Llin & \Lnl & \NktL\ (NKT, $X$=0.12 $\Omega$/km)\\
@@ -510,22 +513,38 @@ folder. Spare time: about one minute.}
 \setbeamertemplate{footline}[kul]   % metropolis switches numbering off at \appendix
 \begin{frame}[standout]Appendix\end{frame}
 
-\begin{frame}{Q1.1 Construction and material properties}
+\begin{frame}{Q1.1 Construction and dimensions}
 \qbox{\QuestionOneOne}
 \footnotesize\AnsOneOne\par\smallskip
-\tiny\centering
-\begin{tabular}{@{}lrl@{\hskip 10pt}lrrrl@{}}\toprule
-Region & $r_o$ [mm] & basis & Material & $\varepsilon_r$ & $\sigma$ [S/m] & $\kappa$ [W/mK] & source\\\midrule
-Al conductor & 7.40 & NKT & Al & -- & $3.544\cdot10^7$, $\alpha$ 0.0039 & 237 & fitted; Lee; course\\
-Inner semicon & 7.80 & assumed & Cu & -- & $5.80\cdot10^7$, $\alpha$ 0.00386 & 402 & NBS; course; Lee\\
-XLPE & 15.80 & NKT 8 mm & semicon & 2.25 & $2\cdot10^{-3}$ & 0.286 & OES, Lee; as XLPE\\
-Outer semicon & 16.20 & assumed & XLPE & 2.5 & $10^{-18}$ & 0.286 & \v{S}u\'{c}urovi\'{c}, Lee; course, COMSOL; Enescu\\
-Inner filler & 17.40 & assumed & PE, fillers & 2.25 & $10^{-18}$ / 0 & 0.286 & course, COMSOL; Enescu; assumption\\
-Cu ring 50 mm$^2$ & 17.85 & area kept & soil & 10 & $10^{-2}$ & 0.833 & course; NKT 1.2 K\,m/W\\
-Outer filler & 19.20 & NKT $\varnothing$38.4 & air (void) & 1 & $10^{-15}$ & -- & assumption\\
-PE sheath & 21.50 & NKT $\varnothing$43 & & & & & \\\bottomrule
-\end{tabular}\\[3pt]
-{\scriptsize $\mu_r=1$ in all materials: the cable has no steel.}
+\scriptsize\centering\renewcommand{\arraystretch}{0.85}
+\begin{tabular}{@{}lrl@{}}\toprule
+Layer & Outer radius [mm] & Basis\\\midrule
+Aluminium conductor (solid) & 7.40 & NKT: diameter 14.8 mm\\
+Conductor screen (semicon) & 7.80 & derived: NKT ``over insulation'' 32.4 mm = 14.8 + 2$\times$8.0 + 2$\times$0.8\\
+XLPE & 15.80 & NKT: 8.0 mm\\
+Insulation screen (semicon) & 16.20 & derived as above (0.4 mm each)\\
+Inner filler (tapes) & 17.40 & assumption: Cu ring midway in the 3 mm screen layer\\
+Copper ring (wires + tape) & 17.85 & NKT area 50 mm$^2$: $r_o=\sqrt{17.4^2+50/\pi}$\\
+Outer filler (tape) & 19.20 & NKT: diameter over screen 38.4 mm\\
+PE sheath & 21.50 & NKT: outer diameter 43.0 mm\\\bottomrule
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Q1.1 Material properties, one source per value}
+\scriptsize\centering
+\begin{tabular}{@{}lcccp{6.2cm}@{}}\toprule
+Material & $\varepsilon_r$ & $\sigma$ at 20\,$^\circ$C [S/m] & $\kappa$ [W/(m\,K)] & Source of each value\\\midrule
+Aluminium & -- & $3.544\cdot10^7$, $\alpha=0.0039$ & 237 & $\sigma$: fitted to NKT $R_{DC}=0.164$ $\Omega$/km (61\,\% IACS [NBS]: 0.2\,\% apart); $\alpha$: [Course]; $\kappa$: [Lee]\\
+Copper (screen) & -- & $5.80\cdot10^7$, $\alpha=0.00386$ & 402 & $\sigma$: annealed Cu [NBS]; $\alpha$: [Course]; $\kappa$: [Lee]\\
+XLPE & 2.5 & $10^{-18}$ & 0.286 & $\varepsilon_r$: [\v{S}u\'{c}urovi\'{c}], [Lee]; $\sigma$: [Course], [COMSOL]; $\kappa=1/3.5$: [Enescu]\\
+Semicons & -- & $2\cdot10^{-3}$ & 0.286 & $\sigma$: 500 $\Omega$\,m limit [OES], same in [Lee]; $\kappa$: assumption, as XLPE\\
+PE sheath & 2.25 & $10^{-18}$ & 0.286 & $\varepsilon_r$, $\sigma$: [Course], [COMSOL]; $\kappa=1/3.5$: [Enescu]\\
+Fillers (tapes) & -- & 0 & 0.286 & assumption: polymer, as XLPE\\
+Soil & 10 & $10^{-2}$ & 0.833 & $\varepsilon_r$, $\sigma$: [Course] App.~C (not used: soil is outside the electric model, $\sigma=0$ in the magnetic one, $\delta\approx700$ m); $\kappa=1/1.2$: [NKT]\\
+Air (void, Q2.5) & 1 & $10^{-15}$ & -- & assumption (dry air)\\\bottomrule
+\end{tabular}\\[6pt]
+{\footnotesize $\mu_r=1$ in all materials: the cable has no steel. Semicons and fillers are not in the electric model
+(semicons = ideal electrodes), so their $\varepsilon_r$ is not needed. Full references: last slide.}
 \end{frame}
 
 \qslidewide{Q1.2 Environment}{\QuestionOneTwo}{\AnsOneTwo}{\wfig{domain}{3.6cm}}
@@ -600,6 +619,25 @@ changes visibly (\dTcNL\ K); $J$ and $B$ barely move because the currents are im
 \item \texttt{Source-Code/run\_all.sh}: every case (one line each, with its question)
 \item Every number and map is printed by the code: \texttt{results/<case>/}\,(\texttt{*.dat}, \texttt{references.txt}, \texttt{*.pos});
 the comparisons between two runs are listed in \texttt{README.md}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{References}
+\scriptsize
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item[{[NKT]}] NKT cables, \emph{33 kV single core cable XLPE-AL} datasheet, pp.~19--20, 185 mm$^2$ column.
+\item[{[Course]}] R.V.~Sabariego, \emph{Electromagnetic and thermal analysis of a high voltage cable}, H9x34A assignment 2026-27, App.~A--C (incl.\ the IEC 60287 approach, App.~B).
+\item[{[NBS]}] National Bureau of Standards, \emph{Copper Wire Tables}, Handbook 100 (1966), pp.~2--3; \emph{Aluminum Wire Tables}, Handbook 109 (1972), Table 1.
+  \url{https://nvlpubs.nist.gov/nistpubs/Legacy/hb/nbshandbook100.pdf}, \url{https://nvlpubs.nist.gov/nistpubs/Legacy/hb/nbshandbook109.pdf}
+\item[{[Lee]}] J.-I.~Lee et al., ``Comparative analysis of XLPE and thermoplastic insulation-based HVDC power cables'', \emph{Energies} 16, 167 (2023), Table 3. doi:10.3390/en16010167
+\item[{[\v{S}u\'{c}urovi\'{c}]}] M.~\v{S}u\'{c}urovi\'{c} et al., ``FEM-based quantification of eddy-current losses for MV cables in trefoil formation with non-magnetic screens'', \emph{IEEE Access} 14 (2026), Table 1. doi:10.1109/ACCESS.2026.3678088
+\item[{[Enescu]}] D.~Enescu, P.~Colella, A.~Russo, ``Thermal assessment of power cables and impacts on cable current rating: an overview'', \emph{Energies} 13, 5319 (2020), Table 2. doi:10.3390/en13205319
+\item[{[OES]}] APSR Oman, \emph{OES 2: Cables and Accessories}, 4th ed.\ (2024), \S4.1, pp.~20--21 (semicon resistivity limits).
+\item[{[COMSOL]}] COMSOL, ``Submarine Cable 1 -- Introduction'', Application Gallery (v6.4), p.~28 (XLPE and PE conductivity).
+\item[{[Eskom]}] Eskom, \emph{Specification for HV XLPE cables and accessories}, 240-56030625 Rev.~3, \S3.3 i), p.~7 (admissible stress, Q2.4).
+\item[{[VSSUT]}] VSSUT, \emph{High Voltage Engineering}, lecture notes, Module I, \S1.7 (Schumann breakdown fit, Q2.5).
+\item[{[Bean]}] I.A.~Bean, C.S.~Adams, T.E.~Weber, ``HVDC surface flashover in compressed air for various dielectrics'', arXiv:2006.12615 (2020) (Paschen constants, Q2.5).
+\item[{[KTH]}] L.~Lindstr\"om, \emph{Evaluating impact on ampacity according to IEC-60287 regarding thermally unfavourable placement of power cables}, MSc thesis, KTH (2011) (IEC 60287 loss factors, screen reactance, $T_3$).
 \end{itemize}
 \end{frame}
 \end{document}
