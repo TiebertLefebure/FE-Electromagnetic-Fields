@@ -66,6 +66,7 @@ DefineConstant[
   muR     = {1,      Name "Materials/05 Relative permeability (all regions)"},    // no steel
   epsVoid   = {1.0,   Name "Materials/06 Void relative permittivity (air)"},
   sigmaVoid = {1e-15, Name "Materials/07 Void conductivity (dry air)", Units "S/m"},
+  pVoid     = {101.325, Name "Materials/12 Void gas pressure (air, 1 bar)", Units "kPa"},   // [ASSUMPTION]
   // [COURSE eq. 12] sigma(T) = sigma0 / (1 + alpha (T - 20 C)).
   alphaAl = {0.00390, Name "Materials/08 Al temperature coefficient [1/K]"},
   alphaCu = {0.00386, Name "Materials/09 Cu temperature coefficient [1/K]"},
@@ -81,6 +82,8 @@ DefineConstant[
   // [ASSUMPTION] bare ground in still air: natural convection ~2 + radiation 4 e s T^3 ~5
   // (e = 0.95, T = 288 K), raised for wind; 5 to 20 and isothermal studied in Q4.5.
   hConv = {10, Name "Thermal/04 Surface heat transfer coefficient", Units "W/(m2 K)"},
+  // [LIENHARD] emissivity of bare ground, used only to justify the radiation part of hConv.
+  eGround = {0.95, Name "Thermal/07 Ground surface emissivity"},
   // [ASSUMPTION] lateral (zero flux) and bottom (T = T_amb) boundaries 20 m away: Q4.3
   // shows T_max changes by about 0.1 K from 20 m to 40 m (and -0.3 K at 10 m).
   ThermalHalfWidth = {20, Name "Thermal/05 Thermal domain half-width [m]"},

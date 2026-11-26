@@ -68,11 +68,12 @@ AnaJc = sigmaXLPE*AnaEi*1e6;                        //        |J_c| there
 AnaRatio = sigmaXLPE/(w*eps0*epsXLPE);              //        |J_c / J_d| in XLPE
 AnaDrop = AnaJd*tSemiIn/sigmaSemi*1e3;              // [Q2.2] drop across the conductor semicon, mV
 AnaCbare = 2*Pi*eps0*epsXLPE/Log[rXLPEOut/rCon]*1e9; // [Q2.2] voltage on the Al instead of the semicon
-// [Q2.5] Breakdown of air across the void diameter d (1 bar): Schumann fit [VSSUT] and
+// [Q2.5] Breakdown of air across the void diameter d (pressure pVoid): Schumann fit [VSSUT] and
 // Paschen's law with A = 112.5 /(kPa cm), B = 2737.5 V/(kPa cm), gamma = 0.025 [Bean].
 dVoid = 2*rVoid*100;                                // cm
-AnaEb = (24.22*dVoid + 6.08*Sqrt[dVoid])/(dVoid*10);                 // kV/mm
-pd = 101.325*dVoid;                                 // kPa cm
+relDens = pVoid/101.325;                            // relative air density (at 20 C)
+AnaEb = (24.22*relDens*dVoid + 6.08*Sqrt[relDens*dVoid])/(dVoid*10);   // kV/mm
+pd = pVoid*dVoid;                                   // kPa cm
 AnaEbPaschen = 2737.5*pd/(Log[pd] + Log[112.5/Log[1 + 1/0.025]])/1e3/(dVoid*10);   // kV/mm
 
 Resolution {

@@ -252,7 +252,7 @@ Using only $j=-j\omega\sigma a$ would hide an implicit $U=0$ relative to the arb
 \begin{tabular}{@{}lrr@{}}\toprule
 350 A, 50 Hz, 20\,$^\circ$C & FE & Reference\\\midrule
 Losses conductors / screens [kW/km] & \Pcbase\ / \Psbase & \IecPc\ / \IecPs\ (IEC)\\
-Screen current [A] & \Isbase & \IecIs\ (IEC)\\
+Screen current [A RMS] & \Isbase & \IecIs\ (IEC)\\
 $R_{DC}$ (FE at 0.01 Hz) [$\Omega$/km] & \Racfdc & 0.164 (NKT)\\
 $R_{AC}=P/(3I^2)$ [$\Omega$/km] & \Racbase & \IecRac\ (IEC)\\
 $L$, touching cables [mH/km] & \Ltouching & \NktL\ (NKT)\\\bottomrule
@@ -428,7 +428,7 @@ flat +70 mm, both ends & \Psflatsev & \Lflatsev & \Tcflatsev\\
 flat +70 mm, single point & \Psflatsevsp & \Lflatsevsp & \Tcflatsevsp\\\bottomrule
 \end{tabular}\\[4pt]
 \begin{itemize}\small
-\item Spacing cools, but with both ends bonded the screen losses grow 4$\times$ and cancel the gain
+\item Spacing cools, but with both ends bonded the screen losses grow from \Pstrefoil\ to \Psflatsev\ kW/km and cancel the gain
 \item Single-point bonding removes them: flat +70 mm carries \Ampflatsevsp\ A
 \item All six FE ampacities within \dNktMin\ to \dNktMax\,\% of NKT
 \end{itemize}
@@ -451,7 +451,7 @@ With single-point bonding it helps a lot: \Ampflatsevsp\ A against NKT 380.
 Proposal & Quantified gain & Price\\\midrule
 9 mm XLPE (Q2.8) & max.\ field \dEthick\,\%: more margin for voids & conductor $\approx$\dTthick\ K warmer\\
 Single-point or cross-bonding (Q3.11) & losses \dPtSingle\,\%, ampacity \dAmpSingle\ A (trefoil) & \Usingle\ V/km on the open screen end: voltage limiters\\
-Flat, 70 mm apart, single point (S5) & ampacity \Ampflatsevsp\ A instead of \Amptrefoil\ A & $\approx$3$\times$ wider trench, $L$ +53\,\%\\\bottomrule
+Flat, 70 mm apart, single point (S5) & ampacity \Ampflatsevsp\ A instead of \Amptrefoil\ A & $\approx$3$\times$ wider trench, $L$ \dLflat\,\%\\\bottomrule
 \end{tabular}\\[8pt]
 \textbf{Best arrangement}
 \begin{itemize}\small

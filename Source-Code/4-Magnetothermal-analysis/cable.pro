@@ -150,8 +150,8 @@ IecAmp = ia;
 // [Q4.2] Halving the filler conductivity: inner filler adds to T1, outer filler to T3.
 dT1f = 1/kPoly/(2*Pi)*Log[rWireIn/rSemiOut];  dT3f = 1/kPoly/(2*Pi)*Log[rScreenOuter/rWireOut];
 dTfiller = I_RMS^2*IecRacHot*(dT1f + (1 + IecLamHot)*dT3f);
-// [Q4.2] Radiation part of h: 4 e s T^3 with e = 0.95, T = 288.15 K [Lienhard eq. 2.31].
-Hrad = 4*0.95*5.670e-8*288.15^3;
+// [Q4.2] Radiation part of h: 4 e s T^3 with e = eGround at T = T_amb [Lienhard eq. 2.31].
+Hrad = 4*eGround*5.670e-8*(T_amb + 273.15)^3;
 // [Q4.1] Dielectric losses w C U0^2 tan(delta) per phase, against the conductor losses.
 U0 = U_LL/Sqrt[3];
 AnaWd = w*2*Pi*eps0*epsXLPE/Log[rXLPEOut/rSemiIn]*U0^2*tanDelta;
