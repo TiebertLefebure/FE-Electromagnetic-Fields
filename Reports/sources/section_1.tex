@@ -7,17 +7,11 @@
 \section*{Q1.1 Cable: construction, dimensions, rating, materials}
 \assignmentquestion{\QuestionOneOne}
 \answer{\AnsOneOne}
-Three NKT 33 kV single-core XLPE-AL cables, \(1\times185/50\) mm\textsuperscript2 (aluminium
-conductor / copper screen) [NKT, pp.~19--20]: a \textbf{solid} circular aluminium conductor, extruded
-semiconducting conductor screen, XLPE insulation, extruded semiconducting insulation screen,
-concentric copper wires with a counter-wound copper tape, and a PE sheath. No armour, no pipe.
-
-\textbf{Rating and laying conditions} [NKT]: 33 kV between phases; \textbf{350 A} continuous for a
-conductor at \textbf{90\,\(^\circ\)C}, direct in ground, depth 1.0 m, ground at 15\,\(^\circ\)C, soil
-thermal resistivity 1.2 K\,m/W, trefoil touching (\(S=D\)), screens bonded at both ends. The same
-table gives 350/350/365 A (both ends) and 350/350/380 A (single point) for trefoil / flat touching
-/ flat with 70 mm free distance (used in Section 5). Also given: \(R_{DC}\le0.164\) \(\Omega\)/km at
-20\,\(^\circ\)C, \(C\le0.22\) \(\mu\)F/km, \(X=0.12\) \(\Omega\)/km (trefoil, 50 Hz).
+Source: [NKT, pp.~19--20]. Both semicons are extruded, the copper wires are concentric with a
+counter-wound tape, and there is no armour or pipe. The same rating table gives 350/350/365 A (both
+ends) and 350/350/380 A (single point) for trefoil / flat touching / flat with 70 mm free distance
+(used in Section 5). Also given: \(R_{DC}\le0.164\) \(\Omega\)/km at 20\,\(^\circ\)C, \(C\le0.22\)
+\(\mu\)F/km, \(X=0.12\) \(\Omega\)/km (trefoil, 50 Hz).
 
 \begin{table}[H]\centering\small
 \caption{Radial model of one cable (radii from its axis).}
@@ -69,11 +63,8 @@ XLPE and PE [Enescu], for all polymers makes the FE model and the IEC 60287 chec
 \section*{Q1.2 Environment and computational domains}
 \assignmentquestion{\QuestionOneTwo}
 \answer{\AnsOneTwo}
-\textbf{Environment = the NKT rating conditions}: homogeneous soil, thermal resistivity 1.2 K\,m/W
-(\(\kappa=0.833\)), 15\,\(^\circ\)C, trefoil centre 1.0 m below the ground surface (we take the depth to
-the arrangement centre, as IEC 60287 does for a trefoil group). Air above at 15\,\(^\circ\)C. Soil
-electrical data from the course (\(\varepsilon_r=10\), \(\sigma=0.01\) S/m): shielded in the electric model
-and negligible in the magnetic one (skin depth \(\approx\)700 m). Soil drying and layering are neglected.
+The soil conductivity is \(\kappa=1/1.2=0.833\) W/(m\,K). The 1.0 m depth is measured to the trefoil
+centre, as IEC 60287 does for a trefoil group.
 
 \textbf{Domains (one mesh).} Electromagnetic box \(\pm0.3\) m around the trefoil (Sections 2--3), nested in
 a soil rectangle up to the ground surface, \(\pm20\) m wide and 20 m deep (Section 4).
@@ -106,10 +97,8 @@ quality), in \texttt{results/mesh\_gap.txt}; XLPE triangles: \texttt{triangles\_
 \section*{Q1.3 Sheath bonding}
 \assignmentquestion{\QuestionOneThree}
 \answer{\AnsOneThree}
-\textbf{Both ends bonded} (solid bonding), with ideal earth leads: the bonding of the NKT 350 A
-rating row. Circulating screen currents are therefore allowed (Section 3: \(U=0\) per screen).
-Single-point bonding (\(I=0\)) is studied as a loss-reduction option (Q3.11, Section 5).
-There is no armour or pipe. In the electric model the screens are simply at 0 V.
+In the magnetic model (Section 3) both-end bonding is \(U=0\) per screen and single-point bonding
+\(I=0\); in the electric model the screens are simply at 0 V.
 \begin{center}\input{figures/bonding_schematic.tex}
 \figcap{Both-end bonding (our choice, NKT rating row) closes the screen loop through the earth links, so a
 current is induced; single-point bonding leaves one end open, so no net screen current flows.}\end{center}
@@ -117,16 +106,15 @@ current is induced; single-point bonding leaves one end open, so no net screen c
 \section*{Q1.4 Excitation}
 \assignmentquestion{\QuestionOneFour}
 \answer{\AnsOneFour}
-Peak phasors, \(x(t)=\Re\{\hat x\,e^{j\omega t}\}\), 50 Hz, positive sequence A, B, C at
-\(0,-120^\circ,+120^\circ\):
+With the phasor convention \(x(t)=\Re\{\hat x\,e^{j\omega t}\}\):
 \[
- \hat V_k=\frac{\sqrt2\,33}{\sqrt3}e^{-j2\pi k/3}=26.944\,e^{-j2\pi k/3}\ \mathrm{kV},\qquad
- \hat I_k=\sqrt2\,350\,e^{-j2\pi k/3}=494.97\,e^{-j2\pi k/3}\ \mathrm{A}.
+ \hat V_k=\frac{\sqrt2\cdot33}{\sqrt3}e^{-j2\pi k/3}=26.944\,e^{-j2\pi k/3}\ \mathrm{kV},\qquad
+ \hat I_k=\sqrt2\cdot350\,e^{-j2\pi k/3}=494.97\,e^{-j2\pi k/3}\ \mathrm{A}.
 \]
 \begin{center}\input{figures/phasors.tex}
-\figcap{Peak phasors of the three phases at \(t=0\); they rotate counter-clockwise at \(\omega=2\pi\,50\) rad/s.}\end{center}
-The voltages drive the electric model, the currents the magnetic one (independent linear problems,
-so the load power factor is irrelevant). Results are reported as RMS values and time-averaged losses.
+\figcap{Peak phasors of the three phases at \(t=0\); they rotate counter-clockwise at \(\omega=2\pi\cdot50\) rad/s.}\end{center}
+The electric and magnetic models are independent linear problems, so the load power factor is
+irrelevant. Results are reported as RMS values and time-averaged losses.
 
 \codeguide{\setupfile{parameters.pro}: \texttt{U\_LL}, \texttt{I\_RMS}, \texttt{Freq}, \texttt{Vpeak}, \texttt{Ipeak}.}
 {No solve.}{\(V_p=26944\) V, \(I_p=494.97\) A.}

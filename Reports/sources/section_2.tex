@@ -12,27 +12,18 @@ as such. Every case is one line of \runall; every number comes from \texttt{valu
 \section*{Q2.1 Domain, equations and boundary conditions}
 \assignmentquestion{\QuestionTwoOne}
 \answer{\AnsTwoOne}
-\textbf{Equation.} With \(\hat{\mathbf E}=-\nabla\hat v\) and \(e^{j\omega t}\) phasors,
+\textbf{Weak form.} With \(\hat{\mathbf E}=-\nabla\hat v\),
 \[
- -\nabla\cdot\big[(\sigma+j\omega\varepsilon)\nabla\hat v\big]=0,\qquad
  \int_{\Omega}(\sigma+j\omega\varepsilon)\nabla\hat v\cdot\nabla w\,dA=\sum_k I_k\,w|_{\Gamma_k},
 \]
 with \(\varepsilon_r=2.5\), \(\sigma=10^{-18}\) S/m in XLPE (homogeneous, isotropic, frequency- and
-temperature-independent), linear nodal triangles, and an infinitely long straight cable.
+temperature-independent) and an infinitely long straight cable.
 
-\textbf{Domain and boundary conditions.} Only the three XLPE annuli
-(\(r_i=7.8\) to \(r_o=15.8\) mm; plus the air void 44 in Q2.5). The semiconducting screens are
-ideal equipotentials (justified in Q2.2): \(\hat v=26.944\angle(0,-120^\circ,+120^\circ)\) kV on the
-conductor-screen interfaces 101--103, \(\hat v=0\) on the core-screen interfaces 111--113: Dirichlet
-conditions (constraint \texttt{ElectricScalarPotential}) on the nodal function space
-\texttt{Hgrad\_v\_Ele} of the course file \file{2-Electrodynamic-analysis/electrodynamic_formulation.pro},
-whose weak form \texttt{Electrodynamics\_v} we use unchanged.
-
-\textbf{Truncation and the role of the screens.} The domain ends at the grounded core screens.
-With a continuous grounded screen, the potential outside is zero whatever lies there: the
-conductor, metals, fillers, jackets, soil and the two other cables cannot influence the field
-in the insulation. Only the XLPE (its radii and permittivity) and the two screen potentials
-matter. This holds for intact, grounded screens; a floating or broken screen, or the cable
+\textbf{In the code.} XLPE regions 41--43 (\(r_i=7.8\) to \(r_o=15.8\) mm; plus the air void 44 in
+Q2.5); \(\hat v=26.944\angle(0,-120^\circ,+120^\circ)\) kV on the interfaces 101--103 and \(\hat v=0\)
+on 111--113, as constraint \texttt{ElectricScalarPotential} on the nodal function space
+\texttt{Hgrad\_v\_Ele} of the course formulation file (code guide below), whose weak form \texttt{Electrodynamics\_v} we use unchanged. The semicons are ideal equipotentials
+(Q2.2). The truncation holds for intact, grounded screens; a floating or broken screen, or the cable
 ends (terminations), would need a different model.
 
 \begin{center}\includegraphics[width=0.42\linewidth,trim=150 0 150 0,clip]{e_potential.png}\hfill
@@ -51,22 +42,13 @@ physical groups 41--44, 101--113.}
 \begin{center}\input{figures/electric_domain.tex}
 \figcap{The grounded core screen confines the field: only the XLPE annulus between two electrodes is
 solved (one per phase); everything outside it is left out exactly.}\end{center}
-\begin{center}\small
-\begin{tabular}{@{}p{62mm}p{92mm}@{}}\toprule
-Simplification & Quantified effect\\\midrule
-Metals, fillers, jackets, soil, other cables not modelled &
-exactly zero: shielded by the grounded screens (Q2.1)\\
-Semicons as ideal equipotentials & \(\sigma_{\rm sc}=2\cdot10^{-3}\) S/m \(\gg\omega\varepsilon=6\cdot10^{-9}\) S/m;
-the charging current density (\AnaJd\ A/m\textsuperscript2) across 0.4 mm drops \(\approx\)\AnaDrop\ mV,
-\(3\cdot10^{-7}\) of \(V_p\)\\
-Semicon thickness kept (voltage at 7.8 mm, not at the Al surface 7.4 mm) &
-ignoring it would give \(C'=\)\,\AnaCbare\ \(\mu\)F/km (\dCbare\,\%): the screen radii matter\\
-0.5 mm soil gap instead of touching jackets & \(E_{\max}\) \dEtouch\,\%, \(C'\) \(<\)\dCtouch\,\% (both FE, same mesh rules)\\
-Circular, concentric, smooth interfaces (12 arcs) & 2D idealisation; screen roughness/eccentricity not modelled\\\bottomrule
-\end{tabular}
-\end{center}
-The gap and touching cases give the same result up to triangulation noise, as expected: the
-screens decouple the three annuli, so moving a cable does not change its insulation field.
+The semicons act as ideal electrodes because \(\sigma_{\rm sc}=2\cdot10^{-3}\) S/m \(\gg\omega\varepsilon=6\cdot10^{-9}\)
+S/m: the charging current density (\AnaJd\ A/m\textsuperscript2) crossing 0.4 mm of semicon is what drops the
+\AnaDrop\ mV. With the voltage on the aluminium surface (7.4 mm) instead of the semicon (7.8 mm),
+\(C'\) would be \AnaCbare\ \(\mu\)F/km. The gap and touching cases (both FE, same mesh rules) agree up to
+triangulation noise: the screens decouple the three annuli, so moving a cable does not change its
+insulation field. Not modelled: screen roughness and eccentricity (the interfaces are circular,
+concentric and smooth, drawn as 12 arcs).
 
 \codeguide{\setupfile{parameters.pro}: \texttt{JacketGap}, \texttt{tSemiIn}, \texttt{tSemiOut}.}
 {\runall: cases \texttt{gap}, \texttt{touching} (Gmsh: \textbf{Geometry > Jacket gap} = 0).}
@@ -86,12 +68,10 @@ Analytical, \(V_p/(r_i\ln(r_o/r_i))\) and \(2\pi\varepsilon/\ln(r_o/r_i)\) & & \
 \end{center}
 \begin{center}\def\figw{0.9\linewidth}\def\figh{4.6cm}
 \input{figures/style.tex}\input{figures/convergence.tex}\end{center}
-\(E_{\max}\) converges from below (\dEgap\,\% at the default mesh, \dEfine\,\% at the fine one):
-with linear elements \(\mathbf E\) is constant per triangle, so the element touching the
-conductor screen reports the field at its centroid, slightly inside the steep \(1/r\) profile.
-The capacitance, an energy integral, is converged to \(10^{-5}\). \textbf{Local refinement is
-needed} at the conductor-screen interface (and around a defect, where Q2.5 uses
-\(r_{\rm void}/8\)); the rest of the insulation is already fine.
+\(E_{\max}\) converges from below because the element touching the conductor screen reports the
+field at its centroid, slightly inside the steep \(1/r\) profile. The capacitance is an energy
+integral, which converges much faster than a local field. Around the defect of Q2.5 the mesh is
+refined to \(r_{\rm void}/8\).
 
 \codeguide{\setupfile{parameters.pro}: \texttt{MeshFactor}; \setupfile{cable.geo}: \texttt{Field[1]}.}
 {\runall: cases \texttt{coarse}, \texttt{gap}, \texttt{fine} (Gmsh: \textbf{Mesh > Mesh factor}).}
@@ -100,9 +80,7 @@ needed} at the conductor-screen interface (and around a defect, where Q2.5 uses
 \section*{Q2.4 Admissible field strength}
 \assignmentquestion{\QuestionTwoFour}
 \answer{\AnsTwoFour}
-NKT gives no admissible local field. We use the design limits of 8 kV/mm RMS at the conductor
-screen and 4 kV/mm RMS at the core screen of Eskom specification 240-56030625 [Eskom]. It
-covers 44--132 kV XLPE cables, which are designed for higher stresses than medium-voltage cables, so
+The Eskom specification 240-56030625 [Eskom] covers 44--132 kV XLPE cables, which are designed for higher stresses than medium-voltage cables, so
 for our 33 kV cable it is an upper benchmark, not an acceptance criterion.
 \begin{center}\small
 \begin{tabular}{@{}lrrr@{}}\toprule
@@ -113,10 +91,9 @@ Core screen, \(r_o=15.8\) mm & \AnaEorms & -- & 4\\\bottomrule
 \end{center}
 \begin{center}\def\figw{0.8\linewidth}\def\figh{5cm}
 \input{figures/style.tex}\input{figures/radial_limits.tex}
-\figcap{RMS field across the healthy XLPE: the peak sits at the conductor screen, at 43\,\% of the
-8 kV/mm design limit; at the core screen the field is 43\,\% of 4 kV/mm.}\end{center}
-\(E_{\rm rms}(r)=V_{\rm ph}/(r\ln(r_o/r_i))\). The healthy cable is at 43\,\% of both limits: it is
-well within them. This checks the stress design only; it does not establish lifetime.
+\figcap{RMS field across the healthy XLPE, \(E_{\rm rms}(r)=V_{\rm ph}/(r\ln(r_o/r_i))\), with the two design
+limits.}\end{center}
+This checks the stress design only; it does not establish lifetime.
 
 \codeguide{\efile: \texttt{em}, register \#1, \texttt{Emax}.}{\textbf{Run}.}
 {Output panel ``Max field'' (kV/mm peak); \texttt{res/field\_norm.pos}.}
@@ -124,16 +101,13 @@ well within them. This checks the stress design only; it does not establish life
 \section*{Q2.5 Insulation defect}
 \assignmentquestion{\QuestionTwoFive}
 \answer{\AnsTwoFive}
-\textbf{Defect (assumption).} An air-filled void, e.g.\ a cavity from cross-linking by-products
-or a contaminant: radius 0.25 mm, centred at \(r=8.8\) mm on phase A's \(+x\) radius, its edge 0.75 mm
-from the conductor screen where the stress is highest. Air at 1 bar: \(\varepsilon_r=1\),
-\(\sigma=10^{-15}\) S/m before discharge. Mesh refined to \(r_{\rm void}/8\) at the void edge.
+\textbf{Defect (assumption).} A cavity from cross-linking by-products or a contaminant, on phase A's
+\(+x\) radius; air at 1 bar with \(\sigma=10^{-15}\) S/m before discharge; mesh refined to
+\(r_{\rm void}/8\) at its edge.
 
-\textbf{What 2D means in 3D.} A circle in the cross-section is an infinitely long cylindrical
-channel along the cable. For a small inclusion in a uniform field \(E_0\), the internal field is
-\(2\varepsilon_X/(\varepsilon_X+1)E_0=\AnaVoidFactor\,E_0\) for a cylinder and \(3\varepsilon_X/(2\varepsilon_X+1)E_0=\AnaSphereFactor\,E_0\)
-for a sphere: the 2D model overestimates the enhancement of a real, roughly spherical void, which
-is conservative. A spherical void needs a 3D or axisymmetric model.
+\textbf{2D versus 3D.} For a small inclusion in a uniform field \(E_0\), the internal field is
+\(2\varepsilon_X/(\varepsilon_X+1)E_0\) for a cylinder and \(3\varepsilon_X/(2\varepsilon_X+1)E_0\) for a sphere
+(\(\varepsilon_X=2.5\), the XLPE relative to the void). A spherical void needs a 3D or axisymmetric model.
 
 \begin{center}\small
 \begin{tabular}{@{}lr@{}}\toprule
@@ -155,11 +129,10 @@ On the radial line the XLPE field \emph{drops} at the void poles (normal \(D\) c
 \(E_{\rm XLPE}=E_{\rm void}/2.5\)); at the flanks it rises to about \(\AnaVoidFactor\,E_0\), still far below the
 8 kV/mm RMS limit, so the bulk XLPE does not fail.
 
-\textbf{Does the cable withstand it? Not in the long term.} The gas breaks down first. For air at
-1 bar across 0.5 mm, \(E_b\approx\)\,\AnaEb\ kV/mm (Schumann fit [VSSUT]; Paschen's law gives \AnaEbPaschen\ [Bean]). The void
-field (\Vmeandefectfine--\Edefectfine\ kV/mm) exceeds it, so partial discharges start at rated voltage;
-the inception voltage is \(U_0E_b/E_{\rm void}\approx\)\,\PdInception\ kV RMS, below \(U_0=19\) kV.
-Repeated discharges erode the cavity wall and grow electrical trees until breakdown. A routine
+\textbf{Breakdown of the void.} For air at 1 bar across the 0.5 mm void, \(E_b\approx\)\,\AnaEb\ kV/mm is the
+Schumann fit [VSSUT]; Paschen's law gives \AnaEbPaschen\ [Bean]. The void field reaches
+\Vmeandefectfine--\Edefectfine\ kV/mm, and the inception voltage \(U_0E_b/E_{\rm void}\approx\)\,\PdInception\ kV RMS
+is below \(U_0=19\) kV. The discharges erode the cavity wall and grow electrical trees; a routine
 partial-discharge test would reject this cable.
 
 \codeguide{\setupfile{parameters.pro}: \texttt{Flag\_Defect}, \texttt{rVoid}, \texttt{rVoidPos}, \texttt{epsVoid}.
@@ -170,24 +143,20 @@ partial-discharge test would reject this cable.
 \section*{Q2.6 Conduction and displacement currents; conservation}
 \assignmentquestion{\QuestionTwoSix}
 \answer{\AnsTwoSix}
-\(\hat{\mathbf J}_c=\sigma\hat{\mathbf E}\) and \(\hat{\mathbf J}_d=j\omega\varepsilon\hat{\mathbf E}\), both radial.
-At the conductor screen: analytical \(|\hat J_d|=\)\,\AnaJd\ A/m\textsuperscript2 (FE map maximum \JdFE),
-\(|\hat J_c|=\)\,\AnaJc\ A/m\textsuperscript2 (FE \JcFE). Their ratio is
-\(\sigma/(\omega\varepsilon)=\)\,\AnaRatio, independent of position.
+\(\hat{\mathbf J}_c=\sigma\hat{\mathbf E}\) and \(\hat{\mathbf J}_d=j\omega\varepsilon\hat{\mathbf E}\) are both radial. The
+values in the answer are analytical; the FE gives \JdFE\ A/m\textsuperscript2 (map maximum) and \JcFE\ A/m\textsuperscript2
+at the conductor screen.
 
-\textbf{Which current dominates, and why.} The ratio \(\sigma/(\omega\varepsilon)\) at 50 Hz decides:
-XLPE, PE and air \(10^{-10}\)--\(10^{-9}\): displacement; semicons
-\(2\cdot10^{-3}/6\cdot10^{-9}\approx3\cdot10^{5}\), metals \(\approx10^{17}\), soil (\(10^{-2}\) vs \(2.8\cdot10^{-8}\)): conduction.
+\textbf{Ratio \(\sigma/(\omega\varepsilon)\) at 50 Hz.} XLPE and PE \(\approx10^{-10}\), air in the void
+(\(10^{-15}\) S/m) \(\approx4\cdot10^{-7}\); semicons \(2\cdot10^{-3}/6\cdot10^{-9}\approx3\cdot10^{5}\), metals
+\(\approx10^{16}\), soil \(10^{-2}/2.8\cdot10^{-8}\).
 
-\textbf{Conservation.} The FE equations are the weak form of \(\nabla\cdot(\hat{\mathbf J}+j\omega\hat{\mathbf D})=0\):
-one current balance per node, so per phase the current entering at the conductor screen leaves at
-the core screen. Testing the weak form with the FE function \(\hat v/\hat V\) (1 on the conductor
-screen, 0 on the core screen) gives that current,
+\textbf{Electrode current.} Testing the weak form with the FE function \(\hat v/\hat V\) (1 on the
+conductor screen, 0 on the core screen) gives the current per phase,
 \(I=\frac1{\hat V}\int(\sigma+j\omega\varepsilon)\nabla\hat v\cdot\nabla\hat v\,dA\). Locally, linear elements
-leave a jump in the normal current across element edges that shrinks with \(h\).
-The magnitude \(|I|\) equals \(\omega C'V\): \IchFE\ A/km RMS charging current per phase (analytical
-\AnaIch), with \(\Re I/\Im I=\)\,\IratioFE\(\,=\sigma/(\omega\varepsilon)\). It is a radial current,
-not the 350 A load current.
+leave a jump in the normal current across element edges that shrinks with \(h\). The analytical
+charging current is \AnaIch\ A/km RMS, and \(\Re I/\Im I=\)\,\IratioFE\(\,=\sigma/(\omega\varepsilon)\). It is a
+radial current, not the 350 A load current.
 
 \begin{center}\begin{minipage}[c]{0.36\linewidth}\centering
 \includegraphics[width=\linewidth,trim=150 0 150 0,clip]{e_jdisp.png}\end{minipage}\hfill
@@ -203,9 +172,7 @@ densities along the phase-A radius; displacement exceeds conduction by ten order
 \section*{Q2.7 Capacitance and frequency}
 \assignmentquestion{\QuestionTwoSeven}
 \answer{\AnsTwoSeven}
-\(C'=2\pi\varepsilon_0\varepsilon_r/\ln(r_o/r_i)=\)\,\AnaC\ \(\mu\)F/km per phase. Assumptions: concentric
-circular interfaces, homogeneous linear XLPE, infinitely long cable, and the semicons treated as
-ideal electrodes, so \(r_i,r_o\) are the \emph{XLPE interfaces} (7.8, 15.8 mm), not the Al or Cu radii.
+The analytical formula also assumes an infinitely long cable.
 \begin{center}\small
 \begin{tabular}{@{}lr@{}}\toprule
 \(C'\) per phase [\(\mu\)F/km] & \\\midrule
@@ -215,12 +182,10 @@ FE, charge \(\Im(I/U)/\omega\), phase A & \Cqgap\\
 NKT datasheet (maximum) & 0.22\\\bottomrule
 \end{tabular}
 \end{center}
-FE and analytical agree to \dCana\,\%. The NKT value is a maximum; ours is \dCnkt\,\% below it,
-which is consistent (manufacturing tolerances and the semicon thickness assumption).
-\textbf{Frequency:} 5, 50, 500, 5000 Hz give \Cffive, \Cgap, \Cfhund, \Cfthou\ \(\mu\)F/km. In each
-homogeneous annulus the factor \(\sigma+j\omega\varepsilon\) cancels from the equation, so with
-constant properties \(C\) cannot depend on \(f\). Real XLPE has a slightly frequency-dependent
-\(\varepsilon\) and \(\tan\delta\approx4\cdot10^{-3}\) [\v{S}u\'{c}urovi\'{c}], not modelled.
+Our value is \dCnkt\,\% below the NKT maximum, consistent with manufacturing tolerances and our
+semicon-thickness assumption. The FE values at 5, 50, 500, 5000 Hz are \Cffive, \Cgap, \Cfhund,
+\Cfthou\ \(\mu\)F/km. Real XLPE has a slightly frequency-dependent \(\varepsilon\) and
+\(\tan\delta\approx4\cdot10^{-3}\) [\v{S}u\'{c}urovi\'{c}], not modelled.
 
 \begin{center}\def\figw{0.7\linewidth}\def\figh{4.6cm}
 \input{figures/style.tex}\input{figures/cap_freq.tex}
@@ -231,8 +196,7 @@ constant properties \(C\) cannot depend on \(f\). Real XLPE has a slightly frequ
 \section*{Q2.8 Design improvement: thicker insulation}
 \assignmentquestion{\QuestionTwoEight}
 \answer{\AnsTwoEight}
-XLPE 8 \(\to\) 9 mm at the same outer diameter (the outer semicon moves out 1 mm into the assumed
-inner filler; Cu ring and jacket unchanged).
+The outer semicon moves out 1 mm into the assumed inner filler; the Cu ring and jacket are unchanged.
 \begin{center}\small
 \begin{tabular}{@{}lrr@{}}\toprule
 & 8 mm & 9 mm\\\midrule
@@ -242,8 +206,7 @@ inner filler; Cu ring and jacket unchanged).
 \end{center}
 \begin{center}\def\figw{0.85\linewidth}\def\figh{4.6cm}
 \input{figures/style.tex}\input{figures/radial_thick.tex}\end{center}
-The peak stress falls by \(\dEthick\,\%\) and the capacitance and charging current by
-\(\dCthick\,\%\), more margin against defects such as Q2.5. In our equivalent geometry the filler
+In our equivalent geometry the filler
 and XLPE have the same thermal resistivity, so heat flow is unchanged; a real redesign that keeps
 the filler grows the cable by 2 mm and raises \(T_1\) by \dToneThick\,\% (\(\approx\)\dTthick\ K at 350 A).
 

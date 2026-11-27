@@ -62,23 +62,16 @@ tends to be slightly low, consistently with Section 4 (convective ground surface
 isothermal one; FE screen losses include eddy currents).
 
 \textbf{Physics.} Spacing the cables reduces their mutual heating (each cable sits less in its
-neighbours' temperature field). With both-end bonding, however, the screen-loop area grows with the
-spacing: the induced screen voltage \(\propto\ln(2s/d)\) and the circulating losses rise from
-\Pstrefoil\ to \Psflatsev\ kW/km (\(P_s\) column), eating most of the thermal gain
-(\Ampflatsev\ A instead of \Ampflatsevsp\ A). Single-point bonding removes the circulating current, so
-the full thermal benefit of spacing is obtained; the price is a standing voltage that also grows
-with spacing, and a 3 times wider trench. The inductance grows with spacing (\(\ln s\)), which
-increases the series voltage drop.
+neighbours' temperature field). With both-end bonding the induced screen voltage grows like
+\(\ln(2s/d)\), and the circulating losses rise from \Pstrefoil\ to \Psflatsev\ kW/km, eating most of
+the thermal gain. Single-point bonding gets the full benefit; its standing voltage also grows with
+spacing. The inductance grows like \(\ln s\), which increases the series voltage drop.
 
 \begin{center}\includegraphics[width=0.36\linewidth,trim=150 0 150 0,clip]{t_cables_nl.png}\hspace{6mm}
 \includegraphics[width=0.56\linewidth]{t_cables_flat70.png}
 \figcap{Temperature in the cable area at 350 A, both ends bonded: trefoil (left, hot spot \Tctrefoil\,\(^\circ\)C) and
 flat +70 mm (right, \Tcflatsev\,\(^\circ\)C); each map has its own colour scale.}\end{center}
-\textbf{Best arrangement.} For the specified 350 A, the datasheet trefoil with both ends bonded is
-at its limit (\Tcnl\,\(^\circ\)C with \(h=10\), within 3 K of 90\,\(^\circ\)C); it is the most compact,
-with the lowest inductance and external magnetic field. Single-point bonding of the same trefoil
-brings it to \Tctrefoilsp\,\(^\circ\)C at no space cost. If more current is needed in the same trench conditions, a spaced flat formation with
-single-point or cross-bonded screens gives the largest ampacity (\Ampflatsevsp\ A).
+Single-point bonding of the trefoil lowers its hot spot at no space cost.
 
 \codeguide{\setupfile{parameters.pro}: \texttt{Formation}, \texttt{JacketGap}.
 \setupfile{cable.geo}: centres and mesh box follow the formation. \afile: resolution \texttt{Ampacity}

@@ -24,19 +24,16 @@ region has a voltage per unit length \(U_m\) and a net current \(I_m\), one of w
 Displacement current is neglected (\(\omega\varepsilon\ll\sigma\) in the metals; the Section 2 charging
 current is \AnaIch\ A/km against 350 A).
 
-\textbf{Domain.} The \(0.6\times0.6\) m EM box with all cable layers. The screens shield \(\mathbf E\),
-not \(\mathbf B\), so all three cables and the soil between them are needed. Conducting regions:
-aluminium (21--23) and copper (71--73). Semicons (\(2\cdot10^{-3}\) S/m), XLPE, fillers, PE and soil
-(skin depth \(\approx\)700 m) carry negligible eddy current: \(\sigma=0\). Everything has \(\mu_r=1\).
+\textbf{Regions.} Conducting: aluminium (21--23) and copper (71--73). Semicons
+(\(2\cdot10^{-3}\) S/m), XLPE, fillers, PE and soil (skin depth \(\approx\)700 m) carry negligible eddy
+current: \(\sigma=0\). Everything has \(\mu_r=1\).
 
-\textbf{Truncation.} \(a_z=0\) on the box edge (group 120), 0.3 m from the centre (\(\approx7\) cable
-spacings). The phase currents sum to zero and the screen currents nearly so
-(\(|\sum\hat I_s|=\)\,\IsSum\ A against \IsPeak\ A peak), so the field is a multipole decaying like
-\(1/r^2\). Doubling the box changes \(L\) by \dLbox\,\% and \(R_{AC}\) by \dRacbox\,\%.
+\textbf{Truncation.} The box edge is group 120, \(\approx7\) cable spacings from the centre. The
+screen currents also nearly cancel (\(|\sum\hat I_s|=\)\,\IsSum\ A against \IsPeak\ A peak), hence the
+multipole decay. Doubling the box changes \(L\) by \dLbox\,\% and \(R_{AC}\) by \dRacbox\,\%.
 
-\textbf{Currents.} Massive model: the net current of each aluminium region is imposed through its
-global \(I\) (\texttt{Current\_2D}), \(\hat I_k=494.97\angle(0,-120^\circ,+120^\circ)\) A; the distribution
-inside (skin, proximity) is free. Stranded option: \(\hat{\mathbf j}=\hat I_k/A_k\) imposed, no eddy currents.
+\textbf{Currents.} \(\hat I_k=494.97\angle(0,-120^\circ,+120^\circ)\) A. In the stranded option there are no
+eddy currents.
 
 \begin{center}\input{figures/magnetic_domain.tex}
 \figcap{Magnetic model: the whole EM box is solved, because the screens do not shield \(\mathbf B\);
@@ -49,8 +46,7 @@ each massive region carries one global pair \((U,I)\).}\end{center}
 \section*{Q3.2 Conductor model: massive vs stranded}
 \assignmentquestion{\QuestionThreeTwo}
 \answer{\AnsThreeTwo}
-Skin depths at 50 Hz: \(\delta_{\rm Al}=\)\,\AnaDeltaAl\ mm against \(r_c=7.4\) mm, \(\delta_{\rm Cu}=\)\,\AnaDeltaCu\ mm
-against a 0.45 mm screen: skin effect is weak.
+In the copper, \(\delta_{\rm Cu}=\)\,\AnaDeltaCu\ mm against a 0.45 mm screen ring.
 \begin{center}\small
 \begin{tabular}{@{}lrrrr@{}}\toprule
 & \(P_{\rm cond}\) [kW/km] & \(P_{\rm screen}\) [kW/km] & \(R_{\rm cond}\) [\(\Omega\)/km] & \(L\) [mH/km]\\\midrule
@@ -63,9 +59,7 @@ against a 0.45 mm screen: skin effect is weak.
 \begin{center}\def\figw{0.85\linewidth}\def\figh{5cm}\input{figures/style.tex}\input{figures/j_profile.tex}
 \figcap{Current density across phase A: the massive conductor carries more current on the side facing the
 other two phases (proximity) and near its surface (skin); the stranded model imposes a uniform \(\hat I/A\).}\end{center}
-\textbf{Massive is the realistic model}: NKT specifies a \emph{solid} conductor, in which eddy
-currents flow freely. At 50 Hz the difference is small: \(R_{\rm cond}\) stranded \dRcstr\,\%, \(L\)
-\dLstr\,\%. The massive skin + proximity increase over the FE DC value is \SkinFE\,\%, against
+The skin + proximity increase over the FE DC value compares with
 \(y_s+y_p=\IecYs+\IecYp=\IecYsp\,\%\) from the IEC 60287 method [KTH, ELEK]. At 500 Hz the stranded model underestimates
 \(R_{\rm cond}\) by \dRcstrhund\,\%: it is not acceptable for a solid conductor at higher frequency.
 (The stranded \(R\) is 0.02\,\% below 0.164 because the 12-arc polygon has 0.02\,\% less area.)
@@ -77,10 +71,8 @@ currents flow freely. At 50 Hz the difference is small: \(R_{\rm cond}\) strande
 \section*{Q3.3 Bonding with global quantities}
 \assignmentquestion{\QuestionThreeThree}
 \answer{\AnsThreeThree}
-Each copper screen is a massive region with its own \((U_m,I_m)\).
-\textbf{Both ends bonded} (Q1.3): ideal earth leads at both ends, so no voltage along the
-screen: \texttt{Voltage\_2D} \(U_m=0\), \(I_m\) computed. \textbf{Single point}: one end open, so no
-net current: \texttt{Current\_2D} \(I_m=0\), the standing voltage \(U_m\) computed. No armour, no pipe.
+In GetDP, both-end bonding (ideal earth leads at both ends) is the constraint \texttt{Voltage\_2D}
+with \(U_m=0\); single-point bonding (one end open) is \texttt{Current\_2D} with \(I_m=0\).
 \begin{center}\small
 \begin{tabular}{@{}lrrr@{}}\toprule
 & Screen current [A RMS] & \(P_{\rm screen}\) [kW/km] & \(P_{\rm screen}/P_{\rm cond}\) [\%]\\\midrule
@@ -97,13 +89,10 @@ The FE circulating part, \PcircFE\ kW/km, is \dPcirc\,\% from IEC, and the FE sc
 \begin{center}\input{figures/bonding_schematic.tex}
 \figcap{The two bonding conditions as global constraints per screen: \(U_s=0\) closes the loop (both ends),
 \(I_s=0\) opens it (single point).}\end{center}
-\textbf{Why \(\mathbf j=-j\omega\sigma\mathbf a\) alone is not a bonding condition.} Dropping \(\mathbf u_r\)
-silently sets \(U_m=0\), but measured from an arbitrary reference: \(a_z\) is defined up to a constant,
-fixed here by \(a_z=0\) on the artificial box edge. The net screen current
-\(-j\omega\sigma\int a_z\,dA\) then depends on the box size and shape, as if the screens returned their
-current through a fictitious conductor at the truncation boundary. Neither an open end (\(I=0\))
-nor a defined earthing is represented, and \(I=0\) cannot be imposed at all. With global
-\((U,I)\) per region, the circuit is explicit.
+\textbf{Why \(\mathbf j=-j\omega\sigma\mathbf a\) alone fails.} \(a_z\) is defined up to a constant, so the net
+screen current \(-j\omega\sigma\int a_z\,dA\) behaves as if the screens returned their current through a
+fictitious conductor at the truncation boundary: neither an open end nor a defined earthing is
+represented. With a global \((U,I)\) per region the circuit is explicit.
 
 \codeguide{\mfile: \texttt{Flag\_Bonding}, \texttt{Voltage\_2D}, \texttt{Current\_2D}, \texttt{Hregion\_u\_Mag\_2D}.}
 {Gmsh: \textbf{Magnetic > Screen bonding}; \runall: \texttt{single}.}
@@ -124,10 +113,8 @@ Circle as 12-arc polygon & conductor area \(-0.02\,\%\)\\\bottomrule
 \end{center}
 \begin{center}\input{figures/ring_simplification.tex}
 \figcap{Wire screen and tape (left, schematic) replaced by one ring of the same copper area (right).}\end{center}
-\textbf{The Section 2 simplification does not hold here.} The electric model needed only the XLPE
-because the grounded screens confine \(\mathbf E\). The non-magnetic screens do not confine \(\mathbf B\):
-metals, the other cables, their spacing and the soil all matter (proximity, mutual flux, screen
-induction). The semicon/filler simplifications remain valid.
+The metals, the other cables and their spacing matter through proximity, mutual flux and screen
+induction.
 
 \codeguide{\setupfile{parameters.pro}: \texttt{JacketGap}, \texttt{rWireIn}. \mfile: \texttt{Insulation} group.}
 {\runall: \texttt{touching}.}{\texttt{L\_mH\_km.dat}, \texttt{R\_ac\_ohm\_km.dat}.}
@@ -135,10 +122,9 @@ induction). The semicon/filler simplifications remain valid.
 \section*{Q3.5 Mesh quality and convergence}
 \assignmentquestion{\QuestionThreeFive}
 \answer{\AnsThreeFive}
-The target element size is 0.25 mm around the cables; in the Al and Cu the element size is at most
-\MeshHmetalGap\ mm (edge of the equilateral triangle with the area of the largest element), i.e.\ \(h/\delta<0.05\) in both (the usual rule is \(h\lesssim\delta/3\)). Resolution is limited by
-geometry (the 0.45 mm screen has one or two elements across), not by \(\delta\). Minimum triangle
-quality \MeshQminGap\ (Section 1).
+The metal element size \MeshHmetalGap\ mm is the edge of the equilateral triangle with the area of
+the largest element; the usual rule is \(h\lesssim\delta/3\). The 0.45 mm screen has one or two
+elements across.
 \begin{center}\small
 \begin{tabular}{@{}rrrrrr@{}}\toprule
 MeshFactor & DoFs & \(R_{AC}\) [\(\Omega\)/km] & \(R_{\rm cond}\) [\(\Omega\)/km] & \(L\) [mH/km] & \(P_{\rm screen}\) [kW/km]\\\midrule
@@ -150,10 +136,8 @@ MeshFactor & DoFs & \(R_{AC}\) [\(\Omega\)/km] & \(R_{\rm cond}\) [\(\Omega\)/km
 \end{center}
 \begin{center}\def\figw{0.9\linewidth}\def\figh{4.6cm}
 \input{figures/style.tex}\input{figures/mag_convergence.tex}\end{center}
-From factor 1 to 0.5: \(R_{AC}\) \dRacfine\,\%, \(L\) \dLfine\,\%, screen loss \dPsfine\,\%. The screen loss
-converges slowest because its current density varies across the thin ring: refine \emph{inside the
-screens} (two or more element layers). The default mesh is adequate for \(R\) and \(L\) at the
-0.3\,\% level.
+Refining the screens means two or more element layers across the ring. The default mesh is
+adequate for \(R\) and \(L\) at the 0.3\,\% level.
 
 \codeguide{\setupfile{parameters.pro}: \texttt{MeshFactor}, \texttt{OuterBox}.}
 {\runall: \texttt{coarse}, \texttt{base}, \texttt{fine}, \texttt{box06}.}{``Dofs'' in the GetDP log.}
@@ -162,10 +146,7 @@ screens} (two or more element layers). The default mesh is adequate for \(R\) an
 \assignmentquestion{\QuestionThreeSix}
 \answer{\AnsThreeSix}
 \begin{center}\includegraphics[width=0.55\linewidth,trim=150 0 150 0,clip]{m_b.png}\end{center}
-Peak \(|\hat{\mathbf B}|=\)\,\Bmax\ mT, on the conductor surfaces facing the trefoil centre
-(single-conductor estimate \(\mu_0\hat I/(2\pi r_c)=\)\,\Bsingle\ mT, raised by the neighbours). \(|\mathbf B|\)
-grows linearly inside each conductor, falls like \(1/r\) through the insulation, and the balanced
-trefoil field decays fast in the soil (below 1\,\% of the peak at the box edge).
+A single conductor would give \(\mu_0\hat I/(2\pi r_c)=\)\,\Bsingle\ mT; the neighbours raise it to \Bmax\ mT.
 
 \codeguide{\mfile: \texttt{Mag\_Fields} (course quantity \texttt{bm}).}{\textbf{Run}.}{\texttt{res/b\_norm.pos} (T, peak).}
 
@@ -175,10 +156,8 @@ trefoil field decays fast in the soil (below 1\,\% of the peak at the box edge).
 \begin{center}\includegraphics[width=0.42\linewidth,trim=150 0 150 0,clip]{m_j.png}\hfill
 \includegraphics[width=0.42\linewidth,trim=150 0 150 0,clip]{m_j_single.png}\\
 {\small Both ends bonded (left), single point (right), \(|\hat{\mathbf J}|\) [A/m\textsuperscript2].}\end{center}
-Aluminium: mean \(\hat I/A=\)\,\Javg\ A/mm\textsuperscript2, maximum \Jmax\ A/mm\textsuperscript2 at the
-surface (proximity with 120\(^\circ\)-shifted neighbours). Screens: with both ends bonded the circulating
-current dominates (\(\approx\)\Jscreen\ A/mm\textsuperscript2 mean); with single-point bonding only local
-eddies remain (opposite signs on the near and far side of each ring, zero net current).
+The mean is \(\hat I/A\); the neighbours carry currents shifted by 120\(^\circ\). With single-point bonding
+the screen eddy currents have opposite signs on the near and far side of each ring.
 
 \codeguide{\mfile: \texttt{Mag\_Fields} (course quantity \texttt{jm}: total current, including \(\mathbf u_r\)).}{\textbf{Run}.}{\texttt{res/j\_norm.pos}.}
 
@@ -199,7 +178,6 @@ Total & \Ptbase & \Ptsingle & \IecPt\\\bottomrule
 \end{center}
 \begin{center}\def\figw{0.62\linewidth}\def\figh{5cm}\input{figures/style.tex}\input{figures/losses_bar.tex}
 \figcap{Losses per part: the conductors dominate; single-point bonding removes almost all screen loss.}\end{center}
-Per phase \PcPhase\ kW/km in the aluminium; the three phases differ by \PhaseSym\,\% (trefoil symmetry).
 
 \codeguide{\mfile: \texttt{Losses}, \texttt{Mag\_Values}.}{\textbf{Run}.}
 {\texttt{losses\_conductors.dat}, \texttt{losses\_screens.dat}, \texttt{losses\_condA/B/C.dat}.}
@@ -207,7 +185,6 @@ Per phase \PcPhase\ kW/km in the aluminium; the three phases differ by \PhaseSym
 \section*{Q3.9 AC resistance}
 \assignmentquestion{\QuestionThreeNine}
 \answer{\AnsThreeNine}
-\(R_{AC}=P_{\rm tot}/(3I^2)\), \(I=350\) A RMS.
 \begin{center}\small
 \begin{tabular}{@{}lrr@{}}\toprule
 {[\(\Omega\)/km], 20\,\(^\circ\)C} & FE & Reference\\\midrule
@@ -221,9 +198,8 @@ Terminal check \(\Re(-U_A/I_A)\) & \Zrbase & --\\\bottomrule
 \begin{center}\def\figw{0.8\linewidth}\def\figh{3.6cm}\input{figures/style.tex}\input{figures/rac_bar.tex}
 \figcap{\(R_{AC}\) built up from the DC resistance, the skin + proximity increase and the screen losses
 (axis starts at 0.15 \(\Omega\)/km).}\end{center}
-\textbf{Separation:} \(R_{AC}=R_{DC}\,(1+\SkinFE\,\%_{\rm skin+prox}+\ScreenFE\,\%_{\rm screens})\).
-NKT gives no \(R_{AC}\); \(R_{DC}=0.164\) is matched by the choice of \(\sigma_{\rm Al}\) (Section 1). At the
-operating temperature the resistance is \(\approx\)25\,\% higher (Section 4).
+\(R_{DC}=0.164\) is matched by the choice of \(\sigma_{\rm Al}\) (Section 1). At the operating temperature
+the resistance is \(\approx\)25\,\% higher (Section 4).
 
 \codeguide{\mfile: \texttt{R\_ohm\_km}, \texttt{Zterm\_ohm\_km}.}{\runall: \texttt{base}, \texttt{f0.01}.}
 {\texttt{R\_conductors\_ohm\_km.dat}, \texttt{R\_ac\_ohm\_km.dat}, \texttt{Z\_terminal\_ohm\_km.dat}.}
@@ -231,10 +207,9 @@ operating temperature the resistance is \(\approx\)25\,\% higher (Section 4).
 \section*{Q3.10 Inductance}
 \assignmentquestion{\QuestionThreeTen}
 \answer{\AnsThreeTen}
-\textbf{Definition.} In a balanced, symmetric three-phase system every phase sees \(U_k=Z\,I_k\) with
-the same positive-sequence \(Z=R+j\omega L\). The stored energy is
-\(W=\tfrac34L\hat I^2=\tfrac14\int\nu|\hat{\mathbf b}|^2dA\), hence \(L=\int\nu|\hat{\mathbf b}|^2dA/(3\hat I^2)\),
-including internal inductance and the reaction of the screen currents. Check: the terminal value
+\textbf{Derivation.} In a balanced, symmetric system every phase sees \(U_k=Z\,I_k\) with the same
+\(Z=R+j\omega L\), so the time-averaged stored energy is \(W=\tfrac34L\hat I^2=\tfrac14\int\nu|\hat{\mathbf b}|^2dA\).
+Check: the terminal value
 \(\Im(-U_A/I_A)/\omega=\)\,\Lterm\ mH/km is within \dLterm\,\% of it.
 \begin{center}\small
 \begin{tabular}{@{}lrrrr@{}}\toprule
@@ -246,10 +221,8 @@ Frequency [Hz] & 0.01 & 5 & 50 & 500\\\midrule
 \begin{center}\def\figw{0.75\linewidth}\def\figh{5cm}\input{figures/style.tex}\input{figures/l_freq.tex}
 \figcap{Inductance from DC to 500 Hz: it falls as the induced screen and eddy currents grow; at 50 Hz the
 touching FE value lies inside the NKT band.}\end{center}
-\textbf{It depends on frequency} even with constant \(\mu\): induced screen and eddy currents grow with
-\(\omega\) and oppose the flux (\dLfreq\,\% from DC to 50 Hz, \dLfreqhund\,\% at 500 Hz).
-\textbf{Comparison:} NKT \(X=0.12\) \(\Omega\)/km (touching trefoil) gives \(L=\)\,\NktL\ mH/km; FE touching
-\Ltouching\ mH/km (\dLnkt\,\%; the two-digit \(X\) means 0.366--0.398 mH/km). Analytical
+Relative to DC the inductance changes by \dLfreq\,\% at 50 Hz and \dLfreqhund\,\% at 500 Hz, even with
+constant \(\mu\). The two-digit NKT \(X=0.12\) \(\Omega\)/km means 0.366--0.398 mH/km. Analytical
 \(2\cdot10^{-7}\ln(s/(r_ce^{-1/4}))=\)\,\AnaLgap\ mH/km without screen currents, vs FE single point
 \Lsingle\ (\dLana\,\%).
 
@@ -261,12 +234,10 @@ touching FE value lies inside the NKT band.}\end{center}
 \answer{\AnsThreeEleven}
 \begin{center}\def\figw{0.6\linewidth}\def\figh{4.6cm}
 \input{figures/style.tex}\input{figures/bonding.tex}\end{center}
-Opening the screen loop at one end removes the circulating current: total losses \Ptbase\ \(\to\)
-\Ptsingle\ kW/km (\dPtSingle\,\%), \(R_{AC}\) \Racbase\ \(\to\) \Racsingle\ \(\Omega\)/km. Cross-bonding three equal
-minor sections achieves the same over long routes. The price is a standing voltage on the open end,
-\Usingle\ V/km RMS per phase at 350 A (IEC \(XI=\)\,\IecUs\ V/km), which limits the section length and
-needs sheath voltage limiters. Because the conductor carries \CondShare\,\% of the losses, the gain is
-modest; NKT indeed rates the trefoil at 350 A for both bondings. Thermal effect: Section 5.
+Cross-bonding three equal minor sections achieves the same over long routes. The standing voltage
+(RMS per phase at 350 A) agrees with IEC, \(XI=\)\,\IecUs\ V/km. Because the conductor carries
+\CondShare\,\% of the losses, the gain is modest; NKT indeed rates the trefoil at 350 A for both
+bondings. Thermal effect: Section 5.
 
 \codeguide{\mfile: \texttt{Flag\_Bonding}.}{\runall: \texttt{single}.}{\texttt{losses\_screens.dat}, \texttt{voltages\_V\_m.dat}.}
 
