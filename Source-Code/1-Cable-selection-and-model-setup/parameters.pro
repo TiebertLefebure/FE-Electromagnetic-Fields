@@ -68,8 +68,8 @@ DefineConstant[
   sigmaVoid = {1e-15, Name "Materials/07 Void conductivity (dry air)", Units "S/m"},
   pVoid     = {101.325, Name "Materials/12 Void gas pressure (air, 1 bar)", Units "kPa"},   // [ASSUMPTION]
   // [COURSE eq. 12] sigma(T) = sigma0 / (1 + alpha (T - 20 C)).
-  alphaAl = {0.00390, Name "Materials/08 Al temperature coefficient [1/K]"},
-  alphaCu = {0.00386, Name "Materials/09 Cu temperature coefficient [1/K]"},
+  alphaAl = {0.00390, Name "Materials/08 Al temperature coefficient", Units "1/K"},
+  alphaCu = {0.00386, Name "Materials/09 Cu temperature coefficient", Units "1/K"},
   tanDelta = {4e-3, Name "Materials/10 XLPE loss tangent"},                     // [SUCUROVIC] 19/33 kV
   // [OES] insulation-screen resistivity limit 500 Ohm m; only used for the drop across the
   // semicons (Q2.2), which are ideal electrodes in the electric model.
