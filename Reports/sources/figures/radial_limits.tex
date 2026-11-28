@@ -1,12 +1,16 @@
 % Q2.4: RMS field along the phase-A radius against the admissible values [Eskom].
 \begin{tikzpicture}\begin{axis}[xlabel={Radius from phase-A axis [mm]},ylabel={$E_{\rm rms}$ [kV/mm]},
-  xmin=7.5,xmax=16.1,ymin=0,ymax=9,legend pos=north east,legend cell align=left]
+  xmin=7.5,xmax=16.1,ymin=0,ymax=9,
+  legend style={at={(0.5,1.03)},anchor=south,legend columns=-1,/tikz/every even column/.append style={column sep=6pt}}]
 \addplot[cA,thick] table[x=r,y expr=\thisrow{E}/sqrt(2),col sep=comma]{\datadir/radial_healthy.csv};
 \addplot[black,dashed,domain=7.8:15.8,samples=50] {19.05256/(x*ln(15.8/7.8))};
-\addplot[cB,very thick] coordinates {(7.6,8) (9.2,8)};
-\addplot[cB,very thick,densely dashed] coordinates {(14.2,4) (16.0,4)};
+\addplot[cB,very thick,forget plot] coordinates {(7.6,8) (9.2,8)};
+\addplot[cB,very thick,densely dashed,forget plot] coordinates {(14.2,4) (16.0,4)};
 \addplot[only marks,mark=*,cA] coordinates {(7.8,\AnaEirms) (15.8,\AnaEorms)};
-\legend{FE (default mesh),Analytical $V_{\rm ph}/(r\ln(r_o/r_i))$,limit at conductor screen (8),limit at insulation screen (4)}
+\legend{FE (default mesh),Analytical}
+% The two Eskom limits are labelled on their lines (a legend entry would hide the one at 8).
+\node[anchor=north west,font=\scriptsize,cB] at (axis cs:7.6,7.85) {limit 8 (conductor screen)};
+\node[anchor=south east,font=\scriptsize,cB] at (axis cs:16.0,4.15) {limit 4 (insulation screen)};
 \node[anchor=north west,font=\small] at (axis cs:7.85,3.35) {\AnaEirms};
 \node[anchor=south,font=\small] at (axis cs:15.2,1.75) {\AnaEorms};
 \end{axis}\end{tikzpicture}

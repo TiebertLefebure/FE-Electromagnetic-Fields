@@ -135,7 +135,7 @@ $\rightarrow$ \MeshQminGap, effect on results below 1\,\%); $\sigma_{\rm Al}$ fi
 \item Course formulation, unchanged; the voltages are imposed as boundary values
 \end{itemize}
 \begin{tabular}{@{}lrr@{}}\toprule
-Max.\ field, RMS [kV/mm] & conductor screen & insulation screen\\\midrule
+$E_{\rm rms}$ [kV/mm] & conductor screen & insulation screen\\\midrule
 Analytical & \AnaEirms & \AnaEorms\\
 Limit (Eskom spec.) & 8 & 4\\\bottomrule
 \end{tabular}\\[2pt]
@@ -539,7 +539,7 @@ XLPE & 2.5 & $10^{-18}$ & 0.286 & $\varepsilon_r$: [\v{S}u\'{c}urovi\'{c}], [Lee
 Semicons & -- & $2\cdot10^{-3}$ & 0.286 & $\sigma$: 500 $\Omega$\,m limit [OES], same in [Lee]; $\kappa$: assumption, as XLPE\\
 PE sheath & 2.25 & $10^{-18}$ & 0.286 & $\varepsilon_r$, $\sigma$: [Course], [COMSOL]; $\kappa=1/3.5$: [Enescu]\\
 Fillers (tapes) & -- & 0 & 0.286 & assumption: polymer, as XLPE\\
-Soil & 10 & $10^{-2}$ & 0.833 & $\varepsilon_r$, $\sigma$: [Course] App.~C (not used: soil is outside the electric model, $\sigma=0$ in the magnetic one, $\delta\approx700$ m); $\kappa=1/1.2$: [NKT]\\
+Soil & 10 & $10^{-2}$ & 0.833 & $\varepsilon_r$, $\sigma$: [Course] App.~C (not used: soil is outside the electric model, $\sigma=0$ in the magnetic one, $\delta=\AnaDeltaSoil$ m); $\kappa=1/1.2$: [NKT]\\
 Air (void, Q2.5) & 1 & $10^{-15}$ & -- & assumption (dry air)\\\bottomrule
 \end{tabular}\\[6pt]
 {\footnotesize $\mu_r=1$ in all materials: the cable has no steel. Semicons and fillers are not in the electric model
