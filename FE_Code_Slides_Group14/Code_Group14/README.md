@@ -2,7 +2,7 @@
 
 Electric, magnetic and coupled magnetothermal FE analysis of three NKT 33 kV
 **1×185/50 mm² XLPE-AL** single-core cables buried 1 m deep in trefoil (rating: 350 A, 90 °C).
-Group 14: **Kutikuppala Jaswanth, Lefebure Tiebert, Miseur Torre**. Submitted version: git tag `final` of
+Group 14: **Kutikuppala Jaswanth, Lefebure Tiebert, Miseur Torre**. Repository:
 https://github.com/TiebertLefebure/FE-Electromagnetic-Fields.
 
 Versions: **Gmsh 4.15.2**, **GetDP 4.0.0-git-259f4c38** (ONELAB bundle).
