@@ -1,6 +1,6 @@
 % Q3.10: positive-sequence inductance versus frequency (FE, 0.5 mm gap) and the NKT value.
 \begin{tikzpicture}\begin{axis}[xmode=log,xlabel={Frequency [Hz]},ylabel={$L$ [mH/km]},xmin=0.005,xmax=1000,
-  ymin=0.24,ymax=0.42,legend pos=south west,legend cell align=left]
+  ymin=0.24,ymax=0.42,legend style={at={(0.5,1.03)},anchor=south,legend columns=1,/tikz/every even column/.append style={column sep=6pt}},legend cell align=left]
 \fill[cC!30] (axis cs:0.005,0.366) rectangle (axis cs:1000,0.398);
 \addplot[cA,thick,mark=*] coordinates {(0.01,\Lfdc) (5,\Lffive) (50,\Lbase) (500,\Lfhund)};
 \addplot[cB,only marks,mark=square*] coordinates {(50,\Ltouching)};

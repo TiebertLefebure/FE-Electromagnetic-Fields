@@ -1,6 +1,6 @@
 % Q2.5: |E| along the phase-A radial cut, healthy vs air void (peak, kV/mm).
 \begin{tikzpicture}\begin{axis}[xlabel={Radius from phase-A axis [mm]},ylabel={$|\hat E|$ [kV/mm]},
-  xmin=7.8,xmax=15.8,ymin=0,ymax=10,legend pos=north east]
+  legend cell align=left,xmin=7.8,xmax=15.8,ymin=0,ymax=10,legend style={at={(0.5,1.03)},anchor=south,legend columns=2,/tikz/every even column/.append style={column sep=6pt}}]
 \addplot[cB,thick] table[x=r,y=E,col sep=comma]{\datadir/radial_defect.csv};
 \addplot[cA,thick] table[x=r,y=E,col sep=comma]{\datadir/radial_healthy.csv};
 \addplot[black,dashed,domain=7.8:15.8,samples=60] {26.94439/(x*ln(15.8/7.8))};

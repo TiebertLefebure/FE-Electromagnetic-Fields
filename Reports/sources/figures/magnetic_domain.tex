@@ -1,16 +1,16 @@
 % Q3.1: magnetic domain, boundary condition and sources (cables enlarged, not to scale).
 \begin{tikzpicture}[font=\small,>=Stealth]
-\fill[brown!12] (-2.4,-2.4) rectangle (2.4,2.4);
-\draw[KULBlue,very thick] (-2.4,-2.4) rectangle (2.4,2.4);
-\node[KULBlue,anchor=south] at (0,2.4) {EM box \(\pm0.3\) m: \(a_z=0\) on the edge};
+\fill[brown!12] (-1.8,-1.8) rectangle (1.8,1.8);
+\draw[KULBlue,very thick] (-1.8,-1.8) rectangle (1.8,1.8);
+\node[KULBlue,anchor=south] at (0,1.8) {EM box \(\pm0.3\) m: \(a_z=0\) on the edge};
 \foreach \x/\y/\p in {0/0.58/A, -0.5/-0.29/B, 0.5/-0.29/C} {
   \fill[gray!20] (\x,\y) circle (0.5); \fill[white] (\x,\y) circle (0.45);
   \fill[orange!70] (\x,\y) circle (0.415); \fill[white] (\x,\y) circle (0.405);
   \fill[green!35!teal!40] (\x,\y) circle (0.37); \fill[gray!55] (\x,\y) circle (0.17);
   \node[font=\scriptsize] at (\x,\y) {\p};}
-\draw[<-] (0.12,0.66) -- (3.1,1.6) node[right,align=left] {aluminium (massive): net current \(\hat I_k\) imposed\\
+\draw[<-] (0.12,0.66) -- (2.3,1.45) node[right,align=left] {aluminium (massive): net current \(\hat I_k\) imposed\\
   on its global \(I\) (\texttt{Current\_2D}); eddy currents free};
-\draw[<-] (0.41,0.6) -- (3.1,0.45) node[right,align=left] {copper screen (massive): \(U=0\) (both ends)\\ or \(I=0\) (single point)};
-\draw[<-] (0.75,-0.55) -- (3.1,-0.65) node[right,align=left] {XLPE, semicons, fillers, PE: \(\sigma=0\)};
-\draw[<-] (1.6,-1.6) -- (3.1,-1.6) node[right,align=left] {soil: \(\sigma=0\) (skin depth \AnaDeltaSoil\ m); all \(\mu_r=1\)};
+\draw[<-] (0.41,0.6) -- (2.3,0.4) node[right,align=left] {copper screen (massive): \(U=0\) (both ends)\\ or \(I=0\) (single point)};
+\draw[<-] (0.75,-0.55) -- (2.3,-0.6) node[right,align=left] {XLPE, semicons, fillers, PE: \(\sigma=0\)};
+\draw[<-] (1.2,-1.4) -- (2.3,-1.4) node[right,align=left] {soil: \(\sigma=0\) (skin depth \AnaDeltaSoil\ m); all \(\mu_r=1\)};
 \end{tikzpicture}

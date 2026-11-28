@@ -2,6 +2,8 @@
 # Renders the field maps shown in the slides as PNG, with Gmsh (needs a display).
 # Run AFTER the README "reproduce" commands, from the repository root:  ./Slides/export_maps.sh
 # Each map: gmsh <result .pos> + a few view options + Print. Nothing is computed here.
+# Every map is printed twice: figures/<name>.png with Gmsh's colour scale (reports, Deliverables/)
+# and figures/noscale/<name>.png without it (slides, which draw the scale in LaTeX: \map in slides.tex).
 set -eu
 GMSH=${GMSH:-gmsh}
 SRC="$(cd "$(dirname "$0")/.." && pwd)/Source-Code"
@@ -19,6 +21,8 @@ View[0].NbIso = 30; View[0].ShowTime = 0; View[0].Light = 0;
 View[0].SaturateValues = 1; View[0].ColormapNumber = 2;
 $*
 Print "$OUT/$png";
+View[0].ShowScale = 0;
+Print "$OUT/noscale/$png";
 Exit;
 GEO
   "$GMSH" "$pos" "$OUT/.print.geo" -v 1
@@ -37,11 +41,23 @@ GEO
   "$GMSH" "$1" "$OUT/.print.geo" -v 1
   echo "wrote $2"
 }
+mkdir -p "$OUT/noscale"
 G="$SRC/1-Cable-selection-and-model-setup/meshes"
 # Mesh data box: x in [-20, 20] m, y in [-19, 1] m -> centre (0, -9) m.
 mesh "$G/gap.msh"      mesh_domain.png   1    0 0 1
 mesh "$G/gap.msh"      mesh_gap.png      8000 -0.010875 9.006279 1
 mesh "$G/touching.msh" mesh_touching.png 8000 -0.01075  9.006207 1
+# Slides: the same whole-domain mesh as dark edges on white (filled faces hide the coarse elements).
+cat > "$OUT/.print.geo" <<GEO
+General.GraphicsWidth = 1000; General.GraphicsHeight = 800; Print.Width = 1000; Print.Height = 800;
+General.SmallAxes = 0; General.Color.Background = White;
+Mesh.SurfaceFaces = 0; Mesh.SurfaceEdges = 1; Mesh.Lines = 0; Mesh.ColorCarousel = 0;
+Mesh.Color.Triangles = {60,60,60}; Mesh.LineWidth = 3; Geometry.Points = 0; Geometry.Curves = 0; Mesh.Light = 0;
+Print "$OUT/mesh_domain_edges.png";
+Exit;
+GEO
+"$GMSH" "$G/gap.msh" "$OUT/.print.geo" -v 1
+echo "wrote mesh_domain_edges.png"
 E="$SRC/2-Electrodynamic-analysis/results"
 B="$SRC/3-Magnetoquasistatic-analysis/results"
 H="$SRC/4-Magnetothermal-analysis/results"

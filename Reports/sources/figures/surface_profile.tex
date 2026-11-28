@@ -1,6 +1,6 @@
 % Q4.5: temperature along the ground surface (sigma(T) model, 350 A).
 \begin{tikzpicture}\begin{axis}[xlabel={$x$ along the ground surface [m]},
-  ylabel={$T$ [$^\circ$C]},xmin=-6,xmax=6,ymin=14.8,legend pos=north east]
+  ylabel={$T$ [$^\circ$C]},xmin=-6,xmax=6,ymin=14.8,legend cell align=left,legend style={at={(0.5,1.03)},anchor=south,legend columns=2,/tikz/every even column/.append style={column sep=6pt}}]
 \addplot[cB,thick] table[x=x,y=T,col sep=comma]{\datadir/surface_h5.csv};
 \addplot[cA,thick] table[x=x,y=T,col sep=comma]{\datadir/surface_nl.csv};
 \addplot[cC,thick] table[x=x,y=T,col sep=comma]{\datadir/surface_h20.csv};

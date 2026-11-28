@@ -63,7 +63,21 @@
 \newcommand{\wfig}[2]{\adjustbox{max width=\linewidth,max height=#2}{\input{../Reports/sources/figures/#1.tex}}}
 \def\datadir{../Reports/sources/data}
 \newcommand{\plot}[3]{{\def\figw{#1}\def\figh{#2}\input{../Reports/sources/figures/style.tex}\colorlet{cA}{KULBlue}\input{../Reports/sources/figures/#3.tex}}}
-\newcommand{\map}[2]{\includegraphics[width=#1,trim=150 0 150 0,clip]{figures/#2.png}}
+\newcommand{\map}[2]{\includegraphics[width=#1,trim=350 230 350 230,clip]{figures/noscale/#2.png}}
+% Colour bar under a map, drawn here instead of by Gmsh: \cbar{width}{min}{max}{ticks}, same jet colormap
+% and 30 bands as export_maps.sh. One macro per quantity, with the range the maps are printed with.
+\newcommand{\cbar}[4]{\begin{tikzpicture}\begin{axis}[hide axis,scale only axis,width=1pt,height=1pt,
+  colormap/jet,point meta min=#2,point meta max=#3,colorbar horizontal,colorbar sampled,
+  colorbar style={width=#1,height=1.4mm,samples=31,xtick={#4},xticklabel style={font=\scriptsize,inner sep=1pt},
+  major tick length=1pt,scaled x ticks=false,xticklabel={\pgfmathprintnumber{\tick}}}]
+  \addplot[draw=none] coordinates {(0,0)};\end{axis}\end{tikzpicture}}
+\newcommand{\cbE}[1]{\cbar{#1}{2.41}{6.29}{3,4,5,6}}       % |E| [kV/mm], healthy and void share it
+\newcommand{\cbJd}[1]{\cbar{#1}{16.5}{42.6}{20,30,40}}     % |J_d| [mA/m^2]
+\newcommand{\cbV}[1]{\cbar{#1}{-13.47}{26.94}{-10,0,10,20}} % Re(v) [kV], phase A at 0 deg
+\newcommand{\cbB}[1]{\cbar{#1}{0}{16}{0,4,8,12,16}}        % |B| [mT]
+\newcommand{\cbJ}[1]{\cbar{#1}{0}{3.2}{0,1,2,3}}           % |J| [A/mm^2]
+\newcommand{\cbTc}[1]{\cbar{#1}{30}{95}{30,50,70,90}}      % T in the cables [degC]
+\newcommand{\cbTs}[1]{\cbar{#1}{15}{50}{20,30,40,50}}      % T in the soil [degC]
 \newcommand{\q}[1]{{\color{KULMid}\bfseries #1}}
 \newcommand{\src}[1]{\par\vfill{\tiny\color{gray}#1}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
@@ -198,7 +212,7 @@ Using only $j=-j\omega\sigma a$ would hide an implicit $U=0$ relative to the arb
 \item One mesh: the magnetic box is part of the soil domain, no interpolation
 \end{itemize}
 \column{0.5\textwidth}\centering
-\includegraphics[width=\linewidth,trim=280 438 280 438,clip]{figures/mesh_domain.png}\\
+\includegraphics[width=\linewidth,trim=280 438 280 438,clip]{figures/mesh_domain_edges.png}\\
 {\scriptsize thermal mesh, 40 m $\times$ 20 m: fine near the cables (dark spot at the top), coarse far away}
 \end{columns}
 \note{\textbf{[0:55 \,|\, clock 3:55]}\par\smallskip 
@@ -316,10 +330,11 @@ eddy losses, and the gap. All of these are inside the assumption uncertainty: $h
 \begin{frame}{Electric stress: healthy and with an air void \q{Q2.4, Q2.5}}
 \begin{columns}[T]
 \column{0.26\textwidth}\centering
-\map{0.62\linewidth}{e_field_cmp}\\{\scriptsize $|\hat E|$ [V/m], healthy}\\[2pt]
-\map{0.62\linewidth}{e_field_defect_zoom}\\{\scriptsize air void, $r=8.8$ mm}
+\map{0.62\linewidth}{e_field_cmp}\\{\scriptsize $|\hat E|$, healthy}\\[2pt]
+\map{0.62\linewidth}{e_field_defect_zoom}\\{\scriptsize air void, $r=8.8$ mm}\\[1pt]
+\cbE{0.75\linewidth}\\[-1pt]{\scriptsize $|\hat E|$ [kV/mm], both maps}
 \column{0.74\textwidth}
-\plot{\linewidth}{3.3cm}{radial_defect}\\[-3pt]\small
+\plot{\linewidth}{3.0cm}{radial_defect}\\[-3pt]\small
 \begin{itemize}\small
 \item Healthy: \AnaEirms\ / \AnaEorms\ kV/mm RMS at the conductor / insulation screen, limits 8 / 4 (Eskom): \alert{43\,\% of the limit}
 \item Field in the void: \alert{\Vmeandefect--\Edefect\ kV/mm}, $\VoidRatio\times$ the healthy field (theory \AnaVoidFactor$\times$)
@@ -342,8 +357,8 @@ The bulk XLPE survives, but repeated discharges erode the cavity and grow trees:
 \begin{frame}{Magnetic results at 350 A \q{Q3.6--Q3.10}}
 \begin{columns}[T]
 \column{0.22\textwidth}\centering
-\map{0.9\linewidth}{m_b}\\{\scriptsize $|\hat B|$ (peak), max.\ \Bmax\ mT}\\[2pt]
-\map{0.9\linewidth}{m_j}\\{\scriptsize $|\hat J|$ (peak) in Al and Cu}
+\map{0.7\linewidth}{m_b}\\[-1pt]\cbB{0.8\linewidth}\\[-1pt]{\scriptsize $|\hat B|$ [mT], max.\ \Bmax}\\[2pt]
+\map{0.7\linewidth}{m_j}\\[-1pt]\cbJ{0.8\linewidth}\\[-1pt]{\scriptsize $|\hat J|$ [A/mm$^2$], Al and Cu}
 \column{0.38\textwidth}\small
 \begin{itemize}\small
 \item $|\hat J|$ in the Al: mean \Javg, max.\ \Jmax\ A/mm$^2$ (proximity)
@@ -367,15 +382,15 @@ The bulk XLPE survives, but repeated discharges erode the cavity and grow trees:
 \begin{frame}{Temperatures at 350 A \q{Q4.4, Q4.5}}
 \begin{columns}[T]
 \column{0.26\textwidth}\centering
-\map{0.8\linewidth}{t_cables_nl}\\{\scriptsize $T$ in the cables [$^\circ$C]}\\[2pt]
-\map{0.8\linewidth}{t_soil_nl}\\{\scriptsize $T$ in the soil (surface on top)}
+\map{0.6\linewidth}{t_cables_nl}\\[-1pt]\cbTc{0.75\linewidth}\\[-1pt]{\scriptsize $T$ in the cables [$^\circ$C]}\\[2pt]
+\map{0.6\linewidth}{t_soil_nl}\\[-1pt]\cbTs{0.75\linewidth}\\[-1pt]{\scriptsize $T$ in the soil [$^\circ$C]}
 \column{0.74\textwidth}\small
 \begin{itemize}\small
 \item Hot spot \alert{\Tcnl\,$^\circ$C} in the lower cables B and C (A: $-$\dTcAlow\ K); XLPE limit 90\,$^\circ$C
 \item Max.\ ground-surface temperature \Tsnl\,$^\circ$C, right above the cables
 \item Surface fixed at 15\,$^\circ$C instead of convection: \Tcnliso\,$^\circ$C (convection adds \dTcIso\ K)
 \end{itemize}
-\plot{0.9\linewidth}{4.3cm}{surface_profile}
+\plot{0.9\linewidth}{3.8cm}{surface_profile}
 \end{columns}
 \note{\textbf{[0:55 \,|\, clock 10:10]}\par\smallskip 
 \begin{itemize}
@@ -572,23 +587,23 @@ Air (void, Q2.5) & 1 & $10^{-15}$ & -- & assumption (dry air)\\\bottomrule
 (semicons = ideal electrodes), so their $\varepsilon_r$ is not needed. Full references: last slide.}
 \end{frame}
 
-\qslidewide{Q1.2 Environment}{\QuestionOneTwo}{\AnsOneTwo}{\wfig{domain}{3.6cm}}
+\qslidewide{Q1.2 Environment}{\QuestionOneTwo}{\AnsOneTwo}{\wfig{domain}{4.4cm}}
 \qslidewide{Q1.3 Sheath bonding}{\QuestionOneThree}{\AnsOneThree}{\wfig{bonding_schematic}{3.4cm}}
 \qslidewide{Q1.4 Excitation}{\QuestionOneFour}{\AnsOneFour}{\wfig{phasors}{3.6cm}}
-\qslide{Q2.1 Domain, equations, boundary conditions}{\QuestionTwoOne}{\AnsTwoOne}{\map{0.9\linewidth}{e_potential}\\{\scriptsize $\Re(\hat v)$ [V]}}
-\qslidewide{Q2.2 Geometric simplifications}{\QuestionTwoTwo}{\AnsTwoTwo}{\wfig{electric_domain}{3.4cm}}
+\qslide{Q2.1 Domain, equations, boundary conditions}{\QuestionTwoOne}{\AnsTwoOne}{\map{0.9\linewidth}{e_potential}\\[-1pt]\cbV{0.7\linewidth}\\[-1pt]{\scriptsize $\Re(\hat v)$ [kV], phase A at $0^\circ$}}
+\qslidewide{Q2.2 Geometric simplifications}{\QuestionTwoTwo}{\AnsTwoTwo}{\wfig{electric_domain}{4.0cm}}
 \qslide{Q2.3 Mesh convergence}{\QuestionTwoThree}{\AnsTwoThree}{\plot{\linewidth}{4.6cm}{convergence}}
 \qslide{Q2.4 Admissible field}{\QuestionTwoFour}{\AnsTwoFour}{\plot{\linewidth}{4.8cm}{radial_limits}}
 \qslide{Q2.5 Insulation defect}{\QuestionTwoFive}{\AnsTwoFive}{\plot{\linewidth}{4.8cm}{radial_defect}}
 \qslide{Q2.6 Current densities and conservation}{\QuestionTwoSix}{\AnsTwoSix}{\plot{\linewidth}{4.8cm}{currents_radial}}
 \begin{frame}{Q2.5, Q2.6 Field maps with and without the void}
 \begin{columns}[T]
-\column{0.2\textwidth}\centering\map{\linewidth}{e_field_cmp}\\{\scriptsize $|\hat E|$ [V/m], healthy}\\[3pt]
-  \map{\linewidth}{e_jdisp_cmp}\\{\scriptsize $|\hat J_d|$ [A/m$^2$], healthy}
-\column{0.2\textwidth}\centering\map{\linewidth}{e_field_defect}\\{\scriptsize $|\hat E|$ [V/m], void}\\[3pt]
-  \map{\linewidth}{e_jdisp_defect}\\{\scriptsize $|\hat J_d|$ [A/m$^2$], void}
-\column{0.2\textwidth}\centering\map{\linewidth}{e_field_defect_zoom}\\{\scriptsize $|\hat E|$ [V/m], void (zoom)}\\[3pt]
-  \map{\linewidth}{e_jdisp_defect_zoom}\\{\scriptsize $|\hat J_d|$ [A/m$^2$], void (zoom)}
+\column{0.2\textwidth}\centering\map{0.85\linewidth}{e_field_cmp}\\[-1pt]\cbE{0.8\linewidth}\\[-1pt]{\scriptsize $|\hat E|$ [kV/mm], healthy}\\[3pt]
+  \map{0.85\linewidth}{e_jdisp_cmp}\\[-1pt]\cbJd{0.8\linewidth}\\[-1pt]{\scriptsize $|\hat J_d|$ [mA/m$^2$], healthy}
+\column{0.2\textwidth}\centering\map{0.85\linewidth}{e_field_defect}\\[-1pt]\cbE{0.8\linewidth}\\[-1pt]{\scriptsize $|\hat E|$ [kV/mm], void}\\[3pt]
+  \map{0.85\linewidth}{e_jdisp_defect}\\[-1pt]\cbJd{0.8\linewidth}\\[-1pt]{\scriptsize $|\hat J_d|$ [mA/m$^2$], void}
+\column{0.2\textwidth}\centering\map{0.85\linewidth}{e_field_defect_zoom}\\[-1pt]\cbE{0.8\linewidth}\\[-1pt]{\scriptsize $|\hat E|$ [kV/mm], zoom}\\[3pt]
+  \map{0.85\linewidth}{e_jdisp_defect_zoom}\\[-1pt]\cbJd{0.8\linewidth}\\[-1pt]{\scriptsize $|\hat J_d|$ [mA/m$^2$], zoom}
 \column{0.34\textwidth}
 \footnotesize Peak amplitudes. The 0.5 mm void sits in the top cable, too small to see at this scale; the third column zooms in on it. The field and the displacement current $\omega\varepsilon|\hat E|$ are highest at the conductor
 screens and fall like $1/r$. In the void ($\varepsilon_r=1$) the field rises to \Vmeandefect--\Edefect\ kV/mm, but the
@@ -597,40 +612,40 @@ displacement current density drops to about $\AnaVoidFactor/2.5\approx\AnaJdVoid
 \end{frame}
 \qslide{Q2.7 Capacitance}{\QuestionTwoSeven}{\AnsTwoSeven}{\plot{\linewidth}{4.6cm}{cap_freq}}
 \qslidewide{Q2.8 Electric design}{\QuestionTwoEight}{\AnsTwoEight}{\plot{0.6\linewidth}{3.8cm}{radial_thick}}
-\qslidewide{Q3.1 Domain, equations, boundary conditions, sources}{\QuestionThreeOne}{\AnsThreeOne}{\wfig{magnetic_domain}{3.6cm}}
+\qslidewide{Q3.1 Domain, equations, boundary conditions, sources}{\QuestionThreeOne}{\AnsThreeOne}{\wfig{magnetic_domain}{3.9cm}}
 \qslide{Q3.2 Stranded vs massive}{\QuestionThreeTwo}{\AnsThreeTwo}{\plot{\linewidth}{4.8cm}{j_profile}}
 \qslidewide{Q3.3 Bonding with global quantities}{\QuestionThreeThree}{\AnsThreeThree}{\wfig{bonding_schematic}{3.2cm}}
-\qslidewide{Q3.4 Simplifications}{\QuestionThreeFour}{\AnsThreeFour}{\wfig{ring_simplification}{3.4cm}}
+\qslidewide{Q3.4 Simplifications}{\QuestionThreeFour}{\AnsThreeFour}{\wfig{ring_simplification}{3.9cm}}
 \qslide{Q3.5 Mesh and convergence}{\QuestionThreeFive}{\AnsThreeFive}{\plot{\linewidth}{4.6cm}{mag_convergence}}
-\qslide{Q3.6 Magnetic flux density}{\QuestionThreeSix}{\AnsThreeSix}{\map{0.85\linewidth}{m_b}}
-\qslide{Q3.7 Current density}{\QuestionThreeSeven}{\AnsThreeSeven}{\map{0.48\linewidth}{m_j}\hfill\map{0.48\linewidth}{m_j_single}\\
-  {\scriptsize $|\hat J|$: both ends bonded (left), single point (right)}}
+\qslide{Q3.6 Magnetic flux density}{\QuestionThreeSix}{\AnsThreeSix}{\map{0.85\linewidth}{m_b}\\[-1pt]\cbB{0.7\linewidth}\\[-1pt]{\scriptsize $|\hat B|$ [mT] (peak)}}
+\qslide{Q3.7 Current density}{\QuestionThreeSeven}{\AnsThreeSeven}{\map{0.48\linewidth}{m_j}\hfill\map{0.48\linewidth}{m_j_single}\\[-1pt]\cbJ{0.6\linewidth}\\[-1pt]
+  {\scriptsize $|\hat J|$ [A/mm$^2$] (peak): both ends bonded (left), single point (right)}}
 \qslide{Q3.8 Joule losses per part}{\QuestionThreeEight}{\AnsThreeEight}{\plot{\linewidth}{4.8cm}{losses_bar}}
 \qslide{Q3.9 AC resistance}{\QuestionThreeNine}{\AnsThreeNine}{\plot{\linewidth}{3.6cm}{rac_bar}}
-\qslide{Q3.10 Inductance}{\QuestionThreeTen}{\AnsThreeTen}{\plot{\linewidth}{4.8cm}{l_freq}}
+\qslide{Q3.10 Inductance}{\QuestionThreeTen}{\AnsThreeTen}{\plot{\linewidth}{4.0cm}{l_freq}}
 \qslide{Q3.11 Loss-reducing design}{\QuestionThreeEleven}{\AnsThreeEleven}{\plot{\linewidth}{4.6cm}{bonding}}
-\qslidewide{Q4.1 Equations and heat source}{\QuestionFourOne}{\AnsFourOne}{\wfig{coupling}{3.6cm}}
-\qslidewide{Q4.2 Thermal domain and boundary conditions}{\QuestionFourTwo}{\AnsFourTwo}{\wfig{domain}{2.85cm}}
+\qslidewide{Q4.1 Equations and heat source}{\QuestionFourOne}{\AnsFourOne}{\wfig{coupling}{4.4cm}}
+\qslidewide{Q4.2 Thermal domain and boundary conditions}{\QuestionFourTwo}{\AnsFourTwo}{\wfig{domain}{2.95cm}}
 \qslidewide{Q4.3 Ambient, mesh and domain size}{\QuestionFourThree}{\AnsFourThree}{\adjustbox{max width=0.85\linewidth,max height=3.8cm}{\input{../Reports/sources/figures/tmax_study.tex}}}
-\qslide{Q4.4 Temperature in the cable}{\QuestionFourFour}{\AnsFourFour}{\map{0.85\linewidth}{t_cables_nl}}
+\qslide{Q4.4 Temperature in the cable}{\QuestionFourFour}{\AnsFourFour}{\map{0.85\linewidth}{t_cables_nl}\\[-1pt]\cbTc{0.7\linewidth}\\[-1pt]{\scriptsize $T$ [$^\circ$C]}}
 \qslidewide{Q4.5 Temperature around the cable and at the surface}{\QuestionFourFive}{\AnsFourFive}{%
-  \begin{minipage}[c]{0.3\linewidth}\centering\map{\linewidth}{t_soil_nl}\\{\scriptsize $T$ [$^\circ$C] in the soil, surface on top}\end{minipage}\hfill
+  \begin{minipage}[c]{0.3\linewidth}\centering\map{0.7\linewidth}{t_soil_nl}\\[-1pt]\cbTs{0.85\linewidth}\\[-1pt]{\scriptsize $T$ [$^\circ$C] in the soil, surface on top}\end{minipage}\hfill
   \begin{minipage}[c]{0.66\linewidth}\centering\plot{\linewidth}{3.6cm}{surface_profile}\end{minipage}}
 \qslide{Q4.6 Validation vs IEC 60287}{\QuestionFourSix}{\AnsFourSix}{\plot{\linewidth}{4.6cm}{tc_compare}}
 \qslide{Q4.7 Convergence of the nonlinear coupling}{\QuestionFourSeven}{\AnsFourSeven}{\plot{\linewidth}{4.8cm}{nl_history}}
 \qslide{Q4.8 Linear vs $\sigma(T)$}{\QuestionFourEight}{\AnsFourEight}{\plot{\linewidth}{4.8cm}{nl_change}}
 \begin{frame}{Q4.8 Field maps: linear vs $\sigma(T)$}
 \begin{columns}[T]
-\column{0.24\textwidth}\centering\map{0.72\linewidth}{t_cables_lin}\\{\scriptsize $T$ [$^\circ$C], linear: \Tclin}\\[2pt]
-  \map{0.72\linewidth}{t_cables_nl}\\{\scriptsize $T$ [$^\circ$C], $\sigma(T)$: \Tcnl}
-\column{0.24\textwidth}\centering\map{0.72\linewidth}{t_soil_lin}\\{\scriptsize $T$ [$^\circ$C] in the soil, linear}\\[2pt]
-  \map{0.72\linewidth}{t_soil_nl}\\{\scriptsize $T$ [$^\circ$C] in the soil, $\sigma(T)$}
-\column{0.24\textwidth}\centering\map{0.72\linewidth}{m_j}\\{\scriptsize $|\hat J|$ [A/m$^2$], linear}\\[2pt]
-  \map{0.72\linewidth}{m_j_nl}\\{\scriptsize $|\hat J|$ [A/m$^2$], $\sigma(T)$}
-\column{0.24\textwidth}\centering\map{0.72\linewidth}{m_b}\\{\scriptsize $|\hat B|$ [T], linear}\\[2pt]
-  \map{0.72\linewidth}{m_b_nl}\\{\scriptsize $|\hat B|$ [T], $\sigma(T)$}
+\column{0.24\textwidth}\centering\map{0.66\linewidth}{t_cables_lin}\\{\scriptsize $T$ [$^\circ$C], linear: \Tclin}\\[2pt]
+  \map{0.66\linewidth}{t_cables_nl}\\{\scriptsize $T$ [$^\circ$C], $\sigma(T)$: \Tcnl}\\[1pt]\cbTc{0.8\linewidth}
+\column{0.24\textwidth}\centering\map{0.66\linewidth}{t_soil_lin}\\{\scriptsize $T$ [$^\circ$C] in the soil, linear}\\[2pt]
+  \map{0.66\linewidth}{t_soil_nl}\\{\scriptsize $T$ [$^\circ$C] in the soil, $\sigma(T)$}\\[1pt]\cbTs{0.8\linewidth}
+\column{0.24\textwidth}\centering\map{0.66\linewidth}{m_j}\\{\scriptsize $|\hat J|$ [A/mm$^2$], linear}\\[2pt]
+  \map{0.66\linewidth}{m_j_nl}\\{\scriptsize $|\hat J|$ [A/mm$^2$], $\sigma(T)$}\\[1pt]\cbJ{0.8\linewidth}
+\column{0.24\textwidth}\centering\map{0.66\linewidth}{m_b}\\{\scriptsize $|\hat B|$ [mT], linear}\\[2pt]
+  \map{0.66\linewidth}{m_b_nl}\\{\scriptsize $|\hat B|$ [mT], $\sigma(T)$}\\[1pt]\cbB{0.8\linewidth}
 \end{columns}\smallskip
-\footnotesize Each pair shares one colour scale ($T$: 30--95\,$^\circ$C in the cable, 15--50\,$^\circ$C in the soil). Only the temperature
+\footnotesize Each pair shares one colour scale. Only the temperature
 changes visibly (\dTcNL\ K); $J$ and $B$ barely move because the currents are imposed and $\mu_r=1$.
 \end{frame}
 \qslide{Q4.9 Is the linear model conservative?}{\QuestionFourNine}{\AnsFourNine}{\plot{\linewidth}{4.8cm}{rating_curve}}
