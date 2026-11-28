@@ -24,10 +24,16 @@ Reports/                study notes per section (PDFs), LaTeX sources, collect_v
                         printed values into LaTeX macros)
 ```
 
+The handed-in version is git tag `final` (upload `git archive final Source-Code`: the .geo/.pro
+files and `Source-Code/README.md`, not `run_all.sh`), with `Slides/slides.pdf`.
+
 ## Reproduce every number and picture (terminal, from this folder)
 
+The scripts are POSIX shell: on Windows run them from Git Bash or WSL, with the ONELAB folder that
+holds `gmsh.exe` and `getdp.exe` on the PATH (Git Bash: `export PATH="/c/path/to/onelab:$PATH"`).
+
 ```sh
-export PATH="$PWD/../ONELAB Software/Gmsh.app/Contents/MacOS:$PATH"   # gmsh + getdp
+export PATH="$PWD/../ONELAB Software/Gmsh.app/Contents/MacOS:$PATH"   # macOS: gmsh + getdp
 ./Source-Code/run_all.sh            # all meshes and cases, about 25 min
 python3 Reports/collect_values.py   # printed values -> values.tex + CSV
 ./Reports/build.sh                  # Section 1-5 PDFs

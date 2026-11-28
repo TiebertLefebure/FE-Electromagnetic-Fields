@@ -2,7 +2,7 @@
 
 Electric, magnetic and coupled magnetothermal FE analysis of three NKT 33 kV
 **1×185/50 mm² XLPE-AL** single-core cables buried 1 m deep in trefoil (rating: 350 A, 90 °C).
-Group: **Kutikuppala Jaswanth, Lefebure Tiebert, Miseur Torre**. Submitted version: git tag `final`.
+Group: **Kutikuppala Jaswanth, Lefebure Tiebert, Miseur Torre**.
 
 Versions: **Gmsh 4.15.2**, **GetDP 4.0.0-git-259f4c38** (ONELAB bundle).
 
@@ -49,7 +49,7 @@ tag (`Q2.5`, `Q4.7`, ...) in the `.pro`/`.geo` files to find the code that answe
 
 **File > Open** the `cable.pro` of a section folder and press **Run**: Gmsh meshes, GetDP solves
 with the folder's resolution, the key numbers appear under **Output** and the maps open. If Gmsh asks
-for the GetDP executable: `Gmsh.app/Contents/MacOS/getdp` of the ONELAB bundle. Set
+for the GetDP executable, select `getdp` (`getdp.exe` on Windows) of the ONELAB bundle. Set
 **Output > Directory** = `results/<name>` to keep a run (otherwise `res/` is overwritten).
 
 | Result in the slides | Folder (resolution) | ONELAB setting before **Run** |
@@ -76,18 +76,22 @@ for the GetDP executable: `Gmsh.app/Contents/MacOS/getdp` of the ONELAB bundle. 
 
 Every result in the slides comes from one mesh command and one solve command. `<options>` are the
 `-setnumber` options of the tables below; a case passes the options of its mesh to GetDP as well.
+`gmsh` and `getdp` are the executables of the ONELAB bundle: put their folder on the PATH or type
+their full path. The commands are the same in any terminal (Windows, macOS, Linux).
 
-```sh
-export PATH="/path/to/ONELAB/Gmsh.app/Contents/MacOS:$PATH"   # gmsh + getdp of the ONELAB bundle
-# 1) mesh <m>, its size and quality (in 1-Cable-selection-and-model-setup)
-cd 1-Cable-selection-and-model-setup && mkdir -p meshes results
-gmsh cable.geo -2 -nt 1 <options> -o meshes/<m>.msh
-gmsh meshes/<m>.msh mesh_quality.geo -nopopup -parse_and_exit > results/mesh_<m>.txt
-# 2) case <c> on mesh <m> (in the section folder of the case)
-cd ../3-Magnetoquasistatic-analysis
-getdp cable.pro -msh ../1-Cable-selection-and-model-setup/meshes/<m>.msh -solve <resolution> \
-  -setstring ResultDir results/<c> <options>
-```
+1. Mesh `<m>`, its size and quality: in `1-Cable-selection-and-model-setup`, with the empty folders
+   `meshes` and `results` created there first,
+
+   ```text
+   gmsh cable.geo -2 -nt 1 <options> -o meshes/<m>.msh
+   gmsh meshes/<m>.msh mesh_quality.geo -nopopup -parse_and_exit > results/mesh_<m>.txt
+   ```
+
+2. Case `<c>` on mesh `<m>`: in the section folder of the case (GetDP creates `results/<c>`),
+
+   ```text
+   getdp cable.pro -msh ../1-Cable-selection-and-model-setup/meshes/<m>.msh -solve <resolution> -setstring ResultDir results/<c> <options>
+   ```
 
 Example, the magnetic baseline: mesh `gap` with no options, then in `3-Magnetoquasistatic-analysis`
 `getdp cable.pro -msh ../1-Cable-selection-and-model-setup/meshes/gap.msh -solve Magnetodynamics_cable -setstring ResultDir results/base`.
