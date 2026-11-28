@@ -70,6 +70,9 @@ AnaDrop = AnaJd*tSemiIn/sigmaSemi*1e3;              // [Q2.2] drop across the co
 AnaCbare = 2*Pi*eps0*epsXLPE/Log[rXLPEOut/rCon]*1e9; // [Q2.2] voltage on the Al instead of the semicon
 // [Q2.5] Breakdown of air across the void diameter d (pressure pVoid): Schumann fit [VSSUT] and
 // Paschen's law with A = 112.5 /(kPa cm), B = 2737.5 V/(kPa cm), gamma = 0.025 [Bean].
+// [VSSUT] VSSUT, High Voltage Engineering lecture notes, Module I, S1.7,
+//   https://www.vssut.ac.in/lecture_notes/lecture1423723357.pdf
+// [Bean] Bean, Adams, Weber, HVDC surface flashover in compressed air, arXiv:2006.12615, eqs. 1-2
 dVoid = 2*rVoid*100;                                // cm
 relDens = pVoid/101.325;                            // relative air density (at 20 C)
 AnaEb = (24.22*relDens*dVoid + 6.08*Sqrt[relDens*dVoid])/(dVoid*10);   // kV/mm

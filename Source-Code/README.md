@@ -36,7 +36,6 @@ ratio (or difference) of two printed values; those are listed in
   cable.pro                Section 5: includes the Section 4 model unchanged, adds resolution Ampacity
                            (current for a 90 C hot spot)
 2-5/cable.geo              one-line include of the shared geometry (so the Gmsh Run button works)
-run_all.sh                 every case in the slides: exact commands, one line per case
 ```
 
 Each `cable.pro` defines what the course files leave to the user (groups, materials, sources,
@@ -73,28 +72,49 @@ for the GetDP executable: `Gmsh.app/Contents/MacOS/getdp` of the ONELAB bundle. 
 | Thermal domain size (Q4.3) | 4 | Thermal > half-width and depth = 10, 40 |
 | Arrangement × bonding, ampacity (Section 5) | 5 (`Ampacity`) | Geometry > Formation = Trefoil / Flat; Jacket gap = 0.5 / 70 (flat); Magnetic > Screen bonding |
 
-## Run every case (terminal)
+## Exact commands (terminal)
+
+Every result in the slides comes from one mesh command and one solve command. `<options>` are the
+`-setnumber` options of the tables below; a case passes the options of its mesh to GetDP as well.
 
 ```sh
-export PATH="/path/to/ONELAB/Gmsh.app/Contents/MacOS:$PATH"   # gmsh + getdp
-./run_all.sh                                                   # all meshes and cases, about 25 min
-```
-
-`run_all.sh` lists one line per case with the question it answers; the same `-setnumber`
-options go to Gmsh (mesh) and GetDP (solve). Results land in `<section folder>/results/<case>/`
-(Section 1: `1-Cable-selection-and-model-setup/results/mesh_<name>.txt`). One case by hand:
-
-```sh
-cd 1-Cable-selection-and-model-setup
-mkdir -p meshes && gmsh cable.geo -2 -o meshes/gap.msh
-gmsh meshes/gap.msh mesh_quality.geo -nopopup -parse_and_exit      # triangles, ICN
+export PATH="/path/to/ONELAB/Gmsh.app/Contents/MacOS:$PATH"   # gmsh + getdp of the ONELAB bundle
+# 1) mesh <m>, its size and quality (in 1-Cable-selection-and-model-setup)
+cd 1-Cable-selection-and-model-setup && mkdir -p meshes results
+gmsh cable.geo -2 -nt 1 <options> -o meshes/<m>.msh
+gmsh meshes/<m>.msh mesh_quality.geo -nopopup -parse_and_exit > results/mesh_<m>.txt
+# 2) case <c> on mesh <m> (in the section folder of the case)
 cd ../3-Magnetoquasistatic-analysis
-getdp cable.pro -msh ../1-Cable-selection-and-model-setup/meshes/gap.msh -solve Magnetodynamics_cable \
-  -setstring ResultDir results/base
+getdp cable.pro -msh ../1-Cable-selection-and-model-setup/meshes/<m>.msh -solve <resolution> \
+  -setstring ResultDir results/<c> <options>
 ```
 
-For another case, add the same `-setnumber <name> <value>` options to both commands (and use
-another mesh name), e.g. `-setnumber Flag_Defect 1`.
+Example, the magnetic baseline: mesh `gap` with no options, then in `3-Magnetoquasistatic-analysis`
+`getdp cable.pro -msh ../1-Cable-selection-and-model-setup/meshes/gap.msh -solve Magnetodynamics_cable -setstring ResultDir results/base`.
+
+**Meshes** (folder 1):
+
+| Mesh | Options | Used for |
+|---|---|---|
+| `gap` | — | default (Q1.2, all baselines) |
+| `touching` | `-setnumber JacketGap 0` | Q1.2, Q2.2, Q3.4 |
+| `coarse` / `fine` | `-setnumber MeshFactor 2` / `0.5` | Q2.3, Q3.5, Q4.3 |
+| `thick` | `-setnumber tXLPE 0.009` | Q2.8 |
+| `defect` / `defect-fine` | `-setnumber Flag_Defect 1` (fine: also `-setnumber MeshFactor 0.5`) | Q2.5 |
+| `box06` | `-setnumber OuterBox 0.6` | Q3.1, Q3.5 |
+| `dom10` / `dom40` | `-setnumber ThermalHalfWidth 10 -setnumber ThermalDepth 10` (40: both 40) | Q4.3 |
+| `flat` / `flat70` | `-setnumber Formation 1` (70: also `-setnumber JacketGap 70`) | Section 5 |
+
+**Cases** (results in `<folder>/results/<case>/`; options of the mesh not repeated):
+
+| Folder, resolution | Case: mesh, extra options | Questions |
+|---|---|---|
+| 2, `Electrodynamics_cable` | `gap`: gap · `touching`: touching · `coarse`: coarse · `fine`: fine · `defect`: defect · `defect-fine`: defect-fine · `thick`: thick · `f5`, `f500`, `f5000`: gap, `-setnumber Freq 5` (500, 5000) | Q2.1–Q2.8 |
+| 3, `Magnetodynamics_cable` | `base`: gap · `stranded`: gap, `-setnumber Flag_Conductor 1` · `stranded-f500`: same + `-setnumber Freq 500` · `single`: gap, `-setnumber Flag_Bonding 1` · `touching`: touching · `coarse`: coarse · `fine`: fine · `box06`: box06 · `f0.01`, `f5`, `f500`: gap, `-setnumber Freq 0.01` (5, 500) | Q3.1–Q3.11 |
+| 4, `MagnetoThermal` | `lin`: gap, `-setnumber Flag_NL 0` · `nl`: gap · `lin-iso`: gap, `-setnumber Flag_NL 0 -setnumber Flag_SurfaceBC 1` · `nl-iso`: gap, `-setnumber Flag_SurfaceBC 1` · `nl-h5`, `nl-h20`: gap, `-setnumber hConv 5` (20) · `nl-coarse`: coarse · `nl-fine`: fine · `nl-dom10`: dom10 · `nl-dom40`: dom40 | Q4.1–Q4.9 |
+| 5, `Ampacity` | `trefoil`: gap · `trefoil-sp`: gap, `-setnumber Flag_Bonding 1` · `flat`: flat · `flat-sp`: flat, `-setnumber Flag_Bonding 1` · `flat70`: flat70 · `flat70-sp`: flat70, `-setnumber Flag_Bonding 1` | Section 5 |
+
+All 12 meshes and 37 cases take about 25 minutes on a laptop.
 
 ## What each run prints
 
@@ -105,13 +125,13 @@ another mesh name), e.g. `-setnumber Flag_Defect 1`.
 |---|---|---|
 | 1 | `mesh_<name>.txt`: `Triangles:`, `ICN = worst, average, best` | — |
 | 2 | `max_field_kV_mm.dat`, `capacitance_uF_km.dat` (energy), `capacitance_charge_uF_km.dat`, `electrode_current_A*.dat`, `max_Jd_A_m2.dat`, `max_Jc_A_m2.dat`, `triangles_XLPE_A.dat`, `radial_field_A.txt`; maps `potential.pos`, `field_norm.pos`, `displacement_current.pos`, `conduction_current.pos`; with the void: `void_area.dat`, `void_field_integral.dat` | `AnaC`, `AnaEi` (and RMS values), `AnaEzero`, `AnaEvoid`, `AnaIch`, `AnaJd`, `AnaJc`, `AnaRatio`, `AnaDrop`, `AnaCbare`/`dCbare`, `AnaEb` (Schumann), `AnaEbPaschen`, `dEana`, `dCana`, `dCnkt`, `IchFE`, `IratioFE`, `dCcharge` (charge vs energy C); with the void `EvoidMean`, `VoidRatio`, `PdInception` |
-| 3 | `losses_conductors.dat`, `losses_screens.dat`, `losses_total.dat`, `losses_condA/B/C.dat` (W/m = kW/km), `R_conductors_ohm_km.dat`, `R_ac_ohm_km.dat`, `L_mH_km.dat`, `screen_current_A_rms.dat`, `currents_A.dat`, `voltages_V_m.dat`, `Z_terminal_ohm_km.dat`, `j_line_A.txt`; maps `b_norm.pos`, `j_norm.pos` | `AnaDeltaAl/Cu` (skin depths), `AnaL`, `NktL`, `Bsingle`, `Javg`, `Bmax`, `Jmax`, `Hmetal` (element size in the metals), IEC at 20 °C: `IecRdc`, `IecYs`, `IecYp`, `IecRcond`, `IecRs`, `IecX`, `IecLam`, `IecRac`, `IecIs`, `IecPc`, `IecPs`, `IecPt`, `IecUs`; `dLana`, `dLnkt`, `CondShare`, `LamFE`, `PcPhase`, `PhaseSym`, `Lterm`, `dLterm`, `Is`, `dIs`, `IsPeak`, `Jscreen`, `IsSum`; single point: `Usingle` |
+| 3 | `losses_conductors.dat`, `losses_screens.dat`, `losses_total.dat`, `losses_condA/B/C.dat` (W/m = kW/km), `R_conductors_ohm_km.dat`, `R_ac_ohm_km.dat`, `L_mH_km.dat`, `screen_current_A_rms.dat`, `currents_A.dat`, `voltages_V_m.dat`, `Z_terminal_ohm_km.dat`, `j_line_A.txt`; maps `b_norm.pos`, `j_norm.pos` | `AnaDeltaAl/Cu/Soil` (skin depths), `AnaL`, `NktL`, `Bsingle`, `Javg`, `Bmax`, `Jmax`, `Hmetal` (element size in the metals), IEC at 20 °C: `IecRdc`, `IecYs`, `IecYp`, `IecRcond`, `IecRs`, `IecX`, `IecLam`, `IecRac`, `IecIs`, `IecPc`, `IecPs`, `IecPt`, `IecUs`; `dLana`, `dLnkt`, `CondShare`, `LamFE`, `PcPhase`, `PhaseSym`, `Lterm`, `dLterm`, `Is`, `dIs`, `IsPeak`, `Jscreen`, `IsSum`; single point: `Usingle` |
 | 4 | Section 3 files plus `Tmax_conductor.dat`, `Tmax_condA/B/C.dat`, `Tmax_surface.dat`, `surface_heat_W_m.dat`, `convergence.txt` (iteration, relative increment), `T_surface_profile.txt`; maps `T.pos`, `T_cables.pos` | IEC ladder: `IecTone`, `IecTthree`, `IecTfour`, `IecU`, `IecTheta`, `IecThetaS`, `IecAmp`, `IecRcondHot`, `IecRacHot`, `IecLamHot`, `IecPcHot`, `IecPsHot`; `dTfiller`, `Hrad`, `AnaWd`, `AnaWdShare`, `dToneThick`, `dTthick` (Q2.8); `Nit`, `ConvRate`, `dTcNkt`, `dTsurf`, `QsFrac`, `RhoHot`, `dTsemi`, `TcA/B/C`, `dTcBC`, `dTcAlow`, `Bmax`, `Jmax`; linear runs: `AmpLin` |
 | 5 | Section 4 files at 350 A; `Tmax_conductor_amp.dat` (hot spot at the ampacity) | `Amp` (FE ampacity), `AmpNKT`, `dNkt` (% from NKT), `TcAmp`, `AmpSteps` |
 
 ## Comparisons between runs
 
-`pct(a, b) = 100 (a/b − 1)`; the runs are the case names of `run_all.sh` (folder 2: E, 3: M, 4: T, 5: A).
+`pct(a, b) = 100 (a/b − 1)`; the runs are the case names above (folder 2: E, 3: M, 4: T, 5: A).
 
 | Slide value | Definition |
 |---|---|
@@ -174,6 +194,6 @@ another mesh name), e.g. `-setnumber Flag_Defect 1`.
 
 Codex (OpenAI) helped with the Section 1 geometry fixes and repository cleanup. Claude Code
 (Anthropic) helped write the defect geometry, the `cable.pro` files around the course
-formulation files, the printed references, `run_all.sh`, the report text and the slides.
+formulation files, the printed references, the run scripts, the report text and the slides.
 All results were rerun locally with the versions above and checked against analytical formulas,
 IEC 60287 and the datasheet. We are responsible for all code and results.

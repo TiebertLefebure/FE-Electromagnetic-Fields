@@ -30,7 +30,7 @@ Group {
   Metals = Region[{Conductors, Screens}];
   // Semicons (2e-3 S/m), XLPE, void, fillers, PE: no eddy currents, polymer kappa.
   Insulation = Region[{31,32,33, 41,42,43,44, 51,52,53, 61,62,63, 81,82,83, 91,92,93}];
-  SoilNear = Region[99];  // soil delta ~ 700 m at 50 Hz: sigma = 0 in the magnetic model
+  SoilNear = Region[99];  // soil skin depth AnaDeltaSoil (printed) >> box: sigma = 0 in the magnetic model
   Domain_Mag = Region[{Metals, Insulation, SoilNear}];
   If (Flag_Conductor == 0)
     DomainC_Mag = Region[{Metals}];       // massive: j = -sigma(j w a + ur)
@@ -100,12 +100,15 @@ Include "magnetodynamic_formulation.pro";
 w = 2*Pi*Freq;
 AnaDeltaAl = Sqrt[2/(w*mu0*sigmaAl)]*1e3;                // [Q3.2] skin depths, mm
 AnaDeltaCu = Sqrt[2/(w*mu0*sigmaCu)]*1e3;
+AnaDeltaSoil = Sqrt[2/(w*mu0*sigmaSoil)];                // [Q1.2, Q3.1] soil skin depth, m
 AnaL = 2e-7*Log[Spacing/(rCon*Exp[-0.25])]*1e6;        // [Q3.10] bare trefoil, no screen currents, mH/km
 NktL = XNKT/w*1e3;                                       // [Q3.10] L from the NKT reactance, mH/km
 AnaBsingle = mu0*Ipeak/(2*Pi*rCon)*1e3;                  // [Q3.6] |B| at the surface of one cable, mT
 AnaJavg = Ipeak/(Pi*rCon^2)/1e6;                         // [Q3.7] mean |J|, A/mm2 peak
 // [Q3.8, Q3.9] IEC 60287 method at 20 C, equations as printed in [KTH] Lindstrom (2011),
 // eqs. 4.6-4.14: skin (y_s) and proximity (y_p) factors, screen reactance X and loss factor.
+// [KTH] L. Lindstrom, MSc thesis, KTH (2011),
+//   https://www.diva-portal.org/smash/get/diva2:511556/fulltext01.pdf
 R20 = RdcNKT*1e-3;                                       // ohm/m
 xs4 = (8*Pi*Freq/R20*1e-7)^2;  Fs = xs4/(192 + 0.8*xs4);
 IecYs = Fs;
@@ -127,6 +130,7 @@ Resolution {
       // References and the comparisons of this run (one "name value" per line).
       Print[{AnaDeltaAl}, Format "AnaDeltaAl %.10g", File StrCat[ResultDir,"/references.txt"]];
       Print[{AnaDeltaCu}, Format "AnaDeltaCu %.10g", File StrCat[ResultDir,"/references.txt"]];
+      Print[{AnaDeltaSoil}, Format "AnaDeltaSoil %.10g", File StrCat[ResultDir,"/references.txt"]];
       Print[{AnaL},       Format "AnaL %.10g", File StrCat[ResultDir,"/references.txt"]];
       Print[{NktL},       Format "NktL %.10g", File StrCat[ResultDir,"/references.txt"]];
       Print[{AnaBsingle}, Format "Bsingle %.10g", File StrCat[ResultDir,"/references.txt"]];

@@ -101,7 +101,7 @@ put('dCthick', pct(ev['thick']['C'], ev['gap']['C']), '{:.1f}')
 
 # ===================================================================== Section 3
 r = refs(os.path.join(M, 'base'))
-for k, fm in [('AnaDeltaAl', '{:.2f}'), ('AnaDeltaCu', '{:.2f}'), ('NktL', '{:.3f}'), ('Bsingle', '{:.1f}'),
+for k, fm in [('AnaDeltaAl', '{:.2f}'), ('AnaDeltaCu', '{:.2f}'), ('AnaDeltaSoil', '{:.0f}'), ('NktL', '{:.3f}'), ('Bsingle', '{:.1f}'),
               ('Javg', '{:.2f}'), ('Bmax', '{:.1f}'), ('Jmax', '{:.2f}'),
               ('IecYs', '{:.2f}'), ('IecYp', '{:.2f}'), ('IecYsp', '{:.2f}'), ('IecRcond', '{:.5f}'),
               ('IecRs', '{:.4f}'), ('IecX', '{:.4f}'), ('IecLam', '{:.2f}'), ('IecRac', '{:.4f}'),

@@ -616,9 +616,10 @@ changes visibly (\dTcNL\ K); $J$ and $B$ barely move because the currents are im
 \item Course files included unchanged: \texttt{Jacobian\_Integration.pro}, \texttt{electrodynamic\_formulation.pro},
 \texttt{magnetodynamic\_formulation.pro}
 \item One folder per section (\texttt{1-} to \texttt{5-}): \textbf{File $>$ Open} its \texttt{cable.pro}, \textbf{Run}
-\item \texttt{Source-Code/run\_all.sh}: every case (one line each, with its question)
-\item Every number and map is printed by the code: \texttt{results/<case>/}\,(\texttt{*.dat}, \texttt{references.txt}, \texttt{*.pos});
-the comparisons between two runs are listed in \texttt{README.md}
+\item Every case is a setting in the ONELAB menus (e.g.\ \textbf{Geometry $>$ Jacket gap}, \textbf{Magnetic $>$ Screen bonding},
+\textbf{Thermal $>$ Conductivity model}); all cable, material and excitation data are ONELAB parameters (\texttt{parameters.pro})
+\item Every number and map is printed by the code: the \textbf{Output} panel, and \texttt{*.dat}, \texttt{references.txt} (analytical and IEC 60287
+references) and \texttt{*.pos} in \textbf{Output $>$ Directory}; a change between two cases is the ratio of two printed values
 \end{itemize}
 \end{frame}
 

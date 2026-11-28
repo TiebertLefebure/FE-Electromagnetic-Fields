@@ -118,6 +118,9 @@ Return
 // ---- IEC 60287 references: thermal ladder [Q4.4, Q4.6], equations as printed in [KTH]
 // Lindstrom (2011): eqs. 4.1-4.2 (ladder, ampacity), 4.6-4.14 (y_s, y_p, lambda_1), 4.17 (T3);
 // T1 as in [UNCC] eq. 19; T4 for a touching trefoil [Karlstrand] eq. 2.
+// [UNCC] A.A. Nche, MSc thesis, UNC Charlotte (2017), https://ninercommons.charlotte.edu/record/695
+// [Karlstrand] Karlstrand, Hatlo, Hovde, Jicable'23 paper P3-5 (free first page),
+//   https://jicable.org/TOUT_JICABLE_FIRST_PAGE/2023/2023-P3-5_page1.pdf
 IecT1 = 1/kPoly/(2*Pi)*Log[rWireIn/rCon];          // conductor -> screen, K m/W
 IecT3 = 1/kPoly/(2*Pi)*Log[rJacket/rWireOut];      // screen -> jacket surface
 IecU = BurialDepth/rJacket;                         // u = 2 L / D_e

@@ -1,11 +1,18 @@
 // NKT 33 kV 1x185+50 mm2 XLPE-AL, three single cores buried in soil. SI units, T in deg C.
 // ALL cable, material and excitation data are ONELAB parameters (left panel in Gmsh).
-// Basis tags: [NKT] datasheet pp.19-20, 185 mm2 column; [COURSE] assignment App. A-C;
-// [NBS] NBS Handbooks 100 (copper) and 109 (aluminium); [LEE] Lee et al., Energies 16, 167
-// (2023), Table 3; [SUCUROVIC] Sucurovic et al., IEEE Access 14 (2026), Table 1; [ENESCU]
-// Enescu et al., Energies 13, 5319 (2020), Table 2; [DERIVED] computed from NKT data;
-// [ASSUMPTION] our choice, defended in the reports. All sources are free to open: full
-// references with links in Section 1 of the reports.
+// Basis tags: [DERIVED] computed from NKT data; [ASSUMPTION] our choice, defended in the slides
+// (appendix, per question). Sources cited in the code (all free to open):
+//  [NKT]        NKT 33 kV single core cable XLPE-AL datasheet, pp. 19-20, 185 mm2 column
+//  [COURSE]     H9x34A cable assignment 2026-27, Appendices A-C
+//  [NBS]        NBS Handbook 100 (copper, pp. 2-3) and 109 (aluminium, Table 1),
+//               https://nvlpubs.nist.gov/nistpubs/Legacy/hb/nbshandbook100.pdf and ...109.pdf
+//  [LEE]        Lee et al., Energies 16, 167 (2023), Table 3, doi:10.3390/en16010167
+//  [SUCUROVIC]  Sucurovic et al., IEEE Access 14 (2026), Table 1, doi:10.1109/ACCESS.2026.3678088
+//  [ENESCU]     Enescu et al., Energies 13, 5319 (2020), Table 2, doi:10.3390/en13205319
+//  [OES]        APSR Oman, OES 2 Cables and Accessories, 4th ed. (2024), S4.1, pp. 20-21
+//  [COMSOL]     COMSOL Application Gallery, "Submarine Cable 1 - Introduction" (v6.4), p. 28
+//  [LIENHARD]   Lienhard & Lienhard, A Heat Transfer Textbook, 6th ed. (2024), https://ahtt.mit.edu/
+//  [VSSUT], [Bean]: Section 2 file; [KTH], [UNCC], [Karlstrand]: Section 3 and 4 files.
 // Search a question tag (Q1.4, Q4.2, ...) to find where a value is used.
 DefineConstant[
   // ---- Excitation [Q1.4] ---------------------------------------------------------
@@ -74,6 +81,13 @@ DefineConstant[
   // [OES] insulation-screen resistivity limit 500 Ohm m; only used for the drop across the
   // semicons (Q2.2), which are ideal electrodes in the electric model.
   sigmaSemi = {2e-3, Name "Materials/11 Semicon conductivity", Units "S/m"},
+  // [COURSE App. C, COMSOL] PE jacket and soil. Not inside any solved domain: the electric model
+  // stops at the grounded screens and the magnetic model sets sigma = 0 outside the metals
+  // (justified by the printed soil skin depth, Q1.2, Q3.1).
+  epsPE     = {2.25,  Name "Materials/13 PE relative permittivity"},
+  sigmaPE   = {1e-18, Name "Materials/14 PE conductivity", Units "S/m"},
+  epsSoil   = {10,    Name "Materials/15 Soil relative permittivity"},
+  sigmaSoil = {1e-2,  Name "Materials/16 Soil conductivity", Units "S/m"},
 
   // ---- Thermal data [Q1.1, Q1.2, Q4.2] -------------------------------------------------
   T_amb = {15, Name "Thermal/01 Ambient (air and deep soil) temperature [deg C]"}, // [NKT]
