@@ -47,7 +47,7 @@ G="$SRC/1-Cable-selection-and-model-setup/meshes"
 mesh "$G/gap.msh"      mesh_domain.png   1    0 0 1
 mesh "$G/gap.msh"      mesh_gap.png      8000 -0.010875 9.006279 1
 mesh "$G/touching.msh" mesh_touching.png 8000 -0.01075  9.006207 1
-# Slides: the same whole-domain mesh as dark edges on white (filled faces hide the coarse elements).
+# Slides and Section 4 report: the same whole-domain mesh as dark edges on white (filled faces hide the coarse elements).
 cat > "$OUT/.print.geo" <<GEO
 General.GraphicsWidth = 1000; General.GraphicsHeight = 800; Print.Width = 1000; Print.Height = 800;
 General.SmallAxes = 0; General.Color.Background = White;
