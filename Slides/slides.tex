@@ -84,19 +84,19 @@ electric, magnetic and thermal models, and every number on these slides is print
 \begin{frame}{Cable system and modelling choices \q{Q1.1--Q1.4}}
 \begin{columns}[T]
 \column{0.4\textwidth}\centering
-\begin{tikzpicture}[scale=0.1]
+\begin{tikzpicture}[scale=0.085]
 \fill[gray!20] (0,0) circle (21.5); \fill[white] (0,0) circle (19.2);
 \fill[orange!70] (0,0) circle (17.85); \fill[white] (0,0) circle (17.4);
 \fill[black!70] (0,0) circle (16.2); \fill[green!35!teal!40] (0,0) circle (15.8);
 \fill[black!70] (0,0) circle (7.8); \fill[gray!55] (0,0) circle (7.4);
 \draw[gray] (0,0) circle (21.5);
 % leader line from each label to a dot in the MIDDLE of its layer (radius r, angle a; no crossings)
-\foreach \r/\a/\t/\y in {3.7/30/{Al solid, $r$ 7.4}/15, 7.6/20/semicon 0.4$^*$/9, 11.8/0/XLPE 8.0/3,
-   16.0/-12/semicon 0.4$^*$/-3, 17.625/-25/{Cu ring 50 mm$^2$$^*$}/-9, 20.35/-40/{PE, $\varnothing$43}/-15}
-  {\draw[thin,black!75] (24,\y) node[right,font=\tiny,black]{\t} -- ({\r*cos(\a)},{\r*sin(\a)});
+\foreach \r/\a/\t/\y in {3.7/30/{Al, $r$ 7.4}/15, 7.6/20/semicon 0.4$^*$/9, 11.8/0/XLPE 8.0/3,
+   16.0/-12/semicon 0.4$^*$/-3, 17.625/-25/{Cu 50 mm$^2$$^*$}/-9, 20.35/-40/{PE, $\varnothing$43}/-15}
+  {\draw[thin,black!75] (24,\y) node[right,font=\scriptsize,black]{\t} -- ({\r*cos(\a)},{\r*sin(\a)});
    \fill[black] ({\r*cos(\a)},{\r*sin(\a)}) circle (0.45);}
 \end{tikzpicture}\\
-{\tiny radii in mm, to scale; $^*$ assumed}
+{\scriptsize radii in mm, to scale; $^*$ assumed}
 \column{0.6\textwidth}\footnotesize
 \begin{tabular}{@{}ll@{}}\toprule
 Rating (NKT) & 33 kV, 350 A, conductor at 90\,$^\circ$C\\
@@ -189,7 +189,7 @@ below NKT's maximum (\dCnkt\,\%), which is consistent. It is independent of freq
 \begin{frame}{Air void and thicker insulation \q{Q2.5, Q2.8}}
 \begin{columns}[T]
 \column{0.34\textwidth}\centering
-\map{\linewidth}{e_field_defect_zoom}\\{\scriptsize air void, radius 0.25 mm, centre at $r=8.8$ mm}
+\map{\linewidth}{e_field_defect_zoom}\\{\scriptsize air void: radius 0.25 mm at $r=8.8$ mm}
 \column{0.66\textwidth}
 \plot{\linewidth}{3.9cm}{radial_defect}\\[-3pt]\small
 \begin{itemize}\small
@@ -306,7 +306,7 @@ conductor, which matches NKT's equal 350 A for both bondings.
 \item One mesh: the magnetic box is part of the soil domain, no interpolation
 \end{itemize}
 \column{0.5\textwidth}\centering
-\includegraphics[width=\linewidth,trim=0 100 0 100,clip]{figures/mesh_domain.png}\\
+\includegraphics[width=\linewidth,trim=280 438 280 438,clip]{figures/mesh_domain.png}\\
 {\scriptsize thermal mesh, 40 m $\times$ 20 m: fine near the cables (dark spot at the top), coarse far away}
 \end{columns}
 \note{\textbf{[1:05 \,|\, clock 8:05]}\par\smallskip 
@@ -428,7 +428,7 @@ flat +70 mm, both ends & \Psflatsev & \Lflatsev & \Tcflatsev\\
 flat +70 mm, single point & \Psflatsevsp & \Lflatsevsp & \Tcflatsevsp\\\bottomrule
 \end{tabular}\\[4pt]
 \begin{itemize}\small
-\item Spacing cools, but with both ends bonded the screen losses grow from \Pstrefoil\ to \Psflatsev\ kW/km and cancel the gain
+\item Spacing cools; with both ends bonded, screen losses rise from \Pstrefoil\ to \Psflatsev\ kW/km and eat most of the gain
 \item Single-point bonding removes them: flat +70 mm carries \Ampflatsevsp\ A
 \item All six FE ampacities within \dNktMin\ to \dNktMax\,\% of NKT
 \end{itemize}
