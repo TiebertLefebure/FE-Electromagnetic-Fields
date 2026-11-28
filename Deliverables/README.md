@@ -1,13 +1,14 @@
 # Deliverables: field maps and values (assignment Section 6)
 
 One picture per item of the assignment's list, in one folder per analysis. NKT 33 kV
-1×185/50 mm² XLPE-AL, three cables in touching trefoil (0.5 mm gap), buried 1 m, 350 A, 50 Hz,
-screens bonded at both ends. Field quantities are peak amplitudes; voltages and currents RMS.
+1×185/50 mm² XLPE-AL, three cables in trefoil (datasheet: touching; model: 0.5 mm soil gap), buried
+1 m, 350 A, 50 Hz, screens bonded at both ends. Field quantities are peak amplitudes; voltages and
+currents RMS.
 
-Generated, not drawn by hand: every map and value is printed by the code in `Source-Code` (run all
-cases with `./Source-Code/run_all.sh`; outputs in `Source-Code/<section folder>/results/<case>/`). The case
-names below are the lines of `Source-Code/run_all.sh`; `Source-Code/README.md` says which output file
-holds each value.
+Generated, not drawn by hand: every map and value is printed by the `.geo`/`.pro` files in
+`Source-Code`, in `Source-Code/<section folder>/results/<case>/`. The case names below are those of the
+case table in `Source-Code/README.md`, which gives the exact command of each case and the output
+file of each value.
 
 ## 1_Electrodynamic_analysis (Section 2, `2-Electrodynamic-analysis/cable.pro`)
 
