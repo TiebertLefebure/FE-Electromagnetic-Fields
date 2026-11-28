@@ -48,9 +48,10 @@ specification: 8 kV/mm RMS at the conductor screen and 4 kV/mm RMS at the insula
 \AnaEirms\ kV/mm and \AnaEorms\ kV/mm RMS at these two screens, 43\,\% of each limit, so it is well within them.}
 \newcommand{\AnsTwoFive}{%
 We add an air-filled void (a gas cavity) of radius 0.25 mm with \(\varepsilon_r=1\), centred at
-\(r=8.8\) mm so that its edge is 0.75 mm from the conductor screen, where the stress is highest. In a 2D cross-section the void is an infinitely long channel
-along the cable. Relative to \(E_0=\AnaEzero\) kV/mm, the peak field of the healthy cable at \(r=8.8\) mm, its field
-enhancement (\(\AnaVoidFactor\,E_0\)) is larger than that of a real spherical void (\(\AnaSphereFactor\,E_0\)), so
+\(r=8.8\) mm so that its edge is 0.75 mm from the conductor screen, where the stress is highest. A real void is a small, roughly spherical bubble,
+but a void drawn in a 2D cross-section is, in 3D, an infinitely long channel along the cable. Relative to
+\(E_0=\AnaEzero\) kV/mm, the peak field of the healthy cable at \(r=8.8\) mm, this channel's field enhancement
+(\(\AnaVoidFactor\,E_0\)) is larger than that of a sphere (\(\AnaSphereFactor\,E_0\)), so
 the 2D result is conservative. Averaged over the void, the field rises to \Vmeandefectfine\ kV/mm
 (\(\VoidRatio E_0\)), while the field in the surrounding XLPE stays close to the healthy one. The cable does not
 withstand this defect in the long run: the void field exceeds the breakdown strength of air (about \AnaEb\ kV/mm),
