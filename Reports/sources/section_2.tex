@@ -112,11 +112,12 @@ This checks the stress design only; it does not establish lifetime.
 
 \begin{center}\small
 \begin{tabular}{@{}lr@{}}\toprule
-Quantity (peak) & Value\\\midrule
+Quantity (peak, default mesh) & Value\\\midrule
 Uniform-field estimate in the void, \(\AnaVoidFactor\,E_0\) [kV/mm] & \AnaEvoid\\
-FE mean field over the void area, fine mesh [kV/mm] & \Vmeandefectfine\ (\(\VoidRatio E_0\))\\
-FE maximum element field, default / fine mesh [kV/mm] & \Edefect\ / \Edefectfine\\
-Phase-A capacitance with void, fine mesh [\(\mu\)F/km] & \Cqdefectfine\ (healthy \Cqgap)\\\bottomrule
+FE mean field over the void area [kV/mm] & \Vmeandefect\ (\(\VoidRatio E_0\))\\
+FE maximum element field [kV/mm] & \Edefect\\
+Phase-A capacitance with void [\(\mu\)F/km] & \Cqdefect\ (healthy \Cqgap)\\
+Fine-mesh check: mean / maximum field in the void [kV/mm] & \Vmeandefectfine\ / \Edefectfine\\\bottomrule
 \end{tabular}
 \end{center}
 \begin{center}\def\figw{0.9\linewidth}\def\figh{5cm}
@@ -131,7 +132,7 @@ On the radial line the XLPE field \emph{drops} at the void poles (normal \(D\) c
 
 \textbf{Breakdown of the void.} For air at 1 bar across the 0.5 mm void, \(E_b\approx\)\,\AnaEb\ kV/mm is the
 Schumann fit [VSSUT]; Paschen's law gives \AnaEbPaschen\ [Bean]. The void field reaches
-\Vmeandefectfine--\Edefectfine\ kV/mm, and the inception voltage \(U_0E_b/E_{\rm void}\approx\)\,\PdInception\ kV RMS
+\Vmeandefect--\Edefect\ kV/mm, and the inception voltage \(U_0E_b/E_{\rm void}\approx\)\,\PdInception\ kV RMS
 is below \(U_0=19\) kV. The discharges erode the cavity wall and grow electrical trees; a routine
 partial-discharge test would reject this cable.
 

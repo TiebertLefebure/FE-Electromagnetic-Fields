@@ -78,7 +78,7 @@ put('dCana', abs(r['dCana']), '{:.4f}'); put('dEgap', r['dEana'], '{:+.2f}')
 put('dEfine', refs(os.path.join(E, 'fine'))['dEana'], '{:+.2f}')
 rt = refs(os.path.join(E, 'thick'))                          # Q2.8: references of the 9 mm run
 put('AnaEithick', rt['AnaEi'], '{:.3f}'); put('AnaCthick', rt['AnaC'], '{:.6f}')
-rd = refs(os.path.join(E, 'defect-fine'))
+rd = refs(os.path.join(E, 'defect'))                         # Q2.5 on the default mesh; defect-fine is the check
 put('VoidRatio', rd['VoidRatio'], '{:.2f}'); put('PdInception', rd['PdInception'], '{:.0f}')
 electric = {'gap': 'gap', 'touching': 'touching', 'coarse': 'gapcoarse', 'fine': 'gapfine',
             'thick': 'thick', 'defect': 'defect', 'defect-fine': 'defectfine',
@@ -210,7 +210,7 @@ csv('convergence.csv', 'h,dofs,Emax,C',
     [(h_, ev[k]['D'], ev[k]['E'], ev[k]['C']) for h_, k in [(0.5, 'gapcoarse'), (0.25, 'gap'), (0.125, 'gapfine')]])
 csv('mag_convergence.csv', 'mf,dofs,Rac,Rc,L,Ps',
     [(mf, mv[k]['D'], mv[k]['Rac'], mv[k]['Rc'], mv[k]['L'], mv[k]['Ps']) for mf, k in [(2, 'coarse'), (1, 'base'), (0.5, 'fine')]])
-for case, name in [('gap', 'radial_healthy'), ('defect-fine', 'radial_defect'), ('thick', 'radial_thick')]:
+for case, name in [('gap', 'radial_healthy'), ('defect', 'radial_defect'), ('thick', 'radial_thick')]:
     cut = [l_.split() for l_ in open(os.path.join(E, case, 'radial_field_A.txt'))]
     csv(name + '.csv', 'r,E', [(f'{float(x[0]) * 1e3:.4f}', f'{float(x[3]) / 1e6:.5f}') for i, x in enumerate(cut)
                                if i % 4 == 0 or 'defect' in case and 0.0085 < float(x[0]) < 0.0091])

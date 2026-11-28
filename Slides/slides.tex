@@ -322,17 +322,17 @@ eddy losses, and the gap. All of these are inside the assumption uncertainty: $h
 \plot{\linewidth}{3.3cm}{radial_defect}\\[-3pt]\small
 \begin{itemize}\small
 \item Healthy: \AnaEirms\ / \AnaEorms\ kV/mm RMS at the conductor / insulation screen, limits 8 / 4 (Eskom): \alert{43\,\% of the limit}
-\item Field in the void: \alert{\Vmeandefectfine--\Edefectfine\ kV/mm}, $\VoidRatio\times$ the healthy field (theory \AnaVoidFactor$\times$)
+\item Field in the void: \alert{\Vmeandefect--\Edefect\ kV/mm}, $\VoidRatio\times$ the healthy field (theory \AnaVoidFactor$\times$)
 \item Above air breakdown (\AnaEb--\AnaEbPaschen\ kV/mm): \alert{partial discharges at rated voltage}, so \alert{not withstood}
 \end{itemize}
 \end{columns}
 \src{2D void = infinitely long channel; a real spherical void gives \AnaSphereFactor$\times$ instead of \AnaVoidFactor$\times$, so 2D is conservative. Air breakdown: VSSUT HV notes; Bean et al.\ 2020.}
 \note{\textbf{[1:10 \,|\, clock 8:20]}\par\smallskip 
 \begin{itemize}
-\item Healthy: FE \Egapfine\ kV/mm peak at the conductor screen (analytical \AnaEi), \AnaEirms\ kV/mm RMS, against a limit of 8. The healthy cable uses 43\,\% of the admissible stress.
+\item Healthy: FE \Egap\ kV/mm peak at the conductor screen (analytical \AnaEi), \AnaEirms\ kV/mm RMS, against a limit of 8. The healthy cable uses 43\,\% of the admissible stress.
 \item Defect: a 0.5 mm air void centred at $r=8.8$ mm, its edge 0.75 mm from the conductor screen, where the stress is highest.
 In 2D this is an infinite channel along the cable. Relative to $E_0=$\,\AnaEzero\ kV/mm, the healthy peak field at $r=8.8$ mm, a sphere would see $\AnaSphereFactor\,E_0$ instead of $\AnaVoidFactor\,E_0$, so our 2D estimate is conservative.
-\item The field in the void is \Vmeandefectfine\ kV/mm ($\VoidRatio E_0$). Air breaks down at about
+\item The field in the void is \Vmeandefect\ kV/mm ($\VoidRatio E_0$). Air breaks down at about
 \AnaEb\ kV/mm across 0.5 mm, so partial discharges start at rated voltage (inception $\approx$\PdInception\ kV, below 19 kV).
 The bulk XLPE survives, but repeated discharges erode the cavity and grow trees: \textbf{not withstood}.
 \end{itemize}
@@ -514,8 +514,8 @@ Limits: 2D (no lay, no cable ends), constant soil without drying, steady state.}
 \scriptsize
 \begin{tabularx}{\linewidth}{@{}lrrY@{}}\toprule
 Quantity & FE (linear) & FE ($\sigma(T)$) & Reference$^*$\\\midrule
-Max.\ field, conductor screen (kV/mm pk, fine mesh) & \Egapfine & -- & \AnaEi\ (analytical)\\
-Max.\ field with defect (kV/mm pk, void, fine mesh) & \Edefectfine & -- & \AnaEvoid\ (analytical, $\AnaVoidFactor\,E_0$)\\
+Max.\ field, conductor screen (kV/mm pk) & \Egap & -- & \AnaEi\ (analytical)\\
+Max.\ field with defect (kV/mm pk, void) & \Edefect & -- & \AnaEvoid\ (analytical, $\AnaVoidFactor\,E_0$)\\
 Capacitance ($\mu$F/km) & \Cgap & -- & \AnaC\ (analytical); $\le$0.22 (NKT)\\
 DC resistance ($\Omega$/km) & \Racfdc & -- & 0.164 (NKT max., 20\,$^\circ$C)\\
 AC resistance ($\Omega$/km) & \Raclin & \Racnl & \IecRac\ at 20\,$^\circ$C; \IecRacHot\ at \IecTheta\,$^\circ$C (IEC)\\
@@ -591,7 +591,7 @@ Air (void, Q2.5) & 1 & $10^{-15}$ & -- & assumption (dry air)\\\bottomrule
   \map{\linewidth}{e_jdisp_defect_zoom}\\{\scriptsize $|\hat J_d|$ [A/m$^2$], void (zoom)}
 \column{0.34\textwidth}
 \footnotesize Peak amplitudes. The 0.5 mm void sits in the top cable, too small to see at this scale; the third column zooms in on it. The field and the displacement current $\omega\varepsilon|\hat E|$ are highest at the conductor
-screens and fall like $1/r$. In the void ($\varepsilon_r=1$) the field rises to \Vmeandefectfine--\Edefectfine\ kV/mm, but the
+screens and fall like $1/r$. In the void ($\varepsilon_r=1$) the field rises to \Vmeandefect--\Edefect\ kV/mm, but the
 displacement current density drops to about $\AnaVoidFactor/2.5\approx\AnaJdVoidFactor$ of its XLPE value, because $\varepsilon$ is 2.5 times lower.
 \end{columns}
 \end{frame}
