@@ -1,7 +1,9 @@
 # Reports
 
 One PDF per section. Each answer starts with the original question (shaded box) and ends with a
-code guide: the files to read, how to run the case, and the output to check.
+code guide: the files to read, how to run the case, and the output to check. The files are those
+handed in, in `FE_Code_Slides_Group14/Code_Group14` (paths relative to it); a case runs from the ONELAB
+menus in Gmsh or with the exact commands in its `README.md`.
 
 - [Section 1: cable selection and model setup](Section_1_Cable_Selection_and_Model_Setup.pdf)
 - [Section 2: electrodynamic analysis](Section_2_Electrodynamic_Analysis.pdf)

@@ -7,7 +7,7 @@
 \begin{document}
 All results: three phases at 350 A RMS, 50 Hz, conductivities at 20\,\(^\circ\)C, 0.5 mm gap, default
 mesh, massive aluminium, screens bonded at both ends, resolution \texttt{Magnetodynamics\_cable} of \mfile. Peak phasors
-inside GetDP; currents reported RMS, losses time-averaged. Every case is one line of \runall.
+inside GetDP; currents reported RMS, losses time-averaged. Every case is a ONELAB setting in Gmsh or one GetDP command in \readme.
 
 \section*{Q3.1 Domain, equations, boundary conditions, sources}
 \assignmentquestion{\QuestionThreeOne}
@@ -65,7 +65,8 @@ The skin + proximity increase over the FE DC value compares with
 (The stranded \(R\) is 0.02\,\% below 0.164 because the 12-arc polygon has 0.02\,\% less area.)
 
 \codeguide{\mfile: \texttt{Flag\_Conductor}, \texttt{DomainS0\_Mag}, \texttt{js0}.}
-{Gmsh: \textbf{Magnetic > Conductor model}; \runall: \texttt{stranded}, \texttt{stranded-f500}, \texttt{f500}.}
+{Gmsh: \textbf{Magnetic > Conductor model} = Stranded (also with \textbf{Cable > Frequency} = 500), \textbf{Run}.
+\runall: cases \texttt{stranded}, \texttt{stranded-f500}, \texttt{f500}.}
 {\texttt{R\_conductors\_ohm\_km.dat}, \texttt{losses\_*.dat}, \texttt{L\_mH\_km.dat}.}
 
 \section*{Q3.3 Bonding with global quantities}
@@ -95,7 +96,7 @@ fictitious conductor at the truncation boundary: neither an open end nor a defin
 represented. With a global \((U,I)\) per region the circuit is explicit.
 
 \codeguide{\mfile: \texttt{Flag\_Bonding}, \texttt{Voltage\_2D}, \texttt{Current\_2D}, \texttt{Hregion\_u\_Mag\_2D}.}
-{Gmsh: \textbf{Magnetic > Screen bonding}; \runall: \texttt{single}.}
+{Gmsh: \textbf{Magnetic > Screen bonding} = Single point, \textbf{Run}. \runall: case \texttt{single}.}
 {\texttt{currents\_A.dat}, \texttt{voltages\_V\_m.dat} (screens: last three pairs).}
 
 \section*{Q3.4 Simplifications}
@@ -117,7 +118,7 @@ The metals, the other cables and their spacing matter through proximity, mutual 
 induction.
 
 \codeguide{\setupfile{parameters.pro}: \texttt{JacketGap}, \texttt{rWireIn}. \mfile: \texttt{Insulation} group.}
-{\runall: \texttt{touching}.}{\texttt{L\_mH\_km.dat}, \texttt{R\_ac\_ohm\_km.dat}.}
+{Gmsh: \textbf{Geometry > Jacket gap} = 0, \textbf{Run}. \runall: case \texttt{touching}.}{\texttt{L\_mH\_km.dat}, \texttt{R\_ac\_ohm\_km.dat}.}
 
 \section*{Q3.5 Mesh quality and convergence}
 \assignmentquestion{\QuestionThreeFive}
@@ -140,7 +141,8 @@ Refining the screens means two or more element layers across the ring. The defau
 adequate for \(R\) and \(L\) at the 0.3\,\% level.
 
 \codeguide{\setupfile{parameters.pro}: \texttt{MeshFactor}, \texttt{OuterBox}.}
-{\runall: \texttt{coarse}, \texttt{base}, \texttt{fine}, \texttt{box06}.}{``Dofs'' in the GetDP log.}
+{Gmsh: \textbf{Mesh > Mesh factor} = 2, 1, 0.5; \textbf{Geometry > Electromagnetic half-box} = 0.6; \textbf{Run}.
+\runall: cases \texttt{coarse}, \texttt{base}, \texttt{fine}, \texttt{box06}.}{``Dofs'' in the GetDP log.}
 
 \section*{Q3.6 Magnetic flux density}
 \assignmentquestion{\QuestionThreeSix}
@@ -201,7 +203,7 @@ Terminal check \(\Re(-U_A/I_A)\) & \Zrbase & --\\\bottomrule
 \(R_{DC}=0.164\) is matched by the choice of \(\sigma_{\rm Al}\) (Section 1). At the operating temperature
 the resistance is \(\approx\)25\,\% higher (Section 4).
 
-\codeguide{\mfile: \texttt{R\_ohm\_km}, \texttt{Zterm\_ohm\_km}.}{\runall: \texttt{base}, \texttt{f0.01}.}
+\codeguide{\mfile: \texttt{R\_ohm\_km}, \texttt{Zterm\_ohm\_km}.}{Gmsh: \textbf{Run}, then \textbf{Cable > Frequency} = 0.01, \textbf{Run}. \runall: cases \texttt{base}, \texttt{f0.01}.}
 {\texttt{R\_conductors\_ohm\_km.dat}, \texttt{R\_ac\_ohm\_km.dat}, \texttt{Z\_terminal\_ohm\_km.dat}.}
 
 \section*{Q3.10 Inductance}
@@ -226,7 +228,8 @@ constant \(\mu\). The two-digit NKT \(X=0.12\) \(\Omega\)/km means 0.366--0.398 
 \(2\cdot10^{-7}\ln(s/(r_ce^{-1/4}))=\)\,\AnaLgap\ mH/km without screen currents, vs FE single point
 \Lsingle\ (\dLana\,\%).
 
-\codeguide{\mfile: \texttt{L\_mH\_km}, \texttt{Zterm\_ohm\_km}.}{\runall: \texttt{f0.01}, \texttt{f5}, \texttt{f500}, \texttt{touching}.}
+\codeguide{\mfile: \texttt{L\_mH\_km}, \texttt{Zterm\_ohm\_km}.}{Gmsh: \textbf{Cable > Frequency} = 0.01, 5, 500; \textbf{Geometry > Jacket gap} = 0; \textbf{Run}.
+\runall: cases \texttt{f0.01}, \texttt{f5}, \texttt{f500}, \texttt{touching}.}
 {\texttt{L\_mH\_km.dat}.}
 
 \section*{Q3.11 Loss reduction: single-point (or cross-) bonding}
@@ -239,7 +242,7 @@ Cross-bonding three equal minor sections achieves the same over long routes. The
 \CondShare\,\% of the losses, the gain is modest; NKT indeed rates the trefoil at 350 A for both
 bondings. Thermal effect: Section 5.
 
-\codeguide{\mfile: \texttt{Flag\_Bonding}.}{\runall: \texttt{single}.}{\texttt{losses\_screens.dat}, \texttt{voltages\_V\_m.dat}.}
+\codeguide{\mfile: \texttt{Flag\_Bonding}.}{Gmsh: \textbf{Magnetic > Screen bonding} = Single point, \textbf{Run}. \runall: case \texttt{single}.}{\texttt{losses\_screens.dat}, \texttt{voltages\_V\_m.dat}.}
 
 \subsection*{Sources}
 \small \textbf{[KTH]} L.~Lindstr\"om, \refurl{https://www.diva-portal.org/smash/get/diva2:511556/fulltext01.pdf}{\emph{Evaluating impact on ampacity according to IEC-60287 regarding thermally unfavourable placement of power cables}}, MSc thesis, KTH Stockholm (2011), eqs.~(4.6)--(4.9) (\(y_s,y_p\)) and (4.12)--(4.14) (\(\lambda_1'\), \(X\)).

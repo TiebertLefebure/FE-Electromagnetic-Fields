@@ -91,7 +91,8 @@ Average quality \(q\) & \MeshQavgTouch & \MeshQavgGap\\\bottomrule
 Sections 2 and 3 quantify the effect of the gap: \(E_{\max}\) \dEtouch\,\%, \(L\) \dLtouch\,\%.
 
 \codeguide{\setupfile{cable.geo}: EM box (group 120), thermal rectangle (98, 130, 132), \texttt{JacketGap}.}
-{\runall: meshes \texttt{gap}, \texttt{touching}.}{\setupfile{mesh_quality.geo}: triangle count and \(q\) (Gmsh's ICN
+{Gmsh: open \setupfile{cable.geo}, \textbf{Mesh > 2D} (\textbf{Geometry > Jacket gap} = 0 for touching).
+\runall: meshes \texttt{gap}, \texttt{touching}, then \setupfile{mesh_quality.geo} on each.}{\setupfile{mesh_quality.geo}: triangle count and \(q\) (Gmsh's ICN
 quality), in \texttt{results/mesh\_gap.txt}; XLPE triangles: \texttt{triangles\_XLPE\_A.dat} of Section 2.}
 
 \section*{Q1.3 Sheath bonding}

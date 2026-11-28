@@ -7,7 +7,8 @@
 \begin{document}
 All results: 33 kV, 50 Hz, trefoil with 0.5 mm gap, default mesh (\texttt{MeshFactor} 1),
 resolution \texttt{Electrodynamics\_cable} of \efile. Fields are peak phasors; RMS values are stated
-as such. Every case is one line of \runall; every number comes from \texttt{values.tex}.
+as such. Code: folder \texttt{FE\_Code\_Slides\_Group14/Code\_Group14}; every case is a ONELAB setting in Gmsh
+or one GetDP command in its \readme, and every number is printed by that run.
 
 \section*{Q2.1 Domain, equations and boundary conditions}
 \assignmentquestion{\QuestionTwoOne}
@@ -51,7 +52,7 @@ insulation field. Not modelled: screen roughness and eccentricity (the interface
 concentric and smooth, drawn as 12 arcs).
 
 \codeguide{\setupfile{parameters.pro}: \texttt{JacketGap}, \texttt{tSemiIn}, \texttt{tSemiOut}.}
-{\runall: cases \texttt{gap}, \texttt{touching} (Gmsh: \textbf{Geometry > Jacket gap} = 0).}
+{Gmsh: \textbf{Geometry > Jacket gap} = 0, \textbf{Run}. \runall: cases \texttt{gap}, \texttt{touching}.}
 {\texttt{max\_field\_kV\_mm.dat}, \texttt{capacitance\_uF\_km.dat}.}
 
 \section*{Q2.3 Mesh convergence}
@@ -74,7 +75,7 @@ integral, which converges much faster than a local field. Around the defect of Q
 refined to \(r_{\rm void}/8\).
 
 \codeguide{\setupfile{parameters.pro}: \texttt{MeshFactor}; \setupfile{cable.geo}: \texttt{Field[1]}.}
-{\runall: cases \texttt{coarse}, \texttt{gap}, \texttt{fine} (Gmsh: \textbf{Mesh > Mesh factor}).}
+{Gmsh: \textbf{Mesh > Mesh factor} = 2, 1, 0.5, \textbf{Run}. \runall: cases \texttt{coarse}, \texttt{gap}, \texttt{fine}.}
 {``Dofs'' in the GetDP log, \texttt{max\_field\_kV\_mm.dat}, \texttt{capacitance\_uF\_km.dat}.}
 
 \section*{Q2.4 Admissible field strength}
@@ -190,8 +191,8 @@ semicon-thickness assumption. The FE values at 5, 50, 500, 5000 Hz are \Cffive, 
 \begin{center}\def\figw{0.7\linewidth}\def\figh{4.6cm}
 \input{figures/style.tex}\input{figures/cap_freq.tex}
 \figcap{FE capacitance from 5 Hz to 5 kHz: constant and on the analytical value, below the NKT maximum.}\end{center}
-\codeguide{\efile: \texttt{C\_energy}, \texttt{C\_charge}.}{\runall: \texttt{f5}, \texttt{f500}, \texttt{f5000}
-(Gmsh: \textbf{Cable > Frequency}).}{\texttt{capacitance\_uF\_km.dat}, \texttt{capacitance\_charge\_uF\_km.dat}.}
+\codeguide{\efile: \texttt{C\_energy}, \texttt{C\_charge}.}{Gmsh: \textbf{Cable > Frequency} = 5, 500, 5000, \textbf{Run}.
+\runall: cases \texttt{f5}, \texttt{f500}, \texttt{f5000}.}{\texttt{capacitance\_uF\_km.dat}, \texttt{capacitance\_charge\_uF\_km.dat}.}
 
 \section*{Q2.8 Design improvement: thicker insulation}
 \assignmentquestion{\QuestionTwoEight}
@@ -210,8 +211,8 @@ In our equivalent geometry the filler
 and XLPE have the same thermal resistivity, so heat flow is unchanged; a real redesign that keeps
 the filler grows the cable by 2 mm and raises \(T_1\) by \dToneThick\,\% (\(\approx\)\dTthick\ K at 350 A).
 
-\codeguide{\setupfile{parameters.pro}: \texttt{tXLPE}.}{\runall: case \texttt{thick}
-(Gmsh: \textbf{Geometry > XLPE thickness} = 0.009).}{\texttt{max\_field\_kV\_mm.dat}, \texttt{radial\_field\_A.txt}.}
+\codeguide{\setupfile{parameters.pro}: \texttt{tXLPE}.}{Gmsh: \textbf{Geometry > XLPE thickness} = 0.009, \textbf{Run}.
+\runall: case \texttt{thick}.}{\texttt{max\_field\_kV\_mm.dat}, \texttt{radial\_field\_A.txt}.}
 
 \subsection*{Sources}
 \small

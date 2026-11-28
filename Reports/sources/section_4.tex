@@ -9,7 +9,7 @@ All results: 350 A RMS, 50 Hz, trefoil with 0.5 mm gap, massive aluminium, scree
 at both ends, default mesh, resolution \texttt{MagnetoThermal} of \tfile
 (which includes the magnetic model \mfile). ``Linear'' means
 \(\sigma\) at 20\,\(^\circ\)C (\texttt{Flag\_NL}~=~0); ``\(\sigma(T)\)'' is the coupled nonlinear
-model (default). Every case is one line of \runall.
+model (default). Every case is a ONELAB setting in Gmsh or one GetDP command in \readme.
 
 \section*{Q4.1 Equations and heat source}
 \assignmentquestion{\QuestionFourOne}
@@ -79,8 +79,9 @@ The fine-mesh change is under 1\,\% of the temperature rise. The remaining error
 the soil, where linear elements grow to metres, and from the screen losses (Section 3). The number of
 coupling iterations does not change. A domain that is too small is \emph{non-conservative}.
 
-\codeguide{\runall: cases \texttt{nl-coarse}, \texttt{nl-fine}, \texttt{nl-dom10}, \texttt{nl-dom40}.}
-{Gmsh: \textbf{Mesh factor}, \textbf{Thermal domain half-width/depth}.}{\texttt{Tmax\_conductor.dat}.}
+\codeguide{\setupfile{parameters.pro}: \texttt{MeshFactor}, \texttt{ThermalHalfWidth}, \texttt{ThermalDepth}.}
+{Gmsh: open \tfile, \textbf{Mesh > Mesh factor} = 2, 0.5; \textbf{Thermal > Thermal domain half-width} and \textbf{depth} = 10, 40; \textbf{Run}.
+\runall: cases \texttt{nl-coarse}, \texttt{nl-fine}, \texttt{nl-dom10}, \texttt{nl-dom40}.}{\texttt{Tmax\_conductor.dat}.}
 
 \section*{Q4.4 Temperature in the cable and hot spot}
 \assignmentquestion{\QuestionFourFour}
@@ -120,7 +121,8 @@ The isothermal surface is only slightly non-conservative because \(1/h=0.1\) m\(
 compared with the soil resistance between cable and surface.
 
 \codeguide{\tfile: \texttt{Flag\_SurfaceBC}, \texttt{hConv}.}
-{\textbf{Thermal > Ground surface condition}; \texttt{-setnumber hConv 5/20}.}
+{Gmsh: \textbf{Thermal > Ground surface condition} = Isothermal, or \textbf{Thermal > Surface heat transfer coefficient} = 5, 20; \textbf{Run}.
+\runall: cases \texttt{nl-iso}, \texttt{nl-h5}, \texttt{nl-h20}.}
 {\texttt{res/Tmax\_surface.dat}, \texttt{res/T\_surface\_profile.txt} (x, y, z, T).}
 
 \section*{Q4.6 Validation against IEC 60287 and the datasheet}
@@ -160,7 +162,8 @@ More on the differences: IEC uses Kennelly's image method with an empirical tref
 screen losses give \(\lambda_1\approx\Psnl/\Pcnl\); and the FE domain is finite.
 
 \codeguide{IEC values: computed and printed by \tfile\ (macro \texttt{IecAt}, the ladder loops).}
-{\runall: cases \texttt{nl}, \texttt{nl-iso}.}{\texttt{Tmax\_conductor.dat}, \texttt{references.txt}.}
+{Gmsh: \textbf{Run} (defaults), then \textbf{Thermal > Ground surface condition} = Isothermal, \textbf{Run}.
+\runall: cases \texttt{nl}, \texttt{nl-iso}.}{\texttt{Tmax\_conductor.dat}, \texttt{references.txt}.}
 
 \section*{Q4.7 Nonlinear coupling and convergence}
 \assignmentquestion{\QuestionFourSeven}
@@ -216,7 +219,8 @@ current distribution, which becomes slightly more uniform as \(\delta\propto1/\s
 {\small \(|\hat{\mathbf B}|\) linear / \(\sigma(T)\), then \(|\hat{\mathbf J}|\) linear / \(\sigma(T)\) (same colour scales).
 Temperature maps: Q4.4.}\end{center}
 
-\codeguide{\runall: cases \texttt{lin}, \texttt{nl}.}{\textbf{Thermal > Conductivity model}.}{All \texttt{.dat} outputs.}
+\codeguide{\tfile: \texttt{Flag\_NL}.}{Gmsh: \textbf{Thermal > Conductivity model} = Linear, \textbf{Run}; then the default \(\sigma(T)\), \textbf{Run}.
+\runall: cases \texttt{lin}, \texttt{nl}.}{All \texttt{.dat} outputs.}
 
 \section*{Q4.9 Is the linear model conservative?}
 \assignmentquestion{\QuestionFourNine}

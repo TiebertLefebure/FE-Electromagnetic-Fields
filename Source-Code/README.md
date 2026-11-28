@@ -199,6 +199,6 @@ All 12 meshes and 37 cases take about 25 minutes on a laptop.
 
 Codex (OpenAI) helped with the Section 1 geometry fixes and repository cleanup. Claude Code
 (Anthropic) helped write the defect geometry, the `cable.pro` files around the course
-formulation files, the printed references, the run scripts, the report text and the slides.
+formulation files, the printed references, the run commands in this README, the report text and the slides.
 All results were rerun locally with the versions above and checked against analytical formulas,
 IEC 60287 and the datasheet. We are responsible for all code and results.

@@ -76,7 +76,7 @@ Single-point bonding of the trefoil lowers its hot spot at no space cost.
 \codeguide{\setupfile{parameters.pro}: \texttt{Formation}, \texttt{JacketGap}.
 \setupfile{cable.geo}: centres and mesh box follow the formation. \afile: resolution \texttt{Ampacity}
 (the model of Sections 3 and 4 is included unchanged).}
-{\runall: section ``Section 5''; Gmsh: open \afile, \textbf{Geometry > Formation} = Flat,
-\textbf{Jacket gap} = 70, \textbf{Magnetic > Screen bonding}, \textbf{Run}.}
+{Gmsh: open \afile, \textbf{Geometry > Formation} = Trefoil / Flat, \textbf{Jacket gap} = 0.5 / 70 (flat),
+\textbf{Magnetic > Screen bonding}, \textbf{Run}. \runall: cases \texttt{trefoil}, \texttt{trefoil-sp}, \texttt{flat}, \texttt{flat-sp}, \texttt{flat70}, \texttt{flat70-sp}.}
 {\texttt{results/<case>/Tmax\_conductor.dat} (350 A); ampacity and deviation from NKT in \texttt{references.txt}.}
 \end{document}

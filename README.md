@@ -25,7 +25,9 @@ Reports/                study notes per section (PDFs), LaTeX sources, collect_v
                         printed values into LaTeX macros)
 ```
 
-The handed-in version is git tag `final`; upload the folder `FE_Code_Slides_Group14`. After any change
+The handed-in version is git tag `final`; upload the folder `FE_Code_Slides_Group14`. The reports, slides and
+speaker notes refer only to the code in `FE_Code_Slides_Group14/Code_Group14` (the code shown at the Q&A);
+`Source-Code/` is the working copy that `run_all.sh` runs. After any change
 to `Source-Code/` or the slides, refresh it (copies; from this folder) and commit before moving the tag:
 
 ```sh

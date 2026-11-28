@@ -34,13 +34,16 @@
 \newcommand{\answer}[1]{\par{\sffamily\bfseries\color{KULBlue}Answer.}\enspace #1\par\medskip}
 % A figure caption under a centred figure (no float numbering).
 \newcommand{\figcap}[1]{\par\nopagebreak[4]\vspace{2pt}{\small #1}}
-\newcommand{\file}[1]{\href{../Source-Code/#1}{\nolinkurl{#1}}}
+% Code links point into the handed-in folder FE_Code_Slides_Group14/Code_Group14 (paths shown relative to it).
+\newcommand{\file}[1]{\href{../FE_Code_Slides_Group14/Code_Group14/#1}{\nolinkurl{#1}}}
 \newcommand{\setupfile}[1]{\file{1-Cable-selection-and-model-setup/#1}}
 \newcommand{\efile}{\file{2-Electrodynamic-analysis/cable.pro}}
 \newcommand{\mfile}{\file{3-Magnetoquasistatic-analysis/cable.pro}}
 \newcommand{\tfile}{\file{4-Magnetothermal-analysis/cable.pro}}
 \newcommand{\afile}{\file{5-Cable-arrangement/cable.pro}}
-\newcommand{\runall}{\href{../Source-Code/run_all.sh}{\nolinkurl{run_all.sh}}}
+% README of the handed-in code: its "Exact commands" give one mesh and one GetDP command per named case.
+\newcommand{\readme}{\href{../FE_Code_Slides_Group14/Code_Group14/README.md}{\nolinkurl{README.md}}}
+\newcommand{\runall}{Terminal (\readme)}
 \newcommand{\codeguide}[3]{\par\smallskip
  {\sffamily\small\bfseries\color{accent}Code guide}\par\nobreak
  \begingroup\small\setlength{\tabcolsep}{0pt}
