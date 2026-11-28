@@ -316,7 +316,7 @@ eddy losses, and the gap. All of these are inside the assumption uncertainty: $h
 \begin{frame}{Electric stress: healthy and with an air void \q{Q2.4, Q2.5}}
 \begin{columns}[T]
 \column{0.26\textwidth}\centering
-\map{0.62\linewidth}{e_field}\\{\scriptsize $|\hat E|$ [V/m], healthy}\\[2pt]
+\map{0.62\linewidth}{e_field_cmp}\\{\scriptsize $|\hat E|$ [V/m], healthy}\\[2pt]
 \map{0.62\linewidth}{e_field_defect_zoom}\\{\scriptsize air void, $r=8.8$ mm}
 \column{0.74\textwidth}
 \plot{\linewidth}{3.3cm}{radial_defect}\\[-3pt]\small
@@ -583,8 +583,8 @@ Air (void, Q2.5) & 1 & $10^{-15}$ & -- & assumption (dry air)\\\bottomrule
 \qslide{Q2.6 Current densities and conservation}{\QuestionTwoSix}{\AnsTwoSix}{\plot{\linewidth}{4.8cm}{currents_radial}}
 \begin{frame}{Q2.5, Q2.6 Field maps with and without the void}
 \begin{columns}[T]
-\column{0.2\textwidth}\centering\map{\linewidth}{e_field}\\{\scriptsize $|\hat E|$ [V/m], healthy}\\[3pt]
-  \map{\linewidth}{e_jdisp}\\{\scriptsize $|\hat J_d|$ [A/m$^2$], healthy}
+\column{0.2\textwidth}\centering\map{\linewidth}{e_field_cmp}\\{\scriptsize $|\hat E|$ [V/m], healthy}\\[3pt]
+  \map{\linewidth}{e_jdisp_cmp}\\{\scriptsize $|\hat J_d|$ [A/m$^2$], healthy}
 \column{0.2\textwidth}\centering\map{\linewidth}{e_field_defect}\\{\scriptsize $|\hat E|$ [V/m], void}\\[3pt]
   \map{\linewidth}{e_jdisp_defect}\\{\scriptsize $|\hat J_d|$ [A/m$^2$], void}
 \column{0.2\textwidth}\centering\map{\linewidth}{e_field_defect_zoom}\\{\scriptsize $|\hat E|$ [V/m], void (zoom)}\\[3pt]

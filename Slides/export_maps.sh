@@ -51,11 +51,18 @@ A="$SRC/5-Cable-arrangement/results"
 # scales each map to the step it shows instead of to both.
 map "$E/gap/potential.pos"          e_potential.png 1 0 0 'View[0].Name = "Re(v) [V], phase A at 0 deg"; View[0].RangeType = 3;'
 map "$E/gap/field_norm.pos"         e_field.png     1 0 0 'View[0].RangeType = 3;'
-map "$E/defect/field_norm.pos"      e_field_defect.png 1 0 0 'View[0].RangeType = 3;'
-map "$E/defect/field_norm.pos"      e_field_defect_zoom.png 12 0.0088 0.018836 'View[0].RangeType = 3;'
 map "$E/gap/displacement_current.pos"    e_jdisp.png 1 0 0 'View[0].RangeType = 3;'
-map "$E/defect/displacement_current.pos" e_jdisp_defect.png 1 0 0 'View[0].RangeType = 3;'
-map "$E/defect/displacement_current.pos" e_jdisp_defect_zoom.png 12 0.0088 0.018836 'View[0].RangeType = 3;'
+# Healthy vs void, shown side by side: one colour scale per quantity, spanning the real part of
+# both results (|E| 2.415-6.285 MV/m, |J_d| 0.0166-0.0426 A/m2), so a colour means the same value
+# in every map. The *_cmp maps are the healthy ones on that scale; alone, they keep their own.
+ES='View[0].RangeType = 2; View[0].CustomMin = 2.41e6; View[0].CustomMax = 6.29e6;'
+JS='View[0].RangeType = 2; View[0].CustomMin = 0.0165; View[0].CustomMax = 0.0426;'
+map "$E/gap/field_norm.pos"         e_field_cmp.png 1 0 0 "$ES"
+map "$E/defect/field_norm.pos"      e_field_defect.png 1 0 0 "$ES"
+map "$E/defect/field_norm.pos"      e_field_defect_zoom.png 12 0.0088 0.018836 "$ES"
+map "$E/gap/displacement_current.pos"    e_jdisp_cmp.png 1 0 0 "$JS"
+map "$E/defect/displacement_current.pos" e_jdisp_defect.png 1 0 0 "$JS"
+map "$E/defect/displacement_current.pos" e_jdisp_defect_zoom.png 12 0.0088 0.018836 "$JS"
 # Magnetic maps (EM box +-0.3 m centred at 0): |B| zoomed on the trefoil, |J| in the metals.
 map "$B/base/b_norm.pos"     m_b.png  5 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 0.016; General.Color.Text = White;'
 map "$B/base/j_norm.pos"     m_j.png  1 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 3.2e6;'
@@ -63,10 +70,10 @@ map "$B/single/j_norm.pos"   m_j_single.png 1 0 0 'View[0].RangeType = 2; View[0
 map "$H/nl/b_norm.pos"       m_b_nl.png  5 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 0.016; General.Color.Text = White;'
 map "$H/nl/j_norm.pos"       m_j_nl.png  1 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 3.2e6;'
 # Thermal maps: T in the cables (EM box) and around them (whole domain, centre (0,-9) m);
-# linear and sigma(T) maps share one colour scale per pair.
+# linear and sigma(T) maps share one colour scale per pair, and flat +70 mm shares the trefoil's.
 map "$H/nl/T_cables.pos"     t_cables_nl.png  6 0 0 'View[0].RangeType = 2; View[0].CustomMin = 30; View[0].CustomMax = 95;'
 map "$H/lin/T_cables.pos"    t_cables_lin.png 6 0 0 'View[0].RangeType = 2; View[0].CustomMin = 30; View[0].CustomMax = 95;'
 map "$H/nl/T.pos"            t_soil_nl.png    8 0 8 'View[0].RangeType = 2; View[0].CustomMin = 15; View[0].CustomMax = 50; General.Color.Text = White;'
 map "$H/lin/T.pos"           t_soil_lin.png   8 0 8 'View[0].RangeType = 2; View[0].CustomMin = 15; View[0].CustomMax = 50; General.Color.Text = White;'
-map "$A/flat70/T_cables.pos" t_cables_flat70.png 2.2 0 0
+map "$A/flat70/T_cables.pos" t_cables_flat70.png 2.2 0 0 'View[0].RangeType = 2; View[0].CustomMin = 30; View[0].CustomMax = 95;'
 rm -f "$OUT/.print.geo"
