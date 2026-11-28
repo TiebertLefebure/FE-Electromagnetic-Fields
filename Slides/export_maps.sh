@@ -47,14 +47,15 @@ B="$SRC/3-Magnetoquasistatic-analysis/results"
 H="$SRC/4-Magnetothermal-analysis/results"
 A="$SRC/5-Cable-arrangement/results"
 # Electric maps: data box centred at (0, 6.28 mm); the void is at (8.8, 25.11) mm.
-# Complex result = two time steps (real, imaginary): RangeType 3 scales to the shown real part only.
+# GetDP writes complex results as two time steps (real, imaginary; zero for a norm): RangeType 3
+# scales each map to the step it shows instead of to both.
 map "$E/gap/potential.pos"          e_potential.png 1 0 0 'View[0].Name = "Re(v) [V], phase A at 0 deg"; View[0].RangeType = 3;'
-map "$E/gap/field_norm.pos"         e_field.png     1 0 0
-map "$E/defect/field_norm.pos"      e_field_defect.png 1 0 0
-map "$E/defect/field_norm.pos"      e_field_defect_zoom.png 12 0.0088 0.018836
-map "$E/gap/displacement_current.pos"    e_jdisp.png 1 0 0
-map "$E/defect/displacement_current.pos" e_jdisp_defect.png 1 0 0
-map "$E/defect/displacement_current.pos" e_jdisp_defect_zoom.png 12 0.0088 0.018836
+map "$E/gap/field_norm.pos"         e_field.png     1 0 0 'View[0].RangeType = 3;'
+map "$E/defect/field_norm.pos"      e_field_defect.png 1 0 0 'View[0].RangeType = 3;'
+map "$E/defect/field_norm.pos"      e_field_defect_zoom.png 12 0.0088 0.018836 'View[0].RangeType = 3;'
+map "$E/gap/displacement_current.pos"    e_jdisp.png 1 0 0 'View[0].RangeType = 3;'
+map "$E/defect/displacement_current.pos" e_jdisp_defect.png 1 0 0 'View[0].RangeType = 3;'
+map "$E/defect/displacement_current.pos" e_jdisp_defect_zoom.png 12 0.0088 0.018836 'View[0].RangeType = 3;'
 # Magnetic maps (EM box +-0.3 m centred at 0): |B| zoomed on the trefoil, |J| in the metals.
 map "$B/base/b_norm.pos"     m_b.png  5 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 0.016; General.Color.Text = White;'
 map "$B/base/j_norm.pos"     m_j.png  1 0 0 'View[0].RangeType = 2; View[0].CustomMin = 0; View[0].CustomMax = 3.2e6;'
