@@ -1,4 +1,5 @@
-% Final presentation: 15 main slides, results summary table, appendix (one slide per question).
+% Final presentation: 14 main slides in the four parts of the assessment (Section 7), conclusions,
+% results summary table, appendix (one slide per question).
 % Build: pdflatex slides.tex (twice); speaker notes: pdflatex speaker_notes.tex (twice). Numbers: ../Reports/sources/data/values.tex (collect_values.py);
 % plots: ../Reports/sources/figures/*.tex; field maps: figures/*.png (export_maps.sh).
 \documentclass[aspectratio=169,10pt]{beamer}
@@ -80,7 +81,11 @@ single cores in trefoil, buried one metre deep. We look at the electric stress i
 the magnetic losses, and the temperature that sets the 350 A rating. One geometry and one mesh serve the
 electric, magnetic and thermal models, and every number on these slides is printed by our GetDP files.}
 
-% ============================================================ 1. cable and choices
+% Main part in the four parts of the assessment (Section 7): modelling choices, verification and
+% validation, results, design and additional investigation. Each \section gives a divider slide.
+% ================================================================ 1. MODELLING CHOICES
+\section{1\quad Modelling choices}
+
 \begin{frame}{Cable system and modelling choices \q{Q1.1--Q1.4}}
 \begin{columns}[T]
 \column{0.4\textwidth}\centering
@@ -111,7 +116,8 @@ Excitation & $\hat V=26.94$ kV, $\hat I=495$ A, ABC, 50 Hz (peak)\\\bottomrule
 \item \alert{One mesh}: a 0.6 m box for the electromagnetic fields, inside a 40 m $\times$ 20 m soil domain for the heat
 \end{itemize}
 \end{columns}
-\note{\textbf{[0:55 \,|\, clock 1:10]}\par\smallskip 
+\note{\textbf{[0:55 \,|\, clock 1:15]}\par\smallskip 
+We present in the four parts of the assessment: modelling choices, verification and validation, results, and design with our additional investigation.
 \begin{itemize}
 \item The cable: solid Al of 14.8 mm, 8 mm XLPE, two 0.4 mm semicons (derived from NKT's 32.4 mm
 over insulation), a 50 mm$^2$ copper wire screen modelled as a ring of equal area, PE sheath of 43 mm.
@@ -124,96 +130,34 @@ $\rightarrow$ \MeshQminGap, effect on results below 1\,\%); $\sigma_{\rm Al}$ fi
 \end{itemize}}
 \end{frame}
 
-% ============================================================ 2. electric model
-\begin{frame}{Electrodynamics: model and healthy stress \q{Q2.1, Q2.2, Q2.4}}
-\begin{columns}[T]
-\column{0.55\textwidth}\small
+\begin{frame}{Electric model and its simplifications \q{Q2.1, Q2.2}}
+\small
 \[-\nabla\cdot\big((\sigma+j\omega\varepsilon)\nabla v\big)=0\ \text{ in the XLPE}\]
+\centering\wfig{electric_domain}{2.6cm}\par\raggedright
+\begin{columns}[T]
+\column{0.5\textwidth}
 \begin{itemize}\small
-\item Semicons as ideal electrodes: $v=\hat V_k$ on the inner one, $v=0$ on the outer one (error $\approx$\AnaDrop\ mV)
-\item The grounded screen shields everything beyond it, so we model only the three XLPE rings
-\item Course formulation, unchanged; the voltages are imposed as boundary values
+\item Semicons as ideal electrodes: $v=\hat V_k$ on the conductor screen, $v=0$ on the insulation screen (drop $\approx$\AnaDrop\ mV)
+\item The grounded screen shields everything beyond it: only the three XLPE rings (exact)
 \end{itemize}
-\begin{tabular}{@{}lrr@{}}\toprule
-$E_{\rm rms}$ [kV/mm] & conductor screen & insulation screen\\\midrule
-Analytical & \AnaEirms & \AnaEorms\\
-Limit (Eskom spec.) & 8 & 4\\\bottomrule
-\end{tabular}\\[2pt]
-The healthy insulation uses at most 43\,\% of the admissible field.
-\column{0.45\textwidth}\centering
-\map{0.95\linewidth}{e_field}\\{\scriptsize $|\hat E|$ [V/m]: peak \Egap\ kV/mm (analytical \AnaEi)}
+\column{0.5\textwidth}
+\begin{itemize}\small
+\item Course formulation, unchanged; voltages imposed as boundary values
+\item 0.5 mm gap instead of touching: $E_{\max}$ \dEtouch\,\%, $C$ below \dCtouch\,\%
+\item Kept: the semicon thickness (voltage on the Al instead: $C$ \dCbare\,\%)
+\end{itemize}
 \end{columns}
-\note{\textbf{[0:55 \,|\, clock 2:05]}\par\smallskip 
+\note{\textbf{[0:45 \,|\, clock 2:00]}\par\smallskip 
 \begin{itemize}
 \item We solve $-\nabla\cdot((\sigma+j\omega\varepsilon)\nabla v)=0$ only in the XLPE: the semicons are ideal
 equipotentials (only \AnaDrop\ mV across them), and the grounded screens shield everything outside.
 \item We use the course formulation unchanged; the screen voltages are Dirichlet conditions. Testing the
 weak form with $v/V$ gives the charging current and a second capacitance.
-\item Result: FE \Egapfine\ kV/mm peak at the conductor screen (analytical \AnaEi), \AnaEirms\ kV/mm RMS, against a limit of 8.
-The healthy cable uses 43\,\% of the admissible stress.
-\end{itemize}
-\emph{If asked about the limit:} NKT gives none; we use an Eskom specification for 44--132 kV cables. HV cables are designed for higher stress than MV cables, so it is an upper benchmark, not an acceptance criterion.}
-\end{frame}
-
-% ============================================================ 3. electric verification
-\begin{frame}{Electric verification: convergence, capacitance, conservation \q{Q2.3, Q2.6, Q2.7}}
-\begin{columns}[T]
-\column{0.56\textwidth}
-\plot{\linewidth}{4.2cm}{convergence}\\
-{\scriptsize Max.\ field approaches the analytical value; the error sits at the conductor screen, so refine there.}
-\column{0.44\textwidth}\small
-\begin{tabular}{@{}lr@{}}\toprule
-Capacitance per phase & [$\mu$F/km]\\\midrule
-Analytical $2\pi\varepsilon/\ln(r_o/r_i)$ & \AnaC\\
-FE, from energy and from charge & \Cgap\\
-NKT datasheet (maximum) & 0.22\\\bottomrule
-\end{tabular}\\[3pt]
-\begin{itemize}\small
-\item $C$ is the same from 5 to 5000 Hz
-\item XLPE: $|J_c/J_d|=\sigma/\omega\varepsilon=\AnaRatio$, displacement current dominates
-\item Current conserved: charging current \IchFE\ A/km $=\omega CV$
-\end{itemize}
-\end{columns}
-\note{\textbf{[0:50 \,|\, clock 2:55]}\par\smallskip 
-\begin{itemize}
-\item $E_{\max}$ converges from below: with linear elements the field is constant per triangle, so the
-first element reports the field slightly inside the $1/r$ peak. Fine mesh: \dEfine\,\% from analytical.
-Refinement is needed at the conductor screen.
-\item The capacitance matches the analytical value to \dCana\,\%, from energy and from charge, and it lies
-below NKT's maximum (\dCnkt\,\%), which is consistent. It is independent of frequency, because $\sigma+j\omega\varepsilon$ cancels.
-\item Current is conserved: the weak form is one current balance per node. The charging current is \IchFE\ A/km, equal to $\omega CV$.
+\item Each simplification is quantified: the gap changes the field by \dEtouch\,\%; the one detail we must keep is the semicon thickness, worth \dCbare\,\% on $C$.
 \end{itemize}}
 \end{frame}
 
-% ============================================================ 4. defect and design
-\begin{frame}{Air void and thicker insulation \q{Q2.5, Q2.8}}
-\begin{columns}[T]
-\column{0.34\textwidth}\centering
-\map{\linewidth}{e_field_defect_zoom}\\{\scriptsize air void: radius 0.25 mm at $r=8.8$ mm}
-\column{0.66\textwidth}
-\plot{\linewidth}{3.9cm}{radial_defect}\\[-3pt]\small
-\begin{itemize}\small
-\item Field in the void: \alert{\Vmeandefectfine--\Edefectfine\ kV/mm}, $\VoidRatio\times$ the healthy field (theory \AnaVoidFactor$\times$)
-\item Above air breakdown (\AnaEb--\AnaEbPaschen\ kV/mm): \alert{partial discharges at rated voltage}, so \alert{not withstood}
-\item \textbf{Design:} 9 mm XLPE (same outer diameter): max.\ field \Egap\ $\rightarrow$ \Ethick\ kV/mm (\dEthick\,\%, default mesh)
-\end{itemize}
-\end{columns}
-\src{2D void = infinitely long channel; a real spherical void gives \AnaSphereFactor$\times$ instead of \AnaVoidFactor$\times$, so 2D is conservative. Air breakdown: VSSUT HV notes; Bean et al.\ 2020.}
-\note{\textbf{[1:10 \,|\, clock 4:05]}\par\smallskip 
-\begin{itemize}
-\item Defect: a 0.5 mm air void centred at $r=8.8$ mm, its edge 0.75 mm from the conductor screen, where the stress is highest.
-\item In 2D this is an infinite channel along the cable. A sphere would see $\AnaSphereFactor\,E_0$ instead of
-$\AnaVoidFactor\,E_0$, so our 2D estimate is conservative.
-\item The field in the void is \Vmeandefectfine\ kV/mm ($\VoidRatio E_0$, theory \AnaVoidFactor). Air breaks down at about
-\AnaEb\ kV/mm across 0.5 mm, so partial discharges start at rated voltage (inception $\approx$\PdInception\ kV, below 19 kV).
-The bulk XLPE survives, but repeated discharges erode the cavity and grow trees: \textbf{not withstood}.
-\item Design: 9 mm XLPE lowers the peak stress by \dEthick\,\%.
-\end{itemize}
-\emph{Possible handover to speaker 2.}}
-\end{frame}
-
-% ============================================================ 5. magnetic model
-\begin{frame}{Magnetoquasistatics: model, conductors, bonding \q{Q3.1--Q3.4}}
+\begin{frame}{Magnetoquasistatic model: conductors and bonding \q{Q3.1--Q3.4}}
 \small
 \[\nabla\times(\nu\nabla\times\mathbf a)=\mathbf j,\qquad \mathbf j=-\sigma(j\omega\mathbf a+\mathbf u_r)\ \text{(massive)},\qquad \textstyle\int_{\Omega_m}j_z\,dA=I_m\]
 \begin{columns}[T]
@@ -231,7 +175,7 @@ The bulk XLPE survives, but repeated discharges erode the cavity and grow trees:
 \item Soil, semicons, fillers: $\sigma=0$ ($\delta\gg$ their size)
 \end{itemize}
 \end{columns}
-\note{\textbf{[1:05 \,|\, clock 5:10]}\par\smallskip 
+\note{\textbf{[1:00 \,|\, clock 3:00]}\par\smallskip 
 \begin{itemize}
 \item a--v formulation. The screens do not shield $\mathbf B$, so we need all cables and the soil:
 $a=0$ at 0.3 m. The currents are balanced, so the field decays like $1/r^2$; doubling the box changes $L$ by \dLbox\,\%.
@@ -242,66 +186,14 @@ Using only $j=-j\omega\sigma a$ would hide an implicit $U=0$ relative to the arb
 \end{itemize}}
 \end{frame}
 
-% ============================================================ 6. magnetic results
-\begin{frame}{Magnetic results vs IEC 60287 and datasheet \q{Q3.6--Q3.10}}
-\begin{columns}[T]
-\column{0.24\textwidth}\centering
-\map{0.9\linewidth}{m_b}\\{\scriptsize $|\hat B|$ (peak), max.\ \Bmax\ mT}\\[2pt]
-\map{0.9\linewidth}{m_j}\\{\scriptsize $|\hat J|$ (peak) in Al and Cu}
-\column{0.76\textwidth}\footnotesize
-\begin{tabular}{@{}lrr@{}}\toprule
-350 A, 50 Hz, 20\,$^\circ$C & FE & Reference\\\midrule
-Losses conductors / screens [kW/km] & \Pcbase\ / \Psbase & \IecPc\ / \IecPs\ (IEC)\\
-Screen current [A RMS] & \Isbase & \IecIs\ (IEC)\\
-$R_{DC}$ (FE at 0.01 Hz) [$\Omega$/km] & \Racfdc & 0.164 (NKT)\\
-$R_{AC}=P/(3I^2)$ [$\Omega$/km] & \Racbase & \IecRac\ (IEC)\\
-$L$, touching cables [mH/km] & \Ltouching & \NktL\ (NKT)\\\bottomrule
-\end{tabular}\\[4pt]
-\begin{itemize}\footnotesize
-\item $R_{AC}=R_{DC}\,\times$ (1 + \SkinFE\,\% skin and proximity + \ScreenFE\,\% screen losses); IEC skin and proximity: \IecYsp\,\%
-\item $L$ from the magnetic energy; screen currents lower it at higher frequency: \Lfdc\ (DC), \Lbase\ (50 Hz), \Lfhund\ mH/km (500 Hz)
-\end{itemize}
-\end{columns}
-\note{\textbf{[1:00 \,|\, clock 6:10]}\par\smallskip 
-\begin{itemize}
-\item $|B|$ peaks at \Bmax\ mT at the conductor surface; $|J|$ is \Javg\ A/mm$^2$ mean and \Jmax\ maximum (proximity). These are peak amplitudes, not RMS.
-\item Conductor losses \Pcbase\ kW/km, same as IEC. Screens \Psbase\ against IEC \IecPs: the FE also has eddy
-currents in the rings. Screen current \Isbase\ A against IEC \IecIs.
-\item $R_{AC}=R_{DC}(1+\SkinFE\,\%+\ScreenFE\,\%)$: the skin and proximity part matches IEC (\IecYsp\,\%).
-\item $L$ for touching cables is \Ltouching\ mH/km against NKT \NktL. That is within NKT's two-digit rounding.
-$L$ falls with frequency because of the screen currents.
-\end{itemize}}
-\end{frame}
-
-% ============================================================ 7. magnetic verification + design
-\begin{frame}{Magnetic verification and loss reduction \q{Q3.5, Q3.11}}
-\begin{columns}[T]
-\column{0.52\textwidth}
-\plot{\linewidth}{3.9cm}{mag_convergence}\\
-{\scriptsize $h/\delta<0.05$ in the metals. Halving $h$: $R_{AC}$ \dRacfine\,\%, $L$ \dLfine\,\%, screen loss \dPsfine\,\% (thin ring: refine there)}
-\column{0.48\textwidth}
-\plot{0.95\linewidth}{4.0cm}{bonding}\\[-2pt]\small
-Single-point bonding: no circulating screen current, losses \alert{\dPtSingle\,\%}. Price: \Usingle\ V/km on the open screen end.
-\end{columns}
-\note{\textbf{[0:50 \,|\, clock 7:00]}\par\smallskip 
-\begin{itemize}
-\item The element size in the metals is at most \MeshHmetalGap\ mm, below 5\,\% of the skin depth. Halving the mesh changes $R_{AC}$ by \dRacfine\,\% and $L$ by \dLfine\,\%. The screen loss is slowest
-(\dPsfine\,\%) because the ring is thin: that is where to refine.
-\item Single-point bonding cuts the total losses by \dPtSingle\,\%. The price is a standing voltage of \Usingle\ V/km
-(section length, sheath voltage limiters). The gain is small because \CondShare\,\% of the loss is in the
-conductor, which matches NKT's equal 350 A for both bondings.
-\end{itemize}}
-\end{frame}
-
-% ============================================================ 8. thermal model
-\begin{frame}{Coupled magneto-thermal model \q{Q4.1--Q4.3}}
+\begin{frame}{Coupled magneto-thermal model \q{Q4.1, Q4.2}}
 \begin{columns}[T]
 \column{0.5\textwidth}\small
 \[-\nabla\cdot(\kappa\nabla T)=p=\tfrac12\sigma(T)|j\omega\hat{\mathbf a}+\hat{\mathbf u}_r|^2\]
 \begin{itemize}\small
 \item Heat source $p$: time-averaged Joule loss of the magnetic solution (real)
 \item Ground surface 1 m up: $-\kappa\,\partial_nT=h(T-15)$, $h$ = 10 W/(m$^2$K)
-\item Sides at $\pm$20 m: $\partial_nT=0$; bottom 20 m deep: $T=15\,^\circ$C (40 m domain: \dTcDom\ K)
+\item Sides at $\pm$20 m: $\partial_nT=0$; bottom 20 m deep: $T=15\,^\circ$C
 \item Heat spreads much further than $\mathbf B$ ($\ln r$ vs $1/r^2$): domain $\gg$ magnetic box
 \item One mesh: the magnetic box is part of the soil domain, no interpolation
 \end{itemize}
@@ -309,43 +201,82 @@ conductor, which matches NKT's equal 350 A for both bondings.
 \includegraphics[width=\linewidth,trim=280 438 280 438,clip]{figures/mesh_domain.png}\\
 {\scriptsize thermal mesh, 40 m $\times$ 20 m: fine near the cables (dark spot at the top), coarse far away}
 \end{columns}
-\note{\textbf{[1:05 \,|\, clock 8:05]}\par\smallskip 
+\note{\textbf{[0:55 \,|\, clock 3:55]}\par\smallskip 
 \begin{itemize}
 \item Heat equation; the source is the time-averaged Joule loss of the complex solution, made real with \texttt{<a>[...]}.
 \item Ground surface: convection with $h=10$ (about 2 from natural convection, \Hrad\ from radiation, plus wind).
-Sides adiabatic, bottom at 15\,$^\circ$C at 20 m; going to 40 m changes $T$ by \dTcDom\ K.
+Sides adiabatic, bottom at 15\,$^\circ$C at 20 m.
 \item Why so large: heat does not cancel like $\mathbf B$; it is a net line source decaying like $\ln r$, and its sink is the surface.
 \item One mesh, no interpolation (\TDofsnl\ thermal unknowns). \QsFrac\,\% of the heat leaves through the surface.
 \item The $\sigma(T)$ loop starts at 20\,$^\circ$C, so its first pass is the linear model.
+\end{itemize}
+\emph{Possible handover to speaker 2.}}
+\end{frame}
+
+% ====================================================== 2. VERIFICATION AND VALIDATION
+\section{2\quad Verification and validation}
+
+\begin{frame}{Electric: convergence, capacitance, conservation \q{Q2.3, Q2.6, Q2.7}}
+\begin{columns}[T]
+\column{0.56\textwidth}
+\plot{\linewidth}{4.2cm}{convergence}\\
+{\scriptsize Max.\ field approaches the analytical value; the error sits at the conductor screen, so refine there.}
+\column{0.44\textwidth}\small
+\begin{tabular}{@{}lr@{}}\toprule
+Capacitance per phase & [$\mu$F/km]\\\midrule
+Analytical $2\pi\varepsilon/\ln(r_o/r_i)$ & \AnaC\\
+FE, from energy and from charge & \Cgap\\
+NKT datasheet (maximum) & 0.22\\\bottomrule
+\end{tabular}\\[3pt]
+\begin{itemize}\small
+\item $C$ is the same from 5 to 5000 Hz
+\item XLPE: $|J_c/J_d|=\sigma/\omega\varepsilon=\AnaRatio$, displacement current dominates
+\item Current conserved: charging current \IchFE\ A/km $=\omega CV$
+\end{itemize}
+\end{columns}
+\note{\textbf{[0:55 \,|\, clock 4:55]}\par\smallskip 
+\begin{itemize}
+\item $E_{\max}$ converges from below: with linear elements the field is constant per triangle, so the
+first element reports the field slightly inside the $1/r$ peak. Fine mesh: \dEfine\,\% from analytical.
+Refinement is needed at the conductor screen.
+\item The capacitance matches the analytical value to \dCana\,\%, from energy and from charge, and it lies
+below NKT's maximum (\dCnkt\,\%), which is consistent. It is independent of frequency, because $\sigma+j\omega\varepsilon$ cancels.
+\item Current is conserved: the weak form is one current balance per node. The charging current is \IchFE\ A/km, equal to $\omega CV$.
 \end{itemize}}
 \end{frame}
 
-% ============================================================ 9. temperatures
-\begin{frame}{Temperatures at 350 A \q{Q4.4, Q4.5}}
+\begin{frame}{Magnetic: convergence, IEC 60287 and datasheet \q{Q3.5, Q3.9, Q3.10}}
 \begin{columns}[T]
-\column{0.26\textwidth}\centering
-\map{0.8\linewidth}{t_cables_nl}\\{\scriptsize $T$ in the cables [$^\circ$C]}\\[2pt]
-\map{0.8\linewidth}{t_soil_nl}\\{\scriptsize $T$ in the soil (surface on top)}
-\column{0.74\textwidth}\small
-\begin{itemize}\small
-\item Hot spot \alert{\Tcnl\,$^\circ$C} in the lower cables B and C (A: $-$\dTcAlow\ K); XLPE limit 90\,$^\circ$C
-\item Max.\ ground-surface temperature \Tsnl\,$^\circ$C, right above the cables
-\item Surface fixed at 15\,$^\circ$C instead of convection: \Tcnliso\,$^\circ$C (convection adds \dTcIso\ K)
+\column{0.44\textwidth}
+\plot{\linewidth}{3.9cm}{mag_convergence}\\
+{\scriptsize $h/\delta<0.05$ in the metals. Halving $h$: $R_{AC}$ \dRacfine\,\%, $L$ \dLfine\,\%, screen loss \dPsfine\,\% (thin ring: refine there)}
+\column{0.56\textwidth}\scriptsize
+\begin{tabular}{@{}lrr@{}}\toprule
+350 A, 50 Hz, 20\,$^\circ$C & FE & Reference\\\midrule
+$P$ conductors / screens [kW/km] & \Pcbase\ / \Psbase & \IecPc\ / \IecPs\ (IEC)\\
+Screen current [A RMS] & \Isbase & \IecIs\ (IEC)\\
+$R_{DC}$ (FE at 0.01 Hz) [$\Omega$/km] & \Racfdc & 0.164 (NKT)\\
+$R_{AC}=P/(3I^2)$ [$\Omega$/km] & \Racbase & \IecRac\ (IEC)\\
+$L$, touching [mH/km] & \Ltouching & \NktL\ (NKT)\\\bottomrule
+\end{tabular}\\[4pt]
+\begin{itemize}\footnotesize
+\item Skin and proximity: FE \SkinFE\,\%, IEC \IecYsp\,\%
+\item Screens above IEC: the FE also has eddy currents in the rings
+\item $L$ \dLnkt\,\% from NKT: within the rounding of $X=0.12$ $\Omega$/km
 \end{itemize}
-\plot{0.9\linewidth}{4.3cm}{surface_profile}
 \end{columns}
-\note{\textbf{[0:55 \,|\, clock 9:00]}\par\smallskip 
+\note{\textbf{[1:00 \,|\, clock 5:55]}\par\smallskip 
 \begin{itemize}
-\item Hot spot \Tcnl\,$^\circ$C in the two lower cables; the top one is \dTcAlow\ K cooler because it is closer to the surface.
-\item The aluminium is isothermal; the temperature drops across the XLPE and mostly across the soil.
-\item The ground above the trefoil warms by \dTsurf\ K. With an isothermal surface the hot spot is \Tcnliso: convection adds \dTcIso\ K.
-The profile shows the sensitivity to $h$.
-\end{itemize}
-\emph{Possible handover to speaker 3.}}
+\item The element size in the metals is at most \MeshHmetalGap\ mm, below 5\,\% of the skin depth. Halving the mesh changes $R_{AC}$ by \dRacfine\,\% and $L$ by \dLfine\,\%. The screen loss is slowest
+(\dPsfine\,\%) because the ring is thin: that is where to refine.
+\item Conductor losses \Pcbase\ kW/km, same as IEC. Screens \Psbase\ against IEC \IecPs: the FE also has eddy
+currents in the rings. Screen current \Isbase\ A against IEC \IecIs.
+\item The skin and proximity part of $R_{AC}$ matches IEC (\IecYsp\,\%); $R_{DC}$ equals NKT's 0.164 by construction of $\sigma_{\rm Al}$.
+\item $L$ for touching cables is \Ltouching\ mH/km against NKT \NktL. That is within NKT's two-digit rounding.
+\end{itemize}}
 \end{frame}
 
-% ============================================================ 10. validation
-\begin{frame}{Validation: IEC 60287 and the NKT rating \q{Q4.6}}
+\begin{frame}{Thermal: convergence, IEC 60287 and the NKT rating \q{Q4.3, Q4.6}}
 \begin{columns}[T]
 \column{0.42\textwidth}\small
 \[\Delta\theta=W_c\left[T_1+(1+\lambda_1)(T_3+T_4)\right]\]
@@ -363,12 +294,14 @@ FE, surface at 15\,$^\circ$C & \Tcnliso & --\\
 FE, convection $h=10$ & \Tcnl & \Amptrefoil\\\bottomrule
 \end{tabular}}\\[4pt]
 \begin{itemize}\small
+\item Hot spot vs default: coarse mesh \dTcCoarse\ K, fine \dTcFine\ K, 40 m domain \dTcDom\ K
 \item FE reproduces the NKT rating within a few kelvin
 \item Differences: convection at the surface (\dTcIso\ K), IEC trefoil formula vs 2D heat flow, screen eddy losses, 0.5 mm gap
 \end{itemize}
 \end{columns}
-\note{\textbf{[1:10 \,|\, clock 10:10]}\par\smallskip 
+\note{\textbf{[1:10 \,|\, clock 7:05]}\par\smallskip 
 \begin{itemize}
+\item Verification: the hot spot moves by \dTcCoarse\ K on the coarse mesh, \dTcFine\ K on the fine one and \dTcDom\ K with a 40 m domain, so mesh and domain are adequate.
 \item IEC ladder: $T_1$, $T_3$, and the Kennelly-based trefoil formula for $T_4$; $R(\theta)$ and $\lambda_1$ iterated with temperature.
 \item IEC gives \IecTheta\,$^\circ$C at 350 A and \IecAmp\ A at 90\,$^\circ$C: it confirms the datasheet with our data.
 \item FE: \Tcnl\,$^\circ$C with convection, \Tcnliso\ isothermal; FE ampacity \Amptrefoil\ A (\dNkttrefoil\,\%).
@@ -377,7 +310,82 @@ eddy losses, and the gap. All of these are inside the assumption uncertainty: $h
 \end{itemize}}
 \end{frame}
 
-% ============================================================ 11. nonlinear
+% ================================================================ 3. RESULTS
+\section{3\quad Results}
+
+\begin{frame}{Electric stress: healthy and with an air void \q{Q2.4, Q2.5}}
+\begin{columns}[T]
+\column{0.26\textwidth}\centering
+\map{0.62\linewidth}{e_field}\\{\scriptsize $|\hat E|$ [V/m], healthy}\\[2pt]
+\map{0.62\linewidth}{e_field_defect_zoom}\\{\scriptsize air void, $r=8.8$ mm}
+\column{0.74\textwidth}
+\plot{\linewidth}{3.3cm}{radial_defect}\\[-3pt]\small
+\begin{itemize}\small
+\item Healthy: \AnaEirms\ / \AnaEorms\ kV/mm RMS at the conductor / insulation screen, limits 8 / 4 (Eskom): \alert{43\,\% of the limit}
+\item Field in the void: \alert{\Vmeandefectfine--\Edefectfine\ kV/mm}, $\VoidRatio\times$ the healthy field (theory \AnaVoidFactor$\times$)
+\item Above air breakdown (\AnaEb--\AnaEbPaschen\ kV/mm): \alert{partial discharges at rated voltage}, so \alert{not withstood}
+\end{itemize}
+\end{columns}
+\src{2D void = infinitely long channel; a real spherical void gives \AnaSphereFactor$\times$ instead of \AnaVoidFactor$\times$, so 2D is conservative. Air breakdown: VSSUT HV notes; Bean et al.\ 2020.}
+\note{\textbf{[1:10 \,|\, clock 8:20]}\par\smallskip 
+\begin{itemize}
+\item Healthy: FE \Egapfine\ kV/mm peak at the conductor screen (analytical \AnaEi), \AnaEirms\ kV/mm RMS, against a limit of 8. The healthy cable uses 43\,\% of the admissible stress.
+\item Defect: a 0.5 mm air void centred at $r=8.8$ mm, its edge 0.75 mm from the conductor screen, where the stress is highest.
+In 2D this is an infinite channel along the cable; a sphere would see $\AnaSphereFactor\,E_0$ instead of $\AnaVoidFactor\,E_0$, so our 2D estimate is conservative.
+\item The field in the void is \Vmeandefectfine\ kV/mm ($\VoidRatio E_0$). Air breaks down at about
+\AnaEb\ kV/mm across 0.5 mm, so partial discharges start at rated voltage (inception $\approx$\PdInception\ kV, below 19 kV).
+The bulk XLPE survives, but repeated discharges erode the cavity and grow trees: \textbf{not withstood}.
+\end{itemize}
+\emph{If asked about the limit:} NKT gives none; we use an Eskom specification for 44--132 kV cables. HV cables are designed for higher stress than MV cables, so it is an upper benchmark, not an acceptance criterion.}
+\end{frame}
+
+\begin{frame}{Magnetic results at 350 A \q{Q3.6--Q3.10}}
+\begin{columns}[T]
+\column{0.24\textwidth}\centering
+\map{0.9\linewidth}{m_b}\\{\scriptsize $|\hat B|$ (peak), max.\ \Bmax\ mT}\\[2pt]
+\map{0.9\linewidth}{m_j}\\{\scriptsize $|\hat J|$ (peak) in Al and Cu}
+\column{0.4\textwidth}\small
+\begin{itemize}\small
+\item $|\hat J|$ in the Al: mean \Javg, max.\ \Jmax\ A/mm$^2$ (proximity)
+\item Losses: conductors \Pcbase, screens \Psbase, total \Ptbase\ kW/km; none in the soil
+\item $R_{AC}$ = \Racbase\ $\Omega$/km $=R_{DC}\,\times$ (1 + \SkinFE\,\% skin and proximity + \ScreenFE\,\% screens)
+\item $L$ = \Lbase\ mH/km at 50 Hz; \Lfdc\ at DC, \Lfhund\ at 500 Hz (screen currents)
+\end{itemize}
+\column{0.36\textwidth}\centering
+\plot{\linewidth}{4.6cm}{losses_bar}
+\end{columns}
+\note{\textbf{[0:55 \,|\, clock 9:15]}\par\smallskip 
+\begin{itemize}
+\item $|B|$ peaks at \Bmax\ mT at the conductor surface; $|J|$ is \Javg\ A/mm$^2$ mean and \Jmax\ maximum (proximity). These are peak amplitudes, not RMS.
+\item Losses per part: \Pcbase\ kW/km in the aluminium, \Psbase\ in the copper screens; the soil carries no current.
+\item $R_{AC}=R_{DC}(1+\SkinFE\,\%+\ScreenFE\,\%)$: the screen losses dominate the increase.
+\item $L$ falls with frequency because the induced screen currents oppose the flux.
+\end{itemize}
+\emph{Possible handover to speaker 3.}}
+\end{frame}
+
+\begin{frame}{Temperatures at 350 A \q{Q4.4, Q4.5}}
+\begin{columns}[T]
+\column{0.26\textwidth}\centering
+\map{0.8\linewidth}{t_cables_nl}\\{\scriptsize $T$ in the cables [$^\circ$C]}\\[2pt]
+\map{0.8\linewidth}{t_soil_nl}\\{\scriptsize $T$ in the soil (surface on top)}
+\column{0.74\textwidth}\small
+\begin{itemize}\small
+\item Hot spot \alert{\Tcnl\,$^\circ$C} in the lower cables B and C (A: $-$\dTcAlow\ K); XLPE limit 90\,$^\circ$C
+\item Max.\ ground-surface temperature \Tsnl\,$^\circ$C, right above the cables
+\item Surface fixed at 15\,$^\circ$C instead of convection: \Tcnliso\,$^\circ$C (convection adds \dTcIso\ K)
+\end{itemize}
+\plot{0.9\linewidth}{4.3cm}{surface_profile}
+\end{columns}
+\note{\textbf{[0:55 \,|\, clock 10:10]}\par\smallskip 
+\begin{itemize}
+\item Hot spot \Tcnl\,$^\circ$C in the two lower cables; the top one is \dTcAlow\ K cooler because it is closer to the surface.
+\item The aluminium is isothermal; the temperature drops across the XLPE and mostly across the soil.
+\item The ground above the trefoil warms by \dTsurf\ K. With an isothermal surface the hot spot is \Tcnliso: convection adds \dTcIso\ K.
+The profile shows the sensitivity to $h$.
+\end{itemize}}
+\end{frame}
+
 \begin{frame}{Temperature-dependent conductivity \q{Q4.7--Q4.9}}
 \begin{columns}[T]
 \column{0.5\textwidth}
@@ -411,7 +419,27 @@ $B$ and $L$ barely move, because the currents are imposed; peak $J$ drops \dJNL\
 \end{itemize}}
 \end{frame}
 
-% ============================================================ 12. section 5
+% ==================================== 4. DESIGN AND ADDITIONAL INVESTIGATION
+\section{4\quad Design and additional investigation}
+
+\begin{frame}{Design: lower stress, lower losses \q{Q2.8, Q3.11}}
+\begin{columns}[T]
+\column{0.5\textwidth}
+\plot{\linewidth}{3.9cm}{radial_thick}\\[-2pt]\small
+\textbf{9 mm XLPE} (same outer diameter): max.\ field \Egap\ $\rightarrow$ \Ethick\ kV/mm (\alert{\dEthick\,\%}), more margin for voids
+\column{0.5\textwidth}
+\plot{0.95\linewidth}{3.9cm}{bonding}\\[-2pt]\small
+\textbf{Single-point bonding}: no circulating screen current, losses \alert{\dPtSingle\,\%}, $R_{AC}$ \Racbase\ $\rightarrow$ \Racsingle\ $\Omega$/km
+\end{columns}
+\note{\textbf{[0:45 \,|\, clock 12:00]}\par\smallskip 
+\begin{itemize}
+\item Stress: 9 mm XLPE at the same outer diameter lowers the peak stress by \dEthick\,\%, which gives margin against voids like the one we modelled.
+\item Losses: single-point bonding cuts the total losses by \dPtSingle\,\%. The price is a standing voltage of \Usingle\ V/km
+(section length, sheath voltage limiters). The gain is small because \CondShare\,\% of the loss is in the
+conductor, which matches NKT's equal 350 A for both bondings.
+\end{itemize}}
+\end{frame}
+
 \begin{frame}{Additional investigation: arrangement and bonding \q{Section 5}}
 \begin{columns}[T]
 \column{0.55\textwidth}
@@ -434,7 +462,7 @@ flat +70 mm, single point & \Psflatsevsp & \Lflatsevsp & \Tcflatsevsp\\\bottomru
 \end{itemize}
 \end{columns}
 \src{Topic: our own choice. Ampacity: found by GetDP, secant search on $I^2$ until $T_{\max}=90\,^\circ$C.}
-\note{\textbf{[1:10 \,|\, clock 12:20]}\par\smallskip 
+\note{\textbf{[1:10 \,|\, clock 13:10]}\par\smallskip 
 \begin{itemize}
 \item The topic was free, so we chose arrangement times bonding: NKT gives six rating rows to validate against.
 \item Ampacity: GetDP repeats the coupled solve, with a secant search on $I^2$, until the hot spot is within 0.01 K of 90\,$^\circ$C.
@@ -444,8 +472,7 @@ With single-point bonding it helps a lot: \Ampflatsevsp\ A against NKT 380.
 \end{itemize}}
 \end{frame}
 
-% ============================================================ 13. design
-\begin{frame}{Design proposals}
+\begin{frame}{Design proposals and best arrangement}
 \footnotesize
 \begin{tabular}{@{}p{38mm}p{52mm}p{44mm}@{}}\toprule
 Proposal & Quantified gain & Price\\\midrule
@@ -458,25 +485,24 @@ Flat, 70 mm apart, single point (S5) & ampacity \Ampflatsevsp\ A instead of \Amp
 \item For 350 A: the rated trefoil is at its limit (FE \Tcnl\,$^\circ$C); single-point bonding brings it to \Tctrefoilsp\,$^\circ$C
 \item For more current: flat, 70 mm apart, single-point or cross-bonded (\Ampflatsevsp\ A)
 \end{itemize}
-\note{\textbf{[0:40 \,|\, clock 13:00]}\par\smallskip 
+\note{\textbf{[0:35 \,|\, clock 13:45]}\par\smallskip 
 Three proposals, each with its gain and its price: thicker XLPE for the stress, single-point or cross-bonding for
 the losses, and a spaced flat formation for the ampacity. For the specified 350 A, the rated trefoil is at its limit;
 single-point bonding brings it to \Tctrefoilsp\,$^\circ$C. For more current, use the spaced flat formation with single-point bonding.}
 \end{frame}
 
-% ============================================================ 14. conclusions
+% ============================================================ conclusions
 \begin{frame}{Conclusions}
 \small
 \begin{itemize}
-\item \textbf{One geometry, one mesh} for the electric, magnetic and thermal models; course formulations unchanged; all inputs are ONELAB parameters
+\item \textbf{Modelling}: one geometry, one mesh for the electric, magnetic and thermal models; course formulations unchanged; all inputs are ONELAB parameters
 \item \textbf{Verified}: max.\ field \dEfine\,\%, $C$ \dCana\,\% from analytical; skin effect as IEC; mesh, domain, frequency studies
-\item \textbf{Validated}: $C$ below NKT's maximum, $R_{DC}$ 0.164 $\Omega$/km, $L$ within NKT's rounding
-\item \textbf{350 A $\rightarrow$ \Tcnl\,$^\circ$C} (NKT 90\,$^\circ$C, IEC \IecTheta\,$^\circ$C): rating confirmed within a few kelvin
-\item Healthy insulation at 43\,\% of its limit; a 0.5 mm air void discharges at rated voltage
-\item $\sigma(T)$ adds \dPtNL\,\% losses and \dTcNL\ K: a linear model overrates the cable
+\item \textbf{Validated}: $C$ below NKT's maximum, $R_{DC}$ 0.164 $\Omega$/km, $L$ within NKT's rounding; 350 A $\rightarrow$ \Tcnl\,$^\circ$C (NKT 90\,$^\circ$C, IEC \IecTheta\,$^\circ$C)
+\item \textbf{Results}: healthy insulation at 43\,\% of its limit; a 0.5 mm air void discharges at rated voltage; $\sigma(T)$ adds \dPtNL\,\% losses and \dTcNL\ K, so a linear model overrates the cable
+\item \textbf{Design}: 9 mm XLPE for the stress, single-point bonding for the losses, spaced flat formation for more current
 \item Limits: 2D (no lay, no cable ends), constant soil (no drying), steady state
 \end{itemize}
-\note{\textbf{[0:40 \,|\, clock 13:40]}\par\smallskip 
+\note{\textbf{[0:40 \,|\, clock 14:25]}\par\smallskip 
 One geometry and one mesh for three coupled models, each section one Run button. Verified against analytical solutions and IEC, validated
 against the datasheet: 350 A gives \Tcnl\,$^\circ$C against 90 and IEC's \IecTheta. The insulation is healthy;
 a small void would discharge. The temperature-dependent conductivity matters for rating.
@@ -501,10 +527,10 @@ Nonlinear iterations & -- & \Nitnl & --\\\bottomrule
 \end{tabularx}\\[5pt]
 $^*$ analytical (Appendix B, IEC 60287) or datasheet (NKT), as stated. 350 A RMS, 50 Hz, 0.5 mm gap, solid Al with eddy currents,
 both ends bonded, $h$=10 W/(m$^2$K), default mesh unless stated. Linear = $\sigma$ at 20\,$^\circ$C.
-\note{\textbf{[0:15 \,|\, clock 13:55]}\par\smallskip 
+\note{\textbf{[0:15 \,|\, clock 14:40]}\par\smallskip 
 Table 1 collects everything; leave it on screen for the questions. The appendix has one slide per
 question (Q1.1 to Q4.9, plus Section 5), each starting with the assignment question, and two slides with the
-required field maps (void; linear vs $\sigma(T)$). Spare time: about one minute.}
+required field maps (void; linear vs $\sigma(T)$). Spare time: about 20 seconds.}
 \end{frame}
 
 % ================================================================= APPENDIX

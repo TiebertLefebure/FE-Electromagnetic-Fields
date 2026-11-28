@@ -17,15 +17,22 @@ Source-Code/            one folder per section with its Gmsh/GetDP files (course
                         unchanged), run_all.sh and README.md
 Slides/                 slides.tex -> slides.pdf; speaker_notes.tex -> speaker_notes.pdf;
                         export_maps.sh renders the field maps (Slides/figures);
-                        make_deliverables.sh + deliverables.tex -> Deliverables/
-Deliverables/           the maps and values of the assignment's deliverables list, one folder per
-                        analysis, with an index (README.md)
+                        make_deliverables.sh + deliverables.tex -> PNG copies of the deliverable maps
+                        in Deliverables/ (optional; that folder is no longer kept)
+FE_Code_Slides_Group14/ what is handed in, copied from the folders above: Slides_Group14.pdf
+                        (= Slides/slides.pdf) and Code_Group14/ (= Source-Code/ without run_all.sh)
 Reports/                study notes per section (PDFs), LaTeX sources, collect_values.py (copies the
                         printed values into LaTeX macros)
 ```
 
-The handed-in version is git tag `final` (upload `git archive final Source-Code`: the .geo/.pro
-files and `Source-Code/README.md`, not `run_all.sh`), with `Slides/slides.pdf`.
+The handed-in version is git tag `final`; upload the folder `FE_Code_Slides_Group14`. After any change
+to `Source-Code/` or the slides, refresh it (copies; from this folder) and commit before moving the tag:
+
+```sh
+rm -rf FE_Code_Slides_Group14 && mkdir -p FE_Code_Slides_Group14/Code_Group14
+git archive HEAD Source-Code | tar -x --exclude Source-Code/run_all.sh --strip-components 1 -C FE_Code_Slides_Group14/Code_Group14
+cp Slides/slides.pdf FE_Code_Slides_Group14/Slides_Group14.pdf
+```
 
 ## Reproduce every number and picture (terminal, from this folder)
 
@@ -38,7 +45,6 @@ export PATH="$PWD/../ONELAB Software/Gmsh.app/Contents/MacOS:$PATH"   # macOS: g
 python3 Reports/collect_values.py   # printed values -> values.tex + CSV
 ./Reports/build.sh                  # Section 1-5 PDFs
 ./Slides/export_maps.sh             # field maps (needs a display)
-./Slides/make_deliverables.sh       # Deliverables/
 cd Slides && pdflatex slides.tex && pdflatex slides.tex          # notes: speaker_notes.tex
 ```
 
