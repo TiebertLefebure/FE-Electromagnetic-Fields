@@ -160,9 +160,9 @@ All 12 meshes and 37 cases take about 25 minutes on a laptop.
   Electromagnetic box ±0.3 m; thermal domain ±20 m wide, 20 m deep. One mesh for all analyses.
   Physical groups: Al 21–23, inner semicon 31–33, XLPE 41–43 (void 44), outer semicon 51–53, inner
   filler 61–63, Cu 71–73, outer filler 81–83, PE 91–93, soil in the box 99, soil outside 98;
-  curves 101–103 / 111–113 conductor / core screens, 120 box edge, 130 ground surface, 132 bottom.
+  curves 101–103 / 111–113 conductor / insulation screens, 120 box edge, 130 ground surface, 132 bottom.
 - **Electric** (Section 2): `-div((σ + jωε) grad v) = 0` in the XLPE (and void), phase voltage on
-  the conductor screen, 0 on the core screen (semicons as ideal electrodes).
+  the conductor screen, 0 on the insulation screen (semicons as ideal electrodes).
 - **Magnetic** (Section 3): `curl(ν curl a) = j`, `a = 0` on the box edge; Al and Cu massive with one
   (U, I) pair each: imposed I in the conductors, U = 0 (both ends) or I = 0 (single point) in the
   screens. Losses use the total current density `σ|jωa + u_r|²/2` (course eq. 9).

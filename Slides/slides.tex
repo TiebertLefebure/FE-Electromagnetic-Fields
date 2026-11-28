@@ -135,7 +135,7 @@ $\rightarrow$ \MeshQminGap, effect on results below 1\,\%); $\sigma_{\rm Al}$ fi
 \item Course formulation, unchanged; the voltages are imposed as boundary values
 \end{itemize}
 \begin{tabular}{@{}lrr@{}}\toprule
-Max.\ field, RMS [kV/mm] & conductor screen & core screen\\\midrule
+Max.\ field, RMS [kV/mm] & conductor screen & insulation screen\\\midrule
 Analytical & \AnaEirms & \AnaEorms\\
 Limit (Eskom spec.) & 8 & 4\\\bottomrule
 \end{tabular}\\[2pt]
@@ -557,14 +557,17 @@ Air (void, Q2.5) & 1 & $10^{-15}$ & -- & assumption (dry air)\\\bottomrule
 \qslide{Q2.6 Current densities and conservation}{\QuestionTwoSix}{\AnsTwoSix}{\plot{\linewidth}{4.8cm}{currents_radial}}
 \begin{frame}{Q2.5, Q2.6 Field maps with and without the void}
 \begin{columns}[T]
-\column{0.25\textwidth}\centering\map{\linewidth}{e_field}\\{\scriptsize $|\hat E|$ [V/m], healthy}
-\column{0.25\textwidth}\centering\map{\linewidth}{e_field_defect_zoom}\\{\scriptsize $|\hat E|$ [V/m], void (zoom)}
-\column{0.25\textwidth}\centering\map{\linewidth}{e_jdisp}\\{\scriptsize $|\hat J_d|$ [A/m$^2$], healthy}
-\column{0.25\textwidth}\centering\map{\linewidth}{e_jdisp_defect_zoom}\\{\scriptsize $|\hat J_d|$ [A/m$^2$], void (zoom)}
-\end{columns}\medskip
-\footnotesize Peak amplitudes. The field and the displacement current $\omega\varepsilon|\hat E|$ are highest at the conductor
+\column{0.2\textwidth}\centering\map{\linewidth}{e_field}\\{\scriptsize $|\hat E|$ [V/m], healthy}\\[3pt]
+  \map{\linewidth}{e_jdisp}\\{\scriptsize $|\hat J_d|$ [A/m$^2$], healthy}
+\column{0.2\textwidth}\centering\map{\linewidth}{e_field_defect}\\{\scriptsize $|\hat E|$ [V/m], void}\\[3pt]
+  \map{\linewidth}{e_jdisp_defect}\\{\scriptsize $|\hat J_d|$ [A/m$^2$], void}
+\column{0.2\textwidth}\centering\map{\linewidth}{e_field_defect_zoom}\\{\scriptsize $|\hat E|$ [V/m], void (zoom)}\\[3pt]
+  \map{\linewidth}{e_jdisp_defect_zoom}\\{\scriptsize $|\hat J_d|$ [A/m$^2$], void (zoom)}
+\column{0.34\textwidth}
+\footnotesize Peak amplitudes. The 0.5 mm void sits in the top cable, too small to see at this scale; the third column zooms in on it. The field and the displacement current $\omega\varepsilon|\hat E|$ are highest at the conductor
 screens and fall like $1/r$. In the void ($\varepsilon_r=1$) the field rises to \Vmeandefectfine--\Edefectfine\ kV/mm, but the
 displacement current density drops to about $\AnaVoidFactor/2.5\approx\AnaJdVoidFactor$ of its XLPE value, because $\varepsilon$ is 2.5 times lower.
+\end{columns}
 \end{frame}
 \qslide{Q2.7 Capacitance}{\QuestionTwoSeven}{\AnsTwoSeven}{\plot{\linewidth}{4.6cm}{cap_freq}}
 \qslide{Q2.8 Electric design}{\QuestionTwoEight}{\AnsTwoEight}{\plot{\linewidth}{4.8cm}{radial_thick}}

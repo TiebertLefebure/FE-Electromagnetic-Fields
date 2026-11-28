@@ -40,7 +40,7 @@ physical groups 41--44, 101--113.}
 \assignmentquestion{\QuestionTwoTwo}
 \answer{\AnsTwoTwo}
 \begin{center}\input{figures/electric_domain.tex}
-\figcap{The grounded core screen confines the field: only the XLPE annulus between two electrodes is
+\figcap{The grounded insulation screen confines the field: only the XLPE annulus between two electrodes is
 solved (one per phase); everything outside it is left out exactly.}\end{center}
 The semicons act as ideal electrodes because \(\sigma_{\rm sc}=2\cdot10^{-3}\) S/m \(\gg\omega\varepsilon=6\cdot10^{-9}\)
 S/m: the charging current density (\AnaJd\ A/m\textsuperscript2) crossing 0.4 mm of semicon is what drops the
@@ -86,7 +86,7 @@ for our 33 kV cable it is an upper benchmark, not an acceptance criterion.
 \begin{tabular}{@{}lrrr@{}}\toprule
 RMS [kV/mm] & Analytical & FE (fine mesh) & Limit\\\midrule
 Conductor screen, \(r_i=7.8\) mm & \AnaEirms & \(\Egapfine/\sqrt2\) & 8\\
-Core screen, \(r_o=15.8\) mm & \AnaEorms & -- & 4\\\bottomrule
+Insulation screen, \(r_o=15.8\) mm & \AnaEorms & -- & 4\\\bottomrule
 \end{tabular}
 \end{center}
 \begin{center}\def\figw{0.8\linewidth}\def\figh{5cm}
@@ -152,7 +152,7 @@ at the conductor screen.
 \(\approx10^{16}\), soil \(10^{-2}/2.8\cdot10^{-8}\).
 
 \textbf{Electrode current.} Testing the weak form with the FE function \(\hat v/\hat V\) (1 on the
-conductor screen, 0 on the core screen) gives the current per phase,
+conductor screen, 0 on the insulation screen) gives the current per phase,
 \(I=\frac1{\hat V}\int(\sigma+j\omega\varepsilon)\nabla\hat v\cdot\nabla\hat v\,dA\). Locally, linear elements
 leave a jump in the normal current across element edges that shrinks with \(h\). The analytical
 charging current is \AnaIch\ A/km RMS, and \(\Re I/\Im I=\)\,\IratioFE\(\,=\sigma/(\omega\varepsilon)\). It is a
@@ -217,7 +217,7 @@ the filler grows the cable by 2 mm and raises \(T_1\) by \dToneThick\,\% (\(\app
 \small
 \textbf{[VSSUT]} Veer Surendra Sai University of Technology, \refurl{https://www.vssut.ac.in/lecture_notes/lecture1423723357.pdf}{\emph{High Voltage Engineering}, lecture notes, Module I}, \S1.7, PDF p.~11: \(V_b=24.22\,\delta d+6.08\sqrt{\delta d}\) kV (\(d\) in cm, \(\delta\) relative air density).
 \textbf{[Bean]} I.A.~Bean, C.S.~Adams, T.E.~Weber, ``HVDC surface flashover in compressed air for various dielectrics'', \refurl{https://arxiv.org/abs/2006.12615}{arXiv:2006.12615} (2020), eqs.~(1)--(2): Paschen's law \(V_b=Bpd/(\ln(pd)+k)\), air \(A=112.5\) (kPa\,cm)\(^{-1}\), \(B=2737.5\) V/(kPa\,cm), \(\gamma=0.025\).
-\textbf{[Eskom]} \refurl{https://www.etenders.gov.za/home/Download/?blobName=b55b97a6-fb2e-492f-8eb0-01bc9574c555.pdf\&downloadedFileName=240-56030625_Specificatin+for+HV+XLPE+cables+and+accessories.pdf}{Eskom 240-56030625 Rev.~3}, \S3.3\,i), p.~7: radial stress at \(U_0\) \(\le8.0\) kV/mm at the conductor screen and \(\le4.0\) kV/mm at the core screen (44--132 kV cables).
+\textbf{[Eskom]} \refurl{https://www.etenders.gov.za/home/Download/?blobName=b55b97a6-fb2e-492f-8eb0-01bc9574c555.pdf\&downloadedFileName=240-56030625_Specificatin+for+HV+XLPE+cables+and+accessories.pdf}{Eskom 240-56030625 Rev.~3}, \S3.3\,i), p.~7: radial stress at \(U_0\) \(\le8.0\) kV/mm at the conductor screen and \(\le4.0\) kV/mm at the insulation screen (44--132 kV cables).
 \textbf{[\v{S}u\'{c}urovi\'{c}]} XLPE \(\varepsilon_r=2.5\), \(\tan\delta=0.004\) for 19/33 kV cables (full reference: Section 1).
 Local \href{../NMES_Assignment_2026.pdf}{assignment} (eqs.~2--6, 13) and
 \href{../Datasheet NKT 33 kV single core cable XLPE-AL.pdf}{NKT datasheet}. Material sources: Section 1.

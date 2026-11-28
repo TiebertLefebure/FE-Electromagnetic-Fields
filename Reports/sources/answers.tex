@@ -27,7 +27,7 @@ magnetic model of Section~3.}
 \newcommand{\AnsTwoOne}{%
 We solve \(-\nabla\cdot\big((\sigma+j\omega\varepsilon)\nabla\hat v\big)=0\) for the complex potential in
 the three XLPE annuli only, with linear triangles. The boundary conditions are \(\hat v=\hat V_k\) on each conductor
-screen and \(\hat v=0\) on each core screen (Dirichlet conditions of the course function space). We truncate the domain at the core screens because a continuous grounded screen fixes the potential outside
+screen and \(\hat v=0\) on each insulation screen (Dirichlet conditions of the course function space). We truncate the domain at the insulation screens because a continuous grounded screen fixes the potential outside
 it to zero. Only the XLPE (its radii and permittivity) and the two screen potentials influence the insulation
 field; the conductor, the copper screen, the fillers, the sheath, the soil and the other two cables do not.}
 \newcommand{\AnsTwoTwo}{%
@@ -44,7 +44,7 @@ concentrated at the conductor screen, where \(E\propto1/r\) is steepest: local r
 around a defect), not in the bulk of the insulation.}
 \newcommand{\AnsTwoFour}{%
 The datasheet gives no admissible field, so we use the design limits of the Eskom XLPE cable
-specification: 8 kV/mm RMS at the conductor screen and 4 kV/mm RMS at the core screen. The healthy cable has
+specification: 8 kV/mm RMS at the conductor screen and 4 kV/mm RMS at the insulation screen. The healthy cable has
 \AnaEirms\ kV/mm and \AnaEorms\ kV/mm RMS at these two screens, 43\,\% of each limit, so it is well within them.}
 \newcommand{\AnsTwoFive}{%
 We add an air-filled void (a gas cavity) of radius 0.25 mm with \(\varepsilon_r=1\), centred at
@@ -60,7 +60,7 @@ At the conductor screen the displacement current density \(\omega\varepsilon|\ha
 their ratio \(\sigma/(\omega\varepsilon)=\AnaRatio\) is the same everywhere in the XLPE. Current conservation is
 satisfied: the FE equations are the weak form of \(\nabla\cdot(\hat{\mathbf J}+j\omega\hat{\mathbf D})=0\), one current
 balance per node, so the current entering at the conductor screen, \IchFE\ A/km per phase (\(\omega CV\)), leaves
-at the core screen. Numerically, the capacitance from this electrode current and the one from the field energy
+at the insulation screen. Numerically, the capacitance from this electrode current and the one from the field energy
 differ by only \dCcharge\,\%. Displacement current dominates in the insulators (XLPE, PE and air), where
 \(\sigma\ll\omega\varepsilon\); conduction current dominates in the semicons, the metals and the soil, where
 \(\sigma\gg\omega\varepsilon\).}

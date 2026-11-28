@@ -18,7 +18,7 @@ Group {
   Domain_Ele = Region[{XLPE, Void}];
   LiveA = Region[101]; LiveB = Region[102]; LiveC = Region[103];
   Live = Region[{LiveA, LiveB, LiveC}];       // conductor screens (phase voltage)
-  Grounded = Region[{111, 112, 113}];          // core screens (0 V)
+  Grounded = Region[{111, 112, 113}];          // insulation screens (0 V)
   PhaseA = Region[{41, 44, LiveA}]; PhaseB = Region[{42, LiveB}]; PhaseC = Region[{43, LiveC}];
 }
 
@@ -32,7 +32,7 @@ Function {
 }
 
 // [Q2.1] Dirichlet conditions of the course function space: v = Vph on the conductor
-// screens, v = 0 on the core screens.
+// screens, v = 0 on the insulation screens.
 Constraint {
   { Name ElectricScalarPotential; Case {
       { Region Live; Value Vph[]; }
@@ -57,7 +57,7 @@ Include "electrodynamic_formulation.pro";
 w = 2*Pi*Freq;  U0 = U_LL/Sqrt[3];  lnr = Log[rXLPEOut/rSemiIn];
 AnaC  = 2*Pi*eps0*epsXLPE/lnr*1e9;                  // [Q2.7] coaxial capacitance, uF/km
 AnaEi = Vpeak/(rSemiIn*lnr)/1e6;                    // [Q2.4] field at the conductor screen, kV/mm peak
-AnaEo = Vpeak/(rXLPEOut*lnr)/1e6;                   //        and at the core screen
+AnaEo = Vpeak/(rXLPEOut*lnr)/1e6;                   //        and at the insulation screen
 AnaE0 = Vpeak/(rVoidPos*lnr)/1e6;                   // [Q2.5] healthy field at the void centre
 AnaVoidFactor = 2*epsXLPE/(epsXLPE + epsVoid);     //        E_void/E_0 for a cylinder (2D void)
 AnaSphereFactor = 3*epsXLPE/(2*epsXLPE + epsVoid); //        and for a sphere (a real void)
@@ -131,7 +131,7 @@ PostProcessing {
       // [Q2.6] Displacement current density |j omega eps E| (A/m2, peak).
       { Name jd; Value { Term { [ Norm[-epsilon[]*Dt[{d v}]] ]; In Domain_Ele; Jacobian Vol; } } }
       // [Q2.6] Current entering one phase's insulation (A/m, peak phasor): the weak form tested
-      // with the FE function v/Vph (1 on the conductor screen, 0 on the core screen).
+      // with the FE function v/Vph (1 on the conductor screen, 0 on the insulation screen).
       { Name I; Value { Integral { [ (sigma[]*{d v} + epsilon[]*Dt[{d v}]) * {d v} / Vph[] ];
             In Domain_Ele; Jacobian Vol; Integration I1; } } }
       { Name I_re; Value { Integral { [ Re[(sigma[]*{d v} + epsilon[]*Dt[{d v}]) * {d v} / Vph[]] ];

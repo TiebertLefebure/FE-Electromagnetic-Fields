@@ -111,7 +111,7 @@ DefineConstant[
 
 // ---- Derived radii [Q1.1, Q2.2] --------------------------------------------------------
 rSemiIn  = rCon + tSemiIn;          // 7.8 mm, inner XLPE interface (conductor screen)
-rXLPEOut = rSemiIn + tXLPE;         // 15.8 mm, outer XLPE interface (core screen)
+rXLPEOut = rSemiIn + tXLPE;         // 15.8 mm, outer XLPE interface (insulation screen)
 rSemiOut = rXLPEOut + tSemiOut;     // 16.2 mm
 rWireOut = Sqrt[rWireIn^2 + AWire/Pi]; // Cu ring with the 50 mm2 area of the wires + tape
 
